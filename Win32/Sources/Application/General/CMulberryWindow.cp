@@ -107,6 +107,31 @@ CMulberryWindow::~CMulberryWindow()
 		CSDIFrame::SetAppTopWindow(NULL);
 }
 
+BOOL CMulberryWindow::PreTranslateMessage(MSG* pMsg)
+{
+	// Special hack for non-English keyboards and AltGr keys on Win95/98
+
+	static bool right_key = false;
+
+	if (afxData.bWin95)
+	{
+		if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_MENU))
+			right_key = (pMsg->lParam & (1L << 24));
+
+		// Look for right-alt key (AltGr)
+		else if (((pMsg->message == WM_CHAR) || (pMsg->message == WM_KEYDOWN)) &&
+			(::GetKeyState(VK_MENU) < 0) && right_key)
+		{
+			// Check keyboard locale
+			if (PRIMARYLANGID(::GetKeyboardLayout(0)) != LANG_ENGLISH)
+				return false;
+		}
+	}
+
+	// Do default action
+	return CMDIFrameWnd::PreTranslateMessage(pMsg);
+}
+
 int CMulberryWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	// Do inherited
