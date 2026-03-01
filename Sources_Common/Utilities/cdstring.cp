@@ -1983,6 +1983,7 @@ char* cdstring::FromModifiedUTF7(char* str, bool charset)
 								int len = utf8.w_2_c(wc, buf);
 								if (len)
 									sout.write(buf, len);
+								wc = 0;
 
 								// Now do entire wchar_t
 								wc = atom.base256[1];
@@ -2002,6 +2003,7 @@ char* cdstring::FromModifiedUTF7(char* str, bool charset)
 								int len = utf8.w_2_c(wc, buf);
 								if (len)
 									sout.write(buf, len);
+								wc = 0;
 
 								// Cache remaining HI part
 								wc = atom.base256[0];
@@ -2037,6 +2039,7 @@ char* cdstring::FromModifiedUTF7(char* str, bool charset)
 								int len = utf8.w_2_c(wc, buf);
 								if (len)
 									sout.write(buf, len);
+								wc = 0;
 							}
 							else
 								throw -1L;
@@ -2069,6 +2072,7 @@ char* cdstring::FromModifiedUTF7(char* str, bool charset)
 								int len = utf8.w_2_c(wc, buf);
 								if (len)
 									sout.write(buf, len);
+								wc = 0;
 							}
 							else
 							{
@@ -2078,6 +2082,7 @@ char* cdstring::FromModifiedUTF7(char* str, bool charset)
 								int len = utf8.w_2_c(wc, buf);
 								if (len)
 									sout.write(buf, len);
+								wc = 0;
 							}
 #endif
 							break;
