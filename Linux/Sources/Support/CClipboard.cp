@@ -121,12 +121,18 @@ bool CClipboard::TestText(JXDisplay* display, Atom clip, Time time, Atom& textTy
 	if (!selMgr->GetAvailableTypes(clip, time, &typeList))
 		return false;
 
-	// Check for text types
+	// Check for text types — prefer UTF8_STRING for proper Unicode support
 	const JSize typeCount = typeList.GetElementCount();
 	bool got_type = false;
 	for (JIndex i=1; i<=typeCount; i++)
 	{
 		const Atom type = typeList.GetElement(i);
+		if (type == selMgr->GetUTF8StringXAtom())
+		{
+			// Best possible type for Unicode — use immediately
+			textType = type;
+			return true;
+		}
 		if (type == XA_STRING ||
 			type == selMgr->GetMimePlainTextXAtom() ||
 			(!got_type && type == selMgr->GetTextXAtom()))
