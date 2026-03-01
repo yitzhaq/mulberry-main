@@ -737,13 +737,16 @@ bool CBodyTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 		if (data)
 		{
 			// Copy to global after lock
-			CAttachment** pAddr = reinterpret_cast<CAttachment**>(data);
-			*((CMessage**) pAddr) = (mWindow ? mWindow->GetMessage() : mView->GetMessage());
-			pAddr += sizeof(CMessage*);
-			*((int*) pAddr) = attchs.size();
-			pAddr += sizeof(int);
+			unsigned char* ptr = data;
+			*((CMessage**) ptr) = (mWindow ? mWindow->GetMessage() : mView->GetMessage());
+			ptr += sizeof(CMessage*);
+			*((int*) ptr) = attchs.size();
+			ptr += sizeof(int);
 			for(CAttachmentList::iterator iter = attchs.begin(); iter != attchs.end(); iter++)
-				*pAddr++ = *iter;
+			{
+				*((CAttachment**) ptr) = *iter;
+				ptr += sizeof(CAttachment*);
+			}
 			
 			seldata->SetData(type, data, dataLength);
 			rendered = true;
