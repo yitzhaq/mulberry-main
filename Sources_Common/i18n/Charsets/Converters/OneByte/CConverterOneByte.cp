@@ -85,5 +85,7 @@ int CConverterOneByte::w_2_c(wchar_t wc, char* out)
 		}
 	}
 
-	return -1;
+	// Unmappable character — output '?' as fallback
+	*out = '?';
+	return 1;
 }
