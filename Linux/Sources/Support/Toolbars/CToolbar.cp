@@ -760,6 +760,20 @@ void CToolbar::Receive(JBroadcaster* sender, const Message& message)
 			GetCommander()->ObeyCommand(cmd, &menuchoice);
 		}
 	}
+	else if(message.Is(JXTextMenu::kItemSelected))
+	{
+		JXTextMenu* popup = dynamic_cast<JXTextMenu*>(sender);
+		unsigned long item_index = GetItemIndex(dynamic_cast<JXWidget*>(popup->GetEnclosure()));
+		unsigned long cmd = (item_index < mItemList.size()) ? mItemList[item_index].mDetails.GetItem()->GetCommand() : 0;
+		const JXMenu::ItemSelected* ms = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+		if (GetCommander())
+		{
+			CCommander::SMenuCommandChoice menuchoice;
+			menuchoice.mMenu = popup;
+			menuchoice.mIndex = ms->GetIndex();
+			GetCommander()->ObeyCommand(cmd, &menuchoice);
+		}
+	}
 	else if(message.Is(CToolbarPopupButton::kMenuUpdate))
 	{
 		const CToolbarPopupButton::MenuUpdate* mu = dynamic_cast<const CToolbarPopupButton::MenuUpdate*>(&message);
