@@ -431,6 +431,16 @@ JBoolean CTextBase::TEGetExternalClipboard(JString16* text, JRunArray<Font>* sty
 	const JError err = GetSelectionData(GetClipboardAtom(), CurrentTime, text, style);
 	if (err.OK())
 		{
+		// Strip CR from CRLF line endings — X11 clipboard sources
+		// may provide CRLF, but JX text widgets only handle LF
+		JIndex i = 1;
+		while (i <= text->GetLength())
+			{
+			if (text->GetCharacter(i) == '\r')
+				text->RemoveSubstring(i, i);
+			else
+				i++;
+			}
 		return kTrue;
 		}
 	else
