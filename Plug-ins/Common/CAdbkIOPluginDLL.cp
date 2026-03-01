@@ -127,13 +127,11 @@ long CAdbkIOPluginDLL::DoImport(const char* fname)
 		data[fileLength] = 0;
 
 		// Do import
-		ImportAddresses(data);
-		
+		result = ImportAddresses(data);
+
 		// Finish with handle
 		::free(data);
 		data = NULL;
-		
-		result = 1;
 	}
 	catch(...)
 	{
