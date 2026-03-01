@@ -293,8 +293,8 @@ cdstring CMIMESupport::GenerateContentDisposition(const CAttachment* attach, EEn
 			out << cHDR_MIME_DISPOSITION;
 		out << content.GetContentDispositionText();
 
-		// If name send it
-		if (description)
+		// If name send it — only for attachments, not inline content
+		if (description && (content.GetContentDisposition() == eContentDispositionAttachment))
 		{
 			long line_length = out.pcount();
 
