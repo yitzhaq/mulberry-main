@@ -46,6 +46,12 @@ LTableMultiSelector::LTableMultiSelector(
 	mLastSelection.SetCell(0, 0);
 	mAnchorCell.SetCell(0, 0);
 	mBoatCell.SetCell(0, 0);
+
+	// Table may already have cells so init the selection bit-vector
+	TableIndexT rows, cols;
+	mTableView->GetTableSize(rows, cols);
+	if ((rows != 0) && (cols != 0))
+		mSelection.insert(mSelection.begin(), rows * cols, false);
 }
 
 
