@@ -328,11 +328,14 @@ bool CRulesTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 		unsigned char* data = new unsigned char[dataLength];
 		if (data)
 		{
-			CFilterItem** i = reinterpret_cast<CFilterItem**>(data);
-			*((int*) i) = count;
-			i += sizeof(int);
+			unsigned char* ptr = data;
+			*((int*) ptr) = count;
+			ptr += sizeof(int);
 			for(CFilterItems::iterator iter = items.begin(); iter != items.end(); iter++)
-				*i++ = *iter;
+			{
+				*((CFilterItem**) ptr) = *iter;
+				ptr += sizeof(CFilterItem*);
+			}
 
 			seldata->SetData(type, data, dataLength);
 			rendered = true;
