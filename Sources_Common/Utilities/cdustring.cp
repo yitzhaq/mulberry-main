@@ -356,6 +356,7 @@ std::istream& getline (std::istream& is, cdustring& str, unichar_t delim)
 			{
 				// Ignore LF after CR
 				c1 = is.rdbuf ()->sbumpc();
+				have_c1 = true;
 				if ((c1 == 0) && (is.rdbuf ()->sgetc() == '\n'))
 					is.rdbuf ()->sbumpc ();
 				break;
