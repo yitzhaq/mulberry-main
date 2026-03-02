@@ -43,7 +43,7 @@ return false;
 char *longtohex(long number){
 	bool adding = false;
 	long it = 0;
-	char values[16];
+	char values[17];  // 16 chars + null terminator
 	cdstring string;
 	long double s = 16;
 	long powered;
