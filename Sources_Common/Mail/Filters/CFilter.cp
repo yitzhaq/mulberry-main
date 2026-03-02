@@ -237,7 +237,7 @@ ExceptionCode CFilterEndls::GetBytes(void* outBuffer, SInt32& inByteCount)
 									mLineBuffer[mLineLength++] = ::get_endl(mOutEndl)[1];
 								
 								// Punt line end
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 								count++;
 #else
 								count += 2;
@@ -310,7 +310,7 @@ ExceptionCode CFilterEndls::PutBytes(const void* inBuffer, SInt32& inByteCount)
 	while(total < inByteCount)
 	{
 		// Copy a byte
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		if (*((unsigned char*) inBuffer) != lendl3)
 #endif
 		{
@@ -319,7 +319,7 @@ ExceptionCode CFilterEndls::PutBytes(const void* inBuffer, SInt32& inByteCount)
 			total++;
 			mBufferLength++;
 		}
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		else
 		{
 			inBuffer = (unsigned char*)inBuffer + sizeof(unsigned char);

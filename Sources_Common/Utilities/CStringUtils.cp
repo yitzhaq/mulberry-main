@@ -916,7 +916,7 @@ void FilterEndls(char* txt)
 	while(*s2)
 	{
 
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		// Skip the unwanted one
 		if (*s2 == lendl3)
 			s2++;

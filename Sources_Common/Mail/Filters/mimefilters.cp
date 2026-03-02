@@ -61,7 +61,7 @@ std::streamsize mime_7bit_filterbuf::encode (const char_type* s, std::streamsize
 			mGotLineEnd = true;
 			break;
 		
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 		case lendl2:
 			// Always ignore
 			p++;
@@ -94,7 +94,7 @@ std::streamsize mime_7bit_filterbuf::decode (const char_type* s, std::streamsize
 	{
 		switch(*p)
 		{
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		case lendl3:
 			// Always ignore
 			p++;
@@ -134,7 +134,7 @@ std::streamsize mime_8bit_filterbuf::encode (const char_type* s, std::streamsize
 			mGotLineEnd = true;
 			break;
 		
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 		case lendl2:
 			// Always ignore
 			p++;
@@ -167,7 +167,7 @@ std::streamsize mime_8bit_filterbuf::decode (const char_type* s, std::streamsize
 	{
 		switch(*p)
 		{
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		case lendl3:
 			// Always ignore
 			p++;
@@ -205,7 +205,7 @@ std::streamsize mime_qp_filterbuf::encode (const char_type* s, std::streamsize n
 			write_endl();
 			break;
 		
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 		case lendl2:
 			// Always ignore
 			p++;
@@ -288,7 +288,7 @@ std::streamsize mime_qp_filterbuf::decode (const char_type* s, std::streamsize n
 				
 			// Fall through for default processing
 			default:
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 				// Ignore the unwanted CR or LF
 				if (*p == lendl3)
 				{
@@ -341,7 +341,7 @@ std::streamsize mime_qp_filterbuf::decode (const char_type* s, std::streamsize n
 			// Just copy low nibble of quoted char
 			mQuotedChar |= cFromHex[c];
 
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 			// Do not process hard LFs on Mac
 			if (mQuotedChar != lendl3)
 #endif
@@ -470,7 +470,7 @@ std::streamsize mime_base64_filterbuf::decode (const char_type* s, std::streamsi
 		switch(c)
 		{
 		case lendl1:
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 		case lendl2:
 #else
 		case lendl3:

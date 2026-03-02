@@ -90,7 +90,7 @@ const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsig
 			count = 0;
 
 			// Punt over line end
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 			text++;
 			remaining--;
 #else
@@ -187,7 +187,7 @@ const char* CTextEngine::UnwrapLines(const char* text, unsigned long length)
 		// Check for single CRLF
 		if (*s == lendl1)
 		{
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 			// Punt past it
 			s++;
 			count++;
@@ -326,7 +326,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 					text++;
 					remaining--;
 				}
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 				if (remaining && (*text == lendl2))
 				{
 					text++;

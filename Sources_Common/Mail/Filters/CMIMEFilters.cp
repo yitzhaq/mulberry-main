@@ -75,7 +75,7 @@ bool CMIMEFilter::FlowProcess(unsigned char c)
 	// Look for flowed and unquoted
 	if (mIsText && mIsFlowed && !mLineQuoted &&
 		(mLastChar == ' ') &&
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		(c == lendl1) && 
 #else
 		((c == lendl1) || (c == lendl2)) &&
@@ -83,7 +83,7 @@ bool CMIMEFilter::FlowProcess(unsigned char c)
 		(mSigDashState != eSigDash3))
 	{
 		// Bump last char once past the flow
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		mLastChar = c;
 #else
 		if (c == lendl2)
@@ -354,7 +354,7 @@ ExceptionCode C8bitFilter::PutBytes(const void* inBuffer, SInt32& inByteCount)
 
 	while(total)
 	{
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 		// Ignore the unwanted CR or LF
 		if (mIsText && (*p == lendl3))
 		{
@@ -484,7 +484,7 @@ ExceptionCode CQPFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 				}
 				
 				// Never process as QP always hard
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 				if ((*endLine == '\r') || (*endLine == '\n'))
 #else
 				if (*endLine == lendl1)
@@ -494,7 +494,7 @@ ExceptionCode CQPFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 					count++;
 					hard_break = true;
 				}
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 				// Never process as QP always hard
 				else if (*endLine == lendl2)
 				{
@@ -642,7 +642,7 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 				
 				// Fall through for default processing
 			default:
-#if __line_end != __crlf
+#if OS_LINE_END != OS_CRLF
 				// Ignore the unwanted CR or LF
 				if (mIsText && (*p == lendl3))
 				{

@@ -144,12 +144,12 @@ const unichar_t* get_uendl(EEndl endl);
 unsigned long get_endl_len(EEndl endl);
 
 // Macros for line end types: '\r', '\n', '\r\n'
-#define __cr	1
-#define __lf	2
-#define __crlf	3
+#define OS_CR	1
+#define OS_LF	2
+#define OS_CRLF	3
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
-#define __line_end	__cr
+#define OS_LINE_END	OS_CR
 
 const char lendl1 = '\r';
 const char lendl2 = '\r';
@@ -158,7 +158,7 @@ const char lendl3 = '\n';
 const EEndl lendl = eEndl_CR;
 
 #elif __dest_os == __win32_os
-#define __line_end	__crlf
+#define OS_LINE_END	OS_CRLF
 
 const char lendl1 = '\r';
 const char lendl2 = '\n';
@@ -166,7 +166,7 @@ const char lendl2 = '\n';
 const EEndl lendl = eEndl_CRLF;
 
 #else
-#define __line_end	__lf
+#define OS_LINE_END	OS_LF
 
 const char lendl1 = '\n';
 const char lendl2 = '\n';

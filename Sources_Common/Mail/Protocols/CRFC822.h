@@ -31,11 +31,11 @@
 
 const unsigned long cRFC822Wrap = 76;
 
-#if __line_end == __cr
+#if OS_LINE_END == OS_CR
 const char cHDR_END[] = "\r\r";
-#elif __line_end == __lf
+#elif OS_LINE_END == OS_LF
 const char cHDR_END[] = "\n\n";
-#elif __line_end == __crlf
+#elif OS_LINE_END == OS_CRLF
 const char cHDR_END[] = "\r\n\r\n";
 #endif
 const char cHDR_RESENT[] = "Resent-";

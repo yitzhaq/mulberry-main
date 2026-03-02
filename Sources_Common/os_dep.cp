@@ -28,7 +28,7 @@ static const unichar_t crlf2_uendl[] = {'\r', '\n', '\r', '\n', 0};
 static const unichar_t lf_uendl[] = {'\n', 0};
 static const unichar_t lf2_uendl[] = {'\n', '\n', 0};
 
-#if __line_end == __cr
+#if OS_LINE_END == OS_CR
 
 const char* os_endl = "\r";
 const unichar_t* os_uendl = cr_uendl;
@@ -36,7 +36,7 @@ unsigned long os_endl_len = 1;
 const char* os_endl2 = "\r\r";
 const unichar_t* os_uendl2 = cr2_uendl;
 
-#elif __line_end == __crlf
+#elif OS_LINE_END == OS_CRLF
 
 const char* os_endl = "\r\n";
 const unichar_t* os_uendl = crlf_uendl;
@@ -44,7 +44,7 @@ unsigned long os_endl_len = 2;
 const char* os_endl2 = "\r\n\r\n";
 const unichar_t* os_uendl2 = crlf2_uendl;
 
-#elif __line_end == __lf
+#elif OS_LINE_END == OS_LF
 
 const char* os_endl = "\n";
 const unichar_t* os_uendl = lf_uendl;

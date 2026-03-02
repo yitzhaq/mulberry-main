@@ -598,7 +598,7 @@ void CRFC822::SendHeader(CMessage* theMsg, CDSN& dsn, bool allow_content)
 
 							// Step over line end
 							stop++;
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 							if (*stop == lendl2)
 								stop++;
 #endif
@@ -644,7 +644,7 @@ void CRFC822::SendHeader(CMessage* theMsg, CDSN& dsn, bool allow_content)
 				out << *p;
 			p++;
 
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 			if (*p == lendl2)
 			{
 				if (do_line)
@@ -662,7 +662,7 @@ void CRFC822::SendHeader(CMessage* theMsg, CDSN& dsn, bool allow_content)
 			{
 				p++;
 
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 				if (*p == lendl2)
 					p++;
 #endif
@@ -733,7 +733,7 @@ bool CRFC822::HeaderSearch(const char* hdr, const cdstring& field, cdstring& res
 				if (*snoop == lendl1)
 				{
 					snoop++;
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 					if (*snoop == lendl2)
 						snoop++;
 #endif
@@ -767,7 +767,7 @@ bool CRFC822::HeaderSearch(const char* hdr, const cdstring& field, cdstring& res
 		{
 			p++;
 
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 			if (*p == lendl2)
 				p++;
 #endif
@@ -842,7 +842,7 @@ CAddressList* CRFC822::ParseAddressList(const char* line)
 	{
 		// Punt to end of line
 		while(*end && (*end != lendl1)) end++;
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 		if (*end == lendl2)
 			end++;
 #endif
@@ -963,7 +963,7 @@ void CRFC822::FoldLines(cdstring& text, bool addr_phrase, unsigned long offset, 
 		// Update counter & ptr (include CR/LF)
 		remaining -= count;
 		p += count;
-#if __line_end == __crlf
+#if OS_LINE_END == OS_CRLF
 		// Bump past '\n'
 		if (*p == lendl2)
 		{
