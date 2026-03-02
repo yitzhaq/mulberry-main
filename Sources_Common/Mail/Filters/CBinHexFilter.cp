@@ -1300,10 +1300,10 @@ void CBinHexFilter::DecodeIt(unsigned char** inbuffer,
 
 void CBinHexFilter::IncrementCRC(unsigned char c)
 {
-	register unsigned short v = (0 | c);
-	register unsigned short crc = mCRC;
-	register bool temp;
-	register short i;
+	unsigned short v = (0 | c);
+	unsigned short crc = mCRC;
+	bool temp;
+	short i;
 
 	for(i = 1; i <= 8; i++) {
 		temp = ((crc & 0x8000) != 0);

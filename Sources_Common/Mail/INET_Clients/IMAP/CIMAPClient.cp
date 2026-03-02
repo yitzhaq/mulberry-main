@@ -2514,9 +2514,9 @@ void CIMAPClient::IMAPParseMailbox(char** txt, char delim, NMbox::EFlags mbox_fl
 #if 0
 			// Do not do '.' & '..' in unix
 			// Do not do mbox that ends with hierarchy character
-			register short len = ::strlen(mbox_name);
-			register char* p = &mbox_name[len-1];
-			register char* q = p;
+			short len = ::strlen(mbox_name);
+			char* p = &mbox_name[len-1];
+			char* q = p;
 			if ((*p == GetMboxOwner()->GetMailAccount()->GetDirDelim()) ||
 				((len == 1) && (mbox_name[0] == '.'))  ||
 				((len == 2) && (mbox_name[0] == '.') && (mbox_name[1] == '.'))  ||

@@ -336,7 +336,7 @@ void* std::malloc(size_t size)
 
 	// Generate stack backtrace
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
-	register unsigned long stackptrreg;
+	unsigned long stackptrreg;
 	asm
 	{
 		mr	stackptrreg, SP
@@ -360,7 +360,7 @@ void* std::malloc(size_t size)
 			block->mInfo.mStackTrace[i] = 0;
 	}
 #elif __dest_os == __win32_os
-	register unsigned long* framePtr;
+	unsigned long* framePtr;
 	asm
 	{
 		MOV framePtr, EBP

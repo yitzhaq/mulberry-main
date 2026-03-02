@@ -63,7 +63,7 @@ char *longtohex(long number){
 
 
 char hextochar(const char *theString){
-    register char digit;
+    char digit;
 
     digit = (theString[0] >= 'A' ? ((theString[0] & 0xdf) - 'A')+10 : (theString[0] - '0'));
     digit *= 16;
