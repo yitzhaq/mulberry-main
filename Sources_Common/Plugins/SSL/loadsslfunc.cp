@@ -67,8 +67,17 @@ IMPORT_FUNCTION(sSSLLoader, int, ASN1_STRING_length, (ASN1_STRING *x), (x))
 //int ASN1_TIME_print(BIO *fp, ASN1_TIME *a);
 IMPORT_FUNCTION(sSSLLoader, int, ASN1_TIME_print, (BIO *fp, ASN1_TIME *a), (fp, a))
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+//const unsigned char * ASN1_STRING_get0_data(const ASN1_STRING *x);
+IMPORT_FUNCTION(sSSLLoader, const unsigned char *, ASN1_STRING_get0_data, (const ASN1_STRING *x), (x))
+// Provide old name as wrapper
+extern "C" {
+const unsigned char *ASN1_STRING_data(ASN1_STRING *x) { return ASN1_STRING_get0_data(x); }
+}
+#else
 //unsigned char * ASN1_STRING_data(ASN1_STRING *x);
 IMPORT_FUNCTION(sSSLLoader, unsigned char *, ASN1_STRING_data, (ASN1_STRING *x), (x))
+#endif
 
 //long BIO_callback_ctrl(BIO *b, int cmd, void (*fp)(struct bio_st *, int, const char *, int, long, long));
 IMPORT_FUNCTION(sSSLLoader, long, BIO_callback_ctrl, (BIO *b, int cmd, void (*fp)(struct bio_st *, int, const char *, int, long, long)), (b, cmd, fp))
@@ -87,14 +96,24 @@ IMPORT_FUNCTION(sSSLLoader, int, BIO_free, (BIO *a), (a))
 IMPORT_FUNCTION_VOID(sSSLLoader, void, BIO_clear_flags, (BIO *b, int flags), (b, flags))
 #endif
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+//const BIO_METHOD *BIO_f_base64(void);
+IMPORT_FUNCTION(sSSLLoader, const BIO_METHOD *, BIO_f_base64, (void), ())
+#else
 //BIO_METHOD *BIO_f_base64(void);
 IMPORT_FUNCTION(sSSLLoader, BIO_METHOD *, BIO_f_base64, (void), ())
+#endif
 
 //int	BIO_gets(BIO *bp,char *buf, int size);
 IMPORT_FUNCTION(sSSLLoader, int, BIO_gets, (BIO *bp,char *buf, int size), (bp, buf, size))
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+//BIO *	BIO_new(const BIO_METHOD *type);
+IMPORT_FUNCTION(sSSLLoader, BIO *, BIO_new, (const BIO_METHOD *type), (type))
+#else
 //BIO *	BIO_new(BIO_METHOD *type);
 IMPORT_FUNCTION(sSSLLoader, BIO *, BIO_new, (BIO_METHOD *type), (type))
+#endif
 
 //BIO *BIO_new_file(const char *filename, const char *mode);
 IMPORT_FUNCTION(sSSLLoader, BIO *, BIO_new_file, (const char *filename, const char *mode), (filename, mode))
@@ -114,11 +133,17 @@ IMPORT_FUNCTION(sSSLLoader, BIO *, BIO_push, (BIO *b,BIO *append), (b, append))
 //int	BIO_write(BIO *b, const void *data, int len);
 IMPORT_FUNCTION(sSSLLoader, int, BIO_write, (BIO *b, const void *data, int len), (b, data, len))
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+//const BIO_METHOD *BIO_s_file(void );
+IMPORT_FUNCTION(sSSLLoader, const BIO_METHOD *, BIO_s_file, (void), ())
+//const BIO_METHOD *BIO_s_mem(void);
+IMPORT_FUNCTION(sSSLLoader, const BIO_METHOD *, BIO_s_mem, (void), ())
+#else
 //BIO_METHOD *BIO_s_file(void );
 IMPORT_FUNCTION(sSSLLoader, BIO_METHOD *, BIO_s_file, (void), ())
-
 //BIO_METHOD *BIO_s_mem(void);
 IMPORT_FUNCTION(sSSLLoader, BIO_METHOD *, BIO_s_mem, (void), ())
+#endif
 
 // void BUF_MEM_free(BUF_MEM *a);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, BUF_MEM_free, (BUF_MEM *a), (a))
@@ -130,7 +155,13 @@ IMPORT_FUNCTION(sSSLLoader, int, BUF_MEM_grow, (BUF_MEM *str, int len), (str, le
 IMPORT_FUNCTION(sSSLLoader, BUF_MEM *, BUF_MEM_new, (void), ())
 
 //int CRYPTO_add_lock(int *pointer,int amount,int type, const char *file, int line);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+// CRYPTO_add_lock doesn't exist in OpenSSL 1.1+, should use X509_up_ref/EVP_PKEY_up_ref instead
+// This wrapper should not be called in newer code
+extern "C" { int CRYPTO_add_lock(int *pointer, int amount, int type, const char *file, int line) { return 0; } }
+#else
 IMPORT_FUNCTION(sSSLLoader, int, CRYPTO_add_lock, (int *pointer, int amount, int type, const char *file, int line), (pointer, amount, type, file, line))
+#endif
 
 //void CRYPTO_free(void *);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, CRYPTO_free, (void *v), (v))
@@ -172,7 +203,21 @@ IMPORT_FUNCTION(sSSLLoader, X509 *, d2i_X509_bio, (BIO *bp,X509 **x509), (bp, x5
 IMPORT_FUNCTION(sSSLLoader, char *, ERR_error_string, (unsigned long e,char *buf), (e, buf))
 
 //unsigned long ERR_get_error_line_data(const char **file, int *line, const char **data, int *flags);
+#if OPENSSL_VERSION_NUMBER < 0x30000000L
 IMPORT_FUNCTION(sSSLLoader, unsigned long, ERR_get_error_line_data, (const char **file, int *line, const char **data, int *flags), (file, line, data, flags))
+#else
+// OpenSSL 3.0+ deprecated ERR_get_error_line_data in favor of ERR_get_error_all
+//unsigned long ERR_get_error_all(const char **file, int *line, const char **func, const char **data, int *flags);
+IMPORT_FUNCTION(sSSLLoader, unsigned long, ERR_get_error_all, (const char **file, int *line, const char **func, const char **data, int *flags), (file, line, func, data, flags))
+// Compatibility wrapper for legacy code
+extern "C" {
+unsigned long ERR_get_error_line_data(const char **file, int *line, const char **data, int *flags)
+{
+	const char *func = NULL;
+	return ERR_get_error_all(file, line, &func, data, flags);
+}
+}
+#endif
 
 //unsigned long ERR_get_error(void );
 IMPORT_FUNCTION(sSSLLoader, unsigned long, ERR_get_error, (void), ())
@@ -180,8 +225,12 @@ IMPORT_FUNCTION(sSSLLoader, unsigned long, ERR_get_error, (void), ())
 //void ERR_error_string_n(unsigned long e, char *buf, size_t len);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, ERR_error_string_n, (unsigned long e, char *buf, size_t len), (e, buf, len))
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 //void ERR_free_strings(void);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, ERR_free_strings, (void), ())
+#else
+extern "C" { void ERR_free_strings(void) {} }
+#endif
 
 //unsigned long ERR_get_error_line(const char **file,int *line);
 IMPORT_FUNCTION(sSSLLoader, unsigned long, ERR_get_error_line, (const char **file, int *line), (file, line))
@@ -201,8 +250,12 @@ IMPORT_FUNCTION_VOID(sSSLLoader, void, ERR_print_errors, (BIO *bp), (bp))
 //const EVP_CIPHER *EVP_des_ede3_cbc(void);
 IMPORT_FUNCTION(sSSLLoader, const EVP_CIPHER *, EVP_des_ede3_cbc, (void), ())
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 //void EVP_cleanup(void);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, EVP_cleanup, (void), ())
+#else
+extern "C" { void EVP_cleanup(void) {} }
+#endif
 
 //void EVP_PKEY_free(EVP_PKEY *pkey);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, EVP_PKEY_free, (EVP_PKEY *pkey), (pkey))
@@ -241,8 +294,12 @@ IMPORT_FUNCTION(sSSLLoader, int, OBJ_obj2nid, (const ASN1_OBJECT *o), (o))
 //const char *	OBJ_nid2sn(int n);
 IMPORT_FUNCTION(sSSLLoader, const char *, OBJ_nid2sn, (int n), (n))
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 //void OPENSSL_add_all_algorithms_noconf(void);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, OPENSSL_add_all_algorithms_noconf, (void), ())
+#else
+extern "C" { void OPENSSL_add_all_algorithms_noconf(void) {} }
+#endif
 
 //EVP_PKEY *PEM_read_bio_PrivateKey(BIO *bp, EVP_PKEY **x, pem_password_cb *cb, void *u)
 IMPORT_FUNCTION(sSSLLoader, EVP_PKEY *, PEM_read_bio_PrivateKey, (BIO *bp, EVP_PKEY **x, pem_password_cb *cb, void *u), (bp, x, cb, u))
@@ -315,8 +372,12 @@ IMPORT_FUNCTION(sSSLLoader, int, CMS_RECIP_INFO_contains, (const CMS_RECIP_INFO 
 //int RAND_load_rsrc()
 IMPORT_FUNCTION(sSSLLoader, int, RAND_load_rsrc, (void), ())
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 //int RAND_egd(const char *path);
 IMPORT_FUNCTION(sSSLLoader, int, RAND_egd, (const char *path), (path))
+#else
+extern "C" { int RAND_egd(const char *path) { return -1; } }
+#endif
 
 //const char *RAND_file_name(char *file,size_t num);
 IMPORT_FUNCTION(sSSLLoader, const char*, RAND_file_name, (char *file,size_t num), (file,num))
@@ -336,22 +397,46 @@ IMPORT_FUNCTION(sSSLLoader, int, RAND_write_file, (const char *file), (file))
 IMPORT_FUNCTION(sSSLLoader, RSA *, RSA_generate_key, (int bits, unsigned long e, void (*callback)(int,int,void *), void *cb_arg), (bits, e, callback, cb_arg))
 
 //void sk_free(STACK *);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+extern "C" { void sk_free(STACK *s) { OPENSSL_sk_free((OPENSSL_STACK *)s); } }
+#else
 IMPORT_FUNCTION_VOID(sSSLLoader, void, sk_free, (STACK *s), (s))
+#endif
 
 //STACK *sk_new_null(void);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+extern "C" { STACK *sk_new_null(void) { return (STACK *)OPENSSL_sk_new_null(); } }
+#else
 IMPORT_FUNCTION(sSSLLoader, STACK *, sk_new_null, (void), ())
+#endif
 
 //int sk_num(const STACK *);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+extern "C" { int sk_num(const STACK *s) { return OPENSSL_sk_num((const OPENSSL_STACK *)s); } }
+#else
 IMPORT_FUNCTION(sSSLLoader, int, sk_num, (const STACK *s), (s))
+#endif
 
 //void sk_pop_free(STACK *st, void (*func)(void *));
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+extern "C" { void sk_pop_free(STACK *st, void (*func)(void *)) { OPENSSL_sk_pop_free((OPENSSL_STACK *)st, func); } }
+#else
 IMPORT_FUNCTION_VOID(sSSLLoader, void, sk_pop_free, (STACK *st, void (*func)(void *)), (st, func))
+#endif
 
 //int sk_push(STACK *st,char *data);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+extern "C" { int sk_push(STACK *st, char *data) { return OPENSSL_sk_push((OPENSSL_STACK *)st, data); } }
+#else
 IMPORT_FUNCTION(sSSLLoader, int, sk_push, (STACK *st,char *data), (st, data))
+#endif
 
 //char *sk_value(const STACK *, int);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+extern "C" { char *sk_value(const STACK *s, int i) { return (char *)OPENSSL_sk_value((const OPENSSL_STACK *)s, i); } }
+#else
 IMPORT_FUNCTION(sSSLLoader, char *, sk_value, (const STACK *s, int i), (s,  i))
+#endif
 
 // ASN1_METHOD *X509_asn1_meth(void);
 IMPORT_FUNCTION(sSSLLoader, ASN1_METHOD *, X509_asn1_meth, (void), ())
@@ -515,8 +600,12 @@ IMPORT_FUNCTION(sSSLLoader, void *, SSL_get_ex_data, (const SSL *ssl,int idx), (
 //int SSL_get_ex_data_X509_STORE_CTX_idx(void );
 IMPORT_FUNCTION(sSSLLoader, int, SSL_get_ex_data_X509_STORE_CTX_idx, (void), ())
 
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+//X509 *SSL_get1_peer_certificate(const SSL *ssl);
+IMPORT_FUNCTION(sSSLLoader, X509 *, SSL_get1_peer_certificate, (const SSL *ssl), (ssl))
+extern "C" { X509 *SSL_get_peer_certificate(const SSL *ssl) { return SSL_get1_peer_certificate(ssl); } }
+#elif OPENSSL_VERSION_NUMBER == 0x0090704fL
 //X509 *SSL_get_peer_certificate(SSL *s);
-#if OPENSSL_VERSION_NUMBER == 0x0090704fL
 IMPORT_FUNCTION(sSSLLoader, X509 *, SSL_get_peer_certificate, (SSL *ssl), (ssl))
 #else
 IMPORT_FUNCTION(sSSLLoader, X509 *, SSL_get_peer_certificate, (const SSL *ssl), (ssl))
@@ -529,14 +618,22 @@ IMPORT_FUNCTION(sSSLLoader, long, SSL_get_verify_result, (SSL *ssl), (ssl))
 IMPORT_FUNCTION(sSSLLoader, long, SSL_get_verify_result, (const SSL *ssl), (ssl))
 #endif
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 //int SSL_library_init(void);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_library_init, (void), ())
+#else
+extern "C" { int SSL_library_init(void) { return OPENSSL_init_ssl(0, NULL); } }
+#endif
 
 //STACK_OF(X509_NAME) *SSL_load_client_CA_file(const char *file);
 IMPORT_FUNCTION(sSSLLoader, STACK_OF(X509_NAME) *, SSL_load_client_CA_file, (const char *file), (file))
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 //void SSL_load_error_strings(void);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, SSL_load_error_strings, (void), ())
+#else
+extern "C" { void SSL_load_error_strings(void) {} }
+#endif
 
 //SSL *SSL_new(SSL_CTX *ctx);
 IMPORT_FUNCTION(sSSLLoader, SSL *, SSL_new, (SSL_CTX *ctx), (ctx))
@@ -566,8 +663,12 @@ IMPORT_FUNCTION(sSSLLoader, int, SSL_get_ex_new_index, (long argl, void *argp, C
 //int	SSL_set_fd(SSL *s, int fd);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_set_fd, (SSL *s, int fd), (s, fd))
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+//OSSL_HANDSHAKE_STATE SSL_get_state(const SSL *ssl);
+IMPORT_FUNCTION(sSSLLoader, int, SSL_get_state, (const SSL *ssl), (ssl))
+extern "C" { int SSL_state(const SSL *ssl) { return SSL_get_state(ssl); } }
+#elif OPENSSL_VERSION_NUMBER == 0x0090704fL
 //int SSL_state(SSL *ssl);
-#if OPENSSL_VERSION_NUMBER == 0x0090704fL
 IMPORT_FUNCTION(sSSLLoader, int, SSL_state, (SSL *ssl), (ssl))
 #else
 IMPORT_FUNCTION(sSSLLoader, int, SSL_state, (const SSL *ssl), (ssl))
@@ -623,8 +724,13 @@ IMPORT_FUNCTION_VOID(sSSLLoader, void, SSL_CTX_free, (SSL_CTX *ctx), (ctx))
 //int SSL_CTX_load_verify_locations(SSL_CTX *ctx, const char *CAfile, const char *CApath);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_CTX_load_verify_locations, (SSL_CTX *ctx, const char *CAfile, const char *CApath), (ctx, CAfile, CApath))
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+//SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth);
+IMPORT_FUNCTION(sSSLLoader, SSL_CTX *, SSL_CTX_new, (const SSL_METHOD *meth), (meth))
+#else
 //SSL_CTX *SSL_CTX_new(SSL_METHOD *meth);
 IMPORT_FUNCTION(sSSLLoader, SSL_CTX *, SSL_CTX_new, (SSL_METHOD *meth), (meth))
+#endif
 
 //int	SSL_CTX_set_cipher_list(SSL_CTX *,const char *str);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_CTX_set_cipher_list, (SSL_CTX *ctx,const char *str), (ctx, str))
@@ -650,17 +756,31 @@ IMPORT_FUNCTION(sSSLLoader, int, SSL_CTX_use_certificate_file, (SSL_CTX *ctx, co
 //int	SSL_CTX_use_PrivateKey_file(SSL_CTX *ctx, const char *file, int type);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_CTX_use_PrivateKey_file, (SSL_CTX *ctx, const char *file, int type), (ctx, file, type))
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+//const SSL_METHOD *TLS_method(void);
+IMPORT_FUNCTION(sSSLLoader, const SSL_METHOD *, TLS_method, (void), ())
+//const SSL_METHOD *TLS_client_method(void);
+IMPORT_FUNCTION(sSSLLoader, const SSL_METHOD *, TLS_client_method, (void), ())
+extern "C" {
+const SSL_METHOD *SSLv23_method(void) { return TLS_method(); }
+const SSL_METHOD *SSLv23_client_method(void) { return TLS_client_method(); }
+const SSL_METHOD *SSLv3_client_method(void) { return TLS_client_method(); }
+const SSL_METHOD *TLSv1_client_method(void) { return TLS_client_method(); }
+}
+#else
 //SSL_METHOD *SSLv23_method(void);
 IMPORT_FUNCTION(sSSLLoader, SSL_METHOD *, SSLv23_method, (void), ())
-
 //SSL_METHOD *SSLv23_client_method(void);
 IMPORT_FUNCTION(sSSLLoader, SSL_METHOD *, SSLv23_client_method, (void), ())
-
 //SSL_METHOD *SSLv3_client_method(void);
 IMPORT_FUNCTION(sSSLLoader, SSL_METHOD *, SSLv3_client_method, (void), ())
-
 //SSL_METHOD *TLSv1_client_method(void);
 IMPORT_FUNCTION(sSSLLoader, SSL_METHOD *, TLSv1_client_method, (void), ())
+#endif
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 //void ssl3_send_alert(SSL *s,int level, int desc);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, ssl3_send_alert, (SSL *s,int level, int desc), (s, level, desc))
+#else
+extern "C" { void ssl3_send_alert(SSL *s, int level, int desc) {} }
+#endif
