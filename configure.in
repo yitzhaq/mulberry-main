@@ -52,6 +52,9 @@ case "$host_os" in
       i*86|i*86pc)
         JX_TARGET="linux_intel"
         ;;
+      x86_64|amd64)
+        JX_TARGET="linux_intel_x86_64"
+        ;;
     esac
     ;;
   bsd4.4*|netbsd*|freebsd*)
@@ -59,7 +62,7 @@ case "$host_os" in
     ;;
   SunOS|Solaris|solaris*)
     JX_TARGET="sunos5.8-g++"
-    AC_WARN(Setting JX target to $JX_TARGET - this may be wrong (check configure.in)
+    AC_MSG_WARN([Setting JX target to $JX_TARGET - this may be wrong (check configure.in)])
     ;;
 esac
 case $CC in
@@ -76,11 +79,9 @@ case $CXX in
     #GVERSION=`$CXX --version | grep "^$CXX " | sed "s/.* //"`
     GVERSION=`$CXX -dumpversion`
     case $GVERSION in
-	4.3*|4.4*|4.5*|4.6*|4.7*|4.8*|4.9*|5.*)
+	*)
 	  CXXWARN="$CXXWARN -Wno-deprecated"
 	  CXXFLAGS="$CXXFLAGS -fpermissive"
-	  #-std=gnu++0x
-	  #-std=c++0x
 	;;
     esac
     HAS_MM="yes"
@@ -92,7 +93,7 @@ AC_ARG_WITH(extra-cppflags,
     CPPFLAGS="${CPPFLAGS} $withval")
 
 if test -z "$JX_TARGET"; then
-AC_ERROR(Could not determine target system for JX build for OS "$host_os" and CPU "$host_cpu". Please edit configure.in and rerun autoconf / configure)
+AC_MSG_ERROR([Could not determine target system for JX build for OS "$host_os" and CPU "$host_cpu". Please edit configure.in and rerun autoconf / configure])
 fi
 AC_SUBST(JX_TARGET)
 
