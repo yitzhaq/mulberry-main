@@ -153,8 +153,8 @@ AC_SUBST(PROGRAM_DIR)
 # ---------------------------------------------------------------------------
 
 AC_CHECK_HEADER([esd.h],
-	,
-        AC_MSG_ERROR(esd.h not found - mulberry requires esd.)
+	AC_DEFINE([HAVE_ESD], [1], [Define if esd.h is available]),
+        AC_MSG_WARN([esd.h not found - EsounD support disabled (loaded dynamically via dlopen anyway).])
 )
 
 CPPFLAGS_ORG="$CPPFLAGS"

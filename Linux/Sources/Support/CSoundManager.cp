@@ -29,7 +29,9 @@
 #include "CSoundManager.h"
 
 #include <dlfcn.h>
+#ifdef HAVE_ESD
 #include <esd.h>
+#endif
 #include <stddef.h>
 
 #pragma mark ____________________________consts
