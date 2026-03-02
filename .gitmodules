@@ -9,7 +9,7 @@
 	url = git@github.com:mbert/mulberry-lib-xmllib.git
 [submodule "Libraries/JX"]
 	path = Libraries/JX
-	url = git@github.com:mbert/mulberry-lib-jx.git
+	url = git@github.com:yitzhaq/mulberry-lib-jx.git
 [submodule "Libraries/vendor/open-powerplant"]
 	path = Libraries/vendor/open-powerplant
 	url = git@github.com:mbert/mulberry-vendor-open-powerplant.git
