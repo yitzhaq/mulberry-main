@@ -79,7 +79,7 @@ void CWebDAVLock::WriteHeaderToStream(std::ostream& os)
 	os << cHeaderDepth << cHeaderDelimiter << cDepthMap[mDepth] << net_endl;
 
 	// Add timeout header
-	if (mTimeout == 0xFFFFFFFF)
+	if (mTimeout == static_cast<unsigned long>(-1))
 		os << cHeaderTimeout << cHeaderDelimiter << cHeaderTimeoutInfinite << net_endl;
 	else if (mTimeout > 0)
 		os << cHeaderTimeout << cHeaderDelimiter << cHeaderTimeoutSeconds << cdstring(mTimeout) << net_endl;

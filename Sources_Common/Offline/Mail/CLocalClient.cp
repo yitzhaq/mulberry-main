@@ -3692,7 +3692,7 @@ void CLocalClient::ExpungeMessage(ulvector& indices)
 					lmsg->SetIndexStart(new_record.MessageStart());
 
 				// Copy cache entry intact
-				unsigned long length_cache = 0xFFFFFFFF;
+				unsigned long length_cache = static_cast<unsigned long>(-1);
 				if (iter != mIndexList.end() - 1)
 					length_cache = (*(iter + 1)).Index() - (*iter).Index();
 				else
@@ -3704,7 +3704,7 @@ void CLocalClient::ExpungeMessage(ulvector& indices)
 
 				// Just bump offset by message length
 				unsigned long start_msg = (*iter).MessageStart();
-				unsigned long length_msg = 0xFFFFFFFF;
+				unsigned long length_msg = static_cast<unsigned long>(-1);
 				if (iter != mIndexList.end() - 1)
 					length_msg = (*(iter + 1)).MessageStart() - start_msg;
 				else

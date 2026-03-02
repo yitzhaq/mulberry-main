@@ -96,24 +96,24 @@ long CSpellPluginDLL::Entry(long code, void* data, long refCon)
 	case CSpellPluginDLL::eSpellOpenDictionary:
 		return OpenDictionary((const char*) data);
 	case CSpellPluginDLL::eSpellCloseDictionary:
-		return CloseDictionary((int) data);
+		return CloseDictionary((int)(long) data);
 
 	case CSpellPluginDLL::eSpellAddWord:
 		return AddWord((const char*) data);
 	case CSpellPluginDLL::eSpellGetAddSuffix:
-		return (long) GetAddSuffix((int) data);
+		return (long) GetAddSuffix((int)(long) data);
 	case CSpellPluginDLL::eSpellRemoveWord:
 		return RemoveWord((const char*) data);
 
 	case CSpellPluginDLL::eSpellSetMaxPerPage:
-		SetMaxPerPage((int) data);
+		SetMaxPerPage((int)(long) data);
 		return 1;
 	case CSpellPluginDLL::eSpellCountPages:
 		return CountPages();
 	case CSpellPluginDLL::eSpellCurrentPage:
 		return CurrentPage();
 	case CSpellPluginDLL::eSpellSetPage:
-		return SetPage((int) data);
+		return SetPage((int)(long) data);
 	case CSpellPluginDLL::eSpellGetPage:
 		return GetPage(((SpGetPageData*) data)->word, ((SpGetPageData*) data)->buf, ((SpGetPageData*) data)->buf_len);
 	case CSpellPluginDLL::eSpellGetSuggestions:

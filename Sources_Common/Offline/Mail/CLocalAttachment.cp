@@ -135,7 +135,7 @@ void CLocalAttachment::WriteIndexToStream(std::ostream& out, ulvector* text, lon
 		// Write out message flag
 		if (!text)
 		{
-			::WriteHost(out, 0xFFFFFFFF);
+			::WriteHost(out, static_cast<unsigned long>(-1));
 			out << cd_endl;
 		}
 
@@ -185,7 +185,7 @@ void CLocalAttachment::ReadIndexFromStream(std::istream& in, unsigned long vers)
 	else if (IsMessage())
 	{
 		// Check message flag and verify
-		if (count != 0xFFFFFFFF)
+		if (count != static_cast<unsigned long>(-1))
 		{
 			CLOG_LOGTHROW(CGeneralException, -1);
 			throw CGeneralException(-1);
@@ -226,7 +226,7 @@ void CLocalAttachment::WriteCacheToStream(std::ostream& out) const
 	else if (IsMessage())
 	{
 		// Write out message flag
-		::WriteHost(out, 0xFFFFFFFF);
+		::WriteHost(out, static_cast<unsigned long>(-1));
 		out << cd_endl;
 
 		static_cast<CLocalMessage*>(mMessage)->WriteCacheToStream(out);
@@ -265,7 +265,7 @@ void CLocalAttachment::ReadCacheFromStream(std::istream& in, CLocalMessage* owne
 		unsigned long msg = 0;
 		::ReadHost(in, msg);
 		in.ignore();
-		if (msg != 0xFFFFFFFF)
+		if (msg != static_cast<unsigned long>(-1))
 		{
 			CLOG_LOGTHROW(CGeneralException, -1);
 			throw CGeneralException(-1);

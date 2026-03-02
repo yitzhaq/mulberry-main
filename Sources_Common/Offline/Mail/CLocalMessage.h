@@ -25,7 +25,7 @@
 
 #include "templs.h"
 
-const unsigned long cStreamAttachmentIndexStart = 0xFFFFFFFF;
+const unsigned long cStreamAttachmentIndexStart = static_cast<unsigned long>(-1);
 
 // Classes
 

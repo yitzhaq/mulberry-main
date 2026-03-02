@@ -362,7 +362,7 @@ bool CMailRecord::Playback(CMboxProtocol* remote, CMboxProtocol* local, CProgres
 
 		// Set progress to total
 		if (progress)
-			progress->SetCount(0xFFFFFFFF);
+			progress->SetCount(static_cast<unsigned long>(-1));
 	}
 
 	// Close remote connection
