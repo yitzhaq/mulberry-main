@@ -672,10 +672,12 @@ void CTLSSocket::TLSStartConnection()
 			case 1:
 			case 4:
             case 2:
-				m_ctx = ::SSL_CTX_new(::SSLv23_client_method());
-				break;
 			case 3:
-				m_ctx = ::SSL_CTX_new(::TLSv1_client_method());
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+				m_ctx = ::SSL_CTX_new(::TLS_client_method());
+#else
+				m_ctx = ::SSL_CTX_new(::SSLv23_client_method());
+#endif
 				break;
 		}
 		if (!m_ctx)
@@ -685,7 +687,7 @@ void CTLSSocket::TLSStartConnection()
 		}
 
 		// Work around all known bugs
-	    ::SSL_CTX_ctrl(m_ctx, SSL_CTRL_OPTIONS, SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3, NULL);
+	    ::SSL_CTX_set_options(m_ctx, SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
 		
 		// Setup certificates
 		CCertificateManager::sCertificateManager->LoadSSLRootCerts(m_ctx);
@@ -752,7 +754,11 @@ void CTLSSocket::TLSStartConnection()
 		// Must check connection state
 		const char * statstr = ::SSL_state_string_long(m_tls);
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		if (::SSL_get_state(m_tls) != TLS_ST_OK)
+#else
 		if (::SSL_state(m_tls) != SSL_ST_OK)
+#endif
 		{
 			TCPAbort(true);
 			cdstring temp(statstr);
@@ -763,7 +769,11 @@ void CTLSSocket::TLSStartConnection()
 		}
 		
 		// Get server certificate
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+		server_cert = ::SSL_get1_peer_certificate(m_tls);
+#else
 		server_cert = ::SSL_get_peer_certificate(m_tls);
+#endif
 		if (!server_cert)
 		{
 			CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPSSLCertError);
@@ -779,11 +789,10 @@ void CTLSSocket::TLSStartConnection()
         }
 
 		// Get cipher in use
-#if (OPENSSL_VERSION_NUMBER | 0xFF00000000) == 0x10000000
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L
 		const SSL_CIPHER* cipher = ::SSL_get_current_cipher(m_tls);
 #else
 		SSL_CIPHER* cipher = ::SSL_get_current_cipher(m_tls);
-        
 #endif
         
 		char cipher_desc[256];

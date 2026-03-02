@@ -93,9 +93,13 @@ void CSSLPlugin::InitSSL()
 		//RAND_load_rsrc();
 #endif
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 		SSL_library_init();
 		SSL_load_error_strings();
 		OpenSSL_add_all_algorithms();
+#else
+		OPENSSL_init_ssl(OPENSSL_INIT_LOAD_SSL_STRINGS | OPENSSL_INIT_LOAD_CRYPTO_STRINGS, NULL);
+#endif
 
 		new CCertificateManager();
 
@@ -117,11 +121,12 @@ int CSSLPlugin::VerifyCallback(int ok, X509_STORE_CTX *ctx)
 int CSSLPlugin::Verify(int ok, X509_STORE_CTX *ctx)
 {
 	// Add error to list of errors for this certificate
-	if (ctx->error != X509_V_OK)
+	int err = X509_STORE_CTX_get_error(ctx);
+	if (err != X509_V_OK)
 	{
 		SSL* s = (SSL*) X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
 		CTLSSocket* tls = (CTLSSocket*) SSL_get_ex_data(s, CTLSSocket::sDataIndex);
-		tls->TLSAddCertError(ctx->error);
+		tls->TLSAddCertError(err);
 	}
 
 	// Always accept the certificate here - we will check the list
