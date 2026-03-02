@@ -57,9 +57,17 @@ CCertificate::CCertificate(CCertificateStore* store, X509* cert, EVP_PKEY* pkey,
 
 	// Always add reference to pkey/cert
 	if (mCert)
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		X509_up_ref(mCert);
+#else
 		CRYPTO_add(&mCert->references, 1, CRYPTO_LOCK_X509);
+#endif
 	if (mPKey)
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		EVP_PKEY_up_ref(mPKey);
+#else
 		CRYPTO_add(&mPKey->references, 1, CRYPTO_LOCK_EVP_PKEY);
+#endif
 
 	// Always cache data here if cert is provided
 	CacheData();
@@ -109,12 +117,20 @@ CCertificate::CCertificate(CCertificateStore* store, const CCertificate& copy, b
 		if (copy.mCert)
 		{
 			mCert = copy.mCert;
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			X509_up_ref(mCert);
+#else
 			CRYPTO_add(&mCert->references, 1, CRYPTO_LOCK_X509);
+#endif
 		}
 		if (copy.mPKey)
 		{
 			mPKey = copy.mPKey;
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			EVP_PKEY_up_ref(mPKey);
+#else
 			CRYPTO_add(&mPKey->references, 1, CRYPTO_LOCK_EVP_PKEY);
+#endif
 		}
 	}
 }
@@ -169,7 +185,11 @@ X509* CCertificate::GetCertificate(bool add_ref) const
 
 	// Bump up reference count on object if required
 	if ((mCert != NULL) && add_ref)
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		X509_up_ref(mCert);
+#else
 		CRYPTO_add(&mCert->references, 1, CRYPTO_LOCK_X509);
+#endif
 
 	return mCert;
 }
@@ -183,7 +203,11 @@ void CCertificate::SetCertificate(X509* cert)
 
 	// Always add reference to cert
 	if (mCert)
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		X509_up_ref(mCert);
+#else
 		CRYPTO_add(&mCert->references, 1, CRYPTO_LOCK_X509);
+#endif
 
 	// Always cache data here if cert is provided
 	CacheData();
@@ -202,7 +226,11 @@ EVP_PKEY* CCertificate::GetPKey(bool add_ref) const
 {
 	// Bump up reference count on object if required
 	if ((mPKey != NULL) && add_ref)
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		EVP_PKEY_up_ref(mPKey);
+#else
 		CRYPTO_add(&mPKey->references, 1, CRYPTO_LOCK_EVP_PKEY);
+#endif
 
 	return mPKey;
 }
@@ -216,7 +244,11 @@ void CCertificate::SetPKey(EVP_PKEY* pkey, const cdstring& passphrase)
 
 	// Always add reference to cert
 	if (mPKey)
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		EVP_PKEY_up_ref(mPKey);
+#else
 		CRYPTO_add(&mPKey->references, 1, CRYPTO_LOCK_EVP_PKEY);
+#endif
 	
 	SetPassphrase(passphrase);
 }
