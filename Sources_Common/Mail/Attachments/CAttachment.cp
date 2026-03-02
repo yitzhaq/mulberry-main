@@ -2114,15 +2114,26 @@ void CAttachment::TryLaunch(CFullFileStream* aFile) const
 			// Get view-command from mailcap
 			cdstring cmd = CMailcapMap::sMailcapMap.GetCommand(type);
 
-			// Do file name substitution
-			cdstring buf;
-			size_t buf_reserve = cmd.length() + fpath.length() + 1;
-			buf.reserve(buf_reserve);
-			::snprintf(buf.c_str_mod(), buf_reserve, cmd.c_str(), fpath.c_str());
+			if (!cmd.empty())
+			{
+				// Mailcap match found — use it
+				cdstring buf;
+				size_t buf_reserve = cmd.length() + fpath.length() + 1;
+				buf.reserve(buf_reserve);
+				::snprintf(buf.c_str_mod(), buf_reserve, cmd.c_str(), fpath.c_str());
 
-			// Execute the command
-			pid_t childPID;
-			JExecute(buf.c_str(), &childPID);
+				pid_t childPID;
+				JExecute(buf.c_str(), &childPID);
+			}
+			else
+			{
+				// No mailcap match — delegate to desktop environment
+				cdstring buf = "xdg-open ";
+				buf += fpath;
+
+				pid_t childPID;
+				JExecute(buf.c_str(), &childPID);
+			}
 #endif
 		}
 	}
