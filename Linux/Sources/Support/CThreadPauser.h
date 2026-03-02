@@ -17,30 +17,47 @@
 #ifndef __CTHREADPAUSER__MULBERRY__
 #define __CTHREADPAUSER__MULBERRY__
 
-#include <ace/Synch.h>
+#include <ace/Thread_Mutex.h>
+#include <ace/Condition_Thread_Mutex.h>
+#include <ace/Guard_T.h>
 
 class CThreadPauser
 {
  public:
-	CThreadPauser() : cond_(mutex_), paused_(false){ }
+	CThreadPauser() :
+#if defined(ACE_HAS_THREADS)
+		cond_(mutex_),
+#endif
+		paused_(false){ }
 	~CThreadPauser() {}
-	void pause() 
+	void pause()
 		{
+#if defined(ACE_HAS_THREADS)
 			mutex_.acquire();
 			do { paused_ = true; cond_.wait(); }while(paused_);
 			mutex_.release();
+#endif
 		}
-	void unpause() 
+	void unpause()
 		{
-			mutex_.acquire(); 
+#if defined(ACE_HAS_THREADS)
+			mutex_.acquire();
 			paused_ = false;
 			cond_.broadcast();
 			mutex_.release();
+#endif
 		}
-	bool paused() const {ACE_Guard<ACE_Thread_Mutex> guard_(mutex_);return paused_;}
+	bool paused() const {
+#if defined(ACE_HAS_THREADS)
+		ACE_Guard<ACE_Thread_Mutex> guard_(mutex_);
+#endif
+		return paused_;
+	}
  private:
+#if defined(ACE_HAS_THREADS)
 	mutable ACE_Thread_Mutex mutex_;
 	ACE_Condition_Thread_Mutex cond_;
+#endif
 	bool paused_;
 };
 
