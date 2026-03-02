@@ -806,8 +806,9 @@ int tls_verify_cb(int ok, X509_STORE_CTX *ctx)
 int CLDAPClient::Verify(int ok, X509_STORE_CTX *ctx)
 {
 	// Add error to list of errors for this certificate
-	if (ctx->error != X509_V_OK)
-		AddCertError(ctx->error);
+	int error = ::X509_STORE_CTX_get_error(ctx);
+	if (error != X509_V_OK)
+		AddCertError(error);
 
 	// Always accept the certificate here - we will check the list
 	// of errors later and kill the connection if its not acceptable

@@ -1283,7 +1283,8 @@ bool CCertificateManager::AcceptableUser(const cdstring& email, X509* user_cert,
 void CCertificateManager::CertHandleError(X509_STORE_CTX *ctx) const
 {
 	// Get error string from openssl
-	const char* errstr = ::X509_verify_cert_error_string(ctx->error);
+	int error = ::X509_STORE_CTX_get_error(ctx);
+	const char* errstr = ::X509_verify_cert_error_string(error);
 	CStopAlertTxtTask* task = new CStopAlertTxtTask(errstr);
 	task->Go();
 }

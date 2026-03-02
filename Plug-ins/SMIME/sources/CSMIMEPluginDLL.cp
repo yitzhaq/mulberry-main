@@ -1607,7 +1607,11 @@ X509_STORE* CSMIMEPluginDLL::SetupCertificateStore()
 	X509_STORE_set_verify_cb_func(store, VerifyCallback);
 
 	// Set the ex data to this plugin
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	::X509_STORE_set_ex_data(store, 0, this);
+#else
 	::CRYPTO_set_ex_data(&store->ex_data, 0, this);
+#endif
 
 	// Add a directory lookup items
 	mCertificateManagerCOM->LoadSMIMERootCerts(store);
@@ -1618,16 +1622,22 @@ X509_STORE* CSMIMEPluginDLL::SetupCertificateStore()
 int CSMIMEPluginDLL::VerifyCallback(int ok, X509_STORE_CTX *ctx)
 {
 	// Get pointer to plugin
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	X509_STORE* store = ::X509_STORE_CTX_get0_store(ctx);
+	CSMIMEPluginDLL* plugin = (CSMIMEPluginDLL*) ::X509_STORE_get_ex_data(store, 0);
+#else
 	CSMIMEPluginDLL* plugin = (CSMIMEPluginDLL*) CRYPTO_get_ex_data(&ctx->ctx->ex_data, 0);
-	
+#endif
+
 	return plugin ? plugin->Verify(ok, ctx) : 0;
 }
 
 int CSMIMEPluginDLL::Verify(int ok, X509_STORE_CTX *ctx)
 {
 	// Add error to list of errors for this certificate
-	if (ctx->error != X509_V_OK)
-		AddCertError(ctx->error);
+	int error = ::X509_STORE_CTX_get_error(ctx);
+	if (error != X509_V_OK)
+		AddCertError(error);
 
 	// Always accept the certificate here - we will check the list
 	// of errors later and kill the connection if its not acceptable

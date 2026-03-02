@@ -315,8 +315,8 @@ const CCertificate* CCertificateStore::FindCertificate(const PKCS7_RECIP_INFO* r
 		if (::CMS_RECIP_INFO_contains(ri, (*iter)->GetCertificate()))
 			return *iter;
 #else
-		if(!::X509_NAME_cmp(ri->issuer_and_serial->issuer, (*iter)->GetCertificate()->cert_info->issuer) &&
-		     !::M_ASN1_INTEGER_cmp((*iter)->GetCertificate()->cert_info->serialNumber, ri->issuer_and_serial->serial))
+		if(!::X509_NAME_cmp(ri->issuer_and_serial->issuer, ::X509_get_issuer_name((*iter)->GetCertificate())) &&
+		     !::ASN1_INTEGER_cmp(::X509_get0_serialNumber((*iter)->GetCertificate()), ri->issuer_and_serial->serial))
 		{
 			return *iter;
 		}

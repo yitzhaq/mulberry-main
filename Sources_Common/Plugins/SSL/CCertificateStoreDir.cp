@@ -183,7 +183,7 @@ EVP_PKEY* CCertificateStoreDir::LoadPrivateKey(const CCertificate& cert, const c
 		}
 
 		// Read the file data
-		if (::BIO_read_filename(bkey.get(), file) <= 0)
+		if (BIO_read_filename(bkey.get(), file) <= 0)
 		{
 			CLOG_LOGTHROW(CGeneralException, -1L);
 			throw CGeneralException(-1L);
