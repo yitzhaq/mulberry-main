@@ -18,6 +18,7 @@
 #ifndef __MAC2WIN__MULBERRY__
 #define __MAC2WIN__MULBERRY__
 
+#include <stdint.h>
 
 // Types
 typedef short OSErr;
@@ -59,7 +60,7 @@ typedef struct NumVersion               NumVersion;
 union NumVersionVariant {
 																/* NumVersionVariant is a wrapper so NumVersion can be accessed as a 32-bit value */
 	NumVersion 						parts;
-	unsigned long 					whole;
+	uint32_t 						whole;
 };
 typedef union NumVersionVariant			NumVersionVariant;
 

@@ -71,7 +71,7 @@ void CPreferences::WriteToMap(COptionsMap* theMap, bool dirty_only,
 	if (!dirty_only || mUpdateVers)
 	{
 		char temp[256];
-		NumVersionVariant tempv;
+		NumVersionVariant tempv = {0};  // Initialize to zero first
 		tempv.parts = vers;
 		::snprintf(temp, 256, "%#08x", tempv.whole);
 		cdstring txt = temp;
@@ -636,6 +636,16 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 	NumVersionVariant tempv;
 	tempv.whole = ::strtol(txt, nil, 0);
 	vers = tempv.parts;
+
+	// Sanity check: reject corrupted/malicious version numbers
+	// majorRev=0 triggers infinite loop bug, >0x10 is invalid BCD
+	if (vers.majorRev == 0 || vers.majorRev > 0x10)
+	{
+		// Use current version as safe fallback
+		vers = vers_app;
+		// Force write to fix corrupted file
+		return false;
+	}
 #if 0
 	// Hack for alphas
 	if ((VersionTest(vers, VERS_1_4_0_A_1) >= 0) &&

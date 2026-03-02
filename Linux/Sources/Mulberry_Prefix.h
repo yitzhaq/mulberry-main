@@ -18,6 +18,8 @@
 #ifndef _MULBERRY_PREFIX_H
 #define _MULBERRY_PREFIX_H
 
+#include <stdint.h>
+
 //The various OS's
 #define __win32_os 95
 #define __mac_os 2
@@ -58,7 +60,7 @@ typedef struct NumVersion               NumVersion;
 union NumVersionVariant {
 																/* NumVersionVariant is a wrapper so NumVersion can be accessed as a 32-bit value */
 	NumVersion 						parts;
-	unsigned long 					whole;
+	uint32_t 						whole;
 };
 
 class JRect;

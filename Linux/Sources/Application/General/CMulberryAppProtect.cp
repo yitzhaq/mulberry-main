@@ -45,13 +45,15 @@ void CMulberryApp::ReadDefaults()
 // Get version
 NumVersion CMulberryApp::GetVersionNumber()
 {
-	NumVersionVariant dummy;
-	//NumVersion dummy = {0x02, 0x01, 0x20, 0x01};	// v2.0.1d1
-	//NumVersion dummy = {0x04, 0x00, 0x40, 0x09};	// v4.0a9
-	//NumVersion dummy = {0x04, 0x00, 0x60, 0x04};	// v4.0b4
-	//NumVersion dummy = {0x04, 0x08, 0x80, 0x00};	// v4.0.8
-	dummy.whole = 0x04104003;	// v4.1a3
-	return dummy.parts;
+	// Use designated initializer to avoid undefined behavior from union type-punning
+	// v4.1a3 = major:0x04, minorBug:0x10, stage:0x40(alpha), nonRel:0x03
+#ifdef big_endian
+	NumVersion vers = {0x04, 0x10, 0x40, 0x03};
+#else
+	// Little-endian: reverse byte order
+	NumVersion vers = {0x03, 0x40, 0x10, 0x04};
+#endif
+	return vers;
 }
 
 // Get application signature
