@@ -38,6 +38,7 @@
 #include "CURL.h"
 
 #include <openssl/x509v3.h>
+#include <openssl/evp.h>
 
 CCertificate::CCertificate(CCertificateStore* store, X509* cert, EVP_PKEY* pkey, const cdstring* passphrase) :
 	mSubject(cdstring::null_str, false),
@@ -353,11 +354,19 @@ const cdstrpair CCertificate::GetValidity() const
 			return cdstrpair(cdstring::null_str, cdstring::null_str);
 
 		// Make copy of times
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			mValidity = ::X509_VAL_new();
+			ASN1_TIME_free(mValidity->notBefore);
+			ASN1_TIME_free(mValidity->notAfter);
+			mValidity->notBefore = ASN1_TIME_dup(X509_get0_notBefore(cert));
+			mValidity->notAfter = ASN1_TIME_dup(X509_get0_notAfter(cert));
+#else
 		mValidity = ::X509_VAL_new();
         M_ASN1_TIME_free(mValidity->notBefore);
         M_ASN1_TIME_free(mValidity->notAfter);
 		mValidity->notBefore = M_ASN1_TIME_dup(X509_get_notBefore(cert));
 		mValidity->notAfter = M_ASN1_TIME_dup(X509_get_notAfter(cert));
+#endif
 		
 		mValidityOK = true;
 	}
@@ -451,7 +460,23 @@ const cdstring& CCertificate::GetFingerprint() const
 	X509* cert = GetCertificate();
 	if (cert == NULL)
 		return cdstring::null_str;
-
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	// Get SHA1 digest of certificate
+	unsigned char sha1_hash[SHA_DIGEST_LENGTH];
+	unsigned int sha1_len = 0;
+	X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_len);
+	
+	// Now get hex form of SHA1
+	cdstring fingerprint;
+	fingerprint.reserve(2 * SHA_DIGEST_LENGTH);
+	char* temp = fingerprint.c_str_mod();
+	for (unsigned int i = 0; i < sha1_len; i++)
+	{
+		*temp++ = cHexChar[sha1_hash[i] >> 4];
+		*temp++ = cHexChar[sha1_hash[i] & 0x0F];
+	}
+	*temp = 0;
+#else
 	// Need to make sure SHA1 is actually calculated
 	// Can do this by compare to self
 	::X509_cmp(cert, cert);
@@ -466,6 +491,7 @@ const cdstring& CCertificate::GetFingerprint() const
 		*temp++ = cHexChar[cert->sha1_hash[i] & 0x0F];
 	}
 	*temp = 0;
+#endif
 	
 	mFingerprint.first = fingerprint;
 	mFingerprint.second = true;
@@ -560,7 +586,11 @@ void CCertificate::GetNIDs(int gen_type, int nid, cdstrvect& results) const
 				GENERAL_NAME* gn = sk_GENERAL_NAME_value(alt, i);
 				if (gn->type == gen_type)
 				{
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+							cdstring sn((const char*)ASN1_STRING_get0_data(gn->d.ia5), ASN1_STRING_length(gn->d.ia5));
+#else
 					cdstring sn((char*)ASN1_STRING_data(gn->d.ia5), ASN1_STRING_length(gn->d.ia5));
+#endif
 					
 					results.push_back(sn);
 					result = true;

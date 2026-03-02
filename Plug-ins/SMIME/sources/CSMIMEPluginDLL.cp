@@ -43,6 +43,7 @@
 #include "CURL.h"
 
 #include <openssl/err.h>
+#include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
@@ -1686,6 +1687,22 @@ bool CSMIMEPluginDLL::GetHash(X509* cert, cdstring& hash) const
 
 bool CSMIMEPluginDLL::GetFingerprint(X509* cert, cdstring& finger) const
 {
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	// Get SHA1 digest of certificate
+	unsigned char sha1_hash[SHA_DIGEST_LENGTH];
+	unsigned int sha1_len = 0;
+	X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_len);
+
+	// Now get hex form of SHA1
+	finger.reserve(2 * SHA_DIGEST_LENGTH);
+	char* temp = finger.c_str_mod();
+	for (unsigned int i = 0; i < sha1_len; i++)
+	{
+		*temp++ = cHexChar[sha1_hash[i] >> 4];
+		*temp++ = cHexChar[sha1_hash[i] & 0x0F];
+	}
+	*temp = 0;
+#else
 	// Need to make sure SHA1 is actually calculated
 	// Can do this by compare to self
 	::X509_cmp(cert, cert);
@@ -1699,6 +1716,7 @@ bool CSMIMEPluginDLL::GetFingerprint(X509* cert, cdstring& finger) const
 		*temp++ = cHexChar[cert->sha1_hash[i] & 0x0F];
 	}
 	*temp = 0;
+#endif
 
 	return true;
 }
@@ -1737,7 +1755,11 @@ void CSMIMEPluginDLL::GetNIDs(X509* cert, int gen_type, int nid, cdstrvect& resu
 				GENERAL_NAME* gn = sk_GENERAL_NAME_value(alt, i);
 				if (gn->type == gen_type)
 				{
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+					cdstring sn((const char*)ASN1_STRING_get0_data(gn->d.ia5), ASN1_STRING_length(gn->d.ia5));
+#else
 					cdstring sn((char*)ASN1_STRING_data(gn->d.ia5), ASN1_STRING_length(gn->d.ia5));
+#endif
 					
 					results.push_back(sn);
 					result = true;
