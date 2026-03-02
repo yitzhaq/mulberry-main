@@ -290,6 +290,15 @@ void CMulberryApp::CommandLine(const JPtrArray<JString>& argList)
 			// NB This won't do anything if already started
 			start_disconnected = true;
 		}
+
+		// Bare mailto:/webcal: URL (no -u flag) — desktop handlers pass these directly
+		else if (arg.BeginsWith("mailto:") || arg.BeginsWith("webcal:"))
+		{
+			if (!startedYet)
+				openurls.push_back(arg.GetCString());
+			else
+				ProcessURL(cdstring(arg));
+		}
 	}
 }
 
