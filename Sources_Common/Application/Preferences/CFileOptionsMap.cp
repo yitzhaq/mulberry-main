@@ -78,7 +78,7 @@ bool CFileOptionsMap::ReadMap(void)
 			if (*p)
 			{
 				*p++ = 0;
-				while((*p == '\r') && (*p == '\n')) p++;
+				while((*p == '\r') || (*p == '\n')) p++;
 			}
 
 			// Split into key & value
