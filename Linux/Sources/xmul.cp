@@ -19,6 +19,7 @@
 #include "CLog.h"
 #include "CUtils.h"
 
+#include <clocale>
 #include <exception>
 #include <iostream>
 
@@ -43,6 +44,11 @@ bool xdebug = false;
 
 int main(int argc, char* argv[])
 {
+	// Apply locale settings from the environment (LC_TIME, LC_COLLATE, etc.)
+	// Without this, strftime and other locale-aware functions use the "C"
+	// locale regardless of the user's environment variables.
+	std::setlocale(LC_ALL, "");
+
 	// Always turn off JX asserts here - command line option may turn it back on
 	JAssertBase::SetAction(JAssertBase::kIgnoreFailure);
 
