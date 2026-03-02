@@ -38,7 +38,7 @@ public:
 		_err(err_code) {}
 	CGeneralException(long err_code, const char* txt) :
 		_err(err_code), _txt(txt) {}
-	virtual ~CGeneralException() throw() {}
+	virtual ~CGeneralException() noexcept {}
 
 	long GetErrorCode() const
 		{ return _err; }

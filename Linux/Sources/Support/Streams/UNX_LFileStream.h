@@ -32,8 +32,8 @@
 class LFileStreamError: public std::exception {
  public:
   LFileStreamError(const char* why) : why_(why) {}
-  virtual ~LFileStreamError() throw() {}
-  virtual const char* what() const throw() {return why_;}
+  virtual ~LFileStreamError() noexcept {}
+  virtual const char* what() const noexcept {return why_;}
  protected:
   cdstring why_;
 };

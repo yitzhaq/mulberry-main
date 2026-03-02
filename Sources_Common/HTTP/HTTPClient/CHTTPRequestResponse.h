@@ -83,9 +83,9 @@ public:
 		{
 			mError = error;
 		}
-		~CHTTPResponseException() throw() {}
+		~CHTTPResponseException() noexcept {}
 
-	    virtual const char* what () const throw()
+	    virtual const char* what () const noexcept
 	    {
 	    	return mError.c_str();
 	    }

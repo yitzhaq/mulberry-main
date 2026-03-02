@@ -29,7 +29,7 @@ public:
 
 	CNetworkException(int err_code) :
 		_err(err_code), _class(class_ID), _handled(false), _disconnect(false), _reconnect(false) {}
-	virtual ~CNetworkException() throw() {}
+	virtual ~CNetworkException() noexcept {}
 
 	int error(void)
 		{ return _err; }
