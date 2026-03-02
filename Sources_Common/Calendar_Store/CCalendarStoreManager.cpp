@@ -634,7 +634,7 @@ CCalendarStoreNode* CCalendarStoreManager::NewCalendar(CCalendarProtocol* proto,
 		// Write out an empty calendar with the appropriate name
 		if (!directory)
 		{
-			std::auto_ptr<iCal::CICalendar> cal(new iCal::CICalendar);
+			std::unique_ptr<iCal::CICalendar> cal(new iCal::CICalendar);
 			
 			// Give it to the node - this will activate the node
 			node->SetCalendar(cal.get());
@@ -688,7 +688,7 @@ void CCalendarStoreManager::RenameCalendar(CCalendarStoreNode* node, const cdstr
 	{
 		// If the calendar is open rename the calendar object and do an immediate write
 		iCal::CICalendar* cal = node->GetCalendar();
-		std::auto_ptr<iCal::CICalendar> opened;
+		std::unique_ptr<iCal::CICalendar> opened;
 		try
 		{
 			if (cal == NULL)

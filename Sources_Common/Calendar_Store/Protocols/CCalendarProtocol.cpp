@@ -2163,7 +2163,7 @@ bool CCalendarProtocol::DoPlayback()
 		return true;
 
 	// Create remote clone
-	std::auto_ptr<CCalendarProtocol> clone(new CCalendarProtocol(*this, false, true));
+	std::unique_ptr<CCalendarProtocol> clone(new CCalendarProtocol(*this, false, true));
 	clone->SetSynchronising();
 
 	// Prevent further recording
@@ -2189,7 +2189,7 @@ void CCalendarProtocol::DumpCalendars()
 		return;
 
 	// Create XML document object
-	std::auto_ptr<xmllib::XMLDocument> doc(new xmllib::XMLDocument);
+	std::unique_ptr<xmllib::XMLDocument> doc(new xmllib::XMLDocument);
 	
 	// Root element is the preferences element
 	doc->GetRoot()->SetName(cXMLElement_calendarlist);

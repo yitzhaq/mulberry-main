@@ -890,7 +890,7 @@ void CLetterWindow::OnDraftSendMail()
 			}
 
 			// Create special bcc message
-			std::auto_ptr<CMessage> mail_msg_bcc(CreateMessage(true, true));
+			std::unique_ptr<CMessage> mail_msg_bcc(CreateMessage(true, true));
 
 			// Create header for bcc send
 			CRFC822::ECreateHeaderFlags flags = static_cast<CRFC822::ECreateHeaderFlags>(CRFC822::eAddBcc | CRFC822::eAddXMulberry | CRFC822::eBccSend);
@@ -1196,7 +1196,7 @@ CMessage* CLetterWindow::CreateMessage(bool send, bool bcc_only)
 		}
 
 		// If bcc only message add the bcc caption to the first text part
-		std::auto_ptr<CAttachment> fake_body;
+		std::unique_ptr<CAttachment> fake_body;
 		CAttachment* msg_body = mBody;
 		if (bcc_only)
 		{

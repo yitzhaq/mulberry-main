@@ -69,7 +69,7 @@ void CWebDAVPropFindParser::ParseResponse(const xmllib::XMLNode* response)
 		return;
 	
 	// Node is the right type, so iterate over all child response nodes and process each one
-	std::auto_ptr<CPropFindResult> result(new CPropFindResult);
+	std::unique_ptr<CPropFindResult> result(new CPropFindResult);
 	for(XMLNodeList::const_iterator iter = response->Children().begin(); iter != response->Children().end(); iter++)
 	{
 		// Is it the href

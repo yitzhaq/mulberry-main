@@ -58,7 +58,7 @@ void _H(unsigned char* digest, char* s, unsigned long s_len)
 void _KD(unsigned char*, char*, char*);
 void _KD(unsigned char* digest, char* k, char* s)
 {
-	std::auto_ptr<char> p(new char[::strlen(k) + ::strlen(s) + 2]);
+	std::unique_ptr<char> p(new char[::strlen(k) + ::strlen(s) + 2]);
 	::strcpy(p.get(), k);
 	::strcat(p.get(), ":");
 	::strcat(p.get(), s);
@@ -297,10 +297,10 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	PuntLWS(p);
 
 	bool got_qop = false;
-	std::auto_ptr<const char> nonce;
-	std::auto_ptr<const char> opaque;
-	std::auto_ptr<const char> realm;
-	std::auto_ptr<const char> cnonce;
+	std::unique_ptr<const char> nonce;
+	std::unique_ptr<const char> opaque;
+	std::unique_ptr<const char> realm;
+	std::unique_ptr<const char> cnonce;
 
 	// Tokenize to get nonce
 	while(*p)
@@ -390,7 +390,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	//cnonce.reset(::strdup("123"));
 
 	// Split user id into user id/realm
-	std::auto_ptr<const char> userid;
+	std::unique_ptr<const char> userid;
 	const char* useridat = ::strrchr(mUserID, '@');
 	if (useridat)
 	{
@@ -406,7 +406,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	// Caclulate HEX(H(A1))
 	char hex_h_a1[33];
 	{
-		std::auto_ptr<char> a1_data(new char[::strlen(userid.get()) +
+		std::unique_ptr<char> a1_data(new char[::strlen(userid.get()) +
 									(realm.get() ? ::strlen(realm.get()) : 0) +
 									::strlen(mPassword) + 3]);
 		::strcpy(a1_data.get(), userid.get());
@@ -433,7 +433,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	}
 
 	// Need digest-uri-value (ignore host != serv-name)
-	std::auto_ptr<char> digest_uri_value(new char[
+	std::unique_ptr<char> digest_uri_value(new char[
 										4 + // serv-type
 										1 + // /
 										::strlen(mServer) + // host
@@ -466,7 +466,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	// Calculate client HEX(H(A2))
 	char hex_h_a2_client[33];
 	{
-		std::auto_ptr<char> a2_data(new char[
+		std::unique_ptr<char> a2_data(new char[
 									12 + // AUTHENTICATE:
 									::strlen(digest_uri_value.get()) +
 									1]);
@@ -480,7 +480,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	// Calculate server HEX(H(A2))
 	char hex_h_a2_server[33];
 	{
-		std::auto_ptr<char> a2_data(new char[
+		std::unique_ptr<char> a2_data(new char[
 									1 + // :
 									::strlen(digest_uri_value.get()) +
 									1]);
@@ -495,7 +495,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	char hex_response_client[33];
 	{
 		char* kd1 = hex_h_a1;
-		std::auto_ptr<char> kd2(new char[::strlen(nonce.get()) +
+		std::unique_ptr<char> kd2(new char[::strlen(nonce.get()) +
 								::strlen(cnonce.get()) +
 								4 + // :'s
 								8 + // nc_value
@@ -516,7 +516,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	// Now do combined calc for server
 	{
 		char* kd1 = hex_h_a1;
-		std::auto_ptr<char> kd2(new char[::strlen(nonce.get()) +
+		std::unique_ptr<char> kd2(new char[::strlen(nonce.get()) +
 								::strlen(cnonce.get()) +
 								4 + // :'s
 								8 + // nc_value
@@ -675,7 +675,7 @@ long CDIGESTMD5PluginDLL::ProcessSecondData(SAuthPluginData* info)
 	PuntLWS(p);
 
 	bool got_rspauth = false;
-	std::auto_ptr<const char> rspauth;
+	std::unique_ptr<const char> rspauth;
 
 	// Tokenize to get nonce
 	while(*p)

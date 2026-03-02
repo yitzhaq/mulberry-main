@@ -91,7 +91,7 @@ void CMessageThread::InitMessageThread()
 void CMessageThread::ThreadResults(CMbox* mbox, const threadvector& results, CMessageList* list, bool reverse)
 {
 	// Look at the results and generate a root set
-	std::auto_ptr<CMessageThread> root(new CMessageThread(NULL));
+	std::unique_ptr<CMessageThread> root(new CMessageThread(NULL));
 	
 	CMessageThread* parent = root.get();
 	CMessageThread* last = NULL;
@@ -149,11 +149,11 @@ void CMessageThread::ThreadMessages(CMessageList* list)
 		return;
 
 	// Step 1 - link messages via header fields
-	std::auto_ptr<CThreadMap> map(RefLinkMessages(list));
+	std::unique_ptr<CThreadMap> map(RefLinkMessages(list));
 	
 	// Step 2 - gather orphans to root
 	unsigned long nroot = 0;
-	std::auto_ptr<CMessageThread> root(MakeRoot(map.get(), nroot));
+	std::unique_ptr<CMessageThread> root(MakeRoot(map.get(), nroot));
 
 	// Delete map - nodes will remain
 	map.reset();

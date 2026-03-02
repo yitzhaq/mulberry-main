@@ -911,7 +911,7 @@ void CLocalVCardClient::Append(CAddressBook* adbk, const CAddressList* addrs, co
 		{
 			for(CAddressList::const_iterator iter = addrs->begin(); iter != addrs->end(); iter++)
 			{
-				std::auto_ptr<vCard::CVCardVCard> vcard(vcardstore::GenerateVCard(vadbk.GetRef(), static_cast<CAdbkAddress*>(*iter)));
+				std::unique_ptr<vCard::CVCardVCard> vcard(vcardstore::GenerateVCard(vadbk.GetRef(), static_cast<CAdbkAddress*>(*iter)));
 				vadbk.GenerateOne(os, *vcard);
 			}
 		}

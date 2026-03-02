@@ -145,7 +145,7 @@ bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 		LoadPlugin();
 
 	// Now clone it
-	std::auto_ptr<CAuthPlugin> clone(new CAuthPlugin(*this));
+	std::unique_ptr<CAuthPlugin> clone(new CAuthPlugin(*this));
 	clone->ClonePlugin();
 
 	// Start authentication process

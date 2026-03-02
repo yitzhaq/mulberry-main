@@ -548,8 +548,8 @@ long CGPGPluginDLL::SignFileX(fspec in, const char* key, fspec out, bool useMime
 		return 0;
 	}
 
-	std::auto_ptr<char> in_path(ToPath(in));
-	std::auto_ptr<char> out_path(ToPath(out));
+	std::unique_ptr<char> in_path(ToPath(in));
+	std::unique_ptr<char> out_path(ToPath(out));
 
 #if __dest_os == __mac_os_x || __dest_os == __win32_os
 	// Make sure temp file is deleted when we return
@@ -601,8 +601,8 @@ long CGPGPluginDLL::SignFileX(fspec in, const char* key, fspec out, bool useMime
 // Encrypt file
 long CGPGPluginDLL::EncryptFileX(fspec in, const char** to, fspec out, bool useMime, bool binary, bool using_temp_files)
 {
-	std::auto_ptr<char> in_path(ToPath(in));
-	std::auto_ptr<char> out_path(ToPath(out));
+	std::unique_ptr<char> in_path(ToPath(in));
+	std::unique_ptr<char> out_path(ToPath(out));
 
 #if __dest_os == __mac_os_x || __dest_os == __win32_os
 	// Make sure temp file is deleted when we return
@@ -655,8 +655,8 @@ long CGPGPluginDLL::EncryptFileX(fspec in, const char** to, fspec out, bool useM
 // Encrypt & sign file
 long CGPGPluginDLL::EncryptSignFileX(fspec in, const char** to, const char* key, fspec out, bool useMime, bool binary, bool using_temp_files)
 {
-	std::auto_ptr<char> in_path(ToPath(in));
-	std::auto_ptr<char> out_path(ToPath(out));
+	std::unique_ptr<char> in_path(ToPath(in));
+	std::unique_ptr<char> out_path(ToPath(out));
 
 	// Signing requires passphrase
 	char passphrase[256];
@@ -726,8 +726,8 @@ long CGPGPluginDLL::DecryptVerifyFileX(fspec in, const char* sig, const char* in
 	cdstrvect signedBy;
 	cdstrvect encryptedTo;
 
-	std::auto_ptr<char> in_path(ToPath(in));
-	std::auto_ptr<char> out_path(ToPath(out));
+	std::unique_ptr<char> in_path(ToPath(in));
+	std::unique_ptr<char> out_path(ToPath(out));
 
 #if __dest_os == __mac_os_x || __dest_os == __win32_os
 	// Make sure temp file is deleted when we return
@@ -801,7 +801,7 @@ long CGPGPluginDLL::DecryptVerifyFileX(fspec in, const char* sig, const char* in
 #endif
 			return 0;
 
-		std::auto_ptr<char> sig_path(ToPath(sig_tmp));
+		std::unique_ptr<char> sig_path(ToPath(sig_tmp));
 		_sig_remove.set(sig_path.get());
 
 #if __dest_os == __mac_os_x || __dest_os == __win32_os
@@ -1751,7 +1751,7 @@ long CGPGPluginDLL::GetPassphraseForFile(const char* in_path, char* passphrase, 
 		if (secret_keys.size())
 		{
 			// Create array of keys
-			std::auto_ptr<const char*> users(cdstring::ToArray(secret_keys, false));
+			std::unique_ptr<const char*> users(cdstring::ToArray(secret_keys, false));
 
 			// Get passphrase
 			unsigned long chosen;

@@ -160,7 +160,7 @@ void CMailboxInfoTable::DoSingleClick(unsigned long row, unsigned long col, cons
 			mMatch.SetSingleMatch(match_item);
 
 			// Look to see if match wants selection
-			std::auto_ptr<CMessageList> msgs;
+			std::unique_ptr<CMessageList> msgs;
 			if (mMatch.NeedsSelection() && IsSelectionValid())
 			{
 				msgs.reset(new CMessageList);
@@ -709,7 +709,7 @@ void CMailboxInfoTable::DoApplyRuleMailbox(long index)
 	if (IsSelectionValid())
 	{
 		// get list of selected messages
-		std::auto_ptr<CMessageList> msgs(new CMessageList);
+		std::unique_ptr<CMessageList> msgs(new CMessageList);
 		msgs->SetOwnership(false);
 
 		// Add selection to list
@@ -746,7 +746,7 @@ void CMailboxInfoTable::OnMakeRuleMailbox()
 		return;
 
 	// get list of selected messages
-	std::auto_ptr<CMessageList> msgs(new CMessageList);
+	std::unique_ptr<CMessageList> msgs(new CMessageList);
 	msgs->SetOwnership(false);
 
 	// Add selection to list
@@ -876,7 +876,7 @@ void CMailboxInfoTable::DoMessageForward(bool option_key)
 	else
 	{
 
-		std::auto_ptr<CMessageList> msgs(new CMessageList);
+		std::unique_ptr<CMessageList> msgs(new CMessageList);
 		msgs->SetOwnership(false);
 
 		// Add selection to list (always add in ascending order - i.e. reverse selection if reverse sort)
@@ -1043,7 +1043,7 @@ void CMailboxInfoTable::OnMessageCreateDigest(void)
 	if (!GetMbox())
 		return;
 
-	std::auto_ptr<CMessageList> msgs(new CMessageList);
+	std::unique_ptr<CMessageList> msgs(new CMessageList);
 	msgs->SetOwnership(false);
 
 	// Add selection to list (always add in ascending order - i.e. reverse selection if reverse sort)
@@ -1109,7 +1109,7 @@ void CMailboxInfoTable::OnMatchButton(bool option_key)
 	}
 	
 	// Look to see if match wants selection
-	std::auto_ptr<CMessageList> msgs;
+	std::unique_ptr<CMessageList> msgs;
 	if (!mSearchResults && (new_mbox_mode != NMbox::eViewMode_All) && mMatch.NeedsSelection() && IsSelectionValid())
 	{
 		msgs.reset(new CMessageList);
@@ -1185,7 +1185,7 @@ void CMailboxInfoTable::SetMatch(NMbox::EViewMode mbox_mode, CSearchItem* spec, 
 void CMailboxInfoTable::OnMailboxUpdateMatch()
 {
 	// Look to see if current match wants selection
-	std::auto_ptr<CMessageList> msgs;
+	std::unique_ptr<CMessageList> msgs;
 	if (mMatch.NeedsSelection() && IsSelectionValid())
 	{
 		msgs.reset(new CMessageList);
@@ -1308,12 +1308,12 @@ void CMailboxInfoTable::OnThreadSelectAll()
 	if (IsSelectionValid())
 	{
 		// Add selection to list
-		std::auto_ptr<CMessageList> msgs(new CMessageList);
+		std::unique_ptr<CMessageList> msgs(new CMessageList);
 		msgs->SetOwnership(false);
 		DoToSelection1((DoToSelection1PP) &CMailboxInfoTable::AddFullSelectionWithFakesToList, msgs.get());
 		
 		// Now get threads for each selected message
-		std::auto_ptr<CMessageList> threads(new CMessageList);
+		std::unique_ptr<CMessageList> threads(new CMessageList);
 		threads->SetOwnership(false);
 		for(CMessageList::const_iterator iter = msgs->begin(); iter != msgs->end(); iter++)
 			threads->AddThread(*iter);
@@ -1351,12 +1351,12 @@ void CMailboxInfoTable::DoThreadFlag(NMessage::EFlags flag)
 	if (IsSelectionValid())
 	{
 		// Add selection to list
-		std::auto_ptr<CMessageList> msgs(new CMessageList);
+		std::unique_ptr<CMessageList> msgs(new CMessageList);
 		msgs->SetOwnership(false);
 		DoToSelection1((DoToSelection1PP) &CMailboxInfoTable::AddFullSelectionWithFakesToList, msgs.get());
 		
 		// Now get threads for each selected message
-		std::auto_ptr<CMessageList> threads(new CMessageList);
+		std::unique_ptr<CMessageList> threads(new CMessageList);
 		threads->SetOwnership(false);
 		for(CMessageList::const_iterator iter = msgs->begin(); iter != msgs->end(); iter++)
 			threads->AddThread(*iter);
@@ -1385,7 +1385,7 @@ void CMailboxInfoTable::OnThreadSkip()
 	if (IsSelectionValid())
 	{
 		// Add selection to list
-		std::auto_ptr<CMessageList> msgs(new CMessageList);
+		std::unique_ptr<CMessageList> msgs(new CMessageList);
 		msgs->SetOwnership(false);
 		DoToSelection1((DoToSelection1PP) &CMailboxInfoTable::AddFullSelectionWithFakesToList, msgs.get());
 		
@@ -1475,7 +1475,7 @@ void CMailboxInfoTable::DoMatch(const CMatchItem& match)
 	SetCurrentMatch(match);
 
 	// Look to see if match wants selection
-	std::auto_ptr<CMessageList> msgs;
+	std::unique_ptr<CMessageList> msgs;
 	if (mMatch.NeedsSelection() && IsSelectionValid())
 	{
 		msgs.reset(new CMessageList);

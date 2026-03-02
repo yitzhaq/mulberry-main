@@ -735,7 +735,7 @@ void CMacOSXAdbkClient::ParseAddress(ABRecordRef abref)
 
 CAdbkAddress* CMacOSXAdbkClient::ParseAddressItem(ABRecordRef abref)
 {
-	std::auto_ptr<CAdbkAddress> addr(new CAdbkAddress);
+	std::unique_ptr<CAdbkAddress> addr(new CAdbkAddress);
 	
 	// Get UID
 	addr->SetEntry(GetAddressAttribute(abref, kABUIDProperty));
@@ -944,7 +944,7 @@ void CMacOSXAdbkClient::ParseGroup(ABRecordRef abref)
 
 CGroup* CMacOSXAdbkClient::ParseGroupItem(ABRecordRef abref)
 {
-	std::auto_ptr<CGroup> grp(new CGroup);
+	std::unique_ptr<CGroup> grp(new CGroup);
 
 	// Get UID
 	grp->SetEntry(GetAddressAttribute(abref, kABUIDProperty));
@@ -987,7 +987,7 @@ CGroup* CMacOSXAdbkClient::ParseGroupItem(ABRecordRef abref)
 		for(CFIndex i = 0; i < count; i++)
 		{
 			// Parse into a group
-			std::auto_ptr<CGroup> subgrp(ParseGroupItem((ABRecordRef) ::CFArrayGetValueAtIndex(array,i)));
+			std::unique_ptr<CGroup> subgrp(ParseGroupItem((ABRecordRef) ::CFArrayGetValueAtIndex(array,i)));
 			
 			// Add the groups nick-name (if any) to the parent group
 			if (!subgrp->GetNickName().empty())
@@ -1478,7 +1478,7 @@ void CMacOSXAdbkClient::Fill(ABAddressBookRef ab, ABGroupRef group, CAddressBook
 		for(CFIndex i = 0; i < count; i++)
 		{
 			// Parse into an address
-			std::auto_ptr<CAdbkAddress> addr(ParseAddressItem((ABRecordRef) ::CFArrayGetValueAtIndex(array,i)));
+			std::unique_ptr<CAdbkAddress> addr(ParseAddressItem((ABRecordRef) ::CFArrayGetValueAtIndex(array,i)));
 			addr_entries.push_back(addr->GetEntry());
 			
 		}
@@ -1495,7 +1495,7 @@ void CMacOSXAdbkClient::Fill(ABAddressBookRef ab, ABGroupRef group, CAddressBook
 		for(CFIndex i = 0; i < count; i++)
 		{
 			// Parse into a group
-			std::auto_ptr<CGroup> subgrp(ParseGroupItem((ABRecordRef) ::CFArrayGetValueAtIndex(array,i)));
+			std::unique_ptr<CGroup> subgrp(ParseGroupItem((ABRecordRef) ::CFArrayGetValueAtIndex(array,i)));
 			grp_entries.push_back(subgrp->GetEntry());
 		}
 		::CFRelease(array);

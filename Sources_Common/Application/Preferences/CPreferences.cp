@@ -1718,7 +1718,7 @@ const CIdentity* CPreferences::GetTiedIdentity(const CMessageList* msgs)
 				{
 					// Get identity from addresses
 					const cdstring& addrs = (*iter3).GetFrom(true);
-					std::auto_ptr<CAddressList> idaddrlist(new CAddressList(addrs, addrs.length()));
+					std::unique_ptr<CAddressList> idaddrlist(new CAddressList(addrs, addrs.length()));
 					
 					// Look at each from address in the identity and compare with message from address
 					for(CAddressList::const_iterator iter4 = idaddrlist->begin(); !id && (iter4 != idaddrlist->end()); iter4++)

@@ -290,8 +290,8 @@ private:
 	bool					mItsMsgError;				// Flag for cleared out message
 	CMessageList*			mMsgs;						// Used for multi-save operation
 	const char*				mShowText;					// Text to show
-	std::auto_ptr<unichar_t>		mUTF16Text;					// UTF16 text
-	std::auto_ptr<unichar_t>		mRawUTF16Text;				// Raw UTF16 text
+	std::unique_ptr<unichar_t>		mUTF16Text;					// UTF16 text
+	std::unique_ptr<unichar_t>		mRawUTF16Text;				// Raw UTF16 text
 	bool					mShowHeader;				// Show header
 	bool					mShowSecure;				// Show verify/decrypt area
 	bool					mSecureMulti;				// Multi-line verify/decrypt area

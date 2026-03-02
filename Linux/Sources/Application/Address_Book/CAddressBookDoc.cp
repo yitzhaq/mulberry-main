@@ -218,13 +218,13 @@ void CAddressBookDoc::ExportTabbedAddresses(std::ostream& output) const
 {
 	for(CAddressList::const_iterator iter = GetAddressBook()->GetAddressList()->begin(); iter != GetAddressBook()->GetAddressList()->end(); iter++)
 	{
-		std::auto_ptr<const char> out_addr(GetAddressBook()->ExportAddress(static_cast<const CAdbkAddress*>(*iter)));
+		std::unique_ptr<const char> out_addr(GetAddressBook()->ExportAddress(static_cast<const CAdbkAddress*>(*iter)));
 		output.write(out_addr.get(), ::strlen(out_addr.get()));
 	}
 
 	for(CGroupList::iterator iter = GetAddressBook()->GetGroupList()->begin(); iter != GetAddressBook()->GetGroupList()->end(); iter++)
 	{
-		std::auto_ptr<const char> out_grp(GetAddressBook()->ExportGroup(*iter));
+		std::unique_ptr<const char> out_grp(GetAddressBook()->ExportGroup(*iter));
 		output.write(out_grp.get(), ::strlen(out_grp.get()));
 	}
 }

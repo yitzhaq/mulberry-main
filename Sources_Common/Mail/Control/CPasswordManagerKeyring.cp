@@ -146,11 +146,11 @@ cdstrmap CPasswordManagerKeyring::ReadEncryptedMap() const
 	if (data.length() == 0)
 		return results;
 	size_t encrypted_len = 0;
-	std::auto_ptr<unsigned char> encrypted(::base64_decode(data.c_str(), encrypted_len));
+	std::unique_ptr<unsigned char> encrypted(::base64_decode(data.c_str(), encrypted_len));
 
 	unsigned char digest[MD5_DIGEST_LENGTH];
 	RC4_KEY key;
-	std::auto_ptr<unsigned char> decrypted(new unsigned char[encrypted_len + 1]);
+	std::unique_ptr<unsigned char> decrypted(new unsigned char[encrypted_len + 1]);
 
 	MD5(reinterpret_cast<const unsigned char*>(mPassphrase.c_str()), mPassphrase.length(), digest);
 
@@ -185,13 +185,13 @@ void CPasswordManagerKeyring::WriteEncryptedMap(const cdstrmap& pswds) const
 
 	unsigned char digest[MD5_DIGEST_LENGTH];
 	RC4_KEY key;
-	std::auto_ptr<unsigned char> encrypted(new unsigned char[data.length() + 1]);
+	std::unique_ptr<unsigned char> encrypted(new unsigned char[data.length() + 1]);
 
 	MD5(reinterpret_cast<const unsigned char*>(mPassphrase.c_str()), mPassphrase.length(), digest);
 
 	RC4_set_key(&key, MD5_DIGEST_LENGTH, digest);
 	RC4(&key, data.length(), reinterpret_cast<const unsigned char*>(data.c_str()), encrypted.get());
-	std::auto_ptr<char> encrypted_txt(::base64_encode(encrypted.get(), data.length()));
+	std::unique_ptr<char> encrypted_txt(::base64_encode(encrypted.get(), data.length()));
 
 	std::ofstream fout(mKeyringPath.c_str());
 	fout << encrypted_txt.get();

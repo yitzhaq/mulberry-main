@@ -91,7 +91,7 @@ const char*	CStreamAttachment::ReadPart(CMessage* owner)
 	if (stream && mIndexBodyLength)
 	{
 		// Create data space
-		std::auto_ptr<char> data(new char[mIndexBodyLength + 1]);
+		std::unique_ptr<char> data(new char[mIndexBodyLength + 1]);
 		
 		// Read stream into buffer
 		stream->seekg(mIndexBodyStart);

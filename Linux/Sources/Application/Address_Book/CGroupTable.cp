@@ -1208,7 +1208,7 @@ bool CGroupTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 	if  (type == CMulberryApp::sFlavorGrpList)
 	{
 		// Create list to hold dragged items
-		std::auto_ptr<CGroupList> grps(new CGroupList);
+		std::unique_ptr<CGroupList> grps(new CGroupList);
 		grps->set_delete_data(false);
 
 		// Add each selected address
@@ -1220,7 +1220,7 @@ bool CGroupTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 	else if  (type == CMulberryApp::sFlavorAddrList)
 	{
 		// Create list to hold deleted items
-		std::auto_ptr<CAddressList> addrs(new CAddressList);
+		std::unique_ptr<CAddressList> addrs(new CAddressList);
 		addrs->set_delete_data(false);
 
 		// Add each selected address

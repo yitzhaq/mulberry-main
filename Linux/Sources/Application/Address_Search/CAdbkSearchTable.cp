@@ -614,7 +614,7 @@ bool CAdbkSearchTable::RenderSelectionData(CMulSelectionData* seldata, Atom type
 	if (type == CMulberryApp::sFlavorAddrList)
 	{
 		// Create list to hold deleted items
-		std::auto_ptr<CAddressList> addrs(new CAddressList);
+		std::unique_ptr<CAddressList> addrs(new CAddressList);
 		addrs->set_delete_data(false);
 
 		// Add each selected address

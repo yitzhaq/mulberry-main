@@ -179,7 +179,7 @@ void CCardDAVVCardClient::_CreateAdbk(const CAddressBook* adbk)
 	if (adbk->IsDirectory())
 	{
 		// Create WebDAV MKCOL (overwrite not allowed)
-		std::auto_ptr<http::webdav::CWebDAVMakeCollection> request(new http::webdav::CWebDAVMakeCollection(this, rurl));
+		std::unique_ptr<http::webdav::CWebDAVMakeCollection> request(new http::webdav::CWebDAVMakeCollection(this, rurl));
 
 		// Process it
 		RunSession(request.get());
@@ -198,7 +198,7 @@ void CCardDAVVCardClient::_CreateAdbk(const CAddressBook* adbk)
 	else
 	{
 		// Create CardDAV MKADBK (overwrite not allowed)
-		std::auto_ptr<http::carddav::CCardDAVMakeAdbk> request(new http::carddav::CCardDAVMakeAdbk(this, rurl));
+		std::unique_ptr<http::carddav::CCardDAVMakeAdbk> request(new http::carddav::CCardDAVMakeAdbk(this, rurl));
 
 		// Process it
 		RunSession(request.get());
@@ -389,7 +389,7 @@ void CCardDAVVCardClient::_FastSync(const CAddressBook* adbk, cdstrmap& changed,
 	// Create WebDAV report
 	cdstring rurl = adbk->GetName();
 	rurl.EncodeURL('/');
-	std::auto_ptr<http::webdav::CWebDAVSyncReport> request(new http::webdav::CWebDAVSyncReport(this, rurl, adbk->GetVCardAdbk()->GetSyncToken()));
+	std::unique_ptr<http::webdav::CWebDAVSyncReport> request(new http::webdav::CWebDAVSyncReport(this, rurl, adbk->GetVCardAdbk()->GetSyncToken()));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 	
@@ -444,7 +444,7 @@ void CCardDAVVCardClient::_ReadFullAddressBook(CAddressBook* adbk)
 	props.push_back(http::webdav::cProperty_getcontenttype);
 	props.push_back(http::webdav::cProperty_resourcetype);
 	props.push_back(http::webdav::cProperty_getetag);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -496,7 +496,7 @@ void CCardDAVVCardClient::ReadAddressBookComponents(CAddressBook* adbk, const cd
 	rurl.EncodeURL('/');
 
 	// Create WebDAV REPORT
-	std::auto_ptr<http::carddav::CCardDAVMultigetReport> request(new http::carddav::CCardDAVMultigetReport(this, rurl, hrefs));
+	std::unique_ptr<http::carddav::CCardDAVMultigetReport> request(new http::carddav::CCardDAVMultigetReport(this, rurl, hrefs));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -567,7 +567,7 @@ void CCardDAVVCardClient::GetAddressBookComponents(CAddressBook* adbk, vCard::CV
 vCard::CVCardVCard* CCardDAVVCardClient::ReadAddressBookComponent(const cdstring& rurl, vCard::CVCardAddressBook& adbk)
 {
 	// Create WebDAV GET
-	std::auto_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl));
+	std::unique_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl));
 	http::CHTTPOutputDataString dout;
 	request->SetData(&dout);
 
@@ -671,7 +671,7 @@ void CCardDAVVCardClient::_GetComponentInfo(CAddressBook* adbk, vCard::CVCardAdd
 	props.push_back(http::webdav::cProperty_getcontenttype);
 	props.push_back(http::webdav::cProperty_resourcetype);
 	props.push_back(http::webdav::cProperty_getetag);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -738,7 +738,7 @@ void CCardDAVVCardClient::_RemoveComponent(CAddressBook* adbk, vCard::CVCardAddr
 	rurl += comp_rurl;
 
 	// Create WebDAV DELETE
-	std::auto_ptr<http::webdav::CWebDAVDelete> request(new http::webdav::CWebDAVDelete(this, rurl));
+	std::unique_ptr<http::webdav::CWebDAVDelete> request(new http::webdav::CWebDAVDelete(this, rurl));
 
 	// Process it
 	RunSession(request.get());
@@ -885,7 +885,7 @@ void CCardDAVVCardClient::WriteComponent(CAddressBook* adbk, vCard::CVCardAddres
 	data.steal(os.str());
 
 	// Create WebDAV PUT
-	std::auto_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl, lock_token));
+	std::unique_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl, lock_token));
 	http::CHTTPInputDataString din(data, "text/vcard; charset=utf-8");
 	http::CHTTPOutputDataString dout;
 	
@@ -960,7 +960,7 @@ void CCardDAVVCardClient::_StoreAddress(CAddressBook* adbk, const CAddressList* 
 	// Address book may or may not be open
 	bool is_open = (adbk->GetVCardAdbk() != NULL);
 	vCard::CVCardAddressBook* vadbk = NULL;
-	std::auto_ptr<vCard::CVCardAddressBook> vadbk_auto;
+	std::unique_ptr<vCard::CVCardAddressBook> vadbk_auto;
 	if (adbk->GetVCardAdbk())
 		vadbk = adbk->GetVCardAdbk();
 	else
@@ -974,7 +974,7 @@ void CCardDAVVCardClient::_StoreAddress(CAddressBook* adbk, const CAddressList* 
 	{
 		// If its open use the vCard from the address bookm otherwise create a temp vCard for this operation only
 		const vCard::CVCardVCard* vcard = NULL;
-		std::auto_ptr<vCard::CVCardVCard> vcard_auto;
+		std::unique_ptr<vCard::CVCardVCard> vcard_auto;
 		if (is_open)
 			vcard = vadbk->GetCardByKey(static_cast<const CAdbkAddress*>(*iter)->GetEntry());
 		else
@@ -1099,7 +1099,7 @@ void CCardDAVVCardClient::SizeAddressBook_DAV(CAddressBook* adbk)
 	rurl.EncodeURL('/');
 	xmllib::XMLNameList props;
 	props.push_back(http::webdav::cProperty_getcontentlength);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -1144,7 +1144,7 @@ void CCardDAVVCardClient::SizeAddressBook_HTTP(CAddressBook* adbk)
 	// Create WebDAV HEAD
 	cdstring rurl = adbk->GetName();
 	rurl.EncodeURL('/');
-	std::auto_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl, true));
+	std::unique_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl, true));
 	http::CHTTPOutputDataString dout;
 	request->SetData(&dout);
 
@@ -1232,7 +1232,7 @@ void CCardDAVVCardClient::SearchAddressBook(CAddressBook* adbk, const cdstring& 
 	rurl.EncodeURL('/');
 
 	// Create WebDAV REPORT
-	std::auto_ptr<http::carddav::CCardDAVQueryReport> request(new http::carddav::CCardDAVQueryReport(this, rurl, prop_names, name, match_type));
+	std::unique_ptr<http::carddav::CCardDAVQueryReport> request(new http::carddav::CCardDAVQueryReport(this, rurl, prop_names, name, match_type));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 

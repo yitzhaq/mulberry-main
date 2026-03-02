@@ -745,8 +745,8 @@ void CLocalAdbkClient::ListAddressBooks(CAddressBook* root, const cdstring& path
 void CLocalAdbkClient::ScanDirectory(const char* path, const cdstring& pattern, bool first)
 {
 	// Create lists for directories and mailboxes
-	std::auto_ptr<cdstrvect> dirs(new cdstrvect);
-	std::auto_ptr<cdstrvect> adbks(new cdstrvect);
+	std::unique_ptr<cdstrvect> dirs(new cdstrvect);
+	std::unique_ptr<cdstrvect> adbks(new cdstrvect);
 
 	// Iterate over all .mba files/directories in directory
 	// but not ones that are hidden

@@ -79,7 +79,7 @@ bool CCalendarRecord::Playback(calstore::CCalendarProtocol* remote, calstore::CC
 {
 	// Check for forced logging
 	bool log_created = false;
-	std::auto_ptr<cdofstream> fout;
+	std::unique_ptr<cdofstream> fout;
 	if (!mLog && CLog::AllowPlaybackLog())
 	{
 		cdstring temp_name = mDescriptor + ".log";
@@ -236,7 +236,7 @@ void CCalendarRecord::Playback_Create(CCalendarAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<calstore::CCalendarStoreNode> node(new calstore::CCalendarStoreNode(mPlayRemote, mPlayRemote->GetStoreRoot(), action.GetCalendarAction().mIsDir, false, false, action.GetCalendarAction().mName));
+		std::unique_ptr<calstore::CCalendarStoreNode> node(new calstore::CCalendarStoreNode(mPlayRemote, mPlayRemote->GetStoreRoot(), action.GetCalendarAction().mIsDir, false, false, action.GetCalendarAction().mName));
 
 		// Create on server
 		mPlayRemote->CreateCalendar(*node.get());
@@ -261,7 +261,7 @@ void CCalendarRecord::Playback_Delete(CCalendarAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<calstore::CCalendarStoreNode> node(new calstore::CCalendarStoreNode(mPlayRemote, mPlayRemote->GetStoreRoot(), action.GetCalendarAction().mIsDir, false, false, action.GetCalendarAction().mName));
+		std::unique_ptr<calstore::CCalendarStoreNode> node(new calstore::CCalendarStoreNode(mPlayRemote, mPlayRemote->GetStoreRoot(), action.GetCalendarAction().mIsDir, false, false, action.GetCalendarAction().mName));
 
 		// Delete on server
 		mPlayRemote->DeleteCalendar(*node.get());
@@ -286,7 +286,7 @@ void CCalendarRecord::Playback_Rename(CCalendarAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<calstore::CCalendarStoreNode> node(new calstore::CCalendarStoreNode(mPlayRemote, mPlayRemote->GetStoreRoot(), action.GetCalendarActionRename().first.mIsDir, false, false, action.GetCalendarActionRename().first.mName));
+		std::unique_ptr<calstore::CCalendarStoreNode> node(new calstore::CCalendarStoreNode(mPlayRemote, mPlayRemote->GetStoreRoot(), action.GetCalendarActionRename().first.mIsDir, false, false, action.GetCalendarActionRename().first.mName));
 
 		// Rename on server
 		mPlayRemote->RenameCalendar(*node.get(), action.GetCalendarActionRename().second);
@@ -310,8 +310,8 @@ void CCalendarRecord::Playback_Rename(CCalendarAction& action)
 
 void CCalendarRecord::Playback_Change(CCalendarAction& action)
 {
-	std::auto_ptr<calstore::CCalendarStoreNode> node;
-	std::auto_ptr<iCal::CICalendar> cal;
+	std::unique_ptr<calstore::CCalendarStoreNode> node;
+	std::unique_ptr<iCal::CICalendar> cal;
 
 	try
 	{

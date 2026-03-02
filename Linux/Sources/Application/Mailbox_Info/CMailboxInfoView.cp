@@ -463,7 +463,7 @@ void CMailboxInfoView::DoQuickSearch(bool change_focus)
 
 	cdstring txt = mQuickSearchText->GetText();
 
-	std::auto_ptr<CSearchItem> spec;
+	std::unique_ptr<CSearchItem> spec;
 	switch(mQuickSearchCriteria->GetValue())
 	{
 	case eQuickSearchFrom:
@@ -526,7 +526,7 @@ void CMailboxInfoView::DoQuickSearchSavedPopup(long value)
 		mQuickSearchProgress->SetVisible(kTrue);
 
 		// Get search set
-		std::auto_ptr<CSearchItem> spec(new CSearchItem(CSearchItem::eNamedStyle, CPreferences::sPrefs->mSearchStyles.GetValue().at(value - IDM_SEARCH_STYLES_Start)->GetName()));
+		std::unique_ptr<CSearchItem> spec(new CSearchItem(CSearchItem::eNamedStyle, CPreferences::sPrefs->mSearchStyles.GetValue().at(value - IDM_SEARCH_STYLES_Start)->GetName()));
 
 		// Make sure search failure does not prevent clean-up
 		try

@@ -362,7 +362,7 @@ void CNewEventDialog::StartNew(const iCal::CICalendarDateTime& dtstart, const iC
 	}
 
 	// Start with an empty new event
-	std::auto_ptr<iCal::CICalendarVEvent> vevent(static_cast<iCal::CICalendarVEvent*>(iCal::CICalendarVEvent::Create(cal->GetRef())));
+	std::unique_ptr<iCal::CICalendarVEvent> vevent(static_cast<iCal::CICalendarVEvent*>(iCal::CICalendarVEvent::Create(cal->GetRef())));
 	
 	// End is one hour after start
 	iCal::CICalendarDuration duration(60 * 60);

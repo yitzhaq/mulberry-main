@@ -1442,7 +1442,7 @@ bool CMailboxTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 	bool rendered = false;
 
 	// Make list of selected messages
-	std::auto_ptr<CMessageList> msgs(new CMessageList);
+	std::unique_ptr<CMessageList> msgs(new CMessageList);
 	msgs->SetOwnership(false);
 	DoToSelection1((DoToSelection1PP) &CMailboxTable::AddSelectionToDrag, msgs.get());
 

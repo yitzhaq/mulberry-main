@@ -211,7 +211,7 @@ void CFilterManager::OpenMailbox(CMbox* mbox) const
 #endif
 
 	// Now do open filter
-	std::auto_ptr<const CFilterItems> list(MatchFilters(CTargetItem::eOpenMailbox, mbox));
+	std::unique_ptr<const CFilterItems> list(MatchFilters(CTargetItem::eOpenMailbox, mbox));
 
 	// Only bother if filters exist
 	if (list->size())
@@ -249,7 +249,7 @@ void CFilterManager::NewMailMailbox(CMbox* mbox, unsigned long count) const
 #endif
 
 	// Get matching filters
-	std::auto_ptr<const CFilterItems> list(MatchFilters(CTargetItem::eIncomingMailbox, mbox));
+	std::unique_ptr<const CFilterItems> list(MatchFilters(CTargetItem::eIncomingMailbox, mbox));
 
 	// Only bother if filters exist
 	if (list->size())
@@ -259,7 +259,7 @@ void CFilterManager::NewMailMailbox(CMbox* mbox, unsigned long count) const
 		items->push_back(new CSearchItem(CSearchItem::eUnseen));
 		items->push_back(new CSearchItem(CSearchItem::eUndeleted));
 		items->push_back(new CSearchItem(CSearchItem::eUndraft));
-		std::auto_ptr<CSearchItem> ands(new CSearchItem(CSearchItem::eAnd, items));
+		std::unique_ptr<CSearchItem> ands(new CSearchItem(CSearchItem::eAnd, items));
 
 
 		// Make sure only the new ones are tested
@@ -330,7 +330,7 @@ void CFilterManager::CloseMailbox(CMbox* mbox) const
 #endif
 
 	// Now do open filter
-	std::auto_ptr<const CFilterItems> list(MatchFilters(CTargetItem::eCloseMailbox, mbox));
+	std::unique_ptr<const CFilterItems> list(MatchFilters(CTargetItem::eCloseMailbox, mbox));
 
 	// Only bother if filters exist
 	if (list->size())
@@ -805,7 +805,7 @@ void CFilterManager::UploadSIEVEScript(const CFilterScript* script, unsigned lon
 		script->GetSIEVEScript(scripttxt, eEndl_CRLF);
 	
 	// Create protocol (using first account in prefs for now)
-	std::auto_ptr<CFilterProtocol> proto(new CFilterProtocol(CPreferences::sPrefs->mSIEVEAccounts.GetValue().at(acct_index)));
+	std::unique_ptr<CFilterProtocol> proto(new CFilterProtocol(CPreferences::sPrefs->mSIEVEAccounts.GetValue().at(acct_index)));
 	try
 	{
 		// Logon

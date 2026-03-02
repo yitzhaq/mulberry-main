@@ -1527,7 +1527,7 @@ bool CFileTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 	if (type == CMulberryApp::sFlavorAtchList)
 	{
 		// Create list to hold dragged items
-		std::auto_ptr<CAttachmentList> atchs(new CAttachmentList);
+		std::unique_ptr<CAttachmentList> atchs(new CAttachmentList);
 		atchs->set_delete_data(false);
 
 		// Add selected attachments at same level

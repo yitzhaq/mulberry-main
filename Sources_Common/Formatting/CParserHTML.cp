@@ -704,7 +704,7 @@ void CParserHTML::HandleFormat(unichar_t* format, int index)
 	if (format[0] == '/')
 	{
 		ETag tag = GetTag(format + 1, offset);
-		std::auto_ptr<CParserHTMLStackElement> element(mHStack.pop(tag));
+		std::unique_ptr<CParserHTMLStackElement> element(mHStack.pop(tag));
 		if (element.get() != NULL)
 		{
 			// Some tags only make sense when they actuall enclose some valid data
@@ -1071,7 +1071,7 @@ void CParserHTML::HandleScaledSize(long start, long stop, long relsize, bool fix
 
 void CParserHTML::FlushStack(int index)
 {
-	std::auto_ptr<CParserHTMLStackElement> element(mHStack.pop());
+	std::unique_ptr<CParserHTMLStackElement> element(mHStack.pop());
 	while(element.get() != NULL)
 	{
 		// Only do styles if requested by user
@@ -1407,7 +1407,7 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 					stop = start;
 					while (*stop && (*stop != ';') && !isuspace(*stop))
 						stop++;
-					std::auto_ptr<unichar_t> format(::unistrndup(start, stop - start));
+					std::unique_ptr<unichar_t> format(::unistrndup(start, stop - start));
 					
 					if (HandleAmpChar(format.get(), &out, &finalCount))
 					{
@@ -1473,10 +1473,10 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 				if (*p)
 					p++;
 
-				std::auto_ptr<unichar_t> format(::unistrndup(start, stop - start));
+				std::unique_ptr<unichar_t> format(::unistrndup(start, stop - start));
 				if (format.get() != NULL)
 				{
-					std::auto_ptr<unichar_t> lformat(::unistrdup(format.get()));
+					std::unique_ptr<unichar_t> lformat(::unistrdup(format.get()));
 					::unistrlower(lformat.get());
 
 					// Trim to starting tag

@@ -1296,7 +1296,7 @@ bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 		{
 			cdifstream buf_in(fin_path, std::ios_base::in|std::ios_base::binary);
 			CRFC822Parser parser;
-			std::auto_ptr<CLocalMessage> lmsg(parser.MessageFromStream(buf_in));
+			std::unique_ptr<CLocalMessage> lmsg(parser.MessageFromStream(buf_in));
 			buf_in.clear();
 			buf_in.close();
 
@@ -1388,7 +1388,7 @@ bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 		// Try to parse it out as a local message
 		std::istrstream buf_in(in);
 		CRFC822Parser parser;
-		std::auto_ptr<CLocalMessage> lmsg(parser.MessageFromStream(buf_in));
+		std::unique_ptr<CLocalMessage> lmsg(parser.MessageFromStream(buf_in));
 
 		// Must have message
 		if (!lmsg.get() ||
@@ -1513,7 +1513,7 @@ bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bo
 			cdofstream finstream(fin_path, std::ios_base::out|std::ios_base::trunc|std::ios_base::binary);
 			
 			// Get encoding filter
-			std::auto_ptr<CStreamFilter> filter;
+			std::unique_ptr<CStreamFilter> filter;
 
 			// May need to filter  - SMIME always gets raw base64 data
 			if (GetName() != cSMIMEName)
@@ -1578,7 +1578,7 @@ bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bo
 		{
 			// Replace existing part data with output
 			// Create fstream data
-			std::auto_ptr<cdifstream> stream(new cdifstream(fin_d_path, std::ios_base::in|std::ios_base::binary));
+			std::unique_ptr<cdifstream> stream(new cdifstream(fin_d_path, std::ios_base::in|std::ios_base::binary));
 			
 			// Parse RFC822 parts
 			CRFC822Parser parser(true, msg);
@@ -1650,7 +1650,7 @@ bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bo
 			{
 				// Create strstream data
 				cdstring temp(out);
-				std::auto_ptr<std::istrstream> stream(new std::istrstream(temp.c_str()));
+				std::unique_ptr<std::istrstream> stream(new std::istrstream(temp.c_str()));
 				
 				// Parse RFC822 parts
 				CRFC822Parser parser(true, msg);

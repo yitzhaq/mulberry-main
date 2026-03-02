@@ -326,7 +326,7 @@ void CAddressTable::CreateNewLetter(bool option_key)
 void CAddressTable::CreateNewEntry()
 {
 	// Let DialogHandler process events
-	std::auto_ptr<CAdbkAddress> new_addr(new CAdbkAddress);
+	std::unique_ptr<CAdbkAddress> new_addr(new CAdbkAddress);
 	if (CEditAddressAdvancedDialog::PoseDialog(new_addr.get()))
 	{
 		// Only add if some text available
@@ -366,7 +366,7 @@ bool CAddressTable::EditEntry(TableIndexT row)
 	CAdbkAddress* theAddr = static_cast<CAdbkAddress*>(mAdbk->GetAddressList()->at(row - 1));
 
 	// Copy original address
-	std::auto_ptr<CAdbkAddress> copy(new CAdbkAddress(*theAddr));
+	std::unique_ptr<CAdbkAddress> copy(new CAdbkAddress(*theAddr));
 	if (CEditAddressAdvancedDialog::PoseDialog(copy.get()))
 	{
 		// Add info to action
@@ -545,7 +545,7 @@ bool CAddressTable::AddAdbkAddressText(TableIndexT row, cdstring* txt)
 	// Get selected address
 	CAdbkAddress* addr = static_cast<CAdbkAddress*>(mAdbk->GetAddressList()->at(row - 1));
 
-	std::auto_ptr<const char> temp(mAdbk->ExportAddress(addr));
+	std::unique_ptr<const char> temp(mAdbk->ExportAddress(addr));
 
 	*txt += temp.get();
 
@@ -845,7 +845,7 @@ bool CAddressTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 	if  (type == CMulberryApp::sFlavorAddrList)
 	{
 		// Create list to hold deleted items
-		std::auto_ptr<CAddressList> addrs(new CAddressList);
+		std::unique_ptr<CAddressList> addrs(new CAddressList);
 		addrs->set_delete_data(false);
 
 		// Add each selected address

@@ -1132,7 +1132,7 @@ CSearchItem* CSearchItem::ParseItem(char_stream& txt, bool convert)
 
 		else if (::strcmp(str, cSEARCH_LPAREN) == 0)		// CSearchItemList*
 		{
-			std::auto_ptr<CSearchItemList> list(new CSearchItemList);
+			std::unique_ptr<CSearchItemList> list(new CSearchItemList);
 
 			// Parse items until NULL
 			CSearchItem* item = ParseItem(txt, convert);

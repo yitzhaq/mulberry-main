@@ -248,7 +248,7 @@ bool CMailRecord::Playback(CMboxProtocol* remote, CMboxProtocol* local, CProgres
 {
 	// Check for forced logging
 	bool log_created = false;
-	std::auto_ptr<cdofstream> fout;
+	std::unique_ptr<cdofstream> fout;
 	if (!mLog && CLog::AllowPlaybackLog())
 	{
 		cdstring temp_name = mDescriptor + ".log";
@@ -561,7 +561,7 @@ void CMailRecord::Playback_Create(CMailAction& action)
 	try
 	{
 		char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();
-		std::auto_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
+		std::unique_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
 		mbox->Create();
 
 		// Need to get UIDValidity and sync with local
@@ -599,7 +599,7 @@ void CMailRecord::Playback_Delete(CMailAction& action)
 	try
 	{
 		char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();
-		std::auto_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
+		std::unique_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
 
 		// Must check UIDValidity before delete
 		mbox->Check();
@@ -645,7 +645,7 @@ void CMailRecord::Playback_Rename(CMailAction& action)
 	try
 	{
 		char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();
-		std::auto_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetRenameAction().first.first, dir_delim, NULL));
+		std::unique_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetRenameAction().first.first, dir_delim, NULL));
 
 		// Must check UIDValidity before delete
 		mbox->Check();
@@ -693,7 +693,7 @@ void CMailRecord::Playback_Subscribe(CMailAction& action)
 	try
 	{
 		char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();
-		std::auto_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
+		std::unique_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
 
 		// Must check UIDValidity before subscribe
 		mbox->Check();
@@ -738,7 +738,7 @@ void CMailRecord::Playback_Unsubscribe(CMailAction& action)
 	try
 	{
 		char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();
-		std::auto_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
+		std::unique_ptr<CMbox> mbox(new CMbox(mPlayRemote, action.GetNameUIDAction().first, dir_delim, NULL));
 
 		// Must check UIDValidity before unsubscribe
 		mbox->Check();

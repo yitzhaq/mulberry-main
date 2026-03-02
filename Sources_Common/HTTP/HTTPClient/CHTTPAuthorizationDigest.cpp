@@ -149,7 +149,7 @@ void _H(unsigned char* digest, char* s, unsigned long s_len)
 void _KD(unsigned char*, char*, char*);
 void _KD(unsigned char* digest, char* k, char* s)
 {
-	std::auto_ptr<char> p(new char[::strlen(k) + ::strlen(s) + 2]);
+	std::unique_ptr<char> p(new char[::strlen(k) + ::strlen(s) + 2]);
 	::strcpy(p.get(), k);
 	::strcat(p.get(), ":");
 	::strcat(p.get(), s);

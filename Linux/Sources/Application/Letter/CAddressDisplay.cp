@@ -121,7 +121,7 @@ void CAddressDisplay::ResolveAddressList(bool qualify)
 		bool qualify = !CPreferences::sPrefs->mExpandFailedNicknames.GetValue();
 		
 		// Generate an address list
-		std::auto_ptr<CAddressList> list(new CAddressList(str, text_length, 0, resolution));
+		std::unique_ptr<CAddressList> list(new CAddressList(str, text_length, 0, resolution));
 		
 		if (!resolution || !qualify)
 		{

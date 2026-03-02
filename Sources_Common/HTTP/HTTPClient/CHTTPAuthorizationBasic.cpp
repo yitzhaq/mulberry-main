@@ -39,7 +39,7 @@ void CHTTPAuthorizationBasic::GenerateAuthorization(std::ostream& os, const CHTT
 	encode += mPswd;
 	
 	// Base64 encode it
-	std::auto_ptr<char> base64(::base64_encode(reinterpret_cast<const unsigned char*>(encode.c_str()), encode.length()));
+	std::unique_ptr<char> base64(::base64_encode(reinterpret_cast<const unsigned char*>(encode.c_str()), encode.length()));
 
 	// Generate header
 	os << cHeaderAuthorization << cHeaderDelimiter << "Basic " << base64.get() << net_endl;

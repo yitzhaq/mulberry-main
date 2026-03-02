@@ -344,7 +344,7 @@ cdstring CWebDAVPrefsClient::GetProperty(const cdstring& rurl, const cdstring& l
 	// Create WebDAV propfind
 	xmllib::XMLNameList props;
 	props.push_back(property);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -396,7 +396,7 @@ cdstring CWebDAVPrefsClient::LockResource(const cdstring& rurl, unsigned long ti
 	owner += GetAccount()->GetServerIP();
 
 	// Create WebDAV LOCK (5 minutes should be enough)
-	std::auto_ptr<http::webdav::CWebDAVLock> request(new http::webdav::CWebDAVLock(this, rurl, http::webdav::eDepth0, http::webdav::CWebDAVLock::eExclusive, owner,
+	std::unique_ptr<http::webdav::CWebDAVLock> request(new http::webdav::CWebDAVLock(this, rurl, http::webdav::eDepth0, http::webdav::CWebDAVLock::eExclusive, owner,
 																				timeout, lock_null ? http::webdav::CWebDAVLock::eResourceMustNotExist : http::webdav::CWebDAVLock::eResourceMustExist));
 
 	// Process it
@@ -430,7 +430,7 @@ cdstring CWebDAVPrefsClient::LockResource(const cdstring& rurl, unsigned long ti
 void CWebDAVPrefsClient::UnlockResource(const cdstring& rurl, const cdstring& lock_token)
 {
 	// Create WebDAV UNLOCK
-	std::auto_ptr<http::webdav::CWebDAVUnlock> request(new http::webdav::CWebDAVUnlock(this, rurl, lock_token));
+	std::unique_ptr<http::webdav::CWebDAVUnlock> request(new http::webdav::CWebDAVUnlock(this, rurl, lock_token));
 
 	// Process it
 	RunSession(request.get());	
@@ -772,7 +772,7 @@ void CWebDAVPrefsClient::DoRequest(CHTTPRequestResponse* request)
 	{
 		{
 			// Do CRLF -> lendl conversion for log
-			std::auto_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
+			std::unique_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
 			request->ParseResponseHeader(*mStream, filter.get());
 		}
 
@@ -853,7 +853,7 @@ void CWebDAVPrefsClient::ReadResponseData(CHTTPRequestResponse* request)
 void CWebDAVPrefsClient::ReadResponseDataLength(CHTTPRequestResponse* request, unsigned long read_length)
 {
 	// Do CRLF -> lendl conversion for log
-	std::auto_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
+	std::unique_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
 
 	// Create network status item for % progress counter
 	CNetworkAttachProgress progress;
@@ -963,7 +963,7 @@ void CWebDAVPrefsClient::WriteData(const cdstring& entry, const cdstring& data)
 	cdstring rurl = GetRURL(entry, false);
 
 	// Create WebDAV PUT
-	std::auto_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl));
+	std::unique_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl));
 	http::CHTTPInputDataString din(data, "text/plain; charset=utf-8");
 	http::CHTTPOutputDataString dout;
 	
@@ -994,7 +994,7 @@ void CWebDAVPrefsClient::ReadData(const cdstring& entry, cdstring& data)
 	cdstring rurl = GetRURL(entry, false);
 
 	// Create WebDAV GET
-	std::auto_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl));
+	std::unique_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl));
 	http::CHTTPOutputDataString dout;
 	request->SetData(&dout);
 

@@ -900,7 +900,7 @@ void CPOP3Client::PopMessages(CMbox* mbox, const ulvector& msgs, const ulvector&
 		// Parse it
 		CRFC822Parser parser;
 		CNetworkAttachProgress progress;
-		std::auto_ptr<CLocalMessage> lmsg(parser.MessageFromStream(mMailbox, &progress));
+		std::unique_ptr<CLocalMessage> lmsg(parser.MessageFromStream(mMailbox, &progress));
 
 		// Parser will leave it in failed state
 		mMailbox.clear();

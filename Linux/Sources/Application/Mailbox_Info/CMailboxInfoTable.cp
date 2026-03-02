@@ -1140,7 +1140,7 @@ void CMailboxInfoTable::OnMatch()
 bool CMailboxInfoTable::ItemIsAcceptable(const JArray<Atom>& typeList)
 {
 	// Look for a format
-	std::auto_ptr<JOrderedSetIterator<Atom> > ti(typeList.NewIterator());
+	std::unique_ptr<JOrderedSetIterator<Atom> > ti(typeList.NewIterator());
 	Atom i;
 	while (ti->Next(&i))
 	{

@@ -569,9 +569,9 @@ bool CActionManager::MDNMessage(CMessage* msg)
 		id = &CPreferences::sPrefs->mIdentities.GetValue().front();
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList);
-	std::auto_ptr<CAddressList> cc_list(new CAddressList);
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList);
+	std::unique_ptr<CAddressList> to_list(new CAddressList);
+	std::unique_ptr<CAddressList> cc_list(new CAddressList);
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList);
 
 	// Set the To address based on MDN header
 	to_list->push_back(new CAddress(mdn_to));
@@ -580,7 +580,7 @@ bool CActionManager::MDNMessage(CMessage* msg)
 	cdstring subject("Disposition notification: message displayed");
 
 	// Create body
-	std::auto_ptr<CAttachment> body(msg->CreateMDNSeenBody(id, automatic));
+	std::unique_ptr<CAttachment> body(msg->CreateMDNSeenBody(id, automatic));
 
 	// Change the MDNsent flag BEFORE sending it - that way if MDNSent cannot be set for some reason
 	// we ensure that multiple MDNs won't be sent
@@ -588,7 +588,7 @@ bool CActionManager::MDNMessage(CMessage* msg)
 
 	{
 		// Create the message (it takes possesion of address lists)
-		std::auto_ptr<CMessage> msg2(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, NULL, NULL, NULL));
+		std::unique_ptr<CMessage> msg2(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, NULL, NULL, NULL));
 		
 		// Now send it
 		SendMessage(*msg2.get(), id, NULL, NMessage::eDraftMDN, NULL);
@@ -876,7 +876,7 @@ bool CActionManager::NewDraftiTIPAutomatic(const CAddressList* to, const CAddres
 	IncludeSignature(body_txt, id);
 
 	// Create multipart/mixed body
-	std::auto_ptr<CAttachment> body;
+	std::unique_ptr<CAttachment> body;
 	body.reset(new CDataAttachment);
 	body->GetContent().SetContent(eContentMultipart, eContentSubMixed);
 
@@ -891,7 +891,7 @@ bool CActionManager::NewDraftiTIPAutomatic(const CAddressList* to, const CAddres
 			msgs.push_back(msg);
 
 		// Create the message (it takes possesion of address lists)
-		std::auto_ptr<CMessage> rmsg(CreateMessage((to != NULL) ? new CAddressList(*to) : NULL, 
+		std::unique_ptr<CMessage> rmsg(CreateMessage((to != NULL) ? new CAddressList(*to) : NULL, 
 												(cc != NULL) ? new CAddressList(*cc) : NULL,
 												(bcc != NULL) ? new CAddressList(*bcc) : NULL,
 												subject, body.get(), id, &id->GetDSN(true), msg != NULL ? &msgs : NULL, NULL));
@@ -914,9 +914,9 @@ bool CActionManager::ReplyMessages(CMessageList& msgs, bool quote, NMessage::ERe
 		return false;
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList);
-	std::auto_ptr<CAddressList> cc_list(new CAddressList);
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList);
+	std::unique_ptr<CAddressList> to_list(new CAddressList);
+	std::unique_ptr<CAddressList> cc_list(new CAddressList);
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList);
 
 	for(CMessageList::const_iterator iter = msgs.begin(); iter != msgs.end(); iter++)
 	{
@@ -1044,11 +1044,11 @@ bool CActionManager::ReplyMessages(CMessageList& msgs, bool quote, NMessage::ERe
 	IncludeSignature(body_txt, id);
 
 	// Create body
-	std::auto_ptr<CAttachment> body(new CDataAttachment(body_txt.grab_c_str()));
+	std::unique_ptr<CAttachment> body(new CDataAttachment(body_txt.grab_c_str()));
 
 	{
 		// Create the message (it takes possesion of address lists)
-		std::auto_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, NULL));
+		std::unique_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, NULL));
 		
 		// Now send it
 		SendMessage(*msg.get(), id, &id->GetDSN(true), NMessage::eDraftReply, &msgs);
@@ -1065,9 +1065,9 @@ bool CActionManager::CreateReplyMessages(CMessageList& msgs, bool quote, NMessag
 		return false;
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList);
-	std::auto_ptr<CAddressList> cc_list(new CAddressList);
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList);
+	std::unique_ptr<CAddressList> to_list(new CAddressList);
+	std::unique_ptr<CAddressList> cc_list(new CAddressList);
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList);
 
 	for(CMessageList::const_iterator iter = msgs.begin(); iter != msgs.end(); iter++)
 	{
@@ -1231,9 +1231,9 @@ bool CActionManager::ForwardMessages(CMessageList& msgs, bool quote, bool attach
 		return false;
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
-	std::auto_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
+	std::unique_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
+	std::unique_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
 
 	// Set Subject: text
 	cdstring subject = msgs.front()->GetEnvelope()->GetSubject();
@@ -1290,7 +1290,7 @@ bool CActionManager::ForwardMessages(CMessageList& msgs, bool quote, bool attach
 	IncludeSignature(body_txt, id);
 
 	// Create body
-	std::auto_ptr<CAttachment> body;
+	std::unique_ptr<CAttachment> body;
 	CAttachment* attach_txt = new CDataAttachment(body_txt.grab_c_str());
 	
 	// Look for attachments
@@ -1312,7 +1312,7 @@ bool CActionManager::ForwardMessages(CMessageList& msgs, bool quote, bool attach
 
 	{
 		// Create the message (it takes possesion of address lists)
-		std::auto_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, NULL));
+		std::unique_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, NULL));
 		
 		// Now send it
 		SendMessage(*msg.get(), id, &id->GetDSN(true), NMessage::eDraftForward, &msgs);
@@ -1329,9 +1329,9 @@ bool CActionManager::CreateForwardMessages(CMessageList& msgs, bool quote, bool 
 		return false;
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
-	std::auto_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
+	std::unique_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
+	std::unique_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
 
 	// Create body
 	cdstring body_txt;
@@ -1434,9 +1434,9 @@ bool CActionManager::BounceMessages(CMessageList& msgs, NMessage::SAddressing ad
 		return false;
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
-	std::auto_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
+	std::unique_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
+	std::unique_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
 
 	// Set Subject: text
 	cdstring subject = msgs.front()->GetEnvelope()->GetSubject();
@@ -1446,7 +1446,7 @@ bool CActionManager::BounceMessages(CMessageList& msgs, NMessage::SAddressing ad
 	SetIdentity(to_list.get(), cc_list.get(), bcc_list.get(), id);
 
 	// Create body
-	std::auto_ptr<CAttachment> body;
+	std::unique_ptr<CAttachment> body;
 	
 	// If more than one use multipart/mixed
 	if (msgs.size())
@@ -1474,11 +1474,11 @@ bool CActionManager::BounceMessages(CMessageList& msgs, NMessage::SAddressing ad
 	}
 
 	// Copy bounce message header
-	std::auto_ptr<char> bounce(::strdup(msgs.front()->GetHeader()));
+	std::unique_ptr<char> bounce(::strdup(msgs.front()->GetHeader()));
 
 	{
 		// Create the message (it takes possesion of address lists)
-		std::auto_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, bounce.get()));
+		std::unique_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, bounce.get()));
 		
 		// Now send it
 		SendMessage(*msg.get(), id, &id->GetDSN(true), NMessage::eDraftForward, &msgs, bounce.get());
@@ -1494,9 +1494,9 @@ bool CActionManager::CreateBounceMessages(CMessageList& msgs, NMessage::SAddress
 		return false;
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
-	std::auto_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
+	std::unique_ptr<CAddressList> to_list(new CAddressList(addresses.mTo, addresses.mTo.length()));
+	std::unique_ptr<CAddressList> cc_list(new CAddressList(addresses.mCC, addresses.mCC.length()));
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList(addresses.mBcc, addresses.mBcc.length()));
 
 	// Now get chosen identity
 	const CIdentity* id = GetIdentity(msgs, identity, tied);
@@ -1538,9 +1538,9 @@ bool CActionManager::RejectMessages(CMessageList& msgs, bool return_msg, const c
 		return false;
 
 	// Get addresses
-	std::auto_ptr<CAddressList> to_list(new CAddressList);
-	std::auto_ptr<CAddressList> cc_list(new CAddressList);
-	std::auto_ptr<CAddressList> bcc_list(new CAddressList);
+	std::unique_ptr<CAddressList> to_list(new CAddressList);
+	std::unique_ptr<CAddressList> cc_list(new CAddressList);
+	std::unique_ptr<CAddressList> bcc_list(new CAddressList);
 
 	// Read in the required DSN params
 	cdstring return_path;
@@ -1560,11 +1560,11 @@ bool CActionManager::RejectMessages(CMessageList& msgs, bool return_msg, const c
 	SetIdentity(to_list.get(), cc_list.get(), bcc_list.get(), id);
 
 	// Create body
-	std::auto_ptr<CAttachment> body(msgs.front()->CreateRejectDSNBody(return_msg));
+	std::unique_ptr<CAttachment> body(msgs.front()->CreateRejectDSNBody(return_msg));
 
 	{
 		// Create the message (it takes possesion of address lists)
-		std::auto_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, NULL));
+		std::unique_ptr<CMessage> msg(CreateMessage(to_list.release(), cc_list.release(), bcc_list.release(), subject, body.get(), id, &id->GetDSN(true), &msgs, NULL));
 		
 		// Now send it
 		SendMessage(*msg.get(), id, &id->GetDSN(true), NMessage::eDraftReply, &msgs);
@@ -2041,7 +2041,7 @@ void CActionManager::IncludeMessageText(CMessage& theMsg,
 
 		// Include the message's text as addition
 		{
-			std::auto_ptr<const char> quoted(CTextEngine::QuoteLines(plain_text, plain_text.length(),
+			std::unique_ptr<const char> quoted(CTextEngine::QuoteLines(plain_text, plain_text.length(),
 											CRFC822::GetWrapLength(),
 											forward ?
 											CPreferences::sPrefs->mForwardQuote.GetValue() :

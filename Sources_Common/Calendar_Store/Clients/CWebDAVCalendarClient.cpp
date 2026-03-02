@@ -270,7 +270,7 @@ void CWebDAVCalendarClient::_ListCalendars(CCalendarStoreNode* root)
 	props.push_back(http::webdav::cProperty_getcontenttype);
 	props.push_back(http::webdav::cProperty_resourcetype);
 	props.push_back(http::webdav::cProperty_displayname);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -386,7 +386,7 @@ void CWebDAVCalendarClient::_CreateCalendar(const CCalendarStoreNode& node)
 	if (node.IsDirectory())
 	{
 		// Create WebDAV MKCOL (overwrite not allowed)
-		std::auto_ptr<http::webdav::CWebDAVMakeCollection> request(new http::webdav::CWebDAVMakeCollection(this, rurl));
+		std::unique_ptr<http::webdav::CWebDAVMakeCollection> request(new http::webdav::CWebDAVMakeCollection(this, rurl));
 
 		// Process it
 		RunSession(request.get());
@@ -408,7 +408,7 @@ void CWebDAVCalendarClient::_CreateCalendar(const CCalendarStoreNode& node)
 		cdstring data;
 
 		// Create WebDAV PUT
-		std::auto_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl));
+		std::unique_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl));
 		http::CHTTPInputDataString din(data, "text/calendar; charset=utf-8");
 		http::CHTTPOutputDataString dout;
 		request->SetData(&din, &dout);
@@ -439,7 +439,7 @@ void CWebDAVCalendarClient::_DeleteCalendar(const CCalendarStoreNode& node)
 	rurl.EncodeURL('/');
 
 	// Create WebDAV DELETE
-	std::auto_ptr<http::webdav::CWebDAVDelete> request(new http::webdav::CWebDAVDelete(this, rurl));
+	std::unique_ptr<http::webdav::CWebDAVDelete> request(new http::webdav::CWebDAVDelete(this, rurl));
 
 	// Process it
 	RunSession(request.get());
@@ -470,7 +470,7 @@ void CWebDAVCalendarClient::_RenameCalendar(const CCalendarStoreNode& node, cons
 	cdstring absurl_new = GetRURL(node_new, node.IsDirectory(), true);
 
 	// Create WebDAV MOVE (overwrite not allowed)
-	std::auto_ptr<http::webdav::CWebDAVMove> request(new http::webdav::CWebDAVMove(this, rurl_old, absurl_new, false));
+	std::unique_ptr<http::webdav::CWebDAVMove> request(new http::webdav::CWebDAVMove(this, rurl_old, absurl_new, false));
 
 	// Process it
 	RunSession(request.get());
@@ -503,7 +503,7 @@ bool CWebDAVCalendarClient::_TestCalendar(const CCalendarStoreNode& node)
 	props.push_back(http::webdav::cProperty_getcontentlength);
 	props.push_back(http::webdav::cProperty_getcontenttype);
 	props.push_back(http::webdav::cProperty_resourcetype);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth1, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -665,7 +665,7 @@ void CWebDAVCalendarClient::SizeCalendar_DAV(CCalendarStoreNode& node)
 	rurl.EncodeURL('/');
 	xmllib::XMLNameList props;
 	props.push_back(http::webdav::cProperty_getcontentlength);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -710,7 +710,7 @@ void CWebDAVCalendarClient::SizeCalendar_HTTP(CCalendarStoreNode& node)
 	// Create WebDAV HEAD
 	cdstring rurl = node.GetName();
 	rurl.EncodeURL('/');
-	std::auto_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl, true));
+	std::unique_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl, true));
 	http::CHTTPOutputDataString dout;
 	request->SetData(&dout);
 
@@ -781,7 +781,7 @@ bool CWebDAVCalendarClient::_ReadFullCalendar(const CCalendarStoreNode& node, iC
 	}
 
 	// Create WebDAV GET
-	std::auto_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl));
+	std::unique_ptr<http::webdav::CWebDAVGet> request(new http::webdav::CWebDAVGet(this, rurl));
 	if (if_changed)
 		request->SetETag(cal.GetETag(), false);
 	http::CHTTPOutputDataString dout;
@@ -831,7 +831,7 @@ bool CWebDAVCalendarClient::_ReadFullCalendar(const CCalendarStoreNode& node, iC
 			cal.SetETag(cdstring::null_str);
 		
 		// Check read-only status
-		std::auto_ptr<http::webdav::CWebDAVOptions> optrequest(new http::webdav::CWebDAVOptions(this, rurl));
+		std::unique_ptr<http::webdav::CWebDAVOptions> optrequest(new http::webdav::CWebDAVOptions(this, rurl));
 
 		// Process it
 		RunSession(optrequest.get());
@@ -922,7 +922,7 @@ void CWebDAVCalendarClient::WriteFullCalendar_Put(const CCalendarStoreNode& node
 	rurl.EncodeURL('/');
 
 	// Create WebDAV PUT
-	std::auto_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl, lock_token));
+	std::unique_ptr<http::webdav::CWebDAVPut> request(new http::webdav::CWebDAVPut(this, rurl, lock_token));
 	http::CHTTPInputDataString din(data, "text/calendar; charset=utf-8");
 	http::CHTTPOutputDataString dout;
 	
@@ -1080,7 +1080,7 @@ void CWebDAVCalendarClient::WriteFullACL(CCalendarStoreNode& node)
 	rurl.EncodeURL('/');
 
 	// Create WebDAV ACL
-	std::auto_ptr<http::webdav::CWebDAVACL> request(new http::webdav::CWebDAVACL(this, rurl, node.GetACLs()));
+	std::unique_ptr<http::webdav::CWebDAVACL> request(new http::webdav::CWebDAVACL(this, rurl, node.GetACLs()));
 
 	// Process it
 	RunSession(request.get());
@@ -1111,7 +1111,7 @@ void CWebDAVCalendarClient::_GetACL(CCalendarStoreNode& node)
 	xmllib::XMLNameList props;
 	props.push_back(http::webdav::cProperty_supported_privilege_set);
 	props.push_back(http::webdav::cProperty_acl);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -1168,7 +1168,7 @@ void CWebDAVCalendarClient::_MyRights(CCalendarStoreNode& node)
 	xmllib::XMLNameList props;
 	props.push_back(http::webdav::cProperty_supported_privilege_set);
 	props.push_back(http::webdav::cProperty_current_user_privilege_set);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -1255,7 +1255,7 @@ cdstring CWebDAVCalendarClient::GetProperty(const cdstring& rurl, const cdstring
 	// Create WebDAV propfind
 	xmllib::XMLNameList props;
 	props.push_back(property);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -1301,7 +1301,7 @@ void CWebDAVCalendarClient::TestProperty(const cdstring& rurl, const cdstring& l
 	// Create WebDAV propfind
 	xmllib::XMLNameList props;
 	props.push_back(property);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 	
@@ -1347,7 +1347,7 @@ cdstrvect CWebDAVCalendarClient::GetHrefListProperty(const cdstring& rurl, const
 	// Create WebDAV propfind
 	xmllib::XMLNameList props;
 	props.push_back(propname);
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -1398,7 +1398,7 @@ cdstrvect CWebDAVCalendarClient::GetHrefListProperty(const cdstring& rurl, const
 bool CWebDAVCalendarClient::GetProperties(const cdstring& rurl, const xmllib::XMLNameList& props, cdstrmap& results)
 {
 	// Create WebDAV propfind
-	std::auto_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
+	std::unique_ptr<http::webdav::CWebDAVPropFind> request(new http::webdav::CWebDAVPropFind(this, rurl, http::webdav::eDepth0, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 	
@@ -1451,7 +1451,7 @@ bool CWebDAVCalendarClient::GetProperties(const cdstring& rurl, const xmllib::XM
 bool CWebDAVCalendarClient::GetSelfProperties(const cdstring& rurl, const xmllib::XMLNameList& props, cdstrmap& results)
 {
 	// Create WebDAV principal-match
-	std::auto_ptr<http::webdav::CWebDAVPrincipalMatch> request(new http::webdav::CWebDAVPrincipalMatch(this, rurl, props));
+	std::unique_ptr<http::webdav::CWebDAVPrincipalMatch> request(new http::webdav::CWebDAVPrincipalMatch(this, rurl, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 
@@ -1509,7 +1509,7 @@ bool CWebDAVCalendarClient::GetSelfHrefs(const cdstring& rurl, cdstrvect& result
 	props.push_back(http::webdav::cProperty_principal_URL);
 
 	// Create WebDAV principal-match
-	std::auto_ptr<http::webdav::CWebDAVPrincipalMatch> request(new http::webdav::CWebDAVPrincipalMatch(this, rurl, props));
+	std::unique_ptr<http::webdav::CWebDAVPrincipalMatch> request(new http::webdav::CWebDAVPrincipalMatch(this, rurl, props));
 	http::CHTTPOutputDataString dout;
 	request->SetOutput(&dout);
 	
@@ -1588,7 +1588,7 @@ cdstring CWebDAVCalendarClient::LockResource(const cdstring& rurl, unsigned long
 	owner += GetAccount()->GetServerIP();
 
 	// Create WebDAV LOCK (5 minutes should be enough)
-	std::auto_ptr<http::webdav::CWebDAVLock> request(new http::webdav::CWebDAVLock(this, rurl, http::webdav::eDepth0, http::webdav::CWebDAVLock::eExclusive, owner,
+	std::unique_ptr<http::webdav::CWebDAVLock> request(new http::webdav::CWebDAVLock(this, rurl, http::webdav::eDepth0, http::webdav::CWebDAVLock::eExclusive, owner,
 																				timeout, lock_null ? http::webdav::CWebDAVLock::eResourceMustNotExist : http::webdav::CWebDAVLock::eResourceMustExist));
 
 	// Process it
@@ -1622,7 +1622,7 @@ cdstring CWebDAVCalendarClient::LockResource(const cdstring& rurl, unsigned long
 void CWebDAVCalendarClient::UnlockResource(const cdstring& rurl, const cdstring& lock_token)
 {
 	// Create WebDAV UNLOCK
-	std::auto_ptr<http::webdav::CWebDAVUnlock> request(new http::webdav::CWebDAVUnlock(this, rurl, lock_token));
+	std::unique_ptr<http::webdav::CWebDAVUnlock> request(new http::webdav::CWebDAVUnlock(this, rurl, lock_token));
 
 	// Process it
 	RunSession(request.get());	
@@ -1965,7 +1965,7 @@ void CWebDAVCalendarClient::DoRequest(CHTTPRequestResponse* request)
 	{
 		{
 			// Do CRLF -> lendl conversion for log
-			std::auto_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
+			std::unique_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
 			request->ParseResponseHeader(*mStream, filter.get());
 		}
 
@@ -2046,7 +2046,7 @@ void CWebDAVCalendarClient::ReadResponseData(CHTTPRequestResponse* request)
 void CWebDAVCalendarClient::ReadResponseDataLength(CHTTPRequestResponse* request, unsigned long read_length)
 {
 	// Do CRLF -> lendl conversion for log
-	std::auto_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
+	std::unique_ptr<CStreamFilter> filter(mAllowLog ? new CStreamFilter(new crlf_filterbuf(lendl), mLog.GetLog()) : NULL);
 
 	// Create network status item for % progress counter
 	CNetworkAttachProgress progress;

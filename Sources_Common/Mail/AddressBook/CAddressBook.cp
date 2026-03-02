@@ -786,7 +786,7 @@ void CAddressBook::AddAddress(CAddressList* addrs, bool sorted)
 				mAddresses.push_back(*iter);
 			
 			// Map to vCard
-			std::auto_ptr<vCard::CVCardVCard> vcard(vcardstore::GenerateVCard(GetVCardAdbk()->GetRef(), static_cast<CAdbkAddress*>(*iter), true));
+			std::unique_ptr<vCard::CVCardVCard> vcard(vcardstore::GenerateVCard(GetVCardAdbk()->GetRef(), static_cast<CAdbkAddress*>(*iter), true));
 			GetVCardAdbk()->AddNewVCard(vcard.release(), true);
 		}
 	}

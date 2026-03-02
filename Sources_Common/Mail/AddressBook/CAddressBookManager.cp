@@ -673,7 +673,7 @@ void CAddressBookManager::RenameAddressBook(CAddressBook* node, const cdstring& 
 #ifdef _TODO
 		// If the calendar is open rename the calendar object and do an immediate write
 		iCal::CICalendar* cal = node->GetCalendar();
-		std::auto_ptr<iCal::CICalendar> opened;
+		std::unique_ptr<iCal::CICalendar> opened;
 		try
 		{
 			if (cal == NULL)
@@ -901,7 +901,7 @@ bool CAddressBookManager::ResolveGroupName(const char* grp_name, CAddressList* l
 // Do search
 void CAddressBookManager::SearchAddress(const cdstring& name, CAdbkAddress::EAddressMatch match, CAdbkAddress::EAddressField field, const cdstring& field_name)
 {
-	std::auto_ptr<CAddressList> addr_list(new CAddressList);
+	std::unique_ptr<CAddressList> addr_list(new CAddressList);
 
 	// Get search results
 	SearchAddress(name, match, field, *addr_list);
@@ -942,7 +942,7 @@ void CAddressBookManager::SearchAddress(const cdstring& name, CAdbkAddress::EAdd
 // Do search (not IMSP/ACAP)
 void CAddressBookManager::SearchAddress(EAddrLookup method, bool expanding, const cdstring& item, CAdbkAddress::EAddressMatch match, CAdbkAddress::EAddressField field)
 {
-	std::auto_ptr<CAddressList> addr_list(new CAddressList);
+	std::unique_ptr<CAddressList> addr_list(new CAddressList);
 
 	// Get search results
 	SearchAddress(method, expanding, item, match, field, *addr_list);
@@ -1202,7 +1202,7 @@ void CAddressBookManager::CaptureAddress(CAddressList& addrs)
 		// Look at each address
 		for(CAddressList::iterator iter = add_addrs.begin(); iter != add_addrs.end() ; iter++)
 		{
-			std::auto_ptr<CAdbkAddress> test(new CAdbkAddress(**iter));
+			std::unique_ptr<CAdbkAddress> test(new CAdbkAddress(**iter));
 
 			// Check to see whether it already exists
 			cdstring email = test->GetMailAddress();

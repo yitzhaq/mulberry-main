@@ -612,7 +612,7 @@ void CCalendarStoreNode::CopyCalendar(CCalendarStoreNode* node)
 	}
 
 	// Create calendar and read in this one's data
-	std::auto_ptr<iCal::CICalendar> cal(new iCal::CICalendar);
+	std::unique_ptr<iCal::CICalendar> cal(new iCal::CICalendar);
 	
 	// Read from source into new calendar object
 	GetProtocol()->ReadFullCalendar(*this, *cal);
@@ -646,7 +646,7 @@ void CCalendarStoreNode::CopyCalendarContents(CCalendarStoreNode* node)
 	}
 
 	// Create calendar and read in this one's data
-	std::auto_ptr<iCal::CICalendar> cal(new iCal::CICalendar);
+	std::unique_ptr<iCal::CICalendar> cal(new iCal::CICalendar);
 	
 	// Read from source into new calendar object
 	GetProtocol()->ReadFullCalendar(*this, *cal);

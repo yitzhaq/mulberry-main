@@ -212,7 +212,7 @@ void CFormattedTextDisplay::ParseHeader(const char* header, EView parsing)
 
 		// Do URLs
 		{
-			std::auto_ptr<CParserPlain> PParser(new CParserPlain(uheader, mList, mClickList));
+			std::unique_ptr<CParserPlain> PParser(new CParserPlain(uheader, mList, mClickList));
 			for(unsigned long j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
 				PParser->AddURL(CPreferences::sPrefs->mRecognizeURLs.GetValue()[j].c_str());
 			PParser->LookForURLs(mText.length());
@@ -252,11 +252,11 @@ const unichar_t* CFormattedTextDisplay::ParseBody(const unichar_t* body, EConten
 			{
 				if (parsing != eViewRaw)
 				{
-					std::auto_ptr<CParserHTML> HParser(new CParserHTML(body, mList,
+					std::unique_ptr<CParserHTML> HParser(new CParserHTML(body, mList,
 													(mHandleClick && (parsing == eViewFormatted)) ? mClickList : NULL,
 													(mHandleClick && (parsing == eViewFormatted)) ? mAnchorMap : NULL, use_styles));
 					HParser->SetFontScale(mFontScale);
-					std::auto_ptr<const unichar_t> data(HParser->Parse(mText.length(), true));
+					std::unique_ptr<const unichar_t> data(HParser->Parse(mText.length(), true));
 					if (parsing == eViewFormatted)
 					{
 						mBackground = mColorList.Add(HParser->GetBackgroundColor());
@@ -266,7 +266,7 @@ const unichar_t* CFormattedTextDisplay::ParseBody(const unichar_t* body, EConten
 				}
 				else
 				{
-					std::auto_ptr<CParserHTML> HParser(new CParserHTML(body, mList, mClickList, mAnchorMap));
+					std::unique_ptr<CParserHTML> HParser(new CParserHTML(body, mList, mClickList, mAnchorMap));
 					HParser->SetFontScale(mFontScale);
 					HParser->RawParse(mText.length());
 					
@@ -278,9 +278,9 @@ const unichar_t* CFormattedTextDisplay::ParseBody(const unichar_t* body, EConten
 			{
 				if (parsing != eViewRaw)
 				{
-					std::auto_ptr<CParserEnriched> EParser(new CParserEnriched(body, mList, use_styles));
+					std::unique_ptr<CParserEnriched> EParser(new CParserEnriched(body, mList, use_styles));
 					EParser->SetFontScale(mFontScale);
-					std::auto_ptr<const unichar_t> data(EParser->Parse(mText.length(), true));
+					std::unique_ptr<const unichar_t> data(EParser->Parse(mText.length(), true));
 					EParser.reset();
 					
 					if (mHandleClick)
@@ -288,7 +288,7 @@ const unichar_t* CFormattedTextDisplay::ParseBody(const unichar_t* body, EConten
 						// URLs only if formatted display
 						if (parsing == eViewFormatted)
 						{
-							std::auto_ptr<CParserPlain> PParser(new CParserPlain(data.get(), mOverrideList, mClickList));
+							std::unique_ptr<CParserPlain> PParser(new CParserPlain(data.get(), mOverrideList, mClickList));
 						
 							for(int j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
 								PParser->AddURL(CPreferences::sPrefs->mRecognizeURLs.GetValue()[j].c_str());
@@ -299,7 +299,7 @@ const unichar_t* CFormattedTextDisplay::ParseBody(const unichar_t* body, EConten
 				}
 				else
 				{
-					std::auto_ptr<CParserEnriched> EParser(new CParserEnriched(body, mList));
+					std::unique_ptr<CParserEnriched> EParser(new CParserEnriched(body, mList));
 					EParser->SetFontScale(mFontScale);
 					EParser->RawParse(mText.length());
 					
@@ -311,10 +311,10 @@ const unichar_t* CFormattedTextDisplay::ParseBody(const unichar_t* body, EConten
 		default:
 			if (mHandleClick)
 			{
-				std::auto_ptr<CParserPlain> PParser(new CParserPlain(body, NULL, NULL));
+				std::unique_ptr<CParserPlain> PParser(new CParserPlain(body, NULL, NULL));
 				if (parsing == eViewFormatted)
 					PParser->SetQuoteDepth(quote);
-				std::auto_ptr<const unichar_t> data(PParser->Parse(mText.length()));
+				std::unique_ptr<const unichar_t> data(PParser->Parse(mText.length()));
 				PParser.reset();
 
 				// URLs only if formatted display
@@ -445,8 +445,8 @@ void CFormattedTextDisplay::InsertFormattedText(const unichar_t* body, EContentS
 	else
 	{
 		// Create styler list
-		std::auto_ptr<CFormatList> flist(new CFormatList);
-		std::auto_ptr<const unichar_t> data;
+		std::unique_ptr<CFormatList> flist(new CFormatList);
+		std::unique_ptr<const unichar_t> data;
 
 		// Get pos of insert cursor
 		JIndex selStart;
@@ -456,12 +456,12 @@ void CFormattedTextDisplay::InsertFormattedText(const unichar_t* body, EContentS
 		// Parse the text to get raw text and styles
 		if (subtype == eContentSubHTML)
 		{
-			std::auto_ptr<CParserHTML> HParser(new CParserHTML(body, flist.get(), NULL, NULL, true));
+			std::unique_ptr<CParserHTML> HParser(new CParserHTML(body, flist.get(), NULL, NULL, true));
 			data.reset(HParser->Parse(selStart, true, quote, forward));
 		}
 		else if (subtype == eContentSubEnriched)
 		{
-			std::auto_ptr<CParserEnriched> EParser(new CParserEnriched(body, flist.get(), true));
+			std::unique_ptr<CParserEnriched> EParser(new CParserEnriched(body, flist.get(), true));
 			data.reset(EParser->Parse(selStart, true, quote, forward));
 		}
 		
@@ -1007,7 +1007,7 @@ void CFormattedTextDisplay::DoQuotation()
 
 	// Get number of lines and create line info array
 	int lines = GetLineCount();
-	std::auto_ptr<lineInfo> info(new lineInfo[lines]);
+	std::unique_ptr<lineInfo> info(new lineInfo[lines]);
 
 	// Get quotes and pre-calculate their sizes
 	const cdstrvect& quotes = CPreferences::sPrefs->mRecognizeQuotes.GetValue();

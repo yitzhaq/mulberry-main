@@ -221,7 +221,7 @@ void CFilterItem::Execute(CMbox* mbox, const ulvector* selected, const CSearchIt
 	else if (andit || (mCriteria->GetType() != CSearchItem::eAll) || !selected || !selected->size())
 	{
 		// Modified criteria
-		std::auto_ptr<CSearchItem> criteria;
+		std::unique_ptr<CSearchItem> criteria;
 
 		// Intersect with selected messages
 		if (selected && selected->size())

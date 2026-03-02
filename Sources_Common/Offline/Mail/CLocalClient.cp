@@ -1483,7 +1483,7 @@ void CLocalClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool 
 		bool use_dummy = !GetCurrentMbox()->IsFullOpen();
 
 		// Create search buffer
-		std::auto_ptr<char> search(new char[cSearchBufferSize]);
+		std::unique_ptr<char> search(new char[cSearchBufferSize]);
 		StValueChanger<char*> change(mSearchBuffer, search.get());
 
 		//StProfileSection profile("\pSearching", 200, 20);
@@ -2292,7 +2292,7 @@ void CLocalClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to,
 			CLocalMessage* msg = is_full_open ? dynamic_cast<CLocalMessage*>(GetCurrentMbox()->GetMessage(*iter)) : NULL;
 
 			// Message must exist and be cached
-			std::auto_ptr<CLocalMessage> lmsg;
+			std::unique_ptr<CLocalMessage> lmsg;
 			if (!msg || !msg->IsFullyCached())
 			{
 				// Create temp local message
@@ -2961,7 +2961,7 @@ bool CLocalClient::ReconstructRecover(CMbox* mbox, CMessageList* list, SIndexHea
 	{
 		// Its not ours - we have to create a fake CLocalClient and use that to do
 		// the reconstruct to keep the data in this CLocalClient consistent
-		std::auto_ptr<CLocalClient> temp(new CLocalClient(*this, mbox->GetProtocol()));
+		std::unique_ptr<CLocalClient> temp(new CLocalClient(*this, mbox->GetProtocol()));
 		
 		// Reconstruct recovery via the fake but force it to use the mailbox even though
 		// its not really current
@@ -3437,8 +3437,8 @@ unsigned long CLocalClient::GetIndex(unsigned long seq) const
 void CLocalClient::ScanDirectory(const char* path, const cdstring& pattern, CMboxList* mbox_list, bool first)
 {
 	// Create lists for directories and mailboxes
-	std::auto_ptr<cdstrvect> dirs(new cdstrvect);
-	std::auto_ptr<cdstrvect> mboxes(new cdstrvect);
+	std::unique_ptr<cdstrvect> dirs(new cdstrvect);
+	std::unique_ptr<cdstrvect> mboxes(new cdstrvect);
 
 	// Iterate over all .mbx files/directories in directory
 	// but not ones that are hidden
@@ -4643,7 +4643,7 @@ bool CLocalClient::StreamSearch(std::istream& in, unsigned long start, unsigned 
 	// Set initial stream pos
 	in.seekg(start);
 
-	std::auto_ptr<CStreamFilter> filter;
+	std::unique_ptr<CStreamFilter> filter;
 
 	// May need to filter
 	switch(cte)

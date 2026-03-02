@@ -286,7 +286,7 @@ JBoolean CLetterTextEditView::TEXWillAcceptDrop
 	Atom move = dndMgr->GetDNDActionMoveXAtom();
 	if (action == move)
 	{
-		std::auto_ptr<JOrderedSetIterator<Atom> > ti(typeList.NewIterator());
+		std::unique_ptr<JOrderedSetIterator<Atom> > ti(typeList.NewIterator());
 		Atom i;
 		while (ti->Next(&i))
 		{

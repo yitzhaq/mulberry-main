@@ -145,7 +145,7 @@ bool CAdbkRecord::Playback(CAdbkProtocol* remote, CAdbkProtocol* local)
 {
 	// Check for forced logging
 	bool log_created = false;
-	std::auto_ptr<cdofstream> fout;
+	std::unique_ptr<cdofstream> fout;
 	if (!mLog && CLog::AllowPlaybackLog())
 	{
 		cdstring temp_name = mDescriptor + ".log";
@@ -319,7 +319,7 @@ void CAdbkRecord::Playback_Create(CAdbkAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetName()));
+		std::unique_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetName()));
 
 		// Create on server
 		mPlayRemote->CreateAdbk(adbk.get());
@@ -344,7 +344,7 @@ void CAdbkRecord::Playback_Delete(CAdbkAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetName()));
+		std::unique_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetName()));
 
 		// Create on server
 		mPlayRemote->DeleteAdbk(adbk.get());
@@ -366,8 +366,8 @@ void CAdbkRecord::Playback_Delete(CAdbkAction& action)
 
 void CAdbkRecord::Playback_Change(CAdbkAction& action)
 {
-	std::auto_ptr<CAddressBook> node;
-	std::auto_ptr<vCard::CVCardAddressBook> adbk;
+	std::unique_ptr<CAddressBook> node;
+	std::unique_ptr<vCard::CVCardAddressBook> adbk;
 
 	try
 	{
@@ -417,7 +417,7 @@ void CAdbkRecord::Playback_Rename(CAdbkAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetNamePair().first));
+		std::unique_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetNamePair().first));
 
 		// Create on server
 		mPlayRemote->RenameAdbk(adbk.get(), action.GetNamePair().second);
@@ -456,7 +456,7 @@ void CAdbkRecord::Playback_StoreChangeAddress(CAdbkAction& action, bool store)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
+		std::unique_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
 
 		// Get address from local object
 		local = mPlayLocal->GetNode(action.GetList().front());
@@ -534,7 +534,7 @@ void CAdbkRecord::Playback_DeleteAddress(CAdbkAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
+		std::unique_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
 
 		// Create dummy addresses for delete
 		CAddressList addrs;
@@ -594,7 +594,7 @@ void CAdbkRecord::Playback_StoreChangeGroup(CAdbkAction& action, bool store)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
+		std::unique_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
 
 		// Get address from local object
 		local = mPlayLocal->GetNode(action.GetList().front());
@@ -672,7 +672,7 @@ void CAdbkRecord::Playback_DeleteGroup(CAdbkAction& action)
 	try
 	{
 		// Create temp remote object
-		std::auto_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
+		std::unique_ptr<CAddressBook> adbk(new CAddressBook(mPlayRemote, mPlayRemote->GetStoreRoot(), true, false, action.GetList().front()));
 
 		// Create dummy groups for delete
 		CGroupList grps;

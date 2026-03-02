@@ -3025,7 +3025,7 @@ void CMboxProtocol::SynchroniseRemote(CMbox* mbox, bool fast, bool partial, unsi
 	// Sync mailbox from this proto to temp one
 
 	// Create local clone
-	std::auto_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
+	std::unique_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
 	clone->SetSynchronising();
 
 	try
@@ -3035,7 +3035,7 @@ void CMboxProtocol::SynchroniseRemote(CMbox* mbox, bool fast, bool partial, unsi
 		clone->SetState(eINETLoggedOn);
 
 		// Create copy of mailbox
-		std::auto_ptr<CMbox> temp(new CMbox(*mbox));
+		std::unique_ptr<CMbox> temp(new CMbox(*mbox));
 
 		// Local mailbox is given local protocol
 		temp->SetProtocol(clone.get());
@@ -3673,7 +3673,7 @@ void CMboxProtocol::ClearDisconnect(CMbox* mbox, const ulvector& uids)
 	else
 	{
 		// Create local clone
-		std::auto_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
+		std::unique_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
 		clone->SetSynchronising();
 
 		try
@@ -3683,7 +3683,7 @@ void CMboxProtocol::ClearDisconnect(CMbox* mbox, const ulvector& uids)
 			clone->SetState(eINETLoggedOn);
 
 			// Create copy of mailbox
-			std::auto_ptr<CMbox> temp(new CMbox(*mbox));
+			std::unique_ptr<CMbox> temp(new CMbox(*mbox));
 
 			// Local mailbox is given local protocol
 			temp->SetProtocol(clone.get());
@@ -3863,7 +3863,7 @@ bool CMboxProtocol::DoPlayback(CProgress* progress)
 		return true;
 
 	// Create remote clone
-	std::auto_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, false, true));
+	std::unique_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, false, true));
 	clone->SetSynchronising();
 
 	// Prevent further recording
@@ -3880,7 +3880,7 @@ bool CMboxProtocol::DoPlayback(CProgress* progress)
 void CMboxProtocol::GetDisconnectedMessageState(CMbox* remote, ulvector& full, ulvector& partial)
 {
 	// Create local clone
-	std::auto_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
+	std::unique_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
 	clone->SetSynchronising();
 	clone->SetNoErrorAlert(true);
 	clone->SetNoRecovery(true);
@@ -3892,7 +3892,7 @@ void CMboxProtocol::GetDisconnectedMessageState(CMbox* remote, ulvector& full, u
 		clone->SetState(eINETLoggedOn);
 
 		// Create copy of mailbox
-		std::auto_ptr<CMbox> local(new CMbox(*remote));
+		std::unique_ptr<CMbox> local(new CMbox(*remote));
 
 		// Local mailbox is given local protocol
 		local->SetProtocol(clone.get());
@@ -3963,7 +3963,7 @@ void CMboxProtocol::GetLastSync(CMbox* remote)
 {
 
 	// Create local clone
-	std::auto_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
+	std::unique_ptr<CMboxProtocol> clone(new CMboxProtocol(*this, true));
 	clone->SetSynchronising();
 
 	try
@@ -3973,7 +3973,7 @@ void CMboxProtocol::GetLastSync(CMbox* remote)
 		clone->SetState(eINETLoggedOn);
 
 		// Create copy of mailbox
-		std::auto_ptr<CMbox> local(new CMbox(*remote));
+		std::unique_ptr<CMbox> local(new CMbox(*remote));
 
 		// Local mailbox is given local protocol
 		local->SetProtocol(clone.get());

@@ -445,8 +445,8 @@ bool CCharsetManager::Transcode(ECharsetCode from, ECharsetCode to, const char* 
 	}
 
 	// Get converters
-	std::auto_ptr<CConverterBase> to_unicode(GetConverter(from));
-	std::auto_ptr<CConverterBase> from_unicode(GetConverter(to));
+	std::unique_ptr<CConverterBase> to_unicode(GetConverter(from));
+	std::unique_ptr<CConverterBase> from_unicode(GetConverter(to));
 	
 	// Must have converters
 	if (!to_unicode.get() || !from_unicode.get())
@@ -497,7 +497,7 @@ cdstring CCharsetManager::Transcode(ECharsetCode from, ECharsetCode to, const cd
 bool CCharsetManager::ToUnicode(ECharsetCode from, const char* in, size_t len, std::ostream& out) const
 {
 	// Get converter
-	std::auto_ptr<CConverterBase> to_unicode(GetConverter(from));
+	std::unique_ptr<CConverterBase> to_unicode(GetConverter(from));
 	
 	// Must have converter
 	if (!to_unicode.get())
@@ -512,7 +512,7 @@ bool CCharsetManager::ToUnicode(ECharsetCode from, const char* in, size_t len, s
 bool CCharsetManager::FromUnicode(ECharsetCode to, const wchar_t* in, size_t wlen, std::ostream& out) const
 {
 	// Get converter
-	std::auto_ptr<CConverterBase> from_unicode(GetConverter(to));
+	std::unique_ptr<CConverterBase> from_unicode(GetConverter(to));
 	
 	// Must have converter
 	if (!from_unicode.get())
@@ -557,7 +557,7 @@ bool CCharsetManager::ToUTF16(ECharsetCode from, const char* in, size_t len, std
 	}
 	
 	// Get converter
-	std::auto_ptr<CConverterBase> to_unicode(GetConverter(from));
+	std::unique_ptr<CConverterBase> to_unicode(GetConverter(from));
 	
 	// Must have converter
 	if (!to_unicode.get())
@@ -578,7 +578,7 @@ bool CCharsetManager::FromUTF16(ECharsetCode to, const unichar_t* in, size_t ule
 	}
 	
 	// Get converter
-	std::auto_ptr<CConverterBase> from_unicode(GetConverter(to));
+	std::unique_ptr<CConverterBase> from_unicode(GetConverter(to));
 	
 	// Must have converter
 	if (!from_unicode.get())
@@ -599,7 +599,7 @@ bool CCharsetManager::ToUTF8(ECharsetCode from, const char* in, size_t len, std:
 	}
 	
 	// Get converter
-	std::auto_ptr<CConverterBase> to_unicode(GetConverter(from));
+	std::unique_ptr<CConverterBase> to_unicode(GetConverter(from));
 	
 	// Must have converter
 	if (!to_unicode.get())
