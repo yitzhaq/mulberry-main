@@ -1,12 +1,12 @@
 /*
     Copyright (c) 2007 Cyrus Daboo. All rights reserved.
-    
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-    
+
         http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,12 +34,17 @@
 #include <memory.h>
 //#include "cryptlib.h"
 #include <openssl/bio.h>
+#include <openssl/opensslv.h>
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+const BIO_METHOD *BIO_f_crlfbuffer(void);
+#else
 BIO_METHOD *BIO_f_crlfbuffer(void);
+#endif
 #ifdef __cplusplus
 }
 #endif
@@ -57,6 +62,35 @@ static long crlfbuffer_callback_ctrl(BIO *h, int cmd, bio_info_cb *fp);
 /* #define DEBUG */
 
 #define BIO_TYPE_CRLFBUFFER	(27|0x0200)		/* filter */
+
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+
+static BIO_METHOD *methods_crlfbuffer = NULL;
+
+static void crlfbuffer_methods_init(void)
+{
+	if (methods_crlfbuffer != NULL)
+		return;
+	methods_crlfbuffer = BIO_meth_new(BIO_TYPE_CRLFBUFFER, "crlfbuffer");
+	if (methods_crlfbuffer == NULL)
+		return;
+	BIO_meth_set_write(methods_crlfbuffer, crlfbuffer_write);
+	BIO_meth_set_read(methods_crlfbuffer, crlfbuffer_read);
+	BIO_meth_set_puts(methods_crlfbuffer, crlfbuffer_puts);
+	BIO_meth_set_gets(methods_crlfbuffer, crlfbuffer_gets);
+	BIO_meth_set_ctrl(methods_crlfbuffer, crlfbuffer_ctrl);
+	BIO_meth_set_create(methods_crlfbuffer, crlfbuffer_new);
+	BIO_meth_set_destroy(methods_crlfbuffer, crlfbuffer_free);
+	BIO_meth_set_callback_ctrl(methods_crlfbuffer, crlfbuffer_callback_ctrl);
+}
+
+const BIO_METHOD *BIO_f_crlfbuffer(void)
+{
+	crlfbuffer_methods_init();
+	return methods_crlfbuffer;
+}
+
+#else
 
 static BIO_METHOD methods_crlfbuffer=
 	{
@@ -76,6 +110,8 @@ BIO_METHOD *BIO_f_crlfbuffer(void)
 	{
 	return(&methods_crlfbuffer);
 	}
+
+#endif
 
 typedef struct bio_crlfbuffer_ctx_struct
 	{
@@ -102,9 +138,15 @@ static int crlfbuffer_new(BIO *bi)
 	ctx->ibuf_off=0;
 	ctx->got_cr=0;
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	BIO_set_init(bi, 1);
+	BIO_set_data(bi, ctx);
+	BIO_clear_flags(bi, ~0);
+#else
 	bi->init=1;
 	bi->ptr=(char *)ctx;
 	bi->flags=0;
+#endif
 	return(1);
 	}
 
@@ -113,12 +155,21 @@ static int crlfbuffer_free(BIO *a)
 	BIO_CRLFBUFFER_CTX *b;
 
 	if (a == NULL) return(0);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	b=(BIO_CRLFBUFFER_CTX *)BIO_get_data(a);
+	if (b->ibuf != NULL) OPENSSL_free(b->ibuf);
+	OPENSSL_free(b);
+	BIO_set_data(a, NULL);
+	BIO_set_init(a, 0);
+	BIO_clear_flags(a, ~0);
+#else
 	b=(BIO_CRLFBUFFER_CTX *)a->ptr;
 	if (b->ibuf != NULL) OPENSSL_free(b->ibuf);
 	OPENSSL_free(a->ptr);
 	a->ptr=NULL;
 	a->init=0;
 	a->flags=0;
+#endif
 	return(1);
 	}
 
@@ -126,11 +177,16 @@ static int crlfbuffer_read(BIO *b, char *out, int outl)
 	{
 	int ret=0;
 	BIO_CRLFBUFFER_CTX *ctx;
- 
+
 	if (out == NULL) return(0);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	if (BIO_next(b) == NULL) return(0);
+	ctx=(BIO_CRLFBUFFER_CTX *)BIO_get_data(b);
+#else
 	if (b->next_bio == NULL) return(0);
 	ctx=(BIO_CRLFBUFFER_CTX *)b->ptr;
-	
+#endif
+
 	// First copy what's in the current buffer
 	int i = ctx->ibuf_len;
 	if (i != 0)
@@ -147,13 +203,21 @@ static int crlfbuffer_read(BIO *b, char *out, int outl)
 
 	// Now read any remaining direct from source
 	if (outl > 0)
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		ret += BIO_read(BIO_next(b),out,outl);
+#else
 		ret += BIO_read(b->next_bio,out,outl);
+#endif
 	BIO_clear_retry_flags(b);
 	BIO_copy_next_retry(b);
 
 	if (ret > 0)
 	{
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		BIO_CRLFBUFFER_CTX *new_ctx = (BIO_CRLFBUFFER_CTX *)BIO_get_data(b);
+#else
 		BIO_CRLFBUFFER_CTX *new_ctx = (BIO_CRLFBUFFER_CTX *)b->ptr;
+#endif
 		char *p = out;
 		char *q = out;
 		int qlen = 0;
@@ -198,8 +262,13 @@ static int crlfbuffer_write(BIO *b, const char *in, int inl)
 	int ret=0;
 
 	if ((in == NULL) || (inl <= 0)) return(0);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	if (BIO_next(b) == NULL) return(0);
+	ret=BIO_write(BIO_next(b),in,inl);
+#else
 	if (b->next_bio == NULL) return(0);
 	ret=BIO_write(b->next_bio,in,inl);
+#endif
 	BIO_clear_retry_flags(b);
 	BIO_copy_next_retry(b);
 	return(ret);
@@ -209,30 +278,51 @@ static long crlfbuffer_ctrl(BIO *b, int cmd, long num, void *ptr)
 	{
 	long ret = 0;
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	if (BIO_next(b) == NULL) return(0);
+#else
 	if (b->next_bio == NULL) return(0);
+#endif
 	switch(cmd)
 		{
     case BIO_CTRL_RESET:
     {
 		BIO_CRLFBUFFER_CTX *ctx;
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		ctx=(BIO_CRLFBUFFER_CTX *)BIO_get_data(b);
+#else
 		ctx=(BIO_CRLFBUFFER_CTX *)b->ptr;
+#endif
 		ctx->ibuf_len=0;
 		ctx->ibuf_off=0;
 		ctx->got_cr=0;
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		if (BIO_next(b))
+			(void)BIO_reset(BIO_next(b));
+#else
 		if (b->next_bio)
 			(void)BIO_reset(b->next_bio);
+#endif
     	break;
     }
     case BIO_C_DO_STATE_MACHINE:
 		BIO_clear_retry_flags(b);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		ret=BIO_ctrl(BIO_next(b),cmd,num,ptr);
+#else
 		ret=BIO_ctrl(b->next_bio,cmd,num,ptr);
+#endif
 		BIO_copy_next_retry(b);
 		break;
 	case BIO_CTRL_DUP:
 		ret=0L;
 		break;
 	default:
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		ret=BIO_ctrl(BIO_next(b),cmd,num,ptr);
+#else
 		ret=BIO_ctrl(b->next_bio,cmd,num,ptr);
+#endif
 		}
 	return(ret);
 	}
@@ -241,13 +331,13 @@ static long crlfbuffer_callback_ctrl(BIO *b, int cmd, bio_info_cb *fp)
 	{
 	long ret=1;
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	if (BIO_next(b) == NULL) return(0);
+	ret=BIO_callback_ctrl(BIO_next(b),cmd,fp);
+#else
 	if (b->next_bio == NULL) return(0);
-	//switch (cmd)
-		//{
-	//default:
-		ret=BIO_callback_ctrl(b->next_bio,cmd,fp);
-		//break;
-		//}
+	ret=BIO_callback_ctrl(b->next_bio,cmd,fp);
+#endif
 	return(ret);
 	}
 
@@ -257,7 +347,11 @@ static int crlfbuffer_gets(BIO *b, char *buf, int size)
 	int num=0,i,flag;
 	char *p;
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	ctx=(BIO_CRLFBUFFER_CTX *)BIO_get_data(b);
+#else
 	ctx=(BIO_CRLFBUFFER_CTX *)b->ptr;
+#endif
 	size--; /* reserve space for a '\0' */
 	BIO_clear_retry_flags(b);
 
@@ -298,7 +392,11 @@ static int crlfbuffer_gets(BIO *b, char *buf, int size)
 			}
 		else	/* read another chunk */
 			{
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			i=BIO_read(BIO_next(b),ctx->ibuf,ctx->ibuf_size);
+#else
 			i=BIO_read(b->next_bio,ctx->ibuf,ctx->ibuf_size);
+#endif
 			if (i <= 0)
 				{
 				BIO_copy_next_retry(b);
@@ -315,4 +413,3 @@ static int crlfbuffer_puts(BIO *b, const char *str)
 	{
 	return(crlfbuffer_write(b,str,strlen(str)));
 	}
-
