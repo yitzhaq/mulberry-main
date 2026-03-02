@@ -486,7 +486,7 @@ void CFormattedTextDisplay::AdjustCursor(const JPoint& pt, const JXKeyModifiers&
 	CClickElement* hit_element = (mClickList ? mClickList->findCursor(offset) : NULL);
 
 	// Check for end of text
-	bool change = (mHandleClick && mods_off && mClickList && (offset < GetTextLength()) ? mClickList->findCursor(offset - 1) : false);
+	bool change = (mHandleClick && mods_off && mClickList && (offset < GetTextLength()) ? (mClickList->findCursor(offset - 1) != NULL) : false);
 
 	// Check for line end
 	if (change)
