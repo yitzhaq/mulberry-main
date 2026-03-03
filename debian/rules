@@ -23,22 +23,24 @@ configure-stamp: patch-stamp
             --with-mulberry-dir=lib/mulberry \
             --with-mulberry-dir=lib/mulberry \
             --with-help-dir=share/doc/mulberry \
-            --with-program-dir=bin \
-            --with-openssl-include=Libraries/openssl/include
+            --with-program-dir=bin
 	touch configure-stamp
 
 build: build-stamp
 
-build-stamp: configure-stamp 
+build-stamp: configure-stamp
+	# Generate current timezone data from IANA tzdata
+	./scripts/update-timezones.sh
 	mkdir -p $(JXDIST)/lib
 	mkdir -p $(JXDIST)/bin
+	mkdir -p Linux/Includes
 	JX_INSTALL_ROOT="$(JXDIST)/bin" JX_LIB_ROOT="$(JXDIST)/lib" \
 		$(MAKE) ROOT_DATA_FILE_DIR=$(JXDIST)/data
 	touch build-stamp
 
 clean: unpatch
 	-$(MAKE) distclean
-	rm -rf *~ debian/mulberry debian/*~ build-stamp configure-stamp $(JXDIST)/lib
+	rm -rf *~ debian/mulberry debian/*~ build-stamp configure-stamp $(JXDIST)/lib Linux/Includes
 	dh_clean 
 
 binary-indep: build install
