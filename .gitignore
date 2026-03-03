@@ -129,3 +129,7 @@ Win32/MulberryVC10.sdf
 Win32/MulberryVC10.suo
 Win32/MulberryVC10.opensdf
 Win32/ipch/
+
+# Generated timezone files (built from IANA tzdata via vzic)
+Sources_Common/Timezones/zoneinfo/*.ics
+Sources_Common/Timezones/zoneinfo/*/*.ics
