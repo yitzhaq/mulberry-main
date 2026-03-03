@@ -3,7 +3,7 @@ Section: mail
 Priority: optional
 Maintainer: Martin Dietze <herbert@spamcop.net>
 Standards-Version: 3.8.3
-Build-Depends: debhelper (>= 7.0.50~), autoconf, libkrb5-dev, libldap2-dev, libaspell-dev, libesd0-dev, libxpm-dev, libfontconfig1-dev
+Build-Depends: debhelper (>= 7.0.50~), autoconf, libkrb5-dev, libldap2-dev, libaspell-dev, libxpm-dev, libfontconfig1-dev, libssl-dev, libpcre3-dev, libfl-dev, pkg-config, libglib2.0-dev, curl
 
 Package: mulberry
 Architecture: any
