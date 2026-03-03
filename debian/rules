@@ -35,7 +35,7 @@ build-stamp: configure-stamp
 	mkdir -p $(JXDIST)/bin
 	mkdir -p Linux/Includes
 	JX_INSTALL_ROOT="$(JXDIST)/bin" JX_LIB_ROOT="$(JXDIST)/lib" \
-		$(MAKE) ROOT_DATA_FILE_DIR=$(JXDIST)/data
+		$(MAKE) SKIPOPENSSL="yes" ROOT_DATA_FILE_DIR=$(JXDIST)/data
 	touch build-stamp
 
 clean: unpatch
