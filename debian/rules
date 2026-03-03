@@ -41,6 +41,7 @@ build-stamp: configure-stamp
 clean: unpatch
 	-$(MAKE) distclean
 	rm -rf *~ debian/mulberry debian/*~ build-stamp configure-stamp $(JXDIST)/lib Linux/Includes
+	rm -f Sources_Common/Timezones/zoneinfo/*.ics Sources_Common/Timezones/zoneinfo/*/*.ics Sources_Common/Timezones/zoneinfo/version.txt
 	dh_clean 
 
 binary-indep: build install
