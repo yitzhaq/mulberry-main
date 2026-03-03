@@ -19,3 +19,6 @@
 [submodule "Libraries/vendor/MoreFilesX"]
 	path = Libraries/vendor/MoreFilesX
 	url = git@github.com:yitzhaq/mulberry-vendor-morefilesx.git
+[submodule "Libraries/vzic"]
+	path = Libraries/vzic
+	url = https://github.com/yitzhaq/mulberry-vendor-vzic.git
