@@ -148,8 +148,8 @@ void ptr_checks()
 
 void ptr_check(void* ptr)
 {
-	// Bump pointer back to start of info
-	SMemoryBlock* block = (SMemoryBlock*) (((unsigned long) ptr) - sizeof(SMemoryInfoBlock));
+	// Bump pointer back to start of info (use proper pointer arithmetic)
+	SMemoryBlock* block = reinterpret_cast<SMemoryBlock*>(static_cast<char*>(ptr) - sizeof(SMemoryInfoBlock));
 	
 	// Verify markers
 	if ((block->mInfo.mFlags & eBlock_InUse) != 0)
@@ -413,8 +413,8 @@ void* std::realloc(void *ptr, size_t size)
 	
 	if (ptr != NULL)
 	{
-		// Bump pointer back to start of info
-		SMemoryBlock* block = (SMemoryBlock*) (((unsigned long) ptr) - sizeof(SMemoryInfoBlock));
+		// Bump pointer back to start of info (use proper pointer arithmetic)
+		SMemoryBlock* block = reinterpret_cast<SMemoryBlock*>(static_cast<char*>(ptr) - sizeof(SMemoryInfoBlock));
 		
 		// Copy over original data
 		::memcpy(result, ptr, block->mInfo.mSize);
@@ -449,8 +449,8 @@ void std::free(void* ptr)
 		if (sPtrChecks)
 			ptr_checks();
 
-		// Bump pointer back to start of info
-		SMemoryBlock* block = (SMemoryBlock*) (((unsigned long) ptr) - sizeof(SMemoryInfoBlock));
+		// Bump pointer back to start of info (use proper pointer arithmetic)
+		SMemoryBlock* block = reinterpret_cast<SMemoryBlock*>(static_cast<char*>(ptr) - sizeof(SMemoryInfoBlock));
 		
 		// Verify markers
 		if (block->mInfo.mDeadBeef != deadbeef)

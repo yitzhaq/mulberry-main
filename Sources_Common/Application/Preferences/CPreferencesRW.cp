@@ -71,8 +71,13 @@ void CPreferences::WriteToMap(COptionsMap* theMap, bool dirty_only,
 	if (!dirty_only || mUpdateVers)
 	{
 		char temp[256];
+
+		// DEBUG: Check what we're about to write
+
 		NumVersionVariant tempv = {0};  // Initialize to zero first
 		tempv.parts = vers;
+
+
 		::snprintf(temp, 256, "%#08x", tempv.whole);
 		cdstring txt = temp;
 		theMap->WriteValue(cVersionKey_v2_0, txt);										// >= v2.0d1
@@ -606,6 +611,7 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 									NumVersion vers_app,
 									NumVersion& vers_prefs)
 {
+
 #define READFROMMAP(x, y) x.ReadFromMap(y, theMap, vers_prefs);
 
 	CIdentity* default_id = nil;	// Needed for v1.3 -> v1.4 update
@@ -635,7 +641,10 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 	// Convert text to vers
 	NumVersionVariant tempv;
 	tempv.whole = ::strtol(txt, nil, 0);
+
+
 	vers = tempv.parts;
+
 
 	// Sanity check: reject corrupted/malicious version numbers
 	// majorRev=0 triggers infinite loop bug, >0x10 is invalid BCD
@@ -657,18 +666,24 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 	}
 #endif
 
-	// Check version
-	mUpdateVers = (*(long*) &vers != *(long*) &vers_app);
+	// Check version using NumVersionVariant to avoid 64-bit issues
+	// (sizeof(long) = 8 bytes on LP64, but NumVersion = 4 bytes)
+	NumVersionVariant vers_variant, vers_app_variant;
+	vers_variant.parts = vers;
+	vers_app_variant.parts = vers_app;
+	mUpdateVers = (vers_variant.whole != vers_app_variant.whole);
 
 	// Special if no vers present then assume this is the current version
-	if (*(long*) &vers == 0)
+	if (vers_variant.whole == 0)
 		vers = vers_app;
 
 	// Copy for conversion
 	vers_prefs = vers;
 
+
 	// Now set to apps
 	vers = vers_app;
+
 
 	// Needed for conversion
 	NumVersionVariant temp_1_3_0;
@@ -1422,12 +1437,15 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 		// < v1.3d1
 		if (VersionTest(vers_prefs, VERS_1_3_0_D_1) < 0)
 		{
-			long temp = *reinterpret_cast<const unsigned long*>(mSaveCreator.mValue.c_str());
-			theMap->ReadValue(cSaveCreatorKey, temp, vers_prefs);
+			// Mac creator codes are 4 bytes (FourCC), use uint32_t not unsigned long
+			uint32_t temp = *reinterpret_cast<const uint32_t*>(mSaveCreator.mValue.c_str());
+			long temp_long = temp;
+			theMap->ReadValue(cSaveCreatorKey, temp_long, vers_prefs);
+			temp = static_cast<uint32_t>(temp_long);
 			if (temp)
 			{
 				mSaveCreator.mValue.reserve(4);
-				*reinterpret_cast<unsigned long*>(mSaveCreator.mValue.c_str_mod()) = temp;
+				*reinterpret_cast<uint32_t*>(mSaveCreator.mValue.c_str_mod()) = temp;
 			}
 		}
 		else

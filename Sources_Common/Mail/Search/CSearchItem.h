@@ -129,9 +129,9 @@ public:
 	CSearchItem(ESearchType item, const cdstring& text1, const cdstring& text2, ESearchMatchType match = eDefault)
 		{ mType = item; mMatchType = match; mData = new cdstrpair(text1, text2); }
 	CSearchItem(ESearchType item, unsigned long date, ESearchMatchType match = eDefault)
-		{ mType = item; mMatchType = match; mData = (void*) date; }
+		{ mType = item; mMatchType = match; mData = reinterpret_cast<void*>(static_cast<uintptr_t>(date)); }
 	CSearchItem(ESearchType item, long size, ESearchMatchType match = eDefault)
-		{ mType = item; mMatchType = match; mData = (void*) size; }
+		{ mType = item; mMatchType = match; mData = reinterpret_cast<void*>(static_cast<intptr_t>(size)); }
 	CSearchItem(ESearchType item, CSearchItem* subitem, ESearchMatchType match = eDefault)
 		{ mType = item; mMatchType = match; mData = subitem; }
 	CSearchItem(ESearchType item, CSearchItemList* itemlist, ESearchMatchType match = eDefault)

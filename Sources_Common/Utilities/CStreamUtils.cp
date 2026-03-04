@@ -129,37 +129,47 @@ unsigned long StreamLength(std::istream& in)
 
 void WriteHost(std::ostream& out, const unsigned long& data)
 {
-	unsigned long temp = htonl(data);
-	out.write(reinterpret_cast<const char*>(&temp), sizeof(unsigned long));
+	// htonl operates on uint32_t (4 bytes), not unsigned long (8 bytes on LP64)
+	// Cast to uint32_t to avoid writing garbage upper 4 bytes on 64-bit systems
+	uint32_t temp = htonl(static_cast<uint32_t>(data));
+	out.write(reinterpret_cast<const char*>(&temp), sizeof(uint32_t));
 }
 
 void WriteHost(std::ostream& out, const ulvector& data)
 {
-	unsigned long size = htonl(data.size());
-	out.write(reinterpret_cast<const char*>(&size), sizeof(unsigned long));
+	// htonl operates on uint32_t (4 bytes), not unsigned long (8 bytes on LP64)
+	uint32_t size = htonl(static_cast<uint32_t>(data.size()));
+	out.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 	for(ulvector::const_iterator iter = data.begin(); iter != data.end(); iter++)
 	{
-		unsigned long temp = htonl(*iter);
-		out.write(reinterpret_cast<const char*>(&temp), sizeof(unsigned long));
+		uint32_t temp = htonl(static_cast<uint32_t>(*iter));
+		out.write(reinterpret_cast<const char*>(&temp), sizeof(uint32_t));
 	}
 }
 
 void ReadHost(std::istream& in, unsigned long& data)
 {
-	in.read(reinterpret_cast<char*>(&data), sizeof(unsigned long));
-	data = ntohl(data);
+	// ntohl operates on uint32_t (4 bytes), not unsigned long (8 bytes on LP64)
+	// Read only 4 bytes and convert properly
+	uint32_t temp;
+	in.read(reinterpret_cast<char*>(&temp), sizeof(uint32_t));
+	data = ntohl(temp);
 }
 
 void ReadHost(std::istream& in, long& data)
 {
-	in.read(reinterpret_cast<char*>(&data), sizeof(long));
-	data = ntohl(data);
+	// ntohl operates on uint32_t (4 bytes), not long (8 bytes on LP64)
+	// Read only 4 bytes and convert properly
+	uint32_t temp;
+	in.read(reinterpret_cast<char*>(&temp), sizeof(uint32_t));
+	data = static_cast<long>(ntohl(temp));
 }
 
 void ReadHost(std::istream& in, ulvector* data)
 {
-	unsigned long size = 0;
-	in.read(reinterpret_cast<char*>(&size), sizeof(unsigned long));
+	// ntohl operates on uint32_t (4 bytes), not unsigned long (8 bytes on LP64)
+	uint32_t size = 0;
+	in.read(reinterpret_cast<char*>(&size), sizeof(uint32_t));
 	size = ntohl(size);
 	if (size)
 	{
@@ -170,12 +180,13 @@ void ReadHost(std::istream& in, ulvector* data)
 			data->insert(data->begin(), size, size);
 			for(ulvector::iterator iter = data->begin(); iter != data->end(); iter++)
 			{
-				in.read(reinterpret_cast<char*>(&(*iter)), sizeof(unsigned long));
-				*iter = ntohl(*iter);
+				uint32_t temp;
+				in.read(reinterpret_cast<char*>(&temp), sizeof(uint32_t));
+				*iter = ntohl(temp);
 			}
 		}
 		else
-			in.ignore(size * sizeof(unsigned long));
+			in.ignore(size * sizeof(uint32_t));
 	}
 }
 

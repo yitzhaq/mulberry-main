@@ -390,7 +390,7 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 
 	case eLabel:		// unsigned long
 	{
-		unsigned long index = reinterpret_cast<long>(GetData());
+		unsigned long index = static_cast<unsigned long>(reinterpret_cast<uintptr_t>(GetData()));
 		if (index < NMessage::eMaxLabels)
 		{
 			if (expand_me)
@@ -1591,7 +1591,7 @@ void CSearchItem::GenerateSIEVEKey(cdstring& key) const
 // Generate number
 void CSearchItem::GenerateSIEVENumber(std::ostream& out) const
 {
-	long num = reinterpret_cast<long>(GetData());
+	long num = static_cast<long>(reinterpret_cast<intptr_t>(GetData()));
 	
 	if (num >= 1024L * 1024L)
 		out << cdstring(num / (1024L * 1024L)) << "M";

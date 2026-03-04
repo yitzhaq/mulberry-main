@@ -528,6 +528,7 @@ void CPreferencesFile::SaveOriginalLocal()
 // Read the preferences
 bool CPreferencesFile::ReadPrefs(NumVersion vers_app, NumVersion& vers_prefs)
 {
+
 	bool old_version = false;
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 	bool mac_rsrc = false;
@@ -807,8 +808,12 @@ bool CPreferencesFile::VerifyRead(bool is_local, bool write_back, bool* pending_
 	bool read_ok = true;
 
 	NumVersion vers_app = CMulberryApp::GetVersionNumber();
-	NumVersion vers_prefs;
-	*(long*) &vers_prefs = 0;
+
+	// Initialize vers_prefs to zero using NumVersionVariant to avoid stack overflow on 64-bit
+	// (sizeof(long) = 8 bytes on LP64, but NumVersion = 4 bytes)
+	NumVersionVariant vers_prefs_var;
+	vers_prefs_var.whole = 0;
+	NumVersion vers_prefs = vers_prefs_var.parts;
 
 	// Do choice of multiple sets if reached during startup phase and remote set
 	if (mRemoteFile && !CMulberryApp::sApp->LoadedPrefs())

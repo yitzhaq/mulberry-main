@@ -4218,7 +4218,7 @@ bool CLocalClient::SearchMessage(const CLocalMessage* lmsg, const CSearchItem* s
 
 	case CSearchItem::eLabel:
 	{
-		unsigned long index = reinterpret_cast<unsigned long>(spec->GetData());
+		unsigned long index = static_cast<unsigned long>(reinterpret_cast<uintptr_t>(spec->GetData()));
 		if (index < NMessage::eMaxLabels)
 			return mIndexList[GetIndex(lmsg)].Flags() & (NMessage::eLabel1 << index);
 		else
