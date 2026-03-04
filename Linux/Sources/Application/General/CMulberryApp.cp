@@ -292,7 +292,7 @@ void CMulberryApp::CommandLine(const JPtrArray<JString>& argList)
 		}
 
 		// Bare mailto:/webcal: URL (no -u flag) — desktop handlers pass these directly
-		else if (arg.BeginsWith("mailto:") || arg.BeginsWith("webcal:"))
+		else if (arg.compare_start("mailto:") || arg.compare_start("webcal:"))
 		{
 			if (!startedYet)
 				openurls.push_back(arg.GetCString());
