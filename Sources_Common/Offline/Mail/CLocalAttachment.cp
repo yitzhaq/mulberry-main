@@ -147,7 +147,7 @@ void CLocalAttachment::WriteIndexToStream(std::ostream& out, ulvector* text, lon
 	{
 		if (!text)
 		{
-			::WriteHost(out, 0L);
+			::WriteHost(out, uint32_t(0));
 			out << cd_endl;
 		}
 	}
@@ -234,7 +234,7 @@ void CLocalAttachment::WriteCacheToStream(std::ostream& out) const
 	}
 	else
 	{
-		::WriteHost(out, 0L);
+		::WriteHost(out, uint32_t(0));
 		out << cd_endl;
 	}
 }
