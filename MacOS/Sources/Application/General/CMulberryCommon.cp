@@ -160,17 +160,17 @@ void DrawClippedString(const unsigned char* theTxt, short width, EDrawStringAlig
 			{
 			case eClipString_Left:
 				// First char must indicate clipping
-				str[1] = 'É';
+				str[1] = 'ï¿½';
 				break;
 			
 			case eClipString_Right:
 				// Last char must indicate clipping
-				str[str[0]] = 'É';
+				str[str[0]] = 'ï¿½';
 				break;
 
 			case eClipString_Center:
 				// Center char must indicate clipping
-				str[str[0]/2 + 1] = 'É';
+				str[str[0]/2 + 1] = 'ï¿½';
 				break;
 			}
 
@@ -464,12 +464,12 @@ cdstring GetNumericFormat(unsigned long number)
 	cdstring result;
 	result.reserve(64);
 	if (number >= 10000000UL)
-		::snprintf(result.c_str_mod(), 64, "%d M", (number >> 20) + (number & (1L << 19) ? 1 : 0));
+		::snprintf(result.c_str_mod(), 64, "%lu M", (number >> 20) + (number & (1UL << 19) ? 1 : 0));
 	else if (number >= 10000UL)
-		::snprintf(result.c_str_mod(), 64, "%d K", (number >> 10) + (number & (1L << 9) ? 1 : 0));
+		::snprintf(result.c_str_mod(), 64, "%lu K", (number >> 10) + (number & (1UL << 9) ? 1 : 0));
 	else
-		::snprintf(result.c_str_mod(), 64, "%d", number);
-	
+		::snprintf(result.c_str_mod(), 64, "%lu", number);
+
 	return result;
 }
 

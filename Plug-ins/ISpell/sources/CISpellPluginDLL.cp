@@ -639,7 +639,7 @@ int CISpellPluginDLL::CheckText(const char* txt)
 				mErrorList.push_back(error);
 
 #ifdef DEBUG_OUTPUT
-				::printf("Error Index: %d, Start: %ld, End: %ld\n", mErrorList.size(), error.mError.sel_start, error.mError.sel_end);
+				::printf("Error Index: %zu, Start: %ld, End: %ld\n", mErrorList.size(), error.mError.sel_start, error.mError.sel_end);
 #endif
 			}
 		}
