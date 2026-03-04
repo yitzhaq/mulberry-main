@@ -29,7 +29,7 @@ namespace http
 const unsigned short cHTTPServerPort = 80;
 const unsigned short cHTTPServerPort_SSL = 443;
 
-// RFC2616 ¤5.1.1 - Request Methods
+// RFC2616 ï¿½5.1.1 - Request Methods
 
 const char* cRequestOPTIONS = "OPTIONS";
 const char* cRequestGET = "GET";
@@ -44,7 +44,7 @@ const char* cRequestCONNECT = "CONNECT";
 
 const char* cHeaderDelimiter = ": ";
 
-// RFC2616 ¤4.5 - General Header fields (only the ones we need)
+// RFC2616 ï¿½4.5 - General Header fields (only the ones we need)
 
 const char* cHeaderConnection = "Connection";
 	const char* cHeaderConnectionClose = "close";
@@ -52,21 +52,22 @@ const char* cHeaderDate = "Date";
 const char* cHeaderTransferEncoding = "Transfer-Encoding";
 	const char* cHeaderTransferEncodingChunked = "chunked";
 
-// RFC2616 ¤5.3 - Request Header fields (only the ones we need)
+// RFC2616 ï¿½5.3 - Request Header fields (only the ones we need)
 
 const char* cHeaderAuthorization = "Authorization";
 const char* cHeaderHost = "Host";
 const char* cHeaderIfMatch = "If-Match";
 const char* cHeaderIfNoneMatch = "If-None-Match";
+const char* cHeaderUserAgent = "User-Agent";
 
-// RFC2616 ¤6.2 - Response Header fields (only the ones we need)
+// RFC2616 ï¿½6.2 - Response Header fields (only the ones we need)
 
 const char* cHeaderETag = "ETag";
 const char* cHeaderLocation = "Location";
 const char* cHeaderServer = "Server";
 const char* cHeaderWWWAuthenticate = "WWW-Authenticate";
 
-// RFC2616 ¤7.1 - Entity Header fields (only the ones we need)
+// RFC2616 ï¿½7.1 - Entity Header fields (only the ones we need)
 
 const char* cHeaderAllow = "Allow";
 const char* cHeaderContentLength = "Content-Length";
@@ -75,7 +76,7 @@ const char* cHeaderContentType = "Content-Type";
 namespace webdav 
 {
 
-// RFC2518 ¤ - WebDAV Request Methods
+// RFC2518 ï¿½ - WebDAV Request Methods
 
 const char*	cRequestMKCOL = "MKCOL";
 const char*	cRequestMOVE = "MOVE";
@@ -87,7 +88,7 @@ const char*	cRequestUNLOCK = "UNLOCK";
 const char*	cRequestREPORT = "REPORT";		// RFC3253
 const char*	cRequestACL = "ACL";			// RFC3744
 
-// RFC2518 ¤9 - Request Header fields (only the ones we need)
+// RFC2518 ï¿½9 - Request Header fields (only the ones we need)
 
 const char* cHeaderDAV = "DAV";
 	const char* cHeaderDAV1 = "1";
@@ -113,11 +114,11 @@ const char* cHeaderTimeout = "Timeout";
 namespace caldav 
 {
 
-// drft-caldav ¤ - CalDAV Request Methods
+// drft-caldav ï¿½ - CalDAV Request Methods
 
 const char*	cRequestMKCALENDAR = "MKCALENDAR";
 
-// draft-caldav ¤ - Request Header fields (only the ones we need)
+// draft-caldav ï¿½ - Request Header fields (only the ones we need)
 
 	const char* cHeaderCalendarAccess = "calendar-access";
 	const char* cHeaderCalendarSchedule = "calendar-schedule";
@@ -127,9 +128,9 @@ const char*	cRequestMKCALENDAR = "MKCALENDAR";
 namespace carddav 
 {
 
-// drft-carddav ¤ - CardDAV Request Methods
+// drft-carddav ï¿½ - CardDAV Request Methods
 
-// draft-carddav ¤ - Request Header fields (only the ones we need)
+// draft-carddav ï¿½ - Request Header fields (only the ones we need)
 
 	const char* cHeaderAddressBook = "addressbook";
 }

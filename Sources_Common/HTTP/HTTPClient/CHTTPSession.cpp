@@ -24,8 +24,11 @@
 #include "CHTTPSession.h"
 
 #include "CHTTPAuthorization.h"
+#include "CHTTPDefinitions.h"
 #include "CHTTPRequestResponse.h"
 #include "CLog.h"
+#include "CPreferences.h"
+#include "os_dep.h"
 
 #include <sstream>
 
@@ -53,6 +56,10 @@ CHTTPSession::~CHTTPSession()
 // Do session global headers
 void CHTTPSession::WriteHeaderToStream(std::ostream& os, const CHTTPRequestResponse* request) const
 {
+	// Write User-Agent header matching X-Mailer email header
+	os << cHeaderUserAgent << cHeaderDelimiter << CPreferences::sPrefs->GetMailerDetails(false) << net_endl;
+
+	// Write Authorization if present
 	if (HasAuthorization())
 		GetAuthorization()->GenerateAuthorization(os, request);
 }
