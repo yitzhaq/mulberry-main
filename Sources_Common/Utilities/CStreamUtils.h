@@ -41,9 +41,11 @@ unsigned long StreamLength(std::istream& in);
 
 // Network/host byte order stream i/o
 void WriteHost(std::ostream& out, const unsigned long& data);
+void WriteHost(std::ostream& out, const uint32_t& data);
 void WriteHost(std::ostream& out, const ulvector& data);
 
 void ReadHost(std::istream& in, unsigned long& data);
+void ReadHost(std::istream& in, uint32_t& data);
 void ReadHost(std::istream& in, long& data);
 void ReadHost(std::istream& in, ulvector* data);
 

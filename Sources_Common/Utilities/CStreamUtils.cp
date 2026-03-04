@@ -135,6 +135,13 @@ void WriteHost(std::ostream& out, const unsigned long& data)
 	out.write(reinterpret_cast<const char*>(&temp), sizeof(uint32_t));
 }
 
+void WriteHost(std::ostream& out, const uint32_t& data)
+{
+	// Direct write of uint32_t (4 bytes) - no type conversion needed
+	uint32_t temp = htonl(data);
+	out.write(reinterpret_cast<const char*>(&temp), sizeof(uint32_t));
+}
+
 void WriteHost(std::ostream& out, const ulvector& data)
 {
 	// htonl operates on uint32_t (4 bytes), not unsigned long (8 bytes on LP64)
@@ -151,6 +158,14 @@ void ReadHost(std::istream& in, unsigned long& data)
 {
 	// ntohl operates on uint32_t (4 bytes), not unsigned long (8 bytes on LP64)
 	// Read only 4 bytes and convert properly
+	uint32_t temp;
+	in.read(reinterpret_cast<char*>(&temp), sizeof(uint32_t));
+	data = ntohl(temp);
+}
+
+void ReadHost(std::istream& in, uint32_t& data)
+{
+	// Direct read of uint32_t (4 bytes) - no type conversion needed
 	uint32_t temp;
 	in.read(reinterpret_cast<char*>(&temp), sizeof(uint32_t));
 	data = ntohl(temp);
