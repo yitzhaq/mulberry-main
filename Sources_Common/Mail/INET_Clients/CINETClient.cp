@@ -332,7 +332,7 @@ void CINETClient::SendString(const char* str, int flags)
 		else if (flags & eQueueLiteral)
 			literal_size = ::strlen(s);
 		else if (flags & eQueueBuffer)
-			literal_size = *reinterpret_cast<const size_t*>(s);
+			literal_size = *reinterpret_cast<const uint32_t*>(s);
 		else
 		{
 			temp = s;
@@ -370,10 +370,10 @@ void CINETClient::SendString(const char* str, int flags)
 			SendManualLiteral();
 		else if (flags & eQueueBuffer)
 		{
-			mStream->write(s + sizeof(size_t), literal_size);
+			mStream->write(s + sizeof(uint32_t), literal_size);
 			if (mAllowLog)
 			{
-				cdstring temp2(s + sizeof(size_t), literal_size);
+				cdstring temp2(s + sizeof(uint32_t), literal_size);
 				temp2.FilterInEscapeChars(cCEscapeChar);
 				mLog.LogPartialEntry(temp2);
 			}
@@ -1124,7 +1124,7 @@ void CINETClient::DoPlainAuthentication()
 			cdstring temp;
 			temp.steal(buffer.str());
 			cdstring b64;
-			b64.steal(::base64_encode(reinterpret_cast<const unsigned char*>(temp.c_str() + sizeof(size_t)), buflen));
+			b64.steal(::base64_encode(reinterpret_cast<const unsigned char*>(temp.c_str() + sizeof(uint32_t)), buflen));
 			INETSendString(b64, eQueueProcess, false);
 		}
 	}
