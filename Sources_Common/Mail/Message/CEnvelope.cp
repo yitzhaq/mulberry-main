@@ -589,9 +589,9 @@ void CEnvelope::WriteCacheToStream(std::ostream& out, CEnvelopeIndex& index) con
 
 	// Write out envelope information first
 	index.SetDateIndex(0);
-	::WriteHost(out, mDate);
+	::WriteHost(out, static_cast<uint32_t>(mDate));
 	index.SetZoneIndex(out.tellp() - std::streamoff(offset));
-	::WriteHost(out, mZone);
+	::WriteHost(out, static_cast<uint32_t>(mZone));
 	out << cd_endl;
 
 	index.SetSubjectIndex(out.tellp() - std::streamoff(offset));
