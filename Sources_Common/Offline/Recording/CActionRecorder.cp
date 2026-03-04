@@ -49,7 +49,7 @@ unsigned long CActionRecorder::GetNextID()
 
 	// Write next ID
 	mStream.seekp(0, std::ios_base::beg);
-	mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(unsigned long));
+	mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(uint32_t));
 
 	return mNextID - 1;
 }
@@ -85,14 +85,14 @@ void CActionRecorder::Open()
 
 		// Write next ID at start of file
 		mStream.seekp(0, std::ios_base::beg);
-		mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(unsigned long));
+		mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(uint32_t));
 
 		// Go back to beginning for input
 		mStream.seekg(0, std::ios_base::beg);
 	}
 
 	// Get next ID
-	mStream.read(reinterpret_cast<char*>(&mNextID), sizeof(unsigned long));
+	mStream.read(reinterpret_cast<char*>(&mNextID), sizeof(uint32_t));
 
 	// Read actions from stream
 	ReadItemsFromStream(mStream, 0);
@@ -105,7 +105,7 @@ void CActionRecorder::Close()
 
 	// Write next ID
 	mStream.seekp(0, std::ios_base::beg);
-	mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(unsigned long));
+	mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(uint32_t));
 
 	mStream.close();
 }

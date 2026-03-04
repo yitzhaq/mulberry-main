@@ -92,7 +92,8 @@ CEnvelope::CEnvelopeIndex::CEnvelopeIndex(const CEnvelopeIndex& copy)
 // Stream ops
 void CEnvelope::CEnvelopeIndex::WriteIndexToStream(std::ostream& out, long offset) const
 {
-	unsigned long items[20];
+	// Use uint32_t to match htonl (4 bytes), not unsigned long (8 bytes on LP64)
+	uint32_t items[20];
 
 	items[0] = htonl(mDateStart ? mDateStart + offset : 0);
 	items[1] = htonl(mZoneStart ? mZoneStart + offset : 0);
@@ -124,15 +125,15 @@ void CEnvelope::CEnvelopeIndex::WriteIndexToStream(std::ostream& out, long offse
 	items[18] = htonl(mMessageIDStart ? mMessageIDStart + offset : 0);
 	items[19] = htonl(mMessageIDLength);
 
-	out.write(reinterpret_cast<const char*>(items), 20 * sizeof(unsigned long));
+	out.write(reinterpret_cast<const char*>(items), 20 * sizeof(uint32_t));
 	out << cd_endl;
 }
 
 void CEnvelope::CEnvelopeIndex::ReadIndexFromStream(std::istream& in, unsigned long vers)
 {
-	// Read in array of items
-	unsigned long items[20];
-	in.read(reinterpret_cast<char*>(items), 20 * sizeof(unsigned long));
+	// Read in array of items - use uint32_t to match ntohl (4 bytes)
+	uint32_t items[20];
+	in.read(reinterpret_cast<char*>(items), 20 * sizeof(uint32_t));
 	
 	// Assign items to indices
 	mDateStart = ntohl(items[0]);

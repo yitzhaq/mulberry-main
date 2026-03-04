@@ -77,7 +77,7 @@ protected:
 	cdstring	mDescriptor;
 	cdfstream	mStream;
 	unsigned long mStartRecord;
-	unsigned long mNextID;
+	uint32_t mNextID;			// Serialized to disk, must be 4 bytes
 	unsigned long mCurrentID;
 	std::ostream*	mLog;
 

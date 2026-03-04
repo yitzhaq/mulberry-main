@@ -98,14 +98,15 @@ void CLocalAttachment::WriteIndexToStream(std::ostream& out, ulvector* text, lon
 	unsigned long temp = 0;
 	if (!text)
 	{
-		unsigned long items[6];
+		// Use uint32_t to match htonl (4 bytes), not unsigned long (8 bytes on LP64)
+		uint32_t items[6];
 		items[0] = htonl(mIndexStart ? mIndexStart + offset : 0);
 		items[1] = htonl(mIndexLength);
 		items[2] = htonl(mIndexHeaderStart ? mIndexHeaderStart + offset : 0);
 		items[3] = htonl(mIndexHeaderLength);
 		items[4] = htonl(mIndexBodyStart ? mIndexBodyStart + offset : 0);
 		items[5] = htonl(mIndexBodyLength);
-		out.write(reinterpret_cast<const char*>(items), 6 * sizeof(unsigned long));
+		out.write(reinterpret_cast<const char*>(items), 6 * sizeof(uint32_t));
 	}
 
 	// Store index if this is a searchable text part
@@ -154,9 +155,9 @@ void CLocalAttachment::WriteIndexToStream(std::ostream& out, ulvector* text, lon
 
 void CLocalAttachment::ReadIndexFromStream(std::istream& in, unsigned long vers)
 {
-	// Read basic indexes
-	unsigned long items[7];
-	in.read(reinterpret_cast<char*>(items), 7 * sizeof(unsigned long));
+	// Read basic indexes - use uint32_t to match ntohl (4 bytes)
+	uint32_t items[7];
+	in.read(reinterpret_cast<char*>(items), 7 * sizeof(uint32_t));
 	in.ignore();
 
 	mIndexStart = ntohl(items[0]);

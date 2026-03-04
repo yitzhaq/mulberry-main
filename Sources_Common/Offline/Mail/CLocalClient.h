@@ -117,14 +117,16 @@ protected:
 
 	struct SIndexRecord
 	{
-		unsigned long mCache;
-		unsigned long mIndex;
-		unsigned long mFlags;
-		unsigned long mUID;
-		unsigned long mLocalUID;
-		unsigned long mMessageStart;
+		// All members must be uint32_t for correct serialization on 64-bit
+		// (sizeof(unsigned long) = 8 on LP64, but file format is 4 bytes per field)
+		uint32_t mCache;
+		uint32_t mIndex;
+		uint32_t mFlags;
+		uint32_t mUID;
+		uint32_t mLocalUID;
+		uint32_t mMessageStart;
 
-		unsigned long mSequence;		// Not part of cache but calculated on load
+		uint32_t mSequence;		// Not part of cache but calculated on load
 
 		SIndexRecord()
 			{ mCache = 0;
@@ -135,34 +137,34 @@ protected:
 			  mMessageStart = 0;
 			  mSequence = 0; }
 
-		unsigned long& Cache()
+		uint32_t& Cache()
 			{ return mCache; }
-		const unsigned long& Cache() const
+		const uint32_t& Cache() const
 			{ return mCache; }
-		unsigned long& Index()
+		uint32_t& Index()
 			{ return mIndex; }
-		const unsigned long& Index() const
+		const uint32_t& Index() const
 			{ return mIndex; }
-		unsigned long& Flags()
+		uint32_t& Flags()
 			{ return mFlags; }
-		const unsigned long& Flags() const
+		const uint32_t& Flags() const
 			{ return mFlags; }
-		unsigned long& UID()
+		uint32_t& UID()
 			{ return mUID; }
-		const unsigned long& UID() const
+		const uint32_t& UID() const
 			{ return mUID; }
-		unsigned long& LocalUID()
+		uint32_t& LocalUID()
 			{ return mLocalUID; }
-		const unsigned long& LocalUID() const
+		const uint32_t& LocalUID() const
 			{ return mLocalUID; }
-		unsigned long& MessageStart()
+		uint32_t& MessageStart()
 			{ return mMessageStart; }
-		const unsigned long& MessageStart() const
+		const uint32_t& MessageStart() const
 			{ return mMessageStart; }
 
-		unsigned long& Sequence()
+		uint32_t& Sequence()
 			{ return mSequence; }
-		const unsigned long& Sequence() const
+		const uint32_t& Sequence() const
 			{ return mSequence; }
 		
 		void write(std::ostream& out) const;

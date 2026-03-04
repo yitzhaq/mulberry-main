@@ -135,13 +135,14 @@ void CLocalMessage::WriteIndexToStream(std::ostream& out, long offset, ulvector*
 		// This can happen if the unix mbox 'From ...' header changes in size e.g. when copying
 		// from a POP3 INBOX to some other mailbox
 
-		unsigned long items[5];
+		// Use uint32_t to match htonl (4 bytes), not unsigned long (8 bytes on LP64)
+		uint32_t items[5];
 		items[0] = htonl(mIndexLength + (IsSubMessage() ? 0 : offset));
 		items[1] = htonl(mIndexHeaderStart ? mIndexHeaderStart + offset : 0);
 		items[2] = htonl(mIndexHeaderLength);
 		items[3] = htonl(mIndexBodyStart ? mIndexBodyStart + offset : 0);
 		items[4] = htonl(mIndexBodyLength);
-		out.write(reinterpret_cast<const char*>(items), 5 * sizeof(unsigned long));
+		out.write(reinterpret_cast<const char*>(items), 5 * sizeof(uint32_t));
 		out << cd_endl;
 
 		// Write out envelope index
@@ -176,9 +177,9 @@ void CLocalMessage::WriteIndexToStream(std::ostream& out, long offset, ulvector*
 
 void CLocalMessage::ReadIndexFromStream(std::istream& in, ulvector* text_indices, unsigned long vers)
 {
-	// Read basic index entries
-	unsigned long items[5];
-	in.read(reinterpret_cast<char*>(items), 5 * sizeof(unsigned long));
+	// Read basic index entries - use uint32_t to match ntohl (4 bytes)
+	uint32_t items[5];
+	in.read(reinterpret_cast<char*>(items), 5 * sizeof(uint32_t));
 	
 	//mIndexStart = items[..]; <-- actually stored in index file
 	mIndexLength = ntohl(items[0]);

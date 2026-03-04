@@ -78,7 +78,8 @@
 
 const unsigned long cIndexVers = 0x0000000B;
 const unsigned long cIndexType_Mask = ~0x00030000;
-#define sIndexWriteLength (sizeof(CLocalClient::SIndexRecord) - sizeof(unsigned long))
+// SIndexRecord.mSequence is not written to cache, so subtract it from struct size
+#define sIndexWriteLength (sizeof(CLocalClient::SIndexRecord) - sizeof(uint32_t))
 
 const unsigned long cSearchBufferSize = 8192;
 const unsigned long cWorkBufferSize = 4096;
