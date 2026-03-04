@@ -213,8 +213,8 @@ void CLocalMessage::WriteCacheToStream(std::ostream& out) const
 	// Write out envelope information first
 	GetEnvelope()->WriteCacheToStream(out, const_cast<CEnvelope::CEnvelopeIndex&>(mEnvelopeIndex));
 
-	::WriteHost(out, mCache->mInternalDate);
-	::WriteHost(out, mCache->mInternalZone);
+	::WriteHost(out, static_cast<uint32_t>(mCache->mInternalDate));
+	::WriteHost(out, static_cast<uint32_t>(mCache->mInternalZone));
 	out << cd_endl;
 
 	// Now write out the body
