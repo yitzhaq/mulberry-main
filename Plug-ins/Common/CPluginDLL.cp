@@ -46,7 +46,7 @@ CPluginDLL::CPluginDLL()
 {
 	mLogging = NULL;
 
-	mRefCon = reinterpret_cast<long>(this);		// refCon is pointer back to this!
+	mRefCon = reinterpret_cast<intptr_t>(this);		// refCon is pointer back to this!
 
 	mInfo.mName = 0L;
 	mInfo.mVersion = 0;

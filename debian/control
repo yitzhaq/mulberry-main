@@ -1,22 +1,44 @@
 Source: mulberry
 Section: mail
 Priority: optional
-Maintainer: Martin Dietze <herbert@spamcop.net>
-Standards-Version: 3.8.3
-Build-Depends: debhelper (>= 7.0.50~), autoconf, libkrb5-dev, libldap2-dev, libaspell-dev, libxpm-dev, libfontconfig1-dev, libssl-dev, libpcre3-dev, libfl-dev, pkg-config, libglib2.0-dev, curl
+Maintainer: yitzhaq <github@anonmail.uk>
+Standards-Version: 4.7.0.0
+Homepage: http://www.mulberrymail.com
+Vcs-Git: https://github.com/yitzhaq/mulberry-main.git
+Vcs-Browser: https://github.com/yitzhaq/mulberry-main
+Build-Depends: debhelper-compat (= 13),
+ autoconf,
+ curl,
+ libaspell-dev,
+ libfontconfig1-dev,
+ libfl-dev,
+ libglib2.0-dev,
+ libkrb5-dev,
+ libldap2-dev,
+ libpcre3-dev,
+ libssl-dev,
+ libxpm-dev,
+ pkg-config
 
 Package: mulberry
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Mulberry is a GUI-based email client
- supporting the IMAP and POP3 internet protocols for
- remote storage and manipulation of email, or local
- mailboxes. It also supports SMTP for sending email,
- as well as IMSP, ACAP and LDAP internet protocols
- for remote preferences, remote address books and
- directory services.
+Description: Email and calendar client with IMAP, CalDAV, and CardDAV support
+ Mulberry is a traditional desktop email client supporting modern internet
+ protocols for email, calendars, and contacts:
  .
- Mulberry is currently available for Macintosh, Win32 and
- various Unix flavors, including Linux and Solaris.
+  * Email: IMAP4rev1, POP3, SMTP with SSL/TLS encryption
+  * Calendars: CalDAV with iCalendar (RFC 5545) format
+  * Contacts: CardDAV and LDAP directory services
+  * Server-side filtering: SIEVE scripting language
+  * Security: GPG and S/MIME encryption support
  .
- <http://www.mulberrymail.com>
+ Mulberry provides a three-pane interface with offline synchronization,
+ message threading, and standards-compliant MIME support. Originally
+ developed by Cyrus Daboo and released under the Apache License 2.0,
+ this package represents continued community maintenance with modern
+ compiler and SSL library support.
+ .
+ Note: Upstream development appears to be very limited. Users seeking
+ actively maintained alternatives should consider Thunderbird or
+ Evolution.

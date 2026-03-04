@@ -1101,20 +1101,20 @@ void CINETClient::DoPlainAuthentication()
 		// Form buffer of plain text SASL response
 		// \0userid\0pswd
 		std::ostrstream buffer;
-		size_t buflen = 0;
-		buffer.write(reinterpret_cast<const char*>(&buflen), sizeof(size_t));
+		uint32_t buflen = 0;
+		buffer.write(reinterpret_cast<const char*>(&buflen), sizeof(uint32_t));
 		buffer.put('\0');
 		buffer << auth->GetUID();
 		buffer.put('\0');
 		buffer << auth->GetPswd();
-		buflen = buffer.pcount() - sizeof(size_t);
+		buflen = buffer.pcount() - sizeof(uint32_t);
 
 		// Some SASL profiles allow 'raw' data, others require base64
 		if (!mAuthBase64)
 		{
 			cdstring temp;
 			temp.steal(buffer.str());
-			*reinterpret_cast<unsigned long*>(temp.c_str_mod()) = buflen;
+			*reinterpret_cast<uint32_t*>(temp.c_str_mod()) = buflen;
 
 			// Add as buffer
 			INETSendString(temp, eQueueBuffer, false);

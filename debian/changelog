@@ -1,3 +1,37 @@
+mulberry (4.1.0a3-git-20260304-0035) unstable; urgency=medium
+
+  * Modernization for Ubuntu 24.04 x86_64 with GCC 13 and OpenSSL 3.x
+  * Compiler compatibility: removed deprecated register keyword, replaced
+    std::auto_ptr with std::unique_ptr, changed throw() to noexcept
+  * 64-bit fixes: corrected NumVersionVariant union size, fixed sentinel
+    values for LP64 memory model
+  * OpenSSL 3.x compatibility: migrated to opaque BIO API, updated
+    deprecated function calls, added version guards for backward compatibility
+  * Desktop integration: added .desktop file for application menu and
+    mailto:/webcal: URL handler registration
+  * SVN r515 patches: integrated local address book support and attendee
+    dialog improvements from archived upstream repository
+  * Timezone database: automated IANA tzdata integration via vzic
+  * Bug fixes: preferences corruption defense, clipboard paste improvements,
+    locale handling for 12-hour clock format
+  * Security: added User-Agent header to HTTP requests matching email
+    X-Mailer format
+
+  [ Debian Packaging ]
+  * Updated to Standards-Version 4.7.0.0 (from 3.8.3)
+  * Migrated to debhelper compatibility level 13 (from 7)
+  * Rewrote debian/rules using modern dh sequencer
+  * Build flags: full hardening (including bindnow), LTO optimization,
+    QA error checks for problematic code patterns
+  * Added debian/copyright in DEP-5 machine-readable format
+  * Added Homepage, Vcs-Git, and Vcs-Browser fields
+  * Added AppStream metadata and desktop integration files
+  * Improved package description with current features
+  * Updated maintainer to reflect current maintenance
+  * Removed bundled OpenSSL build, use system libssl-dev
+
+ -- yitzhaq <github@anonmail.uk>  Wed, 04 Mar 2026 00:35:18 +0100
+
 mulberry (4.1.0a3-git-20120727-2206) unstable; urgency=low
 
   * Cyrus' changes from July 2012

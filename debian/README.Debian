@@ -1,5 +1,92 @@
-This is an unofficial Debian build of Mulberry.
-For more information on the program, please visit
-the homepage at: `http://www.mulberrymail.com'.
+Mulberry for Debian
+====================
 
- -- Martin Dietze <herbert@spamcop.net>, Sat,  7 Nov 2009 17:02:18 +0100
+This package provides Mulberry, a traditional desktop email and calendar
+client with support for IMAP4, CalDAV, CardDAV, and related standards.
+
+Debian-Specific Information
+---------------------------
+
+### Installation Paths
+
+The Debian package installs files to the following locations:
+
+  * Binary: /usr/bin/mulberry
+  * Resources and plugins: /usr/lib/mulberry/
+  * Documentation: /usr/share/doc/mulberry/
+  * Desktop integration: /usr/share/applications/mulberry.desktop
+  * Icon: /usr/share/pixmaps/mulberry.xpm
+
+### User Configuration
+
+Mulberry stores user configuration and data in:
+
+  * Preferences: ~/.mulberry/preferences.mbp
+  * Local mailboxes: ~/Mail/ (default)
+  * Local address books: ~/AddressBooks/ (default)
+
+### Desktop Integration
+
+Mulberry is registered as a handler for:
+
+  * mailto: URLs (email addresses in web browsers, documents, etc.)
+  * webcal: URLs (calendar subscriptions)
+  * message/rfc822 MIME type (email message files)
+
+To make Mulberry your default email client in most desktop environments,
+use your system's default applications settings (e.g., System Settings >
+Default Applications in KDE, Settings > Default Applications in GNOME).
+
+### SSL/TLS and S/MIME Certificates
+
+Mulberry includes its own certificate management system for SSL/TLS and
+S/MIME encryption. Certificates are stored in your profile directory:
+
+  * CA certificates: ~/.mulberry/Certificates/Authorities/
+  * Accepted servers: ~/.mulberry/Certificates/Servers/
+  * User S/MIME certificates: ~/.mulberry/Certificates/Users/
+  * Personal S/MIME certificates: ~/.mulberry/Certificates/Personal/
+
+For SSL/TLS connections, Mulberry uses both system CA certificates and
+its own certificate store. The application will prompt you to accept or
+reject certificates that cannot be verified. Accepted certificates are
+stored in the Servers directory for future connections.
+
+To add a trusted CA certificate, use Mulberry's certificate import
+dialog (accessible through the application's security preferences) rather
+than modifying the certificate directories manually
+
+### Kerberos/GSSAPI Authentication
+
+Kerberos (GSSAPI) authentication support is available through the GSSAPI
+plugin. Ensure you have configured Kerberos credentials (kinit) before
+attempting to use GSSAPI authentication.
+
+### Known Issues and Limitations
+
+Mulberry is mature software with development that appears to have
+largely stalled:
+
+  * No OAuth2 support for modern email providers (Gmail, Office365, etc.)
+  * Some modern email features may not be supported
+  * Upstream development appears very limited since ~2011-2012
+  * Consider modern alternatives (Thunderbird, Evolution) for new deployments
+
+### Reporting Bugs
+
+For bugs in the Debian packaging or build, please file issues at:
+https://github.com/yitzhaq/mulberry-main/issues
+
+For issues with Mulberry itself, community support may be available
+through the GitHub repository. Note that upstream development appears
+to be very limited.
+
+### Further Information
+
+Original homepage: http://www.mulberrymail.com
+Source repository: https://github.com/yitzhaq/mulberry-main
+Debian package maintainer: yitzhaq <github@anonmail.uk>
+
+Original Debian packaging: Martin Dietze <herbert@spamcop.net> (2009-2012)
+
+ -- yitzhaq <github@anonmail.uk>, Wed, 04 Mar 2026 00:35:18 +0100

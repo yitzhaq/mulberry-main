@@ -42,15 +42,15 @@
 
 struct SAppleFileEntry
 {
-	unsigned long entryID;
-	unsigned long entryOffset;
-	unsigned long entryLen;
+	uint32_t entryID;
+	uint32_t entryOffset;
+	uint32_t entryLen;
 };
 
 struct SAppleFileHeader
 {
-	unsigned long magicNum;
-	unsigned long versionNum;
+	uint32_t magicNum;
+	uint32_t versionNum;
 	unsigned char filler[16];
 	unsigned short numEntries;
 }

@@ -59,10 +59,10 @@ long MulberryPluginEntry(long code, void* data, long refCon)
 {
 	// If refCon is nil => new plugin required
 	if (!refCon)
-		refCon = reinterpret_cast<long>(new CPluginType);
-	
+		refCon = static_cast<long>(reinterpret_cast<intptr_t>(new CPluginType));
+
 	// Double check validity of refCon
-	if (!refCon || (refCon != reinterpret_cast<CPluginType*>(refCon)->GetRefCon()))
+	if (!refCon || (static_cast<intptr_t>(refCon) != reinterpret_cast<CPluginType*>(static_cast<intptr_t>(refCon))->GetRefCon()))
 		return 0;
 
 	// Now execute command

@@ -864,14 +864,14 @@ void CAFFilter::CreateHeader()
 	p += sizeof(FXInfo);
 
 	// Add dates
-	*((long*) p) = cpb.hFileInfo.ioFlCrDat - cAppleFile_MacToASDate;
-	p += sizeof(long);
-	*((long*) p) = cpb.hFileInfo.ioFlMdDat - cAppleFile_MacToASDate;
-	p += sizeof(long);
-	*((long*) p) = cpb.hFileInfo.ioFlBkDat - cAppleFile_MacToASDate;
-	p += sizeof(long);
-	*((long*) p) = cAppleFile_DateUnknown;
-	p += sizeof(long);
+	*reinterpret_cast<uint32_t*>(p) = cpb.hFileInfo.ioFlCrDat - cAppleFile_MacToASDate;
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = cpb.hFileInfo.ioFlMdDat - cAppleFile_MacToASDate;
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = cpb.hFileInfo.ioFlBkDat - cAppleFile_MacToASDate;
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = cAppleFile_DateUnknown;
+	p += sizeof(uint32_t);
 
 	// Addcomment
 	::memcpy(p, &comment[1], *comment);
@@ -967,13 +967,13 @@ void CAFFilter::CreateHeader()
 	CFileStatus file_status;
 	mFileStream->GetStatus(file_status);
 	CTime reference(2000, 1, 1, 0, 0, 0);	// AppleSingle/AppleDouble reference time
-	*((long*) p) = htonl((file_status.m_ctime - reference).GetTotalSeconds());
+	*reinterpret_cast<uint32_t*>(p) = htonl((file_status.m_ctime - reference).GetTotalSeconds());
 	p += sizeof(long*);
-	*((long*) p) = htonl((file_status.m_mtime - reference).GetTotalSeconds());
+	*reinterpret_cast<uint32_t*>(p) = htonl((file_status.m_mtime - reference).GetTotalSeconds());
 	p += sizeof(long*);
-	*((long*) p) = htonl(cAppleFile_DateUnknown);
+	*reinterpret_cast<uint32_t*>(p) = htonl(cAppleFile_DateUnknown);
 	p += sizeof(long*);
-	*((long*) p) = htonl(cAppleFile_DateUnknown);
+	*reinterpret_cast<uint32_t*>(p) = htonl(cAppleFile_DateUnknown);
 	p += sizeof(long*);
 
 	// Add comment (none for Windows)
@@ -1071,14 +1071,14 @@ void CAFFilter::CreateHeader()
 	//0,0,0, 1, Jan, 2000, dummy, dummy, No DST
 	tm appleRef = {0, 0, 0, 1, 0, 100, 0,0,0};
 	time_t reference = mktime(&appleRef);
-	*((long*) p) = htonl(file_status.st_ctime - reference);
-	p += sizeof(long);
-	*((long*) p) = htonl(file_status.st_mtime - reference);
-	p += sizeof(long);
-	*((long*) p) = htonl(cAppleFile_DateUnknown);
-	p += sizeof(long);
-	*((long*) p) = htonl(cAppleFile_DateUnknown);
-	p += sizeof(long);
+	*reinterpret_cast<uint32_t*>(p) = htonl(file_status.st_ctime - reference);
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = htonl(file_status.st_mtime - reference);
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = htonl(cAppleFile_DateUnknown);
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = htonl(cAppleFile_DateUnknown);
+	p += sizeof(uint32_t);
 
 	// Add comment (none for Windows)
 

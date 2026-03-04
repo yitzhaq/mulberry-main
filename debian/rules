@@ -2,82 +2,54 @@
 #
 # Debian build file for Mulberry
 #
-# 2009 by Martin Dietze
-#
+# Original: 2009 by Martin Dietze
+# Modernized: 2026 using debhelper 13
 
-JXDIST := $(shell pwd)/Libraries/JX/dist
+# Enable full hardening, LTO optimization, and QA checks
+# - hardening=+all,+bindnow: All security hardening including immediate binding
+# - optimize=+lto: Link-time optimization for better performance
+# - qa=+bug: Treat problematic code patterns as errors
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all,+bindnow optimize=+lto qa=+bug
 
-patch-stamp:
-	if ls -1 debian/patches/*.patch >/dev/null 2>&1; then \
-		for i in `ls -1 debian/patches/*.patch`; do \
-			patch -p0 <$$i; \
-		done; \
-	fi
-	touch patch-stamp
+# JX library paths
+JXDIST := $(CURDIR)/Libraries/JX/dist
 
-configure: configure-stamp
-configure-stamp: patch-stamp
-	dh_testdir
-	autoconf
-	DESTDIR=debian/mulberry ./configure --prefix=/usr \
-            --with-mulberry-dir=lib/mulberry \
-            --with-mulberry-dir=lib/mulberry \
-            --with-help-dir=share/doc/mulberry \
-            --with-program-dir=bin
-	touch configure-stamp
+%:
+	dh $@
 
-build: build-stamp
-
-build-stamp: configure-stamp
+override_dh_auto_configure:
 	# Generate current timezone data from IANA tzdata
 	./scripts/update-timezones.sh
-	mkdir -p $(JXDIST)/lib
-	mkdir -p $(JXDIST)/bin
-	mkdir -p Linux/Includes
-	JX_INSTALL_ROOT="$(JXDIST)/bin" JX_LIB_ROOT="$(JXDIST)/lib" \
-		$(MAKE) SKIPOPENSSL="yes" ROOT_DATA_FILE_DIR=$(JXDIST)/data
-	touch build-stamp
+	# Run autoconf to generate configure script
+	autoconf
+	# Configure with custom paths
+	dh_auto_configure -- \
+		--prefix=/usr \
+		--with-mulberry-dir=lib/mulberry \
+		--with-help-dir=share/doc/mulberry \
+		--with-program-dir=bin
 
-clean: unpatch
-	-$(MAKE) distclean
-	rm -rf *~ debian/mulberry debian/*~ build-stamp configure-stamp $(JXDIST)/lib Linux/Includes
-	rm -f Sources_Common/Timezones/zoneinfo/*.ics Sources_Common/Timezones/zoneinfo/*/*.ics Sources_Common/Timezones/zoneinfo/version.txt
-	dh_clean 
+override_dh_auto_build:
+	# Create JX distribution directories
+	mkdir -p $(JXDIST)/lib $(JXDIST)/bin Linux/Includes
+	# Build with custom JX paths, skip bundled OpenSSL
+	JX_INSTALL_ROOT="$(JXDIST)/bin" \
+	JX_LIB_ROOT="$(JXDIST)/lib" \
+	ROOT_DATA_FILE_DIR="$(JXDIST)/data" \
+		dh_auto_build -- SKIPOPENSSL="yes"
 
-binary-indep: build install
+override_dh_auto_install:
+	# Install with custom JX paths, skip JX reinstall
+	JX_INSTALL_ROOT="$(JXDIST)/bin" \
+	JX_LIB_ROOT="$(JXDIST)/lib" \
+		dh_auto_install -- SKIPOPENSSL="yes" SKIPJX="yes"
 
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k 
-	dh_installdirs
-
-	JX_INSTALL_ROOT="$(JXDIST)/bin" JX_LIB_ROOT="$(JXDIST)/lib" \
-		$(MAKE) DESTDIR=$(CURDIR)/debian/mulberry SKIPOPENSSL="yes" SKIPJX="yes" install
-
-binary-arch: install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs 
-	dh_installdocs
-	dh_install
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-unpatch:
-	if ls -1 debian/patches/*.patch >/dev/null 2>&1; then \
-		for i in `ls -1 debian/patches/*.patch`; do \
-			patch -f -R -p0 <$$i; \
-		done; \
-	fi
-
-binary: binary-indep binary-arch
-
-.PHONY: binary binary-arch binary-indep clean
+override_dh_auto_clean:
+	# Clean timezone generated files
+	rm -f Sources_Common/Timezones/zoneinfo/*.ics \
+	      Sources_Common/Timezones/zoneinfo/*/*.ics \
+	      Sources_Common/Timezones/zoneinfo/version.txt
+	# Clean JX distribution and build artifacts
+	rm -rf $(JXDIST)/lib Linux/Includes
+	# Run standard clean (ignore errors from bundled openssl which we don't build)
+	-dh_auto_clean

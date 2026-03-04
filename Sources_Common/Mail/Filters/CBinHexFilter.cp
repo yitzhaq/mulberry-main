@@ -934,10 +934,10 @@ void CBinHexFilter::CreateHeader()
 	FSCatalogInfo catInfo;
 	spec.GetCatalogInfo(kFSCatInfoDataSizes | kFSCatInfoRsrcSizes, catInfo);
 
-	*((long*) p) = catInfo.dataLogicalSize;
-	p += sizeof(long);
-	*((long*) p) = catInfo.rsrcLogicalSize;
-	p += sizeof(long);
+	*reinterpret_cast<uint32_t*>(p) = catInfo.dataLogicalSize;
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = catInfo.rsrcLogicalSize;
+	p += sizeof(uint32_t);
 #else
 	cdstring fname = mFileStream->GetFileName();
 	int length = ::strlen(fname);
@@ -959,10 +959,10 @@ void CBinHexFilter::CreateHeader()
 	p += sizeof(OSType);
 	*((short*) p) = 0;
 	p += sizeof(short);
-	*((long*) p) = htonl(mFileStream->GetLength());
-	p += sizeof(long);
-	*((long*) p) = 0;
-	p += sizeof(long);
+	*reinterpret_cast<uint32_t*>(p) = htonl(mFileStream->GetLength());
+	p += sizeof(uint32_t);
+	*reinterpret_cast<uint32_t*>(p) = 0;
+	p += sizeof(uint32_t);
 #endif
 	// Update buffer length
 	mBufferLength = p - mBuffer;

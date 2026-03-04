@@ -234,7 +234,7 @@ void CMailRecord::Flush(CMailAction::EMailAction actions)
 	if (was_open)
 		mStream.close();
 	mStream.open(mDescriptor, std::ios_base::in | std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
-	mStream.seekp(sizeof(unsigned long), std::ios_base::beg);
+	mStream.seekp(sizeof(uint32_t), std::ios_base::beg);
 	WriteItemsToStream(mStream);
 	mStartRecord = size();
 	if (!was_open)
@@ -398,7 +398,7 @@ bool CMailRecord::Playback(CMboxProtocol* remote, CMboxProtocol* local, CProgres
 
 		// Add next id tag at start
 		mStream.seekp(0, std::ios_base::beg);
-		mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(unsigned long));
+		mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(uint32_t));
 
 		// Write out items
 		for(const_iterator iter = begin(); iter != end(); iter++)

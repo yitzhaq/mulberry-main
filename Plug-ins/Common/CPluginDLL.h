@@ -37,6 +37,8 @@
 #ifndef __PLUGIN_MULBERRY__
 #define __PLUGIN_MULBERRY__
 
+#include <stdint.h>
+
 // Typedefs
 
 #ifdef __cplusplus
@@ -115,7 +117,7 @@ public:
 	// Get information
 	virtual const SPluginInfo& GetInfo(void)					// Returns the info for the plug-in
 		{ return mInfo; }
-	virtual long GetRefCon(void)								// Returns refCon of plug-in
+	virtual intptr_t GetRefCon(void)							// Returns refCon of plug-in
 		{ return mRefCon; }
 
 	// Entry codes
@@ -134,7 +136,7 @@ public:
 protected:
 	LoggingCallbackProcPtr mLogging;						// Callback into application for logging
 	SPluginInfo mInfo;										// Information about plug-in
-	long mRefCon;											// Reference constant used by plugin: not used in app
+	intptr_t mRefCon;										// Reference constant used by plugin: not used in app
 
 	virtual void ErrorReport(long err_no, const char* errtxt, const char* func, const char* file, int lineno);
 	virtual void LogEntry(const char* text) const;			// Log some text
