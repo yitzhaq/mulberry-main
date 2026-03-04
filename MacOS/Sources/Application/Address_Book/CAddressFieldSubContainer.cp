@@ -179,35 +179,35 @@ bool CAddressFieldSubContainer::GetAddress(CAdbkAddress* addr)
         {
             CAdbkAddress::phonemap& phones = addr->GetPhones();
             phones.clear();
-            for(int i = 0; i < newtypes.size(); i++)
+            for(size_t i = 0; i < newtypes.size(); i++)
                 phones.insert(CAdbkAddress::phonemap::value_type(static_cast<CAdbkAddress::EPhoneType>(newtypes[i]), newdatas[i]));
         }        
         else if (mType == eEmail)
         {
             CAdbkAddress::emailmap& emails = addr->GetEmails();
             emails.clear();
-            for(int i = 0; i < newtypes.size(); i++)
+            for(size_t i = 0; i < newtypes.size(); i++)
                 emails.insert(CAdbkAddress::emailmap::value_type(static_cast<CAdbkAddress::EEmailType>(newtypes[i]), newdatas[i]));
         }        
         else if (mType == eAddress)
         {
             CAdbkAddress::addrmap& addrs = addr->GetAddresses();
             addrs.clear();
-            for(int i = 0; i < newtypes.size(); i++)
+            for(size_t i = 0; i < newtypes.size(); i++)
                 addrs.insert(CAdbkAddress::addrmap::value_type(static_cast<CAdbkAddress::EAddressType>(newtypes[i]), newdatas[i]));
         }        
         else if (mType == eIM)
         {
             CAdbkAddress::immap& ims = addr->GetIMs();
             ims.clear();
-            for(int i = 0; i < newtypes.size(); i++)
+            for(size_t i = 0; i < newtypes.size(); i++)
                 ims.insert(CAdbkAddress::immap::value_type(static_cast<CAdbkAddress::EEmailType>(newtypes[i]), newdatas[i]));
         }        
         else if (mType == eCalAddress)
         {
             CAdbkAddress::caladdrmap& caladdrs = addr->GetCalendars();
             caladdrs.clear();
-            for(int i = 0; i < newtypes.size(); i++)
+            for(size_t i = 0; i < newtypes.size(); i++)
                 caladdrs.insert(CAdbkAddress::caladdrmap::value_type(static_cast<CAdbkAddress::EEmailType>(newtypes[i]), newdatas[i]));
         }        
     }

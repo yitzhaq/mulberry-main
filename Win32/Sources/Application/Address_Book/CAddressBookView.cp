@@ -873,7 +873,7 @@ void CAddressBookView::SaveState(void)
 		bounds = wp.rcNormalPosition;
 
 	// Sync column widths
-	for(int i = 0; i < mColumnInfo.size(); i++)
+	for(size_t i = 0; i < mColumnInfo.size(); i++)
 		mColumnInfo[i].column_width = GetAddressTable()->GetColWidth(i + 1);
 
 	// Sync size
@@ -914,7 +914,7 @@ void CAddressBookView::SaveDefaultState(void)
 		bounds = wp.rcNormalPosition;
 
 	// Sync column widths
-	for(int i = 0; i < mColumnInfo.size(); i++)
+	for(size_t i = 0; i < mColumnInfo.size(); i++)
 		mColumnInfo[i].column_width = GetAddressTable()->GetColWidth(i + 1);
 
 	// Sync size

@@ -494,7 +494,7 @@ char* CHTMLTransformer::Transform()
 	// Use plain parser to get URLs
 	CClickList clicks;
 	CParserPlain parser(p, NULL, &clicks, false);
-	for(int j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
+	for(size_t j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
 		parser.AddURL(CPreferences::sPrefs->mRecognizeURLs.GetValue()[j].c_str());
 	parser.LookForURLs(0);
 	CClickElement* target = clicks.front();

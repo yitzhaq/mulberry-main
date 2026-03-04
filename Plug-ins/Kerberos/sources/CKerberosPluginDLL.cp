@@ -425,8 +425,8 @@ long CKerberosPluginDLL::ProcessFirstData(SAuthPluginData* info)
 		}
 
 		realm = ::krb_realmofhost(mRealServer);
-		int len = strlen(mRealServer);
-		for (int i = 0; i < len; i++)
+		size_t len = strlen(mRealServer);
+		for (size_t i = 0; i < len; i++)
 		{
 			if (mRealServer[i]=='.')
 				break;

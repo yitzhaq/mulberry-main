@@ -696,7 +696,7 @@ void CPreferencesDialog::MakeChanges(CPreferences* newPrefs)
 	bool smart_change = (CPreferences::sPrefs->mSmartAddressList.GetValue().size() != newPrefs->mSmartAddressList.GetValue().size());
 	if (!smart_change)
 	{
-		for(int i = 0; i < CPreferences::sPrefs->mSmartAddressList.GetValue().size(); i++)
+		for(size_t i = 0; i < CPreferences::sPrefs->mSmartAddressList.GetValue().size(); i++)
 		{
 			if (CPreferences::sPrefs->mSmartAddressList.GetValue()[i] != newPrefs->mSmartAddressList.GetValue()[i])
 			{

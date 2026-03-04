@@ -253,7 +253,7 @@ void CServerView::SaveState(void)
 		bounds = wp.rcNormalPosition;
 
 	// Sync column widths
-	for(int i = 0; i < mColumnInfo.size(); i++)
+	for(size_t i = 0; i < mColumnInfo.size(); i++)
 		mColumnInfo[i].column_width = GetTable()->GetColWidth(i + 1);
 
 	// Add info to prefs
@@ -274,7 +274,7 @@ void CServerView::SaveDefaultState(void)
 		bounds = wp.rcNormalPosition;
 
 	// Sync column widths
-	for(int i = 0; i < mColumnInfo.size(); i++)
+	for(size_t i = 0; i < mColumnInfo.size(); i++)
 		mColumnInfo[i].column_width = GetTable()->GetColWidth(i + 1);
 
 	// Add info to prefs

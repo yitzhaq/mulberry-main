@@ -125,7 +125,7 @@ void CMailboxView::RefreshSmartAddress(void)
 	mbox->ClearSmartAddress();
 
 	// Look for smart address column
-	for(int i = 0; i < mColumnInfo.size(); i++)
+	for(size_t i = 0; i < mColumnInfo.size(); i++)
 	{
 		SColumnInfo col_info = mColumnInfo[i];
 

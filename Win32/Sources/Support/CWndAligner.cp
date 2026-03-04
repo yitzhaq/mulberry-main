@@ -232,7 +232,7 @@ void CWndAligner::SizeChanged(int cx, int cy)
 void CWndAligner::RemoveChildAlignment(CWnd* child)
 {
 	// Scan alignments looking for ones that match and erase them
-	for(int pos = 0; pos != mAligns.size(); pos++)
+	for(size_t pos = 0; pos != mAligns.size(); pos++)
 	{
 		if (mAligns[pos]->mChild == child->GetSafeHwnd())
 		{

@@ -274,7 +274,7 @@ long COutlookExAdbkIOPluginDLL::ImportAddresses(char* data)
 
 		// Read in each field and assign to array
 		bool got_one = false;
-		for(int i = 0; i < indices.size(); i++)
+		for(size_t i = 0; i < indices.size(); i++)
 		{
 			// Get quoted string and advance
 			bool lineend = false;

@@ -114,8 +114,8 @@ public:
 		cdstrpairvect mItems[3];
 		size_t size() const
 			{ return mItems[0].size() + mItems[1].size() + mItems[2].size(); }
-		size_t offset(int index)
-			{ int j = 0; for(int i = 0; i < index; i++) j += mItems[i].size(); return j; }
+		size_t offset(size_t index)
+			{ size_t j = 0; for(size_t i = 0; i < index; i++) j += mItems[i].size(); return j; }
 	};
 
 					CMboxProtocol(CMailAccount* account);

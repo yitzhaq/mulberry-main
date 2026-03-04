@@ -285,7 +285,7 @@ void CSDIFrame::RemoveWindow(CWnd* aWnd)
 		sWindowList.erase(found);
 
 		// Renumber existing items
-		for(int i = pos; i < sWindowList.size(); i++)
+		for(size_t i = pos; i < sWindowList.size(); i++)
 		{
 			cdstring title = CUnicodeUtils::GetMenuStringUTF8(&wnds, IDM_WINDOWS_First + i + 1, MF_BYCOMMAND);
 			CUnicodeUtils::ModifyMenuUTF8(&wnds, IDM_WINDOWS_First + i + 1, MF_STRING | MF_BYCOMMAND, IDM_WINDOWS_First + i, title);

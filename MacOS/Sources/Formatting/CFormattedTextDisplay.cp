@@ -251,7 +251,7 @@ void CFormattedTextDisplay::ParseHeader(const char* header, EView parsing)
 		// Do URLs
 		{
 			std::auto_ptr<CParserPlain> PParser(new CParserPlain(uheader, mList, mClickList));
-			for(int j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
+			for(size_t j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
 				PParser->AddURL(CPreferences::sPrefs->mRecognizeURLs.GetValue()[j].c_str());
 			PParser->LookForURLs(mText.length());
 		}
