@@ -785,7 +785,10 @@ void CFormattedTextDisplay::OnCopyLink()
 	cdstring url = mContextClickElement->GetDescriptor();
 	mContextClickElement = NULL;
 
-	// Now copy to scrap
+	// Copy to both X11 selections for maximum compatibility
+	// PRIMARY = middle-click paste, CLIPBOARD = Ctrl+V paste
+	// Modern apps typically copy to both (Firefox, Chrome, etc.)
+	CClipboard::CopyToPrimaryClipboard(GetDisplay(), url);
 	CClipboard::CopyToSecondaryClipboard(GetDisplay(), url);
 }
 
