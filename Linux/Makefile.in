@@ -928,7 +928,7 @@ CXXFLAGS = @CXXFLAGS@ -include Sources/Mulberry_Prefix.h $(CPPFLAGS) $(CXXOPT) $
 CFLAGS = @CFLAGS@ -include stdbool.h $(CPPFLAGS) $(COPT) $(CDEBUG) $(CWARN)
 LINK_STATIC = @LINK_STATIC@
 LINK_DYNAMIC = @LINK_DYNAMIC@
-JXLINK = -L../Libraries/openssl $(JX_LDFLAGS) \
+JXLINK = $(JX_LDFLAGS) \
 	$(LINK_STATIC)  -ljx-$(JX_LIB_VERSION) -ljcore-$(JX_LIB_VERSION) \
 	-lACE-$(ACE_LIB_VERSION) $(LINK_DYNAMIC) \
 	$(J_X11_LIBS) @LDAPLIB@ @SSLLIB@ \
