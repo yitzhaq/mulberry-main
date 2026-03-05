@@ -227,7 +227,11 @@ void CFileAttachment::ProcessContent()
 			if (CPreferences::sPrefs->mFormatFlowed.GetValue() &&
 				(mContent.GetContentDisposition() == eContentDispositionInline) &&
 				!mContent.IsFlowed())
+			{
 				mContent.SetContentParameter(cMIMEParameter[eFormat], cMIMEParameter[eFlowed]);
+				// RFC 3676 recommends delsp=yes for better readability in non-flowed clients
+				mContent.SetContentParameter(cMIMEParameter[eDelsp], cMIMEParameter[eDelspYes]);
+			}
 		}
 
 		mContent.SetTransferEncoding(encoding);

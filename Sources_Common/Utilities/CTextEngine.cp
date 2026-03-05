@@ -138,10 +138,10 @@ const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsig
 					s++;
 					count++;
 				}
-				
-				// Add flowed space before CRLF
-				if (flowed)
-					out.put(' ');
+
+				// RFC 3676: Use delsp=yes (no trailing space), recommended over delsp=no
+				// Soft-wrapped lines end with CRLF directly, no space before CRLF
+				// This makes text more readable in non-flowed-aware clients
 			}
 			else
 			{
