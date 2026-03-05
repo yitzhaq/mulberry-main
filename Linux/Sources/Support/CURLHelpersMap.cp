@@ -128,6 +128,17 @@ bool CURLHelpersMap::LaunchURL(const char* url)
 		}
 	}
 
+	// Fallback: try xdg-open as default URL handler (modern Linux standard)
+	cdstring cmd("xdg-open ");
+	cmd += url;
+	JSimpleProcess* execd = NULL;
+	const JError err = JSimpleProcess::Create(&execd, cmd, kTrue);
+	if (err.OK())
+	{
+		JThisProcess::Ignore(execd);
+		return true;
+	}
+
 	// If we got here the URL was not launched
 	return false;
 }
