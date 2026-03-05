@@ -51,6 +51,7 @@ CMIMEFilter::CMIMEFilter(i18n::ECharsetCode charset, bool is_text, bool is_flowe
 	mGotCRLF = true;
 	mLineQuoted = false;
 	mSigDashState = eSigDashNone;
+	mPendingSpace = false;
 }
 
 CMIMEFilter::~CMIMEFilter()
@@ -72,83 +73,104 @@ bool CMIMEFilter::FlowProcess(unsigned char c)
 	if (!c && mIsText)
 		c = ' ';
 
-	// Look for flowed and unquoted
-	if (mIsText && mIsFlowed && !mLineQuoted &&
-		(mLastChar == ' ') &&
-#if OS_LINE_END != OS_CRLF
-		(c == lendl1) && 
-#else
-		((c == lendl1) || (c == lendl2)) &&
-#endif
-		(mSigDashState != eSigDash3))
+	// Handle pending space from previous call (delsp lookahead)
+	if (mPendingSpace)
 	{
-		// Bump last char once past the flow
+		// If current char is start of CRLF, skip both space and CRLF (format=flowed with delsp)
+		if (mIsText && mIsFlowed && !mLineQuoted &&
 #if OS_LINE_END != OS_CRLF
-		mLastChar = c;
+			(c == lendl1) &&
 #else
-		if (c == lendl2)
-			mLastChar = c;
+			((c == lendl1) || (c == lendl2)) &&
 #endif
-
-		// Bump down the delsp
-		// FIXME: This does not work if the space falls on a buffer boundary
-		if ((c == lendl1) && mIsDelsp && (mBufferLength > 0))
+			(mSigDashState != eSigDash3))
 		{
-			mBufferLength--;
-			mBufferPos--;
+			// Skip the pending space and the line ending
+			mPendingSpace = false;
+#if OS_LINE_END != OS_CRLF
+			mLastChar = c;
+#else
+			if (c == lendl2)
+				mLastChar = c;
+#endif
+			return false;
 		}
-		// Skip it
+		else
+		{
+			// Not a line ending - output the pending space first
+			mPendingSpace = false;
+			*mBufferPos++ = ' ';
+			mBufferLength++;
+			// mLastChar stays as ' ', continue to process current char below
+		}
+	}
+
+	// Check if we should defer this space (delsp lookahead)
+	if (c == ' ' && mIsText && mIsFlowed && mIsDelsp && !mLineQuoted && (mSigDashState != eSigDash3))
+	{
+		// Defer the space - don't output it yet
+		mPendingSpace = true;
+		mLastChar = ' ';
 		return false;
 	}
-	else
-	{
-		// Copy a byte
-		mLastChar = c;
-		*mBufferPos++ = c;
-		mBufferLength++;
-		
-		switch(mLastChar)
-		{
-		case lendl2:
-			mGotCRLF = true;
-			mSigDashState = eSigDashNone;
-			break;
-		default:
-			// Special for sig dash processing
-			if (mIsText && mIsFlowed)
-			{
-				// Change state machine state
-				switch(mLastChar)
-				{
-				case '-':
-					if ((mSigDashState == eSigDashNone) && mGotCRLF)
-						mSigDashState = eSigDash1;
-					else if (mSigDashState == eSigDash1)
-						mSigDashState = eSigDash2;
-					else
-						mSigDashState = eSigDashNone;
-					break;
-				case ' ':
-					if (mSigDashState == eSigDash2)
-						mSigDashState = eSigDash3;
-					else
-						mSigDashState = eSigDashNone;
-					break;
-				default:
-					mSigDashState = eSigDashNone;
-					break;
-				}
-			}
 
-			// Test for quote at start of line only
-			if (mGotCRLF)
-				mLineQuoted = (mLastChar == '>');
-			mGotCRLF = false;
-			break;
+	// Normal character processing
+	mLastChar = c;
+	*mBufferPos++ = c;
+	mBufferLength++;
+
+	switch(mLastChar)
+	{
+	case lendl2:
+		mGotCRLF = true;
+		mSigDashState = eSigDashNone;
+		break;
+	default:
+		// Special for sig dash processing
+		if (mIsText && mIsFlowed)
+		{
+			// Change state machine state
+			switch(mLastChar)
+			{
+			case '-':
+				if ((mSigDashState == eSigDashNone) && mGotCRLF)
+					mSigDashState = eSigDash1;
+				else if (mSigDashState == eSigDash1)
+					mSigDashState = eSigDash2;
+				else
+					mSigDashState = eSigDashNone;
+				break;
+			case ' ':
+				if (mSigDashState == eSigDash2)
+					mSigDashState = eSigDash3;
+				else
+					mSigDashState = eSigDashNone;
+				break;
+			default:
+				mSigDashState = eSigDashNone;
+				break;
+			}
 		}
-		
-		// Added
-		return true;
+
+		// Test for quote at start of line only
+		if (mGotCRLF)
+			mLineQuoted = (mLastChar == '>');
+		mGotCRLF = false;
+		break;
+	}
+
+	// Added
+	return true;
+}
+
+// Flush any pending space at end of stream
+void CMIMEFilter::FlushPendingSpace()
+{
+	if (mPendingSpace)
+	{
+		*mBufferPos++ = ' ';
+		mBufferLength++;
+		mPendingSpace = false;
 	}
 }
 
@@ -376,6 +398,9 @@ ExceptionCode C8bitFilter::PutBytes(const void* inBuffer, SInt32& inByteCount)
 		if (mBufferLength == cMaxBuffer)
 			CheckBuffer(false, total_out);
 	}
+
+	// Flush any pending space from delsp lookahead
+	FlushPendingSpace();
 
 	// Flush remainder to stream
 	CheckBuffer(true, total_out);
@@ -763,6 +788,9 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 			CheckBuffer(false, total_out);
 	}
 
+	// Flush any pending space from delsp lookahead
+	FlushPendingSpace();
+
 	// Flush remainder to stream
 	CheckBuffer(true, total_out);
 
@@ -1016,6 +1044,9 @@ ExceptionCode CBase64Filter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 		if (mBufferLength == cMaxBuffer)
 			CheckBuffer(false, total_out);
 	}
+
+	// Flush any pending space from delsp lookahead
+	FlushPendingSpace();
 
 	// Flush remainder to stream
 	CheckBuffer(true, total_out);

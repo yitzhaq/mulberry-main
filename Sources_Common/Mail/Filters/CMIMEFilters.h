@@ -60,8 +60,10 @@ protected:
 	bool				mGotCRLF;
 	bool				mLineQuoted;
 	ESigDashState		mSigDashState;
-	
+	bool				mPendingSpace;		// For delsp lookahead
+
 			bool	FlowProcess(unsigned char c);
+			void	FlushPendingSpace();
 };
 
 class C8bitFilter : public CMIMEFilter {		// Convert to/from 8bit with charset
