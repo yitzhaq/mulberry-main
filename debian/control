@@ -18,7 +18,8 @@ Build-Depends: debhelper-compat (= 13),
  libpcre3-dev,
  libssl-dev,
  libxpm-dev,
- pkg-config
+ pkg-config,
+ zlib1g-dev
 
 Package: mulberry
 Architecture: any

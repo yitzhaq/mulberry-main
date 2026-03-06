@@ -257,6 +257,7 @@ LDFLAGS=""
 AC_CHECK_LIB(rt, main, LDFLAGS="$LDFLAGS -lrt")
 AC_CHECK_LIB(gen, main, LDFLAGS="$LDFLAGS -lgen")
 AC_CHECK_LIB(fontconfig, main, LDFLAGS="$LDFLAGS -lfontconfig")
+AC_CHECK_LIB(z, deflate, LDFLAGS="$LDFLAGS -lz", AC_MSG_ERROR([zlib required for IMAP COMPRESS support]))
 case $host_os in
   *solaris*)
      LDFLAGS="$LDFLAGS -nodefaultlibs -lc -lm -lgcc"
