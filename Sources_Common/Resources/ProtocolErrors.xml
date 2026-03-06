@@ -40,6 +40,8 @@
 	<string id="Error::IMAP::NoBadUnsubscribe">Could not unsubscribe from mailbox:\n</string>
 	<string id="Error::IMAP::OSErrNamespace">while discovering namespace.</string>
 	<string id="Error::IMAP::NoBadNamespace">Could not discover namespace:\n</string>
+	<string id="Error::IMAP::OSErrID">while sending client ID.</string>
+	<string id="Error::IMAP::NoBadID">Could not send client ID:\n</string>
 	<string id="Error::IMAP::OSErrFindAll">while finding all subscribed mailboxes.</string>
 	<string id="Error::IMAP::NoBadFindAll">Could not find all subscribed mailboxes:\n</string>
 	<string id="Error::IMAP::OSErrAppend">while appending a message to a mailbox.</string>

@@ -32,6 +32,7 @@
 	<string id="Status::IMAP::Subscribing">Subscribing to mailbox...</string>
 	<string id="Status::IMAP::Unsubscribing">Unsubscribing from mailbox...</string>
 	<string id="Status::IMAP::Namespace">Discovering Namespace...</string>
+	<string id="Status::IMAP::SendingID">Sending Client ID...</string>
 	<string id="Status::IMAP::FindingAll">Finding all mailboxes...</string>
 	<string id="Status::IMAP::FindingAllSubs">Finding all subscribed mailboxes...</string>
 	<string id="Status::IMAP::Appending">Appending message to mailbox...</string>

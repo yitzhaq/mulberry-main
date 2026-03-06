@@ -45,6 +45,7 @@ const char* cIMAP_UNSELECT =			"UNSELECT";
 const char* cIMAP_SORT =				"SORT";
 const char* cIMAP_THREAD_SUBJECT =		"THREAD=ORDEREDSUBJECT";
 const char* cIMAP_THREAD_REFERENCES =	"THREAD=REFERENCES";
+const char* cIMAP_ID =					"ID";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
 const char* cIMAP_AUTHANON =			"AUTH=ANONYMOUS";

@@ -125,6 +125,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasSort = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
+	mHasID = false;
 	mThreadResults = NULL;
 
 } // CIMAPClient::CIMAPClient
@@ -165,6 +166,7 @@ void CIMAPClient::_InitCapability()
 	mHasSort = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
+	mHasID = false;
 
 	mAuthLoginAllowed = false;
 	mAuthPlainAllowed = false;
@@ -207,6 +209,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasSort = mLastResponse.CheckUntagged(cIMAP_SORT, true);
 	mHasThreadSubject = mLastResponse.CheckUntagged(cIMAP_THREAD_SUBJECT, true);
 	mHasThreadReferences = mLastResponse.CheckUntagged(cIMAP_THREAD_REFERENCES, true);
+	mHasID = mLastResponse.CheckUntagged(cIMAP_ID, true);
 
 	mAuthLoginAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHLOGIN, true);
 	mAuthPlainAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHPLAIN, true);
@@ -795,6 +798,44 @@ void CIMAPClient::_Namespace(CMboxProtocol::SNamespace* names)
 		mNamespace = NULL;
 		CLOG_LOGRETHROW;
 		throw;
+	}
+}
+
+// Send RFC 2971 ID command to exchange client/server identification
+void CIMAPClient::_SendID()
+{
+	// Only send if extension supported
+	if (!mHasID)
+		return;
+
+	try
+	{
+		// Build ID parameter list with client information
+		cdstring id_params = "(\"name\" \"Mulberry\" \"version\" \"";
+		id_params += CPreferences::sPrefs->GetVersionText();
+		id_params += "\" \"os\" \"";
+#if __dest_os == __linux_os
+		id_params += "Linux\"";
+#elif __dest_os == __win32_os
+		id_params += "Windows\"";
+#elif __dest_os == __mac_os || __dest_os == __mac_os_x
+		id_params += "MacOS\"";
+#else
+		id_params += "Unknown\"";
+#endif
+		id_params += " \"vendor\" \"Cyrus Daboo\")";
+
+		// Issue ID command (response is optional, we don't parse it)
+		INETStartSend("Status::IMAP::SendingID", "Error::IMAP::OSErrID", "Error::IMAP::NoBadID");
+		INETSendString(cIMAP_ID);
+		INETSendString(cSpace);
+		INETSendString(id_params);
+		INETFinishSend();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+		// Don't rethrow - ID failure is non-fatal, just log it
 	}
 }
 

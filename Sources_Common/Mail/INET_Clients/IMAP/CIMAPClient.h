@@ -74,6 +74,7 @@ private:
 	bool			mHasSort;						// Supports SORT
 	bool			mHasThreadSubject;				// Supports THREAD=ORDEREDSUBJECT
 	bool			mHasThreadReferences;			// Supports THREAD=REFERENCES
+	bool			mHasID;							// Supports ID extension (RFC 2971)
 	threadvector*	mThreadResults;					// Place to store thread results
 
 	// C O N S T R U C T I O N / D E S T R U C T I O N  M E T H O D S
@@ -128,6 +129,7 @@ protected:
 	virtual void	_SubscribeMbox(CMbox* mbox);		// Do subscribe mbox
 	virtual void	_UnsubscribeMbox(CMbox* mbox);		// Do unsubscribe mbox
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names);	// Get namespace
+	virtual void	_SendID();					// Send RFC 2971 ID command
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes);		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes);			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) {}		// Starting multiple append

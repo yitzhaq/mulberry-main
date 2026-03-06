@@ -48,6 +48,7 @@ extern const char* cIMAP_UNSELECT;
 extern const char* cIMAP_SORT;
 extern const char* cIMAP_THREAD_SUBJECT;
 extern const char* cIMAP_THREAD_REFERENCES;
+extern const char* cIMAP_ID;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
 extern const char* cIMAP_AUTHANON;

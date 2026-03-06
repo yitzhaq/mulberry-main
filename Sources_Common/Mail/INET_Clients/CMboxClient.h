@@ -82,6 +82,7 @@ public:
 	virtual void	_SubscribeMbox(CMbox* mbox) = 0;		// Do subscribe mbox
 	virtual void	_UnsubscribeMbox(CMbox* mbox) = 0;		// Do unsubscribe mbox
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names) = 0;	// Get namespace
+	virtual void	_SendID() {}					// Send RFC 2971 ID command (IMAP-specific, default no-op)
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes) = 0;		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes) = 0;			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) = 0;			// Starting multiple append

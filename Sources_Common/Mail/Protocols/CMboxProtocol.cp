@@ -662,6 +662,9 @@ void CMboxProtocol::Logon()
 	// Do inherited
 	CINETProtocol::Logon();
 
+	// Send RFC 2971 ID command (IMAP only, for bug reports and statistics)
+	mClient->_SendID();
+
 	// Do not reset current mbox for clone
 	if (!IsCloned())
 		mCurrent_mbox = NULL;
