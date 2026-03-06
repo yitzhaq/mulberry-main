@@ -3207,6 +3207,30 @@ void CLocalClient::ReadIndex(cdfstream& in, SIndexHeader& header, SIndexList& in
 	// Read in the header
 	ReadIndexHeader(in, header);
 
+	// Validate header to prevent crashes from corrupted data
+	// Sanity check: 10 million messages is an extreme upper bound (240 MB index file)
+	const unsigned long MAX_REASONABLE_INDEX_SIZE = 10000000;
+	if (header.IndexSize() > MAX_REASONABLE_INDEX_SIZE)
+	{
+		CLOG_LOGTHROW(CGeneralException, -1L);
+		throw CGeneralException(-1L);
+	}
+
+	// Verify file size matches expected index size
+	in.seekg(0, std::ios::end);
+	std::streampos file_size = in.tellg();
+	in.seekg(sizeof(SIndexHeader));  // Reset to start of index data
+
+	std::streampos expected_size = sizeof(SIndexHeader) +
+		static_cast<std::streampos>(header.IndexSize()) * sIndexWriteLength;
+
+	// Allow some tolerance for file system overhead, but reject grossly mismatched sizes
+	if (file_size < expected_size || file_size > expected_size + 4096)
+	{
+		CLOG_LOGTHROW(CGeneralException, -1L);
+		throw CGeneralException(-1L);
+	}
+
 	// Used for sequence number mapping
 	SIndexRefList sort_list;
 	if (seq)

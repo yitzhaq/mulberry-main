@@ -388,14 +388,18 @@ ExceptionCode C8bitFilter::PutBytes(const void* inBuffer, SInt32& inByteCount)
 		else
 #endif
 		{
+			// Check for nearly full buffer before FlowProcess (which may write up to 2 bytes)
+			if (mBufferLength >= cMaxBuffer - 1)
+				CheckBuffer(false, total_out);
+
 			// Process char - possibly flowed
 			FlowProcess(*p);
 			p++;
 			total--;
 		}
 
-		// Check for full buffer
-		if (mBufferLength == cMaxBuffer)
+		// Check for full buffer (use >= to catch any overflow)
+		if (mBufferLength >= cMaxBuffer)
 			CheckBuffer(false, total_out);
 	}
 
@@ -679,6 +683,10 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 				else
 #endif
 				{
+					// Check buffer before FlowProcess (may write up to 2 bytes)
+					if (mBufferLength >= cMaxBuffer - 1)
+						CheckBuffer(false, total_out);
+
 					// Process char - possibly flowed
 					FlowProcess(*p);
 					mQuotedCharLast = 0;
@@ -712,6 +720,10 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 					total--;
 					if (hex == 0xFF)
 					{
+						// Check buffer before multiple FlowProcess calls (may write up to 4 bytes)
+						if (mBufferLength >= cMaxBuffer - 3)
+							CheckBuffer(false, total_out);
+
 						// Write out the '=' followed by invalid QP character
 						FlowProcess('=');
 						FlowProcess(mQuoted1);
@@ -743,6 +755,10 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 				total--;
 				if (hex == 0xFF)
 				{
+					// Check buffer before multiple FlowProcess calls (may write up to 6 bytes)
+					if (mBufferLength >= cMaxBuffer - 5)
+						CheckBuffer(false, total_out);
+
 					// Write out the '=' followed by invalid QP characters
 					FlowProcess('=');
 					FlowProcess(mQuoted1);
@@ -763,6 +779,10 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 						// Skip \r\n
 						if ((mQuotedChar != '\n') || (mQuotedCharLast != '\r'))
 						{
+							// Check buffer before multiple FlowProcess calls (may write up to 4 bytes)
+							if (mBufferLength >= cMaxBuffer - 3)
+								CheckBuffer(false, total_out);
+
 							// Process char - possibly flowed
 							FlowProcess(os_endl[0]);
 							if (os_endl_len == 2)
@@ -771,6 +791,10 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 					}
 					else
 					{
+						// Check buffer before FlowProcess (may write up to 2 bytes)
+						if (mBufferLength >= cMaxBuffer - 1)
+							CheckBuffer(false, total_out);
+
 						// Process char - possibly flowed
 						FlowProcess(mQuotedChar);
 					}
@@ -783,8 +807,8 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 			}
 		}
 
-		// Check for full buffer
-		if (mBufferLength == cMaxBuffer)
+		// Check for full buffer (use >= to catch any overflow)
+		if (mBufferLength >= cMaxBuffer)
 			CheckBuffer(false, total_out);
 	}
 
@@ -998,6 +1022,10 @@ ExceptionCode CBase64Filter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 				mAtom.base64.b1 = cdebase64[c];
 				mAtomPos++;
 
+				// Check buffer before PutChar (may write up to 4 bytes via FlowProcess)
+				if (mBufferLength >= cMaxBuffer - 3)
+					CheckBuffer(false, total_out);
+
 				// Now write it out to buffer
 #ifdef big_endian
 				PutChar(mAtom.base256[0]);
@@ -1014,6 +1042,10 @@ ExceptionCode CBase64Filter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 				// Now write it out to buffer if not pad
 				if (!got_pad2)
 				{
+					// Check buffer before PutChar (may write up to 4 bytes via FlowProcess)
+					if (mBufferLength >= cMaxBuffer - 3)
+						CheckBuffer(false, total_out);
+
 #ifdef big_endian
 					PutChar(mAtom.base256[1]);
 #else
@@ -1030,6 +1062,10 @@ ExceptionCode CBase64Filter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 				// Now write it out to buffer if not pad
 				if (!got_pad3)
 				{
+					// Check buffer before PutChar (may write up to 4 bytes via FlowProcess)
+					if (mBufferLength >= cMaxBuffer - 3)
+						CheckBuffer(false, total_out);
+
 #ifdef big_endian
 					PutChar(mAtom.base256[2]);
 #else
@@ -1040,8 +1076,8 @@ ExceptionCode CBase64Filter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 			}
 		}
 
-		// Check for full buffer
-		if (mBufferLength == cMaxBuffer)
+		// Check for full buffer (use >= to catch any overflow)
+		if (mBufferLength >= cMaxBuffer)
 			CheckBuffer(false, total_out);
 	}
 
