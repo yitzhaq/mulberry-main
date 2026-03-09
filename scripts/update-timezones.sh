@@ -70,7 +70,8 @@ echo "Building vzic..."
 cd "$VZIC_SOURCE_DIR"
 
 make clean >/dev/null 2>&1 || true
-make >/dev/null 2>&1
+# Use empty TZID_PREFIX to generate standard Olson timezone names (e.g. "America/New_York")
+make TZID_PREFIX="" >/dev/null 2>&1
 
 if [ ! -f ./vzic ]; then
     echo "ERROR: vzic build failed"
