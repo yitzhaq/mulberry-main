@@ -411,7 +411,7 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 
 	case eLarger:		// long
 		items.push_back(cdstrbool(cSEARCH_LARGER, true));
-		temp = reinterpret_cast<long>(GetData());
+		temp = static_cast<long>(reinterpret_cast<intptr_t>(GetData()));
 		//temp = long(GetData());
 		items.push_back(cdstrbool(temp, true));
 		break;
@@ -516,7 +516,7 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 
 	case eSmaller:		// long
 		items.push_back(cdstrbool(cSEARCH_SMALLER, true));
-		temp = reinterpret_cast<long>(GetData());
+		temp = static_cast<long>(reinterpret_cast<intptr_t>(GetData()));
 		//temp = long(GetData());
 		items.push_back(cdstrbool(temp, true));
 		break;

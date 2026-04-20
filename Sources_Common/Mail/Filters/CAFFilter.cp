@@ -968,13 +968,13 @@ void CAFFilter::CreateHeader()
 	mFileStream->GetStatus(file_status);
 	CTime reference(2000, 1, 1, 0, 0, 0);	// AppleSingle/AppleDouble reference time
 	*reinterpret_cast<uint32_t*>(p) = htonl((file_status.m_ctime - reference).GetTotalSeconds());
-	p += sizeof(long*);
+	p += sizeof(uint32_t);
 	*reinterpret_cast<uint32_t*>(p) = htonl((file_status.m_mtime - reference).GetTotalSeconds());
-	p += sizeof(long*);
+	p += sizeof(uint32_t);
 	*reinterpret_cast<uint32_t*>(p) = htonl(cAppleFile_DateUnknown);
-	p += sizeof(long*);
+	p += sizeof(uint32_t);
 	*reinterpret_cast<uint32_t*>(p) = htonl(cAppleFile_DateUnknown);
-	p += sizeof(long*);
+	p += sizeof(uint32_t);
 
 	// Add comment (none for Windows)
 

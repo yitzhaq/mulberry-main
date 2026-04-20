@@ -239,7 +239,7 @@ bool CAdbkRecord::Playback(CAdbkProtocol* remote, CAdbkProtocol* local)
 
 		// Add next id tag at start
 		mStream.seekp(0, std::ios_base::beg);
-		mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(unsigned long));
+		mStream.write(reinterpret_cast<const char*>(&mNextID), sizeof(mNextID));
 
 		// Write out items
 		for(const_iterator iter = begin(); iter != end(); iter++)

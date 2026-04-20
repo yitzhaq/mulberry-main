@@ -566,7 +566,7 @@ void CSearchCriteriaSIEVE::SetSearchItem(const CSearchItem* spec, bool negate)
 		case CSearchItem::eLarger:		// long
 			popup1 = eCriteria_Size;
 			popup2 = eSizeMethod_Larger;
-			size = reinterpret_cast<long>(spec->GetData());
+			size = static_cast<long>(reinterpret_cast<intptr_t>(spec->GetData()));
 			if (size >= 1024L * 1024L)
 			{
 				size /= 1024L * 1024L;
@@ -593,7 +593,7 @@ void CSearchCriteriaSIEVE::SetSearchItem(const CSearchItem* spec, bool negate)
 		case CSearchItem::eSmaller:		// long
 			popup1 = eCriteria_Size;
 			popup2 = eSizeMethod_Smaller;
-			size = reinterpret_cast<long>(spec->GetData());
+			size = static_cast<long>(reinterpret_cast<intptr_t>(spec->GetData()));
 			if (size >= 1024L)
 			{
 				size /= 1024L;

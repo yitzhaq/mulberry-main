@@ -136,7 +136,7 @@ void CLocalAttachment::WriteIndexToStream(std::ostream& out, ulvector* text, lon
 		// Write out message flag
 		if (!text)
 		{
-			::WriteHost(out, static_cast<unsigned long>(-1));
+			::WriteHost(out, static_cast<uint32_t>(-1));
 			out << cd_endl;
 		}
 
@@ -227,7 +227,7 @@ void CLocalAttachment::WriteCacheToStream(std::ostream& out) const
 	else if (IsMessage())
 	{
 		// Write out message flag
-		::WriteHost(out, static_cast<unsigned long>(-1));
+		::WriteHost(out, static_cast<uint32_t>(-1));
 		out << cd_endl;
 
 		static_cast<CLocalMessage*>(mMessage)->WriteCacheToStream(out);
