@@ -35,6 +35,7 @@ public:
 #else
 		mBigEndian = false;
 #endif
+		mBOMChecked = false;
 	}
 	virtual ~CUTF16() {}
 
@@ -43,6 +44,7 @@ public:
 
 private:
 	bool mBigEndian;
+	bool mBOMChecked;
 };
 
 }

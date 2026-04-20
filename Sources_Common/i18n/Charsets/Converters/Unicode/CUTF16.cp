@@ -27,18 +27,23 @@ wchar_t CUTF16::c_2_w(const unsigned char*& c)
 	unsigned char c2 = *c++;
 	wchar_t	wc = mBigEndian ? ((c1 << 8) | c2) : ((c2 << 8) | c1);
 
-	// Look for endian switch
-	if (wc == 0xfeff)
+	// Check for BOM at the very start of the stream only
+	if (!mBOMChecked)
 	{
-		// Switch endianess
-		mBigEndian = true;
+		mBOMChecked = true;
+		if (wc == 0xfeff)
+		{
+			mBigEndian = true;
+			return wc;
+		}
+		else if (wc == 0xfffe)
+		{
+			mBigEndian = false;
+			return wc;
+		}
 	}
-	else if (wc == 0xfffe)
-	{
-		// Switch endianess
-		mBigEndian = false;
-	}
-	else if ((wc >= 0xd800) && (wc < 0xdc00))
+
+	if ((wc >= 0xd800) && (wc < 0xdc00))
 	{
 		// Have lead word - we do not handle these as they are more than 16-bits
 
