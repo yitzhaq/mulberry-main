@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.mulberrymail.Mulberry</id>
+  <metadata_license>Apache-2.0</metadata_license>
+  <project_license>Apache-2.0</project_license>
+  <name>Mulberry</name>
+  <summary>Traditional email and calendar client with IMAP and CalDAV support</summary>
+
+  <description>
+    <p>
+      Mulberry is a feature-rich desktop email and calendar client supporting
+      modern internet standards for email, calendars, and contacts. It provides
+      a traditional three-pane interface with offline synchronization and
+      standards-compliant protocol support.
+    </p>
+    <p>Key features:</p>
+    <ul>
+      <li>Email: IMAP4rev1, POP3, and SMTP with SSL/TLS encryption</li>
+      <li>Calendars: CalDAV protocol with iCalendar (RFC 5545) format support</li>
+      <li>Contacts: CardDAV and LDAP directory services</li>
+      <li>Server-side filtering using SIEVE scripting language</li>
+      <li>Message security: GPG and S/MIME encryption support</li>
+      <li>Offline synchronization for IMAP mailboxes</li>
+      <li>Advanced message threading and search capabilities</li>
+    </ul>
+    <p>
+      Note: Mulberry is mature software originally developed by Cyrus Daboo.
+      Upstream development appears to be very limited. The software lacks
+      modern features like OAuth2 authentication. Users seeking actively
+      maintained alternatives should consider Thunderbird or Evolution.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">mulberry.desktop</launchable>
+
+  <url type="homepage">http://www.mulberrymail.com</url>
+  <url type="bugtracker">https://github.com/yitzhaq/mulberry-main/issues</url>
+  <url type="vcs-browser">https://github.com/yitzhaq/mulberry-main</url>
+
+  <developer id="com.mulberrymail">
+    <name>Cyrus Daboo (original author)</name>
+  </developer>
+
+  <categories>
+    <category>Network</category>
+    <category>Email</category>
+  </categories>
+
+  <keywords>
+    <keyword>email</keyword>
+    <keyword>mail</keyword>
+    <keyword>imap</keyword>
+    <keyword>smtp</keyword>
+    <keyword>calendar</keyword>
+    <keyword>caldav</keyword>
+    <keyword>carddav</keyword>
+    <keyword>contacts</keyword>
+  </keywords>
+
+  <provides>
+    <binary>mulberry</binary>
+  </provides>
+
+  <releases>
+    <release version="4.1.0a3-git-20260304-0035" date="2026-03-04">
+      <description>
+        <p>Modernization release for Ubuntu 24.04 and current Debian systems:</p>
+        <ul>
+          <li>Rebuilt for 64-bit x86_64 architecture with GCC 13</li>
+          <li>OpenSSL 3.x compatibility with modern SSL/TLS libraries</li>
+          <li>Desktop integration with mailto: and webcal: URL handlers</li>
+          <li>Automated IANA timezone database integration</li>
+          <li>UTF-8 clipboard paste improvements</li>
+          <li>Security hardening with modern compiler flags</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+  <content_rating type="oars-1.1"/>
+
+  <requires>
+    <display_length compare="ge">800</display_length>
+  </requires>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+</component>

@@ -1,0 +1,17 @@
+# JX toolkit prebuilt binaries (build tools, part of upstream source)
+mulberry source: source-is-missing [Libraries/JX/bin/*]
+mulberry source: source-is-missing [Libraries/JX/dist/bin/*]
+
+# Upstream help files (HTML, not minified JS)
+mulberry source: source-is-missing [Linux/Help/*]
+mulberry source: source-is-missing [MacOS/Packaging/English.lproj/Mulberry Help/*]
+
+# Win32 installer artifact in upstream source tree
+mulberry source: source-contains-prebuilt-ms-help-file [Win32/Installer/Mulberry/Bits/Mulberry.chm]
+
+# Ancient libtool in JX/misc/gd — upstream, not our code
+mulberry source: ancient-libtool [Libraries/JX/misc/gd/config/ltmain.sh]
+
+# JX configure artifacts in submodule (cleaned during build but present in source)
+mulberry source: configure-generated-file-in-source [Libraries/JX/misc/pcre/config.log]
+mulberry source: configure-generated-file-in-source [Libraries/JX/misc/pcre/config.status]

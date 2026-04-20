@@ -10,7 +10,7 @@ Build-Depends: debhelper-compat (= 13),
  autoconf,
  curl,
  libaspell-dev,
- libfontconfig1-dev,
+ libfontconfig-dev,
  libfl-dev,
  libglib2.0-dev,
  libkrb5-dev,
@@ -18,7 +18,7 @@ Build-Depends: debhelper-compat (= 13),
  libpcre3-dev,
  libssl-dev,
  libxpm-dev,
- pkg-config,
+ pkgconf,
  zlib1g-dev
 
 Package: mulberry

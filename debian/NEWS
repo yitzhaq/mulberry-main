@@ -1,0 +1,40 @@
+mulberry (4.1.0a3-git-20260304-0035) unstable; urgency=medium
+
+  IMPORTANT: Modernization Changes
+
+  This version represents a major modernization of Mulberry for current
+  Linux systems. Users upgrading from older builds should be aware of
+  the following significant changes:
+
+  * OpenSSL 3.x Compatibility
+    - Rebuilt against OpenSSL 3.x instead of legacy OpenSSL 1.0
+    - All SSL/TLS functionality verified working with modern libraries
+    - Certificate validation now uses system CA certificate store
+
+  * 64-bit Native Build
+    - This is a native 64-bit build (x86_64)
+    - Preferences files from 32-bit builds should migrate automatically
+    - If you experience preferences corruption, remove ~/.mulberry/preferences.mbp
+      and reconfigure from scratch
+
+  * Desktop Integration
+    - Mulberry now appears in application menus under Network > Email
+    - Registered as system handler for mailto: and webcal: URLs
+    - Click email addresses in other applications to compose in Mulberry
+
+  * Timezone Database
+    - Calendar timezone data now automatically updated from IANA tzdata
+    - Improves accuracy of calendar scheduling across time zones
+
+  * Clipboard Improvements
+    - Fixed paste of UTF-8 text from modern applications
+    - Eliminated CRLF mojibake when pasting from some sources
+
+  * Known Limitations
+    - Upstream development appears to be very limited
+    - Some modern email features (OAuth2 authentication, etc.) not supported
+    - Users with modern requirements should consider Thunderbird or Evolution
+
+  For detailed technical changes, see /usr/share/doc/mulberry/changelog.gz
+
+ -- yitzhaq <github@anonmail.uk>  Wed, 04 Mar 2026 00:35:18 +0100

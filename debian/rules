@@ -43,6 +43,9 @@ override_dh_auto_install:
 	JX_INSTALL_ROOT="$(JXDIST)/bin" \
 	JX_LIB_ROOT="$(JXDIST)/lib" \
 		dh_auto_install -- SKIPOPENSSL="yes" SKIPJX="yes"
+	# Fix permissions on non-executable resource files
+	chmod 644 $(CURDIR)/debian/mulberry/usr/lib/mulberry/Resources/*
+	chmod 644 $(CURDIR)/debian/mulberry/usr/lib/mulberry/icons/*.xpm
 
 override_dh_auto_clean:
 	# Clean timezone generated files
