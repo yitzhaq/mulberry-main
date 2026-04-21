@@ -106,7 +106,10 @@ bool CMIMEFilter::FlowProcess(unsigned char c)
 	}
 
 	// Check if we should defer this space (delsp lookahead)
-	if (c == ' ' && mIsText && mIsFlowed && mIsDelsp && !mLineQuoted && (mSigDashState != eSigDash3))
+	// Exclude eSigDash2: space after "--" completes the signature separator
+	// and must not be deferred, or the state machine never reaches eSigDash3
+	if (c == ' ' && mIsText && mIsFlowed && mIsDelsp && !mLineQuoted &&
+		(mSigDashState != eSigDash3) && (mSigDashState != eSigDash2))
 	{
 		// Defer the space - don't output it yet
 		mPendingSpace = true;

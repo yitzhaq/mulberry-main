@@ -29,7 +29,8 @@ public:
 	static const char* WrapLines(const char* text,
 									unsigned long length,
 									unsigned long wrap_len,
-									bool flowed);
+									bool flowed,
+									bool delsp = false);
 	static const char* UnwrapLines(const char* text,
 									unsigned long length);
 	static const char* QuoteLines(const char* text,
