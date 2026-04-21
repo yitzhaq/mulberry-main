@@ -73,6 +73,14 @@ bool CMIMEFilter::FlowProcess(unsigned char c)
 	if (!c && mIsText)
 		c = ' ';
 
+#if OS_LINE_END != OS_CRLF
+	// RFC 5322 s2.3: bare CR must not appear independently in text bodies.
+	// On non-CRLF platforms (Linux, macOS), drop CR from decoded text to
+	// normalize CRLF to LF and discard illegal bare CR (RFC 5322 s4).
+	if (c == '\r' && mIsText)
+		return false;
+#endif
+
 	// Handle pending space from previous call (delsp lookahead)
 	if (mPendingSpace)
 	{
@@ -779,14 +787,29 @@ ExceptionCode CQPFilter::PutBytes(const void *inBuffer, SInt32& inByteCount)
 					// Look for encoded line ends
 					if (mIsText && ((mQuotedChar == '\r') || (mQuotedChar == '\n')))
 					{
-						// Skip \r\n
-						if ((mQuotedChar != '\n') || (mQuotedCharLast != '\r'))
+						if (mQuotedChar == '\r')
 						{
-							// Check buffer before multiple FlowProcess calls (may write up to 4 bytes)
+							// Bare \r — drop it (RFC 5322 s2.3/s4).
+							// If followed by =0A, that \n will output the line ending.
+							// If followed by transport \n, that will output the line ending.
+							// Either way, one line ending is produced, not two.
+						}
+						else if ((mQuotedChar == '\n') && (mQuotedCharLast == '\r'))
+						{
+							// \n after dropped \r — this is an encoded CRLF, output one line ending
 							if (mBufferLength >= cMaxBuffer - 3)
 								CheckBuffer(false, total_out);
 
-							// Process char - possibly flowed
+							FlowProcess(os_endl[0]);
+							if (os_endl_len == 2)
+								FlowProcess(os_endl[1]);
+						}
+						else
+						{
+							// Bare \n — output line ending
+							if (mBufferLength >= cMaxBuffer - 3)
+								CheckBuffer(false, total_out);
+
 							FlowProcess(os_endl[0]);
 							if (os_endl_len == 2)
 								FlowProcess(os_endl[1]);
@@ -1181,9 +1204,21 @@ void CBase64Filter::PutChar(unsigned char c)
 	{
 		if ((c == '\r') || (c == '\n'))
 		{
-			if ((c != '\n') || (mCharLast != '\r'))
+			if (c == '\r')
 			{
-				// Process char - possibly flowed
+				// Drop bare CR (RFC 5322 s2.3/s4). If followed by \n,
+				// that \n will output the line ending.
+			}
+			else if ((c == '\n') && (mCharLast == '\r'))
+			{
+				// \n after dropped \r — encoded CRLF, output one line ending
+				FlowProcess(os_endl[0]);
+				if (os_endl_len == 2)
+					FlowProcess(os_endl[1]);
+			}
+			else
+			{
+				// Bare \n — output line ending
 				FlowProcess(os_endl[0]);
 				if (os_endl_len == 2)
 					FlowProcess(os_endl[1]);
