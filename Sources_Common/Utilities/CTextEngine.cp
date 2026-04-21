@@ -31,7 +31,7 @@ extern const char* cSpace;
 long CTextEngine::sSpacesPerTab = 8;
 cdstring CTextEngine::sCurrentPrefix;
 
-const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsigned long wrap_len, bool flowed)
+const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsigned long wrap_len, bool flowed, bool delsp)
 {
 	// Create stream to handle writing
 	std::ostrstream out;
@@ -139,9 +139,13 @@ const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsig
 					count++;
 				}
 
-				// RFC 3676: Use delsp=yes (no trailing space), recommended over delsp=no
-				// Soft-wrapped lines end with CRLF directly, no space before CRLF
-				// This makes text more readable in non-flowed-aware clients
+				// RFC 3676: Add trailing space(s) to mark line as flowed
+				if (flowed)
+				{
+					out.put(' ');
+					if (delsp)
+						out.put(' ');
+				}
 			}
 			else
 			{
@@ -288,6 +292,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 	bool crlf_run = false;
 	bool rewrap = false;
 	bool add_space = false;
+	bool last_line_flowed = false;
 
 	// Loop while waiting for line break or exceed of wrap length
 	while(true)
@@ -309,6 +314,13 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 
 			if (!first)
 			{
+				// Detect flowed line: ends with trailing space before CRLF
+				// But not signature separator "-- "
+				bool is_sig_dash = (count == 3) &&
+					(text[0] == '-') && (text[1] == '-') && (text[2] == ' ');
+				last_line_flowed = original_flowed && (count > 0) &&
+					(text[count - 1] == ' ') && !is_sig_dash;
+
 				// Output remainder of line
 				if (add_space)
 				{
@@ -353,8 +365,9 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 			lastCRLF = remaining;
 
 			// Check current prefix depth against last prefix depth
-			// If the text is not already quoted and flowed, turn off rewrap behaviour
-			if ((prefix_depth != last_prefix_depth) || !rewrap || (prefix_depth == 0) && original_flowed)
+			// For original flowed text, join consecutive flowed lines at same depth
+			if ((prefix_depth != last_prefix_depth) ||
+				(!rewrap && !last_line_flowed))
 			{
 				// Output line end if not first line
 				if (!first)
@@ -410,9 +423,17 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 				}
 				else
 				{
-					// Output space
-					add_space = true;
-					partial_line += current_line_length + 1;
+					if (last_line_flowed)
+					{
+						// Flowed line — trailing space already in output
+						partial_line += current_line_length;
+					}
+					else
+					{
+						// Rewrap join — add space between lines
+						add_space = true;
+						partial_line += current_line_length + 1;
+					}
 				}
 			}
 
@@ -669,46 +690,25 @@ long CTextEngine::GetPrefixDepth(const char*& text, long& remaining, const cdstr
 
 void CTextEngine::AddPrefix(std::ostream& out, const cdstring& prefix, long prefix_length, long num_add, long depth, long& prefixed)
 {
-	bool add_space = false;
-
 	prefixed = 0;
 
-	if (prefix_length && num_add)
+	long total = num_add + depth;
+	if (prefix_length && total > 0)
 	{
-		// Add upto requested depth
 		size_t out_len = prefix.length();
-		for(long i = 0; i < num_add; i++)
+		for(long i = 0; i < total; i++)
 		{
 			out.write(prefix.c_str(), out_len);
 			prefixed += prefix_length;
 		}
 
-		// Look for terminating space or tab
+		// Add space after prefix if it doesn't already end with one
 		char c = prefix.c_str()[out_len - 1];
 		if ((c != ' ') && (c != '\t'))
-			add_space = true;
-	}
-
-	// Now add previous prefix
-	size_t prev_length = sCurrentPrefix.length();
-	if (prev_length)
-	{
-		out.write(sCurrentPrefix.c_str(), prev_length);
-		prefixed += prev_length;
-
-		// Look for terminating space or tab
-		char c = sCurrentPrefix.c_str()[--prev_length];
-		if ((c == ' ') || (c == '\t'))
-			add_space = !depth;
-		else
-			add_space = true;
-	}
-
-	// Add space between prefix and start of line (always add if no real previous prefix)
-	if (add_space)
-	{
-		out.put(' ');
-		prefixed++;
+		{
+			out.put(' ');
+			prefixed++;
+		}
 	}
 }
 

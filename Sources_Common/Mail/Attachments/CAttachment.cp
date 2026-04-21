@@ -844,15 +844,16 @@ void CAttachment::ProcessSend()
 			// Wrap it in flowed mode if requested and inline disposition
 			bool flowed = CPreferences::sPrefs->mFormatFlowed.GetValue() &&
 							(mContent.GetContentDisposition() == eContentDispositionInline);
-			const char* wrapped = CTextEngine::WrapLines(mData, ::strlen(mData), CRFC822::GetWrapLength(), flowed);
+			bool delsp = flowed;
+			const char* wrapped = CTextEngine::WrapLines(mData, ::strlen(mData), CRFC822::GetWrapLength(), flowed, delsp);
 			SetData(const_cast<char*>(wrapped));
-			
+
 			// Add flowed parameter if not already
 			if (flowed && !mContent.IsFlowed())
 			{
 				mContent.SetContentParameter(cMIMEParameter[eFormat], cMIMEParameter[eFlowed]);
-				// RFC 3676 recommends delsp=yes for better readability in non-flowed clients
-				mContent.SetContentParameter(cMIMEParameter[eDelsp], cMIMEParameter[eDelspYes]);
+				if (delsp)
+					mContent.SetContentParameter(cMIMEParameter[eDelsp], cMIMEParameter[eDelspYes]);
 			}
 		}
 		ProcessContent();
