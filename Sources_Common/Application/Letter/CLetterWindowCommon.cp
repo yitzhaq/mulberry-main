@@ -344,6 +344,8 @@ void CLetterWindow::SetReplyMessages(CMessageList* msgs,
 			// Add all recipients except me
 			for(CAddressList::iterator iter = theEnv->GetTo()->begin(); iter != theEnv->GetTo()->end(); iter++)
 			{
+				if (!(*iter)->IsValid())
+					continue;
 				// Do not add me
 				if (!CPreferences::TestSmartAddress(**iter))
 					to_addrs.push_back(*iter);
@@ -352,6 +354,8 @@ void CLetterWindow::SetReplyMessages(CMessageList* msgs,
 			// Add all CCs except me
 			for(CAddressList::iterator iter = theEnv->GetCC()->begin(); iter != theEnv->GetCC()->end(); iter++)
 			{
+				if (!(*iter)->IsValid())
+					continue;
 				// Do not add me
 				if (!CPreferences::TestSmartAddress(**iter))
 					cc_addrs.push_back(*iter);

@@ -811,6 +811,9 @@ void CReplyChooseTable::AddAddrList(CAddressList* aList,
 	// Loop over all addresses in input list
 	for(CAddressList::iterator iter1 = aList->begin(); iter1 != aList->end(); iter1++)
 	{
+		if (!(*iter1)->IsValid())
+			continue;
+
 		bool include;
 		include = true;
 

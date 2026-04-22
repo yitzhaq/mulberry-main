@@ -964,6 +964,8 @@ bool CActionManager::ReplyMessages(CMessageList& msgs, bool quote, NMessage::ERe
 			// Add all recipients except me
 			for(CAddressList::iterator iter2 = theEnv->GetTo()->begin(); iter2 != theEnv->GetTo()->end(); iter2++)
 			{
+				if (!(*iter2)->IsValid())
+					continue;
 				// Do not add me
 				if (!CPreferences::TestSmartAddress(**iter2))
 					to_list->AddUnique(*iter2);
@@ -972,6 +974,8 @@ bool CActionManager::ReplyMessages(CMessageList& msgs, bool quote, NMessage::ERe
 			// Add all CCs except me
 			for(CAddressList::iterator iter2 = theEnv->GetCC()->begin(); iter2 != theEnv->GetCC()->end(); iter2++)
 			{
+				if (!(*iter2)->IsValid())
+					continue;
 				// Do not add me
 				if (!CPreferences::TestSmartAddress(**iter2))
 					cc_list->AddUnique(*iter2);
