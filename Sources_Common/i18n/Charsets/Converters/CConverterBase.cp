@@ -108,25 +108,32 @@ void CConverterBase::ToUTF16(const char* str, size_t len, std::ostream& wout)
 		}
 		else
 		{
+#if __dest_os == __win32_os
+			// Win32 may support native emoji rendering via surrogate
+			// pairs — untested, may need text pipeline validation
 			wc -= (wchar_t)0x10000;
 			wchar_t wc1 = 0xD800 | ((wc & 0x000FFC00) >> 10);
 			wchar_t wc2 = 0xDC00 | (wc & 0x000003FF);
-
-#ifdef big_endian
-			unsigned char c1 = (wc1 & 0xFF00) >> 8;
-			unsigned char c2 = (wc1 & 0x00FF);
-			unsigned char c3 = (wc2 & 0xFF00) >> 8;
-			unsigned char c4 = (wc2 & 0x00FF);
+			wout.put(wc1 & 0x00FF);
+			wout.put((wc1 & 0xFF00) >> 8);
+			wout.put(wc2 & 0x00FF);
+			wout.put((wc2 & 0xFF00) >> 8);
 #else
-			unsigned char c1 = (wc1 & 0x00FF);
-			unsigned char c2 = (wc1 & 0xFF00) >> 8;
-			unsigned char c3 = (wc2 & 0x00FF);
-			unsigned char c4 = (wc2 & 0xFF00) >> 8;
+			// Non-Windows toolkits cannot render emoji —
+			// output a readable codepoint placeholder
+			char hex[14];
+			int hlen = snprintf(hex, sizeof(hex), "[U+%04lX]", (unsigned long)wc);
+			for (int i = 0; i < hlen; i++)
+			{
+#ifdef big_endian
+				wout.put('\0');
+				wout.put(hex[i]);
+#else
+				wout.put(hex[i]);
+				wout.put('\0');
 #endif
-			wout.put(c1);
-			wout.put(c2);
-			wout.put(c3);
-			wout.put(c4);
+			}
+#endif
 		}
 	}
 }

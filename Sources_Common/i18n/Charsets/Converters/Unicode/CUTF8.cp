@@ -63,27 +63,24 @@ wchar_t CUTF8::c_2_w(const unsigned char*& c)
 		return undefined_wcharmap;
 	}
 
-	// Only handle 16-bit chars for now
-	if (charlen <= 3)
+	// Decode up to 4-byte sequences (covers all of Unicode including emoji)
+	if (charlen <= 4)
 	{
-		// Reset char
 		wchar_t wc = 0;
 
 		while(charlen-- != 0)
 		{
-			// Convert the first byte
 			cp = *c++;
 			wc <<= 6;
 			wc |= (cp & mask);
-
-			// Reset mask for remaining bytes
 			mask = 0x3f;
 		}
-		
+
 		return wc;
 	}
 	else
 	{
+		// 5-6 byte sequences are invalid per RFC 3629
 		while(charlen-- != 0)
 			c++;
 	}
