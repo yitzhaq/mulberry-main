@@ -209,11 +209,11 @@ cdstring GetNumericFormat(unsigned long number)
 	cdstring result;
 	result.reserve(64);
 	if (number >= 10000000UL)
-		::snprintf(result.c_str_mod(), 64, "%ld M", (number >> 20) + (number & (1L << 19) ? 1 : 0));
+		::snprintf(result.c_str_mod(), 64, "%lu M", (number >> 20) + (number & (1L << 19) ? 1 : 0));
 	else if (number >= 10000UL)
-		::snprintf(result.c_str_mod(), 64, "%ld K", (number >> 10) + (number & (1L << 9) ? 1 : 0));
+		::snprintf(result.c_str_mod(), 64, "%lu K", (number >> 10) + (number & (1L << 9) ? 1 : 0));
 	else
-		::snprintf(result.c_str_mod(), 64, "%ld", number);
+		::snprintf(result.c_str_mod(), 64, "%lu", number);
 	
 	return result;
 }

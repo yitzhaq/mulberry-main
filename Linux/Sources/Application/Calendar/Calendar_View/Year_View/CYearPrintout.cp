@@ -55,7 +55,7 @@ void CYearPrintout::SetDetails(int32_t year, NCalendarView::EYearLayout layout)
 {
 	// Set static text
 	char buf[256];
-	std::snprintf(buf, 256, "%ld", year);
+	std::snprintf(buf, 256, "%d", year);
 	mYear->SetText(buf);
 	
 	// Reset table

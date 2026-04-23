@@ -1338,7 +1338,7 @@ void CLetterWindow::UpdatePartsCaption()
 {
 	unsigned long count = mPartsTable->CountParts();
 	char buf[32];
-	::snprintf(buf, 32, "%ld", count);
+	::snprintf(buf, 32, "%lu", count);
 	mHeader->mPartsField->SetText(buf);
 
 	mHeader->mAttachments->SetVisible(mPartsTable->HasAttachments() ? kTrue : kFalse);

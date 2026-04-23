@@ -502,6 +502,9 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	cdstring		theTxt;
 	cdstring		theTitle;
 
+	if (!theEnv)
+		return;
+
 	// Set From: text
 	SetTwistList(mHeader->mFromField, mHeader->mFromTwister, mHeader->mFromMove, theEnv->GetFrom());
 
