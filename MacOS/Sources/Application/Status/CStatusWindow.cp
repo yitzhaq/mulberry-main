@@ -360,7 +360,7 @@ void CStatusWindow::SetSMTPProgress(long progress)
 
 	// Set up the string
 	if ((progress >= 0) && (progress <= 100))
-		::snprintf(status.c_str_mod(), 256, "%d%%", progress);
+		::snprintf(status.c_str_mod(), 256, "%ld%%", progress);
 	else if (progress > 100)
 		::snprintf(status.c_str_mod(), 256, "%d%%", 100);
 
@@ -395,7 +395,7 @@ void CStatusWindow::SetIMAPProgress(long progress)
 
 	// Set up the string
 	if ((progress >= 0) && (progress <= 100))
-		::snprintf(status.c_str_mod(), 256, "%d%%", progress);
+		::snprintf(status.c_str_mod(), 256, "%ld%%", progress);
 	else if (progress > 100)
 		::snprintf(status.c_str_mod(), 256, "%d%%", 100);
 

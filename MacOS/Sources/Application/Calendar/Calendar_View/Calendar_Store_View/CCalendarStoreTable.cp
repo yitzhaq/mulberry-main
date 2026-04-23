@@ -1005,9 +1005,9 @@ bool CCalendarStoreTable::ValidDragSelection() const
 // Add drag cells
 void CCalendarStoreTable::AddCellToDrag(CDragIt* theDragTask, const STableCell& theCell, Rect& dragRect)
 {
-	const void* data;
+	const void* data = NULL;
 	UInt32 dataSize = sizeof(void*);
-	FlavorType flavor;
+	FlavorType flavor = 0;
 	FlavorFlags flags = 0;
 
 	// Assume drag only starts when selection is all the same type

@@ -61,7 +61,7 @@ void CYearPrintout::SetDetails(int32_t year, CYearTable::EYearTableLayout layout
 {
 	// Set static text
 	char buf[256];
-	std::snprintf(buf, 256, "%ld", year);
+	std::snprintf(buf, 256, "%d", year);
 	PPx::CFString year_txt(buf, kCFStringEncodingUTF8);
 	mYear->SetCFDescriptor(year_txt);
 	

@@ -1031,7 +1031,7 @@ void CGroupTable::DoDeleteEntry()
 			}
 		}
 
-		if (same)
+		if (same && aGrp)
 		{
 			// Copy original group
 			CGroup* copy = new CGroup(*aGrp);

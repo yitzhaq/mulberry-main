@@ -97,7 +97,7 @@ void CYearPopup::SetupMenuItems()
 	for(int32_t i = 0; i < 7; i++)
 	{
 		char buf[32];
-		std::snprintf(buf, 32, "%ld", mYearStart + i);
+		std::snprintf(buf, 32, "%d", mYearStart + i);
 
 		::SetMenuItemTextUTF8(menu, i + 1, buf);
 	}

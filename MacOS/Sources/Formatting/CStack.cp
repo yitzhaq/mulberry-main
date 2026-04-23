@@ -54,8 +54,11 @@ char *CStack::pop(){
 		stack = stack->next;
 	else
 		stack = NULL;
-	
+
+	char *value = give ? give->value : NULL;
+	if (give)
+		give->value = NULL;
 	delete give;
-	
-	return give->value;
+
+	return value;
 }

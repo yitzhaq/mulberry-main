@@ -170,10 +170,10 @@ void CDateTimeControl::SetDate(unsigned long year, unsigned long month, unsigned
 	switch(mMode)
 	{
 	case eDateDDMMYYYY:
-		::snprintf(buffer.c_str_mod(), 32, "%02ld/%02ld/%ld", mday, month, year);
+		::snprintf(buffer.c_str_mod(), 32, "%02lu/%02lu/%lu", mday, month, year);
 		break;
 	case eDateMMDDYYYY:
-		::snprintf(buffer.c_str_mod(), 32, "%02ld/%02ld/%ld", month, mday, year);
+		::snprintf(buffer.c_str_mod(), 32, "%02lu/%02lu/%lu", month, mday, year);
 		break;
 	default:;
 	}
@@ -229,20 +229,20 @@ void CDateTimeControl::SetTime(unsigned long hours, unsigned long mins, unsigned
 			hours = 12;
 		else if (hours > 12)
 			hours -= 12;
-		::snprintf(buffer.c_str_mod(), 32, am ? "%02ld:%02ld:%02ld AM" : "%02ld:%02ld:%02ld PM", hours, mins, secs);
+		::snprintf(buffer.c_str_mod(), 32, am ? "%02lu:%02lu:%02lu AM" : "%02lu:%02lu:%02lu PM", hours, mins, secs);
 		break;
 	case e12TimeNoSecs:
 		if (hours == 0)
 			hours = 12;
 		else if (hours > 12)
 			hours -= 12;
-		::snprintf(buffer.c_str_mod(), 32, am ? "%02ld:%02ld AM" : "%02ld:%02ld PM", hours % 12, mins);
+		::snprintf(buffer.c_str_mod(), 32, am ? "%02lu:%02lu AM" : "%02lu:%02lu PM", hours % 12, mins);
 		break;
 	case e24TimeSecs:
-		::snprintf(buffer.c_str_mod(), 32, "%02ld:%02ld:%02ld", hours, mins, secs);
+		::snprintf(buffer.c_str_mod(), 32, "%02lu:%02lu:%02lu", hours, mins, secs);
 		break;
 	case e24TimeNoSecs:
-		::snprintf(buffer.c_str_mod(), 32, "%02ld:%02ld", hours, mins);
+		::snprintf(buffer.c_str_mod(), 32, "%02lu:%02lu", hours, mins);
 		break;
 	default:;
 	}
