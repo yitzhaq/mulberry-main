@@ -421,7 +421,7 @@ bool CMbox::AnyNew() const
 	unsigned long new_unseen = GetNumberUnseen();
 	unsigned long new_recent = GetNumberRecent();
 	unsigned long new_new = GetMboxRecent();
-	bool is_new;
+	bool is_new = false;
 
 	// Process differently depending on open state of mailbox (this is an IMAPism)
 	if (IsOpen())

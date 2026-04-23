@@ -42,7 +42,7 @@ namespace NSSL
 			{ if (mObj) delete_obj(); }
 
 		inline T& operator*() const
-			{ return &mObj; }
+			{ return *mObj; }
 		inline T* operator->() const
 			{ return mObj; }
 		inline T* get() const
