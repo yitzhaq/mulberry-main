@@ -64,7 +64,7 @@ protected:
 class CHTTPInputData : public CHTTPData
 {
 public:
-	CHTTPInputData() {}
+	CHTTPInputData() : mContentLength(0) {}
 	virtual ~CHTTPInputData() {}
 
 	std::istream* GetStream() const

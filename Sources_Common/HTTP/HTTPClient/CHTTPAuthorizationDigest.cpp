@@ -184,7 +184,7 @@ void CHTTPAuthorizationDigest::GenerateResponse(const CHTTPRequestResponse* requ
 		++mClientCount;
 		mNC.clear();
 		mNC.reserve(256);
-		::snprintf(mNC.c_str_mod(), 256, "%08x", mClientCount);
+		::snprintf(mNC.c_str_mod(), 256, "%08lx", mClientCount);
 		
 		mCnonce = mNC;
 		mCnonce += mUser;
