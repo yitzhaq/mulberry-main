@@ -1,6 +1,8 @@
 *.o
+*.o.tmp
 *.dd
 *.so
+*.so.ltrans*
 Libraries/Makefile
 Linux/Makefile
 Makefile
@@ -133,3 +135,17 @@ Win32/ipch/
 # Generated timezone files (built from IANA tzdata via vzic)
 Sources_Common/Timezones/zoneinfo/
 Sources_Common/Timezones/zoneinfo-backup-*.tar.gz
+
+# Build artifacts
+Linux/Includes/
+debian/.debhelper/
+debian/autoreconf.after
+debian/autoreconf.before
+*.log
+
+# Static analysis artifacts
+compile_commands.json
+infer-out/
+
+# Claude Code
+CLAUDE.md

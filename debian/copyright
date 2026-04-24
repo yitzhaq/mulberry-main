@@ -1,0 +1,42 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Mulberry
+Upstream-Contact: Cyrus Daboo
+Source: http://www.mulberrymail.com
+ Original source was maintained in Subversion at svn.mulberrymail.com
+ (no longer available). The source was forked to GitHub by Martin Dietze
+ (mbert), who maintained it until 2016. This Debian package is based on
+ continued community maintenance.
+Comment: Mulberry was originally developed by Cyrus Daboo and released
+ under the Apache License 2.0. The original SVN repository at
+ svn.mulberrymail.com is no longer accessible. Development continued
+ through community forks on GitHub, with this package representing
+ current maintenance efforts including 64-bit support and modern
+ compiler compatibility.
+
+Files: *
+Copyright: 2007-2011 Cyrus Daboo
+License: Apache-2.0
+
+Files: debian/*
+Copyright: 2009 Martin Dietze <herbert@spamcop.net>
+           2026 yitzhaq <github@anonmail.uk>
+License: Apache-2.0
+Comment: Debian packaging was originally created by Martin Dietze in 2009.
+ Modernization work for current Debian standards and 64-bit support was
+ performed by yitzhaq in 2026.
+
+License: Apache-2.0
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ .
+     http://www.apache.org/licenses/LICENSE-2.0
+ .
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ .
+ On Debian systems, the complete text of the Apache License 2.0 can be
+ found in "/usr/share/common-licenses/Apache-2.0".

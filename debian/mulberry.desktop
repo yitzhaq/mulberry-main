@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mulberry
+GenericName=Mail Client
+Comment=Internet email and calendar client with IMAP, CalDAV, and CardDAV support
+Exec=/usr/bin/mulberry %u
+TryExec=/usr/bin/mulberry
+Icon=mulberry
+Terminal=false
+MimeType=x-scheme-handler/mailto;x-scheme-handler/webcal;message/rfc822;
+StartupNotify=true
+StartupWMClass=threepane_window
+Categories=Network;Email;
