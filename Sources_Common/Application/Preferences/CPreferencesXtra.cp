@@ -586,6 +586,36 @@ void CPreferences::InitLetterPrefs()
 	mForwardEnd.mValue += os_endl;
 	mForwardCursorTop.mValue = true;
 	mForwardSubject.mValue = "* (fwd)";
+	// RFC 5322 s3.6.5: reply prefix is "Re:", not localized.
+	// Strip common localized variants to normalize subject lines.
+	mSubjectStripPrefixes.mValue.push_back("Re");
+	mSubjectStripPrefixes.mValue.push_back("Sv");
+	mSubjectStripPrefixes.mValue.push_back("Svar");
+	mSubjectStripPrefixes.mValue.push_back("AW");
+	mSubjectStripPrefixes.mValue.push_back("Anw");
+	mSubjectStripPrefixes.mValue.push_back("Antw");
+	mSubjectStripPrefixes.mValue.push_back("Ref");
+	mSubjectStripPrefixes.mValue.push_back("Odp");
+	mSubjectStripPrefixes.mValue.push_back("Ynt");
+	mSubjectStripPrefixes.mValue.push_back("Res");
+	mSubjectStripPrefixes.mValue.push_back("Rif");
+	mSubjectStripPrefixes.mValue.push_back("BLS");
+	mSubjectStripPrefixes.mValue.push_back("Atb");
+	mSubjectStripPrefixes.mValue.push_back("ATB");
+	mSubjectStripPrefixes.mValue.push_back("Fwd");
+	mSubjectStripPrefixes.mValue.push_back("Fw");
+	mSubjectStripPrefixes.mValue.push_back("VS");
+	mSubjectStripPrefixes.mValue.push_back("VL");
+	mSubjectStripPrefixes.mValue.push_back("VB");
+	mSubjectStripPrefixes.mValue.push_back("TR");
+	mSubjectStripPrefixes.mValue.push_back("WG");
+	mSubjectStripPrefixes.mValue.push_back("RV");
+	mSubjectStripPrefixes.mValue.push_back("ENC");
+	mSubjectStripPrefixes.mValue.push_back("PD");
+	mSubjectStripPrefixes.mValue.push_back("FS");
+	mSubjectStripPrefixes.mValue.push_back("Doorst");
+	mSubjectStripPrefixes.mValue.push_back("YML");
+	mSubjectStripPrefixes.mValue.push_back("TRS");
 	mLtrHeaderCaption.mValue = "Page %page. To: %to-full  about  %subject";
 	mLtrFooterCaption.mValue = "Printed for: %me-name  on  %now";
 	mSeparateBCC.mValue = true;

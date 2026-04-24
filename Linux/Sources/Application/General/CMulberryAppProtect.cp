@@ -46,12 +46,12 @@ void CMulberryApp::ReadDefaults()
 NumVersion CMulberryApp::GetVersionNumber()
 {
 	// Use designated initializer to avoid undefined behavior from union type-punning
-	// v4.1a3 = major:0x04, minorBug:0x10, stage:0x40(alpha), nonRel:0x03
+	// v4.1a4 = major:0x04, minorBug:0x10, stage:0x40(alpha), nonRel:0x04
 #ifdef big_endian
-	NumVersion vers = {0x04, 0x10, 0x40, 0x03};
+	NumVersion vers = {0x04, 0x10, 0x40, 0x04};
 #else
 	// Little-endian: reverse byte order
-	NumVersion vers = {0x03, 0x40, 0x10, 0x04};
+	NumVersion vers = {0x04, 0x40, 0x10, 0x04};
 #endif
 	return vers;
 }

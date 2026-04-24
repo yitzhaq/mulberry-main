@@ -319,6 +319,7 @@ public:
 	CPreferenceValueMap<cdstring>				mForwardEnd;						// End caption for forwarding
 	CPreferenceValueMap<bool>					mForwardCursorTop;					// Leave cursor at top of caption
 	CPreferenceValueMap<cdstring>				mForwardSubject;					// Forwarding subject
+	CPreferenceValueMap<cdstrvect>				mSubjectStripPrefixes;				// Subject prefixes to strip when replying/forwarding
 	CPreferenceValueMap<cdstring>				mLtrHeaderCaption;					// Printed header caption
 	CPreferenceValueMap<cdstring>				mLtrFooterCaption;					// Printed footer caption
 	CPreferenceValueMap<bool>					mSeparateBCC;						// Send separate BCC message
@@ -532,6 +533,7 @@ public:
 	CPreferenceValue<C3PaneOptions>& Get3PaneOptions();			// Get current 3pane options
 
 	void ForwardSubject(cdstring& subj) const;					// Format subject for forwarding
+	void StripSubjectPrefixes(cdstring& subj) const;			// Strip reply/forward prefixes from subject
 	void SignatureDashes(cdstring& sig) const;					// Add sig dashes if required
 
 	// Environment details

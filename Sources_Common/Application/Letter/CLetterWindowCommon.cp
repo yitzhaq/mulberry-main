@@ -406,20 +406,17 @@ void CLetterWindow::SetReplyMessages(CMessageList* msgs,
 		// Replying to all recipients, sender & Ccs
 		AddAddressLists(reply_to, reply_cc, reply_bcc);
 
-		// Set Subject: text
+		// Set Subject: text — strip localized reply/forward prefixes
+		// and prepend canonical "Re: " per RFC 5322 s3.6.5
 		cdstring theTxt;
 		const char* subject = theEnv->GetSubject();
 		if (subject)
 		{
-			if (((subject[0]!='R') && (subject[0]!='r')) ||
-				((subject[1]!='E') && (subject[1]!='e')) ||
-				(subject[2]!=':'))
-			{
-				theTxt = "Re: ";
-				theTxt += subject;
-			}
-			else
-				theTxt = subject;
+			theTxt = subject;
+			CPreferences::sPrefs->StripSubjectPrefixes(theTxt);
+			cdstring reSubj = "Re: ";
+			reSubj += theTxt;
+			theTxt = reSubj;
 		}
 		SetSubject(theTxt);
 		mReplySubject = theTxt;
@@ -461,8 +458,9 @@ void CLetterWindow::SetForwardMessages(CMessageList* msgs, EForwardOptions forwa
 			throw CGeneralException(-1L);
 		}
 
-		// Set Subject: text - same as forwarded message's
+		// Set Subject: text — strip localized prefixes before applying forward pattern
 		cdstring theTxt = theEnv->GetSubject();
+		CPreferences::sPrefs->StripSubjectPrefixes(theTxt);
 		CPreferences::sPrefs->ForwardSubject(theTxt);
 		SetSubject(theTxt);
 	}
@@ -669,8 +667,9 @@ void CLetterWindow::SetDigestMessages(CMessageList* msgs)
 			throw CGeneralException(-1L);
 		}
 
-		// Set Subject: text - same as forwarded message's
+		// Set Subject: text — strip localized prefixes before applying forward pattern
 		cdstring theTxt = theEnv->GetSubject();
+		CPreferences::sPrefs->StripSubjectPrefixes(theTxt);
 		CPreferences::sPrefs->ForwardSubject(theTxt);
 		SetSubject(theTxt);
 	}

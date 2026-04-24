@@ -939,6 +939,38 @@ void CPreferences::ForwardSubject(cdstring& subj) const
 }
 
 
+void CPreferences::StripSubjectPrefixes(cdstring& subj) const
+{
+	const cdstrvect& prefixes = mSubjectStripPrefixes.GetValue();
+	if (prefixes.empty())
+		return;
+
+	const char* p = subj.c_str();
+	bool found = true;
+	while(found)
+	{
+		found = false;
+		for(cdstrvect::const_iterator iter = prefixes.begin(); iter != prefixes.end(); iter++)
+		{
+			size_t len = (*iter).length();
+			if (len && (::strncasecmp(p, (*iter).c_str(), len) == 0) && (p[len] == ':'))
+			{
+				p += len + 1;
+				while(*p == ' ')
+					p++;
+				found = true;
+				break;
+			}
+		}
+	}
+
+	if (p != subj.c_str())
+	{
+		cdstring stripped(p);
+		subj = stripped;
+	}
+}
+
 void CPreferences::SignatureDashes(cdstring& sig) const
 {
 	// Is auto-insert of sig dashes required
