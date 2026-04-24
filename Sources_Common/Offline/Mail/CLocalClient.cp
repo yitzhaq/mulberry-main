@@ -3225,7 +3225,7 @@ void CLocalClient::ReadIndex(cdfstream& in, SIndexHeader& header, SIndexList& in
 		static_cast<std::streampos>(header.IndexSize()) * sIndexWriteLength;
 
 	// Allow some tolerance for file system overhead, but reject grossly mismatched sizes
-	if (file_size < expected_size || file_size > expected_size + 4096)
+	if (file_size < expected_size || file_size > expected_size + static_cast<std::streamoff>(4096))
 	{
 		CLOG_LOGTHROW(CGeneralException, -1L);
 		throw CGeneralException(-1L);
