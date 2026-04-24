@@ -22,7 +22,6 @@ AC_SUBST(STRIP)
 AC_LANG(C++)
 
 dnl Checks for header files.
-AC_HEADER_STDC
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -74,7 +73,7 @@ case $CC in
 esac
 case $CXX in
   gcc*|g++*|c++*|*-g++)
-    CXXWARN="-Wall -Wcast-align -Wno-multichar -Wno-unused -Wno-unknown-pragmas -Wno-non-virtual-dtor -Wno-ctor-dtor-privacy"
+    CXXWARN="-Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wnull-dereference -Wlogical-op -Wduplicated-cond -Wduplicated-branches -Wcast-align -Wno-multichar -Wno-unused -Wno-unused-parameter -Wno-unknown-pragmas -Wno-non-virtual-dtor -Wno-ctor-dtor-privacy"
     CXXFLAGS="$CXXFLAGS"
     #GVERSION=`$CXX --version | grep "^$CXX " | sed "s/.* //"`
     GVERSION=`$CXX -dumpversion`
@@ -415,4 +414,5 @@ echo "Mulberry resources and plugins go to $DESTDIR$prefix/$MULBERRY_DIR"
 echo "Mulberry help files go to $DESTDIR$prefix/$HELP_DIR"
 echo ""
 
-AC_OUTPUT(Makefile Libraries/Makefile Build/Makefile Sources_Common/Makefile Libraries/CICalendar/Makefile Libraries/vCard/Makefile Libraries/XMLLib/Makefile Linux/Makefile Plug-ins/Makefile Plug-ins/PluginLibrary/Makefile Plug-ins/CRAM-MD5/Makefile Plug-ins/DIGEST-MD5/Makefile Plug-ins/GSSAPI/Makefile Plug-ins/Kerberos/Makefile Plug-ins/CommunicatorAdbkIO/Makefile Plug-ins/Eudora4AdbkIO/Makefile Plug-ins/EudoraAdbkIO/Makefile Plug-ins/NetscapeAdbkIO/Makefile Plug-ins/PineAdbkIO/Makefile Plug-ins/QuickmailAdbkIO/Makefile Plug-ins/vCardAdbkIO/Makefile Plug-ins/ISpell/Makefile Plug-ins/ASpell/Makefile Plug-ins/GPG/Makefile Plug-ins/SMIME/Makefile Plug-ins/SSL/Makefile)
+AC_CONFIG_FILES([Makefile Libraries/Makefile Build/Makefile Sources_Common/Makefile Libraries/CICalendar/Makefile Libraries/vCard/Makefile Libraries/XMLLib/Makefile Linux/Makefile Plug-ins/Makefile Plug-ins/PluginLibrary/Makefile Plug-ins/CRAM-MD5/Makefile Plug-ins/DIGEST-MD5/Makefile Plug-ins/GSSAPI/Makefile Plug-ins/Kerberos/Makefile Plug-ins/CommunicatorAdbkIO/Makefile Plug-ins/Eudora4AdbkIO/Makefile Plug-ins/EudoraAdbkIO/Makefile Plug-ins/NetscapeAdbkIO/Makefile Plug-ins/PineAdbkIO/Makefile Plug-ins/QuickmailAdbkIO/Makefile Plug-ins/vCardAdbkIO/Makefile Plug-ins/ISpell/Makefile Plug-ins/ASpell/Makefile Plug-ins/GPG/Makefile Plug-ins/SMIME/Makefile Plug-ins/SSL/Makefile])
+AC_OUTPUT
