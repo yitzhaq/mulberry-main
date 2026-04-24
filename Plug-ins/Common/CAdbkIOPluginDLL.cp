@@ -216,8 +216,16 @@ void CAdbkIOPluginDLL::CAdbkIOPluginGroup::AddAddress(const char* addr)
 	if (!mGroup.mAddresses)
 		mGroup.mAddresses = (const char**) ::malloc(sizeof(char*));
 	else
-		mGroup.mAddresses = (const char**) ::realloc(mGroup.mAddresses, mNumAddresses * sizeof(char*));
-	
+	{
+		const char** tmp = (const char**) ::realloc(mGroup.mAddresses, mNumAddresses * sizeof(char*));
+		if (!tmp)
+		{
+			mNumAddresses--;
+			return;
+		}
+		mGroup.mAddresses = tmp;
+	}
+
 	mGroup.mAddresses[mNumAddresses - 1] = addr;
 }
 

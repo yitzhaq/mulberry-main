@@ -39,12 +39,10 @@
 
 #pragma mark ____________________________Entry Point
 
-#if __dest_os == __mac_os || __dest_os == __mac_os_x
 #ifdef __GNUC__
 #pragma GCC visibility push(default)
-#else
+#elif __dest_os == __mac_os || __dest_os == __mac_os_x
 #pragma export on
-#endif
 #endif
 extern "C"
 {

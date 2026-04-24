@@ -91,9 +91,9 @@ bool SStyleTraits2::SetInfo(char_stream& txt, NumVersion vers_prefs)
 
 	txt.get(usecolor);
 	
-	unsigned long red;
-	unsigned long green;
-	unsigned long blue;
+	unsigned long red = 0;
+	unsigned long green = 0;
+	unsigned long blue = 0;
 
 	txt.get(red);
 	txt.get(green);
