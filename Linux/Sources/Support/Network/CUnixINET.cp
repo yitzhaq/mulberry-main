@@ -194,7 +194,13 @@ bool CUnixINET::GetInterfaceIPs(unsigned long*& ips)
 
 	// Create space for ips
 	ips = (unsigned long*) malloc(sizeof(unsigned long) * (ctr + 1));
-	
+	if (!ips)
+	{
+		::free(ifc.ifc_buf);
+		::close(sock);
+		return false;
+	}
+
 	// Copy valid ips into ip space
 	unsigned long* p = ips;
 	unsigned long idx = 0;		// Used to prevent buffer overflow
