@@ -1978,6 +1978,10 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 		}
 	}
 	
+	// Clear error processing state so tickles and recovery can resume
+	if (mOwner)
+		mOwner->SetErrorProcess(false);
+
 	// Mark as handled
 	if (nex)
 		nex->sethandled();
