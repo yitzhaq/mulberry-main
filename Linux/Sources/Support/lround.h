@@ -19,15 +19,6 @@
 
 #include <math.h>
 
-#ifndef lround
-long lround(double d);
-inline long lround(double d)
-{
-  if ((d >= 0.5) || (d <= -0.5))
-    return (long) ceil(d - 0.5);
-  else
-    return 0;
-}
-#endif
+// lround is provided by <math.h> on modern systems
 #endif
 
