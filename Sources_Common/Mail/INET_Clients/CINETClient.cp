@@ -346,7 +346,7 @@ void CINETClient::SendString(const char* str, int flags)
 	if (literal_size)
 	{
 		char size[32];
-		::snprintf(size, 32, mAsyncLiteral ? "{%d+}" : "{%d}", literal_size);
+		::snprintf(size, 32, mAsyncLiteral ? "{%zu+}" : "{%zu}", literal_size);
 		mStream->write(size, ::strlen(size));
 		mStream->write(cCRLF, 2);
 		if (mAllowLog)

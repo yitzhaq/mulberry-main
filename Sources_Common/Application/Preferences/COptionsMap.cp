@@ -1059,7 +1059,7 @@ bool COptionsMap::ReadValue(const cdstring& key, SFontInfo& value, NumVersion ve
 	if (result)
 	{
 		char fontname[512];
-		sscanf(str_value, "%ld, %[^,]", &value.size, &fontname);
+		sscanf(str_value, "%ld, %[^,]", &value.size, fontname);
 		value.fontname = fontname;
 	}
 	return result;

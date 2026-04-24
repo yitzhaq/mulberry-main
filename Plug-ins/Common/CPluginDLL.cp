@@ -60,7 +60,7 @@ CPluginDLL::CPluginDLL()
 // Destructor
 CPluginDLL::~CPluginDLL()
 {
-	mRefCon = NULL;
+	mRefCon = 0;
 }
 
 // DLL entry point and dispatch

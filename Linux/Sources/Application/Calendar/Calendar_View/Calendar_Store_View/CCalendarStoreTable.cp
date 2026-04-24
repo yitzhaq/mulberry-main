@@ -553,7 +553,7 @@ ResIDT CCalendarStoreTable::GetPlotIcon(const calstore::CCalendarStoreNode* node
 		}
 		else
 		{
-			IDI_CALENDARUNCACHED;
+			return IDI_CALENDARUNCACHED;
 		}
 	}
 }

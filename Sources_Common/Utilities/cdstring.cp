@@ -447,7 +447,7 @@ cdstring::size_type cdstring::find(const char* s, size_type pos, size_type n, bo
 			{
 				if (casei)
 				{
-					if (!::tolower(*s1) != ::tolower(*p1))
+					if (::tolower(*s1) != ::tolower(*p1))
 						goto loop;
 				}
 				else

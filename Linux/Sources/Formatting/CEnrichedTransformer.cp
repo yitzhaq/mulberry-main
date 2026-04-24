@@ -275,7 +275,7 @@ char* CEnrichedUtils::ConvertToHTML(const char* enrichedText)
 
 				output << " color = \"#";
 				char tmpColor[10];
-				::snprintf(tmpColor, 10, "%.2x%.2x%.2x", red / 256, green / 256, blue / 256);
+				::snprintf(tmpColor, 10, "%.2x%.2x%.2x", (unsigned int)(red / 256), (unsigned int)(green / 256), (unsigned int)(blue / 256));
 				output << tmpColor;
 				output << "\"";
 			}

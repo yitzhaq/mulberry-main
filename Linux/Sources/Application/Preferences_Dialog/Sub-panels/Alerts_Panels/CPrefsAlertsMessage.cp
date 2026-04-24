@@ -357,8 +357,10 @@ void CPrefsAlertsMessage::DoNewStyle(void)
 				break;
 			}
 			else
+			{
 				mAlertStylePopup->SetValue(mStyleValue + eStyleFirst);
 				break;
+			}
 		}
 	}
 }

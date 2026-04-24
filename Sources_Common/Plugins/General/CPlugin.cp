@@ -763,7 +763,7 @@ void CPlugin::WriteToMap(COptionsMap* theMap, bool dirty_only)
 	if (!dirty_only || mUpdateVers)
 	{
 		char temp[256];
-		::snprintf(temp, 256, "%#08x",*(long*) &mInfo.mVersion);
+		::snprintf(temp, 256, "%#08lx",*(long*) &mInfo.mVersion);
 		cdstring txt = temp;
 		theMap->WriteValue(cVersionKey, txt);
 	}
