@@ -134,12 +134,19 @@ void CMailControl::MboxServerReconnect(CMboxProtocol* server)
 // Forced disconnection of server
 void CMailControl::MboxServerDisconnect(CMboxProtocol* server)
 {
-	// Clean up UI items but keep folder views open for reconnection
-	CleanUpServerDisconnect(server, true);
+	// Must get state of server here as it will be deleted by the end
+	bool cloned = server->IsCloned();
 
-	// Force server off
-	CServerForceoffTask* task = new CServerForceoffTask(server);
-	task->Go();
+	// Clean up UI items
+	bool closed = CleanUpServerDisconnect(server, false);
+
+	// Now clear out server (if not clone or clone not closed)
+	// Clones will get deleted by mailbox window close.
+	if (!cloned || !closed)
+	{
+		CServerForceoffTask* task = new CServerForceoffTask(server);
+		task->Go();
+	}
 }
 
 // Clean up after forced disconnection of protocol
@@ -803,7 +810,7 @@ void CMailControl::SpendTime(bool force_tickle, bool do_checks)
 			{
 				CLOG_LOGCATCH(...);
 
-				// ï¿½and do nothing
+				// Éand do nothing
 			}
 		}
 	}
@@ -1855,7 +1862,7 @@ bool CMailControl::ProcessBusy(const CBusyContext* busy, bool allow_cancel)
 	{
 		CLOG_LOGCATCH(...);
 
-		// ï¿½and do nothing
+		// Éand do nothing
 	}
 
 	return cancel;
