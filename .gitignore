@@ -131,5 +131,5 @@ Win32/MulberryVC10.opensdf
 Win32/ipch/
 
 # Generated timezone files (built from IANA tzdata via vzic)
-Sources_Common/Timezones/zoneinfo/*.ics
-Sources_Common/Timezones/zoneinfo/*/*.ics
+Sources_Common/Timezones/zoneinfo/
+Sources_Common/Timezones/zoneinfo-backup-*.tar.gz
