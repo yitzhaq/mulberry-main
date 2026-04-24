@@ -95,7 +95,7 @@ cdustring& cdustring::erase(size_type pos, size_type n)
 	
 	// Copy over the chunk after the erase
 	if (len_after != 0)
-		::memcpy(p + pos * sizeof(unichar_t), _str + pos * sizeof(unichar_t) + n * sizeof(unichar_t), len_after * sizeof(unichar_t));
+		::memcpy(p + pos, _str + pos + n, len_after * sizeof(unichar_t));
 	p[pos + len_after] = 0;
 	steal(p);
 	

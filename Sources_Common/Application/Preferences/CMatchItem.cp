@@ -32,7 +32,7 @@ extern const char* cSpace;
 extern const char* cValueBoolTrue;
 extern const char* cValueBoolFalse;
 
-const char* cMatchDescriptors[] = {"None"
+const char* cMatchDescriptors[] = {"None",
 									"New",
 									"Unseen",
 									"Important",
