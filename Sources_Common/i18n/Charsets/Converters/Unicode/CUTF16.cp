@@ -27,19 +27,24 @@ wchar_t CUTF16::c_2_w(const unsigned char*& c)
 	unsigned char c2 = *c++;
 	wchar_t	wc = mBigEndian ? ((c1 << 8) | c2) : ((c2 << 8) | c1);
 
-	// Check for BOM at the very start of the stream only
+	// BOM detection for the first character only (external charset=utf-16 data).
+	// 0xFEFF in current byte order = correct endianness, keep as-is.
+	// 0xFFFE in current byte order = wrong endianness, switch and re-read.
 	if (!mBOMChecked)
 	{
 		mBOMChecked = true;
 		if (wc == 0xfeff)
 		{
-			mBigEndian = true;
-			return wc;
+			// BOM confirms current endianness — skip the BOM, don't output it
+			return c_2_w(c);
 		}
 		else if (wc == 0xfffe)
 		{
-			mBigEndian = false;
-			return wc;
+			// BOM indicates opposite endianness — switch and re-read
+			mBigEndian = !mBigEndian;
+			wc = mBigEndian ? ((c1 << 8) | c2) : ((c2 << 8) | c1);
+			// Skip the BOM, read next character
+			return c_2_w(c);
 		}
 	}
 
