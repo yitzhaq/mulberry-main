@@ -360,7 +360,7 @@ void CGroupTable::ReplaceGroup(CGroup* old_grp, CGroup* new_grp)
 		}
 
 		// Refill address rows with new group
-		for(short i = 0; i < new_grp->GetAddressList().size(); i++)
+		for(size_t i = 0; i < new_grp->GetAddressList().size(); i++)
 		{
 			SGroupTableItem addr_item(false, new_grp);
 			STableCell aCell(woRow + 1 + i, 1);

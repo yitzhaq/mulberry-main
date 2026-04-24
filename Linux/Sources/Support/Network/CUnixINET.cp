@@ -150,10 +150,18 @@ bool CUnixINET::GetInterfaceIPs(unsigned long*& ips)
     for (;;)
     {
 		ifc.ifc_len = sizeof(struct ifreq) * numreqs;
-		ifc.ifc_buf = (char*) ::realloc(ifc.ifc_buf, ifc.ifc_len);
+		char* tmp = (char*) ::realloc(ifc.ifc_buf, ifc.ifc_len);
+		if (!tmp)
+		{
+			::free(ifc.ifc_buf);
+			::close(sock);
+			return false;
+		}
+		ifc.ifc_buf = tmp;
 
 		if (::ioctl(sock, SIOCGIFCONF, &ifc) < 0)
 		{
+			::free(ifc.ifc_buf);
 			::close(sock);
 			return false;
 		}
@@ -251,10 +259,18 @@ bool CUnixINET::InterfaceTest(EInterfaceTest test)
     for (;;)
     {
 		ifc.ifc_len = sizeof(struct ifreq) * numreqs;
-		ifc.ifc_buf = (char*) ::realloc(ifc.ifc_buf, ifc.ifc_len);
+		char* tmp = (char*) ::realloc(ifc.ifc_buf, ifc.ifc_len);
+		if (!tmp)
+		{
+			::free(ifc.ifc_buf);
+			::close(sock);
+			return false;
+		}
+		ifc.ifc_buf = tmp;
 
 		if (::ioctl(sock, SIOCGIFCONF, &ifc) < 0)
 		{
+			::free(ifc.ifc_buf);
 			::close(sock);
 			return false;
 		}
