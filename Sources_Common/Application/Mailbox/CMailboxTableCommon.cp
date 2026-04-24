@@ -179,6 +179,8 @@ void CMailboxTable::SetMbox(CMbox* anMbox)
 // Set the mbox
 void CMailboxTable::ForceClose()
 {
+	UnselectAllCells();
+	ClearTable();
 	mMbox = NULL;
 	mMboxError = true;
 }
