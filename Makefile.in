@@ -7,7 +7,7 @@
 # $Revision$
 #
 
-.PHONY: all clean distclean install uninstall archive
+.PHONY: all clean distclean install uninstall archive timezones
 
 OS_NAME = @OS_NAME@
 PROC_NAME = @PROC_NAME@
@@ -20,11 +20,18 @@ PWD := $(shell pwd)
 include Build/make.version
 include Build/make.local
 
-all:
+all: timezones
 	(cd Linux; ./links.sh)
 	$(MAKE) -C Libraries $@
 	$(MAKE) -C Plug-ins $@
 	$(MAKE) -C Linux $@
+
+timezones:
+	@if [ ! -d Sources_Common/Timezones/zoneinfo ] || \
+	    [ -z "$$(ls Sources_Common/Timezones/zoneinfo/*.ics 2>/dev/null)" ]; then \
+		echo "Generating timezone database..."; \
+		./scripts/update-timezones.sh; \
+	fi
 
 install: all
 	$(MAKE) -C Linux $@
@@ -43,6 +50,7 @@ distclean:
 	$(MAKE) -C Plug-ins $@
 	$(MAKE) -C Libraries $@
 	rm -rf Linux/Includes/*
+	find Sources_Common/Timezones/zoneinfo -name '*.ics' -delete 2>/dev/null; rm -f Sources_Common/Timezones/zoneinfo/version.txt Sources_Common/Timezones/zoneinfo/zones.h Sources_Common/Timezones/zoneinfo/zones.tab
 
 clean:
 	$(MAKE) -C Linux $@

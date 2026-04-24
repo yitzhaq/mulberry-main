@@ -49,9 +49,10 @@ override_dh_auto_install:
 
 override_dh_auto_clean:
 	# Clean timezone generated files
-	rm -f Sources_Common/Timezones/zoneinfo/*.ics \
-	      Sources_Common/Timezones/zoneinfo/*/*.ics \
-	      Sources_Common/Timezones/zoneinfo/version.txt
+	find Sources_Common/Timezones/zoneinfo -name '*.ics' -delete 2>/dev/null; \
+	rm -f Sources_Common/Timezones/zoneinfo/version.txt \
+	      Sources_Common/Timezones/zoneinfo/zones.h \
+	      Sources_Common/Timezones/zoneinfo/zones.tab
 	# Clean JX distribution and build artifacts
 	rm -rf $(JXDIST)/lib Linux/Includes
 	# Run standard clean (ignore errors from bundled openssl which we don't build)
