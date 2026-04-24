@@ -270,7 +270,7 @@ void CPrefsLetterGeneral::Receive(JBroadcaster* sender, const Message& message)
 		{
 			mBCCCaption->SetActive(mSeparateBCC->IsChecked());
 		}
-		else if (sender == mSeparateBCC)
+		else if (sender == mAutoSaveDrafts)
 		{
 			mAutoSaveDraftsInterval->SetActive(mAutoSaveDrafts->IsChecked());
 		}
