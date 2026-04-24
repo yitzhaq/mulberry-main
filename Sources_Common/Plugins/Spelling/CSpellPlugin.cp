@@ -548,7 +548,7 @@ int CSpellPlugin::OpenDictionary(const char* name)
 
 int CSpellPlugin::CloseDictionary(int dict)
 {
-	return CallPlugin(eSpellCloseDictionary, (void*) dict);
+	return CallPlugin(eSpellCloseDictionary, (void*)(intptr_t) dict);
 }
 
 int CSpellPlugin::AddWord(const char* word)
@@ -558,7 +558,7 @@ int CSpellPlugin::AddWord(const char* word)
 
 const char* CSpellPlugin::GetAddSuffix(int i) const
 {
-	return (const char*) CallPlugin(eSpellGetAddSuffix, (void*) i);
+	return (const char*) CallPlugin(eSpellGetAddSuffix, (void*)(intptr_t) i);
 }
 
 int CSpellPlugin::RemoveWord(const char* word)
@@ -568,7 +568,7 @@ int CSpellPlugin::RemoveWord(const char* word)
 
 void CSpellPlugin::SetMaxPerPage(int max_per_page)
 {
-	CallPlugin(eSpellSetMaxPerPage, (void*) max_per_page);
+	CallPlugin(eSpellSetMaxPerPage, (void*)(intptr_t) max_per_page);
 }
 
 int CSpellPlugin::CountPages() const
@@ -583,7 +583,7 @@ int CSpellPlugin::CurrentPage() const
 
 int CSpellPlugin::SetPage(int page)
 {
-	return CallPlugin(eSpellSetPage, (void*) page);
+	return CallPlugin(eSpellSetPage, (void*)(intptr_t) page);
 }
 
 int CSpellPlugin::GetPage(const char* word, const char** buf, size_t* buflen)
