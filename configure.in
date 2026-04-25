@@ -67,14 +67,14 @@ esac
 case $CC in
   gcc*|g++*|c++*|*-g++)
     CWARN="-Wall -Wcast-align -Wno-multichar -Wno-unused -Wno-unknown-pragmas"
-    CFLAGS="$CFLAGS -std=c99"
+    CFLAGS="$CFLAGS -std=c99 -fPIC"
     HAS_MM="yes"
     ;;
 esac
 case $CXX in
   gcc*|g++*|c++*|*-g++)
     CXXWARN="-Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wnull-dereference -Wlogical-op -Wduplicated-cond -Wduplicated-branches -Wcast-align -Wno-multichar -Wno-unused -Wno-unused-parameter -Wno-unknown-pragmas -Wno-non-virtual-dtor -Wno-ctor-dtor-privacy"
-    CXXFLAGS="$CXXFLAGS"
+    CXXFLAGS="$CXXFLAGS -fPIC"
     #GVERSION=`$CXX --version | grep "^$CXX " | sed "s/.* //"`
     GVERSION=`$CXX -dumpversion`
     case $GVERSION in
