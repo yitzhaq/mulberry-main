@@ -17,17 +17,18 @@ JX_TARGET = @JX_TARGET@
 # consuming make recursion into JX (if it is already built
 # there is no reason to go through this again and again)
 SKIPJX =
-SKIPOPENSSL =
+
+# Bundled OpenSSL source was removed; Linux uses system libssl-dev.
+# Set OPENSSL_DIR to a local OpenSSL source tree to build from source
+# (may be needed for Win32 where system OpenSSL is not available).
+OPENSSL_DIR =
 
 all: jx
 	for dir in $(DIRS); do \
 		$(MAKE) -C $$dir $@ || exit 1; \
 	done
-	if test -n "$(SKIPOPENSSL)" ; then \
-		echo "Skipping build of OPENSSL as requested."; \
-		exit 0; \
-	else \
-		cd openssl && ./config && make build_crypto build_fips build_ssl; \
+	@if test -n "$(OPENSSL_DIR)" && test -d "$(OPENSSL_DIR)" ; then \
+		cd "$(OPENSSL_DIR)" && ./config && make build_crypto build_fips build_ssl; \
 	fi
 
 jx: jxinit
@@ -44,7 +45,9 @@ clean:
 		$(MAKE) -C $$dir $@; \
 	done
 	$(MAKE) jxuninit
-	cd openssl && make $@
+	@if test -n "$(OPENSSL_DIR)" && test -d "$(OPENSSL_DIR)" ; then \
+		cd "$(OPENSSL_DIR)" && make $@; \
+	fi
 
 distclean:
 	$(MAKE) -C JX clean
@@ -52,7 +55,9 @@ distclean:
 		$(MAKE) -C $$dir $@; \
 	done
 	$(MAKE) jxuninit
-	cd openssl && make $@
+	@if test -n "$(OPENSSL_DIR)" && test -d "$(OPENSSL_DIR)" ; then \
+		cd "$(OPENSSL_DIR)" && make $@; \
+	fi
 
 jxinit: jxuninit
 	(cd JX/include; \
