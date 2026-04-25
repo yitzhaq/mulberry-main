@@ -24,9 +24,13 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Subject prefix stripping for multilingual Re:/Fwd: chains
   * Timezone database: build-time generation from IANA tzdata via vzic
   * Recovered 16 patches from original developer's SVN repository
-  * Static analysis fixes (cppcheck, clang-tidy, Infer, GCC warnings):
+  * Replace 3DES with AES-128-CBC for S/MIME encryption
+  * Replace SHA-1 with SHA-256 for PGP signatures
+  * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
+  * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, GCC):
     use-after-free, null derefs, format strings, array delete mismatch,
-    uninitialized variables, realloc leaks, double-scaled pointer math
+    uninitialized variables, realloc leaks, double-scaled pointer math,
+    23 allocation/deallocation mismatches, buffer over-read in JX
   * Removed bundled OpenSSL 0.9.8m (22MB)
   * Removed obsolete lround() polyfill
 

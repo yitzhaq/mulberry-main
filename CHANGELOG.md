@@ -133,15 +133,24 @@ X11 bitmap fonts).
   setting (missing `setlocale()` call at startup).
 - Fix auto-save drafts interval checkbox being non-functional
   (duplicated condition checked wrong control).
+- Replace deprecated 3DES with AES-128-CBC for S/MIME encryption.
+  3DES was withdrawn by NIST in 2023 and is vulnerable to Sweet32
+  attacks on large messages. AES-128-CBC is the current standard
+  across modern S/MIME implementations.
+- Replace SHA-1 with SHA-256 for PGP signatures. SHA-1 is broken
+  for collision attacks since 2017 (SHAttered) and has been deprecated
+  by GPG since 2019. SHA-256 is universally supported by all current
+  OpenPGP implementations.
 - Fix numerous latent bugs discovered through comprehensive static
-  analysis with cppcheck, clang-tidy, Facebook Infer, and extended
-  GCC warnings. Notable finds include: use-after-free in stack
+  analysis with cppcheck, clang-tidy, Facebook Infer, CodeQL, and
+  extended GCC warnings. Notable finds include: use-after-free in stack
   operations, null pointer dereferences in message display and drag
   operations, double-scaled pointer arithmetic in UTF-16 string
   operations, missing comma concatenating adjacent string literals in
   match descriptors, array delete/delete mismatch in DIGEST-MD5 plugin,
-  memory leaks on realloc failure, and uninitialized variables in
-  HTTP content handling and window setup.
+  memory leaks on realloc failure, uninitialized variables in
+  HTTP content handling and window setup, and 23 allocation/deallocation
+  mismatches (strdup freed with delete, new[] freed with delete).
 
 ### Removed
 
