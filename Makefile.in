@@ -30,7 +30,8 @@ timezones:
 	@if [ ! -d Sources_Common/Timezones/zoneinfo ] || \
 	    [ -z "$$(ls Sources_Common/Timezones/zoneinfo/*.ics 2>/dev/null)" ]; then \
 		echo "Generating timezone database..."; \
-		./scripts/update-timezones.sh; \
+		./scripts/update-timezones.sh || \
+		echo "WARNING: timezone generation failed (network unavailable?), continuing without timezone data"; \
 	fi
 
 install: all
