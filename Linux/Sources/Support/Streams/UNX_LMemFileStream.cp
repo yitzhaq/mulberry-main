@@ -131,11 +131,22 @@ ExceptionCode LMemFileStream::GetBytes(void* outBuffer, SInt32& ioByteCount)
 
 char* LMemFileStream::DetachData()
 {
-	char* detached = (char*) mDataF;
-	mDataF = 0;
+	char* result;
+	if (mDataF)
+	{
+		size_t len = datalen;
+		result = new char[len + 1];
+		::memcpy(result, mDataF, len);
+		result[len] = 0;
+		mDataF = 0;
+	}
+	else
+	{
+		result = mOutStream.str();
+	}
 	offset = datalen = 0;
 	SetMarker(0, streamFrom_Start);
 	LStream::SetLength(0);
 
-	return detached ? detached : mOutStream.str();
+	return result;
 }

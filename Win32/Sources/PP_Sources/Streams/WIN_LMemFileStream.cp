@@ -21,7 +21,7 @@
 
 
 // ---------------------------------------------------------------------------
-//		¥ LMemFileStream
+//		ï¿½ LMemFileStream
 // ---------------------------------------------------------------------------
 //	Default Constructor
 
@@ -31,7 +31,7 @@ LMemFileStream::LMemFileStream()
 
 
 // ---------------------------------------------------------------------------
-//		¥ LMemFileStream(Handle)
+//		ï¿½ LMemFileStream(Handle)
 // ---------------------------------------------------------------------------
 //	Construct from an existing Handle
 //
@@ -46,7 +46,7 @@ LMemFileStream::LMemFileStream(
 
 
 // ---------------------------------------------------------------------------
-//		¥ ~LMemFileStream
+//		ï¿½ ~LMemFileStream
 // ---------------------------------------------------------------------------
 //	Destructor
 
@@ -56,7 +56,7 @@ LMemFileStream::~LMemFileStream()
 
 
 // ---------------------------------------------------------------------------
-//		¥ SetLength
+//		ï¿½ SetLength
 // ---------------------------------------------------------------------------
 //	Set the length, in bytes, of the HandleStream
 
@@ -70,7 +70,7 @@ LMemFileStream::SetLength(
 
 
 // ---------------------------------------------------------------------------
-//		¥ GetLength
+//		ï¿½ GetLength
 // ---------------------------------------------------------------------------
 //	Return the length, in bytes, of the Stream
 
@@ -81,7 +81,7 @@ LMemFileStream::GetLength() const
 }
 
 // ---------------------------------------------------------------------------
-//		¥ PutBytes
+//		ï¿½ PutBytes
 // ---------------------------------------------------------------------------
 //	Write bytes from a buffer to a HandleStream
 //
@@ -106,7 +106,7 @@ LMemFileStream::PutBytes(
 
 
 // ---------------------------------------------------------------------------
-//		¥ GetBytes
+//		ï¿½ GetBytes
 // ---------------------------------------------------------------------------
 //	Read bytes from a HandleStream to a buffer
 //
@@ -129,7 +129,7 @@ LMemFileStream::GetBytes(
 
 
 // ---------------------------------------------------------------------------
-//		¥ DetachDataHandle
+//		ï¿½ DetachDataHandle
 // ---------------------------------------------------------------------------
 //	Dissociate the data Handle from a HandleStream.
 //
@@ -139,10 +139,18 @@ LMemFileStream::GetBytes(
 char*
 LMemFileStream::DetachData()
 {
-	char* detached = (char*) mDataF.Detach();
+	char* raw = (char*) mDataF.Detach();
+	char* result = NULL;
+	if (raw)
+	{
+		size_t len = ::strlen(raw);
+		result = new char[len + 1];
+		::memcpy(result, raw, len + 1);
+		::free(raw);
+	}
 
 	SetMarker(0, streamFrom_Start);
 	LStream::SetLength(0);
 
-	return detached;
+	return result;
 }

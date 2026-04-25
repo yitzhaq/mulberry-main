@@ -1721,7 +1721,10 @@ void CAttachment::ReadAttachment(CMessage* msg, bool peek, bool filter)
 				StHandleLocker lock(data.GetDataHandle());
 
 				// Make a copy of the text
-				char* txt = ::strndup(*data.GetDataHandle(), data.GetMarker());
+				size_t txt_len = data.GetMarker();
+				char* txt = new char[txt_len + 1];
+				::memcpy(txt, *data.GetDataHandle(), txt_len);
+				txt[txt_len] = 0;
 #elif __dest_os == __win32_os || __dest_os == __linux_os
 				// Must write c-string terminator
 				char end = 0;
@@ -1731,7 +1734,7 @@ void CAttachment::ReadAttachment(CMessage* msg, bool peek, bool filter)
 				char* txt = data.DetachData();
 				if (!txt || !*txt)
 				{
-					delete txt;
+					delete[] txt;
 					txt = NULL;
 				}
 #else
