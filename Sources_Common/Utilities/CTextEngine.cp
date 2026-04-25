@@ -537,7 +537,7 @@ const char* CTextEngine::UnquoteLines(const char* text, unsigned long length, co
 	}
 
 	std::ostrstream out;
-	long prefix_length = (prefix ? ::strlen(prefix) : 0);
+	long prefix_length = ::strlen(prefix);
 	const char* s = text;
 	unsigned long count = 0;
 	bool space_punt = (prefix[prefix_length - 1] != ' ');

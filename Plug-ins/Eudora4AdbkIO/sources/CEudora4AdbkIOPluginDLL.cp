@@ -456,14 +456,11 @@ long CEudora4AdbkIOPluginDLL::ExportGroup(SAdbkIOPluginGroup* grp)
 			::fwrite("\"", 1, 1, mExportFile);
 		::fwrite(" ", 1, 1, mExportFile);
 
-		// Do name
-		if (grp->mName && *grp->mName)
-		{
-			::fwrite("<", 1, 1, mExportFile);
-			::fwrite(cEudoraName, 1, cEudoraNameLen, mExportFile);
-			::fwrite(grp->mName, 1, ::strlen(grp->mName), mExportFile);
-			::fwrite(">", 1, 1, mExportFile);
-		}
+		// Do name (already verified non-empty at line 444)
+		::fwrite("<", 1, 1, mExportFile);
+		::fwrite(cEudoraName, 1, cEudoraNameLen, mExportFile);
+		::fwrite(grp->mName, 1, ::strlen(grp->mName), mExportFile);
+		::fwrite(">", 1, 1, mExportFile);
 
 		::fwrite(cEudoraLineEnd, 1, cEudoraLineEndLen, mExportFile);
 	}
