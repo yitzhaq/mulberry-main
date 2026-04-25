@@ -80,7 +80,7 @@ case $CXX in
     case $GVERSION in
 	*)
 	  CXXWARN="$CXXWARN -Wno-deprecated"
-	  CXXFLAGS="$CXXFLAGS -fpermissive"
+	  CXXFLAGS="$CXXFLAGS "
 	;;
     esac
     HAS_MM="yes"

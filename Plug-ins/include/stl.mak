@@ -26,7 +26,7 @@ HAS_GNUG_4 := $(shell \
 
 ifeq ($(HAS_GNUG_4),1)
 # Do nothing
-STL_INC := -fpermissive -Wno-deprecated
+STL_INC := -Wno-deprecated
 #else
 ifeq ($(HAS_GNUG_3),1)
 #STL_INC := -Wno-deprecated -I${DEV_ROOT}/STLport/stlport
