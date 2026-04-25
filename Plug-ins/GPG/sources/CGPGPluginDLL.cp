@@ -581,6 +581,8 @@ long CGPGPluginDLL::SignFileX(fspec in, const char* key, fspec out, bool useMime
 	args.push_back("-o");
 	args.push_back(out_path.get());
 	args.push_back("-a");
+	args.push_back("--digest-algo");
+	args.push_back("SHA256");
 	if (useMime)
 		args.push_back("--detach-sign");
 	else
@@ -702,6 +704,8 @@ long CGPGPluginDLL::EncryptSignFileX(fspec in, const char** to, const char* key,
 	args.push_back("-o");
 	args.push_back(out_path.get());
 	args.push_back("-a");
+	args.push_back("--digest-algo");
+	args.push_back("SHA256");
 	args.push_back("-es");
 	args.push_back(in_path.get());
 
@@ -864,7 +868,7 @@ const char* cMIMEMultipartSigned = "signed";
 const char* cMIMEMultipartEncrypted = "encrypted";
 
 const char* cMIMEMultipartSignedParams[] = 
-	{ "micalg", "pgp-sha1", "protocol", "application/pgp-signature", NULL };
+	{ "micalg", "pgp-sha256", "protocol", "application/pgp-signature", NULL };
 const char* cMIMEMultipartEncryptedParams[] = 
 	{ "protocol", "application/pgp-encrypted", NULL };
 
