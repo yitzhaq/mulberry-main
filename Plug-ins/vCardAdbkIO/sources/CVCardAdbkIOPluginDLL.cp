@@ -243,16 +243,16 @@ long CVCardAdbkIOPluginDLL::ImportAddresses(char* data)
 		(*mImportCallback)(&addr, 0);
 	
 		// Clean out data
-		free(addr.mName);
-		free(addr.mEmail);
-		free(addr.mNickName);
-		free(addr.mCompany);
-		free(addr.mAddress);
-		free(addr.mPhoneWork);
-		free(addr.mPhoneHome);
-		free(addr.mFax);
-		free(addr.mURL);
-		free(addr.mNotes);
+		free(const_cast<char*>(addr.mName));
+		free(const_cast<char*>(addr.mEmail));
+		free(const_cast<char*>(addr.mNickName));
+		free(const_cast<char*>(addr.mCompany));
+		free(const_cast<char*>(addr.mAddress));
+		free(const_cast<char*>(addr.mPhoneWork));
+		free(const_cast<char*>(addr.mPhoneHome));
+		free(const_cast<char*>(addr.mFax));
+		free(const_cast<char*>(addr.mURL));
+		free(const_cast<char*>(addr.mNotes));
 
 		addr.mName = NULL;
 		addr.mEmail = NULL;
