@@ -599,6 +599,6 @@ void CCommAdbkIOPluginDLL::WriteTypeValue(const char* type, const char* value, b
 		const char* write = ::ldif_type_and_value((char*) type, (char*) value, vlen);
 #endif
 		::fwrite(write, 1, ::strlen(write), mExportFile);
-		delete write;
+		free(const_cast<char*>(write));
 	}
 }

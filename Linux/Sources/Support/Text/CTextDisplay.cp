@@ -856,7 +856,7 @@ void CTextDisplay::EndTextProcessing(const char* insert_text, JIndex& sel_start,
 		sel_end = sel_start + insert_length;
 	}
 	SetSel(sel_start, sel_end);
-	delete insert_text;
+	delete[] insert_text;
 }
 
 void CTextDisplay::SelectFullLines()

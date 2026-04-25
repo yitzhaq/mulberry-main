@@ -461,7 +461,7 @@ void CMIMEContent::SetContent(const char* mime)
 	else
 		SetContent(type_token, subtype_token);
 
-	delete txt;
+	free(txt);
 }
 
 #pragma mark ____________________________type

@@ -173,7 +173,6 @@ const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsig
 		}
 	}
 
-	// Now create the buffer for the header
 	out << std::ends;
 	return out.str();
 }
@@ -242,7 +241,6 @@ const char* CTextEngine::UnwrapLines(const char* text, unsigned long length)
 	// Must end the entire block with a CRLF
 	out.write(os_endl, os_endl_len);
 
-	// Now create the buffer for the header
 	out << std::ends;
 	return out.str();
 }
@@ -523,7 +521,6 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 		}
 	}
 
-	// Now create the buffer for the header
 	out << std::ends;
 	return out.str();
 }
@@ -532,7 +529,12 @@ const char* CTextEngine::UnquoteLines(const char* text, unsigned long length, co
 {
 	// Check for empty prefix
 	if (!prefix || !*prefix)
-		return ::strndup(text, length);
+	{
+		char* copy = new char[length + 1];
+		::memcpy(copy, text, length);
+		copy[length] = 0;
+		return copy;
+	}
 
 	std::ostrstream out;
 	long prefix_length = (prefix ? ::strlen(prefix) : 0);
@@ -571,7 +573,6 @@ const char* CTextEngine::UnquoteLines(const char* text, unsigned long length, co
 		}
 	}
 
-	// Now create the buffer for the header
 	out << std::ends;
 	return out.str();
 }

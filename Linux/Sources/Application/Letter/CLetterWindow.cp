@@ -188,7 +188,7 @@ CLetterWindow::~CLetterWindow()
 	delete mBody;
 
 	// Delete any stored bounce header
-	delete mBounceHeader;
+	delete[] mBounceHeader;
 
 	// Delete any message lists
 	delete mMsgs;
@@ -963,13 +963,13 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 			break;
 		case eContentSubEnriched:
 		{
-			std::unique_ptr<const char> converted(CEnrichedUtils::ToEnriched(convertTxt));
+			std::unique_ptr<const char[]> converted(CEnrichedUtils::ToEnriched(convertTxt));
 			theTxt += converted.get();
 			break;
 		}
 		case eContentSubHTML:
 		{
-			std::unique_ptr<const char> converted(CHTMLUtils::ToHTML(convertTxt));
+			std::unique_ptr<const char[]> converted(CHTMLUtils::ToHTML(convertTxt));
 			theTxt += converted.get();
 			break;
 		}
@@ -991,13 +991,13 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 				break;
 			case eContentSubEnriched:
 			{
-				std::unique_ptr<const char> converted(CEnrichedUtils::ToEnriched(convertTxt));
+				std::unique_ptr<const char[]> converted(CEnrichedUtils::ToEnriched(convertTxt));
 				theTxt += converted.get();
 				break;
 			}
 			case eContentSubHTML:
 			{
-				std::unique_ptr<const char> converted(CHTMLUtils::ToHTML(convertTxt));
+				std::unique_ptr<const char[]> converted(CHTMLUtils::ToHTML(convertTxt));
 				theTxt += converted.get();
 				break;
 			}
@@ -1036,19 +1036,19 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 		case eContentSubPlain:
 		default:
 		{
-			std::unique_ptr<const char> quoted(QuoteText(msg_hdr, forward, true));
+			std::unique_ptr<const char[]> quoted(QuoteText(msg_hdr, forward, true));
 			theTxt += quoted.get();
 			break;
 		}
 		case eContentSubEnriched:
 		{
-			std::unique_ptr<const char> converted(CEnrichedUtils::ToEnriched(msg_hdr));
+			std::unique_ptr<const char[]> converted(CEnrichedUtils::ToEnriched(msg_hdr));
 			theTxt += converted.get();
 			break;
 		}
 		case eContentSubHTML:
 		{
-			std::unique_ptr<const char> converted(CHTMLUtils::ToHTML(msg_hdr));
+			std::unique_ptr<const char[]> converted(CHTMLUtils::ToHTML(msg_hdr));
 			theTxt += converted.get();
 			break;
 		}
@@ -1081,7 +1081,7 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 		cdstring text_utf8 = mText->GetParsedText().ToUTF8();
 		
 		// Quote it and add to the text being added to the draft
-		std::unique_ptr<const char> quoted(QuoteText(text_utf8, forward, false, is_flowed));
+		std::unique_ptr<const char[]> quoted(QuoteText(text_utf8, forward, false, is_flowed));
 		theTxt += quoted.get();
 		break;
 	}
@@ -1093,14 +1093,14 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 		default:
 		{
 			// Must wrap if flowed
-			std::unique_ptr<const char> wrapped;
+			std::unique_ptr<const char[]> wrapped;
 			const char* txt = msg_txt;
 			if (is_flowed)
 			{
 				wrapped.reset(CTextEngine::WrapLines(msg_txt, ::strlen(msg_txt), CRFC822::GetWrapLength(), false));
 				txt = wrapped.get();
 			}
-			std::unique_ptr<const char> converted(CEnrichedUtils::ToEnriched(txt));
+			std::unique_ptr<const char[]> converted(CEnrichedUtils::ToEnriched(txt));
 			theTxt += converted.get();
 			break;
 		}
@@ -1111,7 +1111,7 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 		}
 		case eContentSubHTML:
 		{
-			std::unique_ptr<const char> converted(CHTMLUtils::ConvertToEnriched(msg_txt));
+			std::unique_ptr<const char[]> converted(CHTMLUtils::ConvertToEnriched(msg_txt));
 			theTxt += converted.get();
 			break;
 		}
@@ -1126,20 +1126,20 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 		default:
 		{
 			// Must wrap if flowed
-			std::unique_ptr<const char> wrapped;
+			std::unique_ptr<const char[]> wrapped;
 			const char* txt = msg_txt;
 			if (is_flowed)
 			{
 				wrapped.reset(CTextEngine::WrapLines(msg_txt, ::strlen(msg_txt), CRFC822::GetWrapLength(), false));
 				txt = wrapped.get();
 			}
-			std::unique_ptr<const char> converted(CHTMLUtils::ToHTML(txt));
+			std::unique_ptr<const char[]> converted(CHTMLUtils::ToHTML(txt));
 			theTxt += converted.get();
 			break;
 		}
 		case eContentSubEnriched:
 		{
-			std::unique_ptr<const char> converted(CEnrichedUtils::ConvertToHTML(msg_txt));
+			std::unique_ptr<const char[]> converted(CEnrichedUtils::ConvertToHTML(msg_txt));
 			theTxt += converted.get();
 			break;
 		}
@@ -1188,13 +1188,13 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 			break;
 		case eContentSubEnriched:
 		{
-			std::unique_ptr<const char> converted(CEnrichedUtils::ToEnriched(convertTxt));
+			std::unique_ptr<const char[]> converted(CEnrichedUtils::ToEnriched(convertTxt));
 			theTxt += converted.get();
 			break;
 		}
 		case eContentSubHTML:
 		{
-			std::unique_ptr<const char> converted(CHTMLUtils::ToHTML(convertTxt));
+			std::unique_ptr<const char[]> converted(CHTMLUtils::ToHTML(convertTxt));
 			theTxt += converted.get();
 			break;
 		}
@@ -1217,13 +1217,13 @@ void CLetterWindow::IncludeMessageTxt(CMessage* theMsg,
 				break;
 			case eContentSubEnriched:
 			{
-				std::unique_ptr<const char> converted(CEnrichedUtils::ToEnriched(convertTxt));
+				std::unique_ptr<const char[]> converted(CEnrichedUtils::ToEnriched(convertTxt));
 				theTxt += converted.get();
 				break;
 			}
 			case eContentSubHTML:
 			{
-				std::unique_ptr<const char> converted(CHTMLUtils::ToHTML(convertTxt));
+				std::unique_ptr<const char[]> converted(CHTMLUtils::ToHTML(convertTxt));
 				theTxt += converted.get();
 				break;
 			}
@@ -1300,7 +1300,7 @@ void CLetterWindow::IncludeText(const char* theText, bool forward, bool adding)
 		if (!adding)
 			theTxt += os_endl;
 
-		std::unique_ptr<const char> quoted(QuoteText(theText, forward));
+		std::unique_ptr<const char[]> quoted(QuoteText(theText, forward));
 		theTxt += quoted.get();
 
 		// Finish with endl

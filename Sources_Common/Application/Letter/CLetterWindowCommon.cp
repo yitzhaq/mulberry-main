@@ -523,8 +523,12 @@ void CLetterWindow::SetBounceMessages(CMessageList* msgs)
 	UpdatePartsCaption();
 
 	if (mMsgs->size())
-		// Copy bounce message header
-		mBounceHeader = ::strdup(mMsgs->front()->GetHeader());
+	{
+		const char* hdr = mMsgs->front()->GetHeader();
+		size_t hdr_len = ::strlen(hdr) + 1;
+		mBounceHeader = new char[hdr_len];
+		::memcpy(mBounceHeader, hdr, hdr_len);
+	}
 
 	// Force parts to display
 #if __dest_os == __mac_os || __dest_os == __mac_os_x

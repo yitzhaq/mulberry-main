@@ -168,7 +168,7 @@ void CAddress::ParseAddress(const char* txt)
 				// Terminate and copy
 				*q = 0;
 				if (p < q) CopyMailAddress(p);
-				delete s;
+				free(s);
 				s = NULL;
 				return;
 
@@ -190,7 +190,7 @@ void CAddress::ParseAddress(const char* txt)
 				}
 				if (!*q)
 				{
-					delete s;
+					free(s);
 					s = NULL;
 					return;
 				}
@@ -255,7 +255,7 @@ void CAddress::ParseAddress(const char* txt)
 					CopyName(NULL, false);
 
 				q++;
-				delete s;
+				free(s);
 				s = NULL;
 				return;
 			  }
@@ -274,7 +274,7 @@ void CAddress::ParseAddress(const char* txt)
 				while (*q && (*q != '>')) q++;
 				if (!*q)
 				{
-					delete s;
+					free(s);
 					s = NULL;
 					return;
 				}
@@ -283,7 +283,7 @@ void CAddress::ParseAddress(const char* txt)
 				*q++ = '\0';
 				CopyMailAddress(p);
 
-				delete s;
+				free(s);
 				s = NULL;
 				return;
 			  }
@@ -292,7 +292,7 @@ void CAddress::ParseAddress(const char* txt)
 		}
 	}
 
-	delete s;
+	free(s);
 	s = NULL;
 	return;
 }

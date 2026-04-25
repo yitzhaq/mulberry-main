@@ -161,7 +161,7 @@ CAttachment::~CAttachment()
 	//if (mParent) mParent->RemovePart(this);
 	delete mParts;
 	delete mMessage;	// This may be dangerous if message is in use by someone else (possibly reply letter)
-	delete mData;
+	delete[] mData;
 
 	mParent = NULL;
 	mParts = NULL;
@@ -305,7 +305,11 @@ CAttachment* CAttachment::CloneAttachment(CMessage* owner, const CAttachment* or
 		owner->ReadAttachment((CAttachment*) original);
 
 		// Copy data to new part
-		new_attach->SetData(::strdup(original->GetData()));
+		const char* orig = original->GetData();
+		size_t len = ::strlen(orig) + 1;
+		char* copy = new char[len];
+		::memcpy(copy, orig, len);
+		new_attach->SetData(copy);
 
 		// Clear data if not required
 		if (delete_after)
@@ -946,7 +950,7 @@ void CAttachment::ProcessContent()
 				const char* new_data = NULL; 
 				if (i18n::CCharsetManager::sCharsetManager.Transcode(i18n::eUTF8, charset,	mData, ::strlen(mData), new_data))
 				{
-					delete mData;
+					delete[] mData;
 					mData = const_cast<char*>(new_data);
 				}
 				else
@@ -1249,7 +1253,7 @@ void CAttachment::SetNotCached(const CAttachment* exclude)
 // Set new data
 void CAttachment::SetData(char* data)
 {
-	delete mData;
+	delete[] mData;
 	mData = data;
 	mContent.SetContentSize(mData ? ::strlen(mData) : 0);
 }
@@ -1272,7 +1276,7 @@ unsigned long CAttachment::ClearAllData()
 		freed = (mData ? ::strlen(mData) + 1 : 0);
 
 		// Delete data for this attachment
-		delete mData;
+		delete[] mData;
 		mData = NULL;
 	}
 

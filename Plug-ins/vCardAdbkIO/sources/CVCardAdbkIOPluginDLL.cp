@@ -243,16 +243,16 @@ long CVCardAdbkIOPluginDLL::ImportAddresses(char* data)
 		(*mImportCallback)(&addr, 0);
 	
 		// Clean out data
-		delete addr.mName;
-		delete addr.mEmail;
-		delete addr.mNickName;
-		delete addr.mCompany;
-		delete addr.mAddress;
-		delete addr.mPhoneWork;
-		delete addr.mPhoneHome;
-		delete addr.mFax;
-		delete addr.mURL;
-		delete addr.mNotes;
+		free(addr.mName);
+		free(addr.mEmail);
+		free(addr.mNickName);
+		free(addr.mCompany);
+		free(addr.mAddress);
+		free(addr.mPhoneWork);
+		free(addr.mPhoneHome);
+		free(addr.mFax);
+		free(addr.mURL);
+		free(addr.mNotes);
 
 		addr.mName = NULL;
 		addr.mEmail = NULL;

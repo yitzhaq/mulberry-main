@@ -545,7 +545,7 @@ bool CAddressTable::AddAdbkAddressText(TableIndexT row, cdstring* txt)
 	// Get selected address
 	CAdbkAddress* addr = static_cast<CAdbkAddress*>(mAdbk->GetAddressList()->at(row - 1));
 
-	std::unique_ptr<const char> temp(mAdbk->ExportAddress(addr));
+	std::unique_ptr<const char[]> temp(mAdbk->ExportAddress(addr));
 
 	*txt += temp.get();
 

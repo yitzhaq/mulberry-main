@@ -2045,7 +2045,7 @@ void CActionManager::IncludeMessageText(CMessage& theMsg,
 
 		// Include the message's text as addition
 		{
-			std::unique_ptr<const char> quoted(CTextEngine::QuoteLines(plain_text, plain_text.length(),
+			std::unique_ptr<const char[]> quoted(CTextEngine::QuoteLines(plain_text, plain_text.length(),
 											CRFC822::GetWrapLength(),
 											forward ?
 											CPreferences::sPrefs->mForwardQuote.GetValue() :

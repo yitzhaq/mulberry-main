@@ -367,7 +367,7 @@ long CEudora4AdbkIOPluginDLL::ExportAddress(SAdbkIOPluginAddress* addr)
 			::fwrite(text, 1, ::strlen(text), mExportFile);
 			::fwrite(">", 1, 1, mExportFile);
 			
-			delete text;
+			free(text);
 		}
 
 		// Do name
@@ -384,7 +384,7 @@ long CEudora4AdbkIOPluginDLL::ExportAddress(SAdbkIOPluginAddress* addr)
 		{
 			char* text  = ConvertFromCRLF(addr->mNotes);
 			::fwrite(text, 1, ::strlen(text), mExportFile);
-			delete text;
+			free(text);
 		}
 
 		::fwrite(cEudoraLineEnd, 1, cEudoraLineEndLen, mExportFile);
@@ -602,7 +602,7 @@ CAdbkIOPluginDLL::SAdbkIOPluginAddress* CEudora4AdbkIOPluginDLL::AddressListPars
 	SAdbkIOPluginAddress* list = nil;
 	long list_num = 0;
 
-	// Check each character - need to balance "É" & (É)
+	// Check each character - need to balance "ï¿½" & (ï¿½)
 	while(more)
 	{
 		switch (*p)

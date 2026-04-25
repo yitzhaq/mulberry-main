@@ -320,7 +320,7 @@ void CPrefsEditHeadFoot::GetEditorText(cdstring& text)
 			// Create space for footer
 			const char* p = CTextEngine::WrapLines(text, text.length(), CRFC822::GetWrapLength(), false);
 			text = p;
-			delete p;
+			delete[] p;
 
 			// Restore wrap length
 			CRFC822::SetWrapLength(old_wrap);
