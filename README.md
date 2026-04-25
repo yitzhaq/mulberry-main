@@ -104,8 +104,9 @@ Mulberry is the work of Cyrus Daboo, who created it in 1995 and
 developed it for nearly two decades — first commercially, then as
 open source. This repository would not exist without his remarkable
 effort and his decision to release the source. For the full history,
-including contributions from mbert, Kenneth Porter, Mike Alexander,
-Lutz Pogrell, and Quanah Gibson-Mount, see
+including contributions from Martin Dietze (mbert), Kenneth Porter
+(SpareSimian), Mike Alexander (mtalexander), Lutz Pogrell
+(lutzpogrell), and Quanah Gibson-Mount (quanah), see
 [CHANGELOG.md](CHANGELOG.md).
 
 The 4.2a1 development work was carried out entirely in collaboration
