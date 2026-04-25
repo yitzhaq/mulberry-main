@@ -1635,11 +1635,13 @@ void cdstring::md5(unsigned long& digest) const
 {
 	unsigned char temp[16];
 	md5(temp);
-	
-	digest = *reinterpret_cast<unsigned long*>(&temp[0]);
-	digest += *reinterpret_cast<unsigned long*>(&temp[4]);
-	digest += *reinterpret_cast<unsigned long*>(&temp[8]);
-	digest += *reinterpret_cast<unsigned long*>(&temp[12]);
+
+	uint32_t d0, d1, d2, d3;
+	::memcpy(&d0, &temp[0], 4);
+	::memcpy(&d1, &temp[4], 4);
+	::memcpy(&d2, &temp[8], 4);
+	::memcpy(&d3, &temp[12], 4);
+	digest = d0 + d1 + d2 + d3;
 }
 
 // Generate hexed md5 hash

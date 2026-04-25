@@ -24,10 +24,10 @@ using namespace i18n;
 wchar_t CCJKBase::c_2_w(const unsigned char*& c)
 {
 	unsigned char c1 = *c++;
-	if (c1 >= mOffset1 && c1 <= mMax1)
+	if (c1 >= mOffset1 && c1 < mMax1)
 	{
 		unsigned char c2 = *c;
-		if (c2 >= mOffset2 && c2 <= mMax2)
+		if (c2 >= mOffset2 && c2 < mMax2)
 		{
 			c++;
 			return tabledata(c1 - mOffset1, c2 - mOffset2);

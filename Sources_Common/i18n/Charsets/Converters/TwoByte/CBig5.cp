@@ -2097,7 +2097,7 @@ wchar_t CBig5::c_2_w(const unsigned char*& c)
 		return c1;
 	
 	// Tables
-	if (c1 >= cTableOffset1 && c1 <= cTableMax1)
+	if (c1 >= cTableOffset1 && c1 < cTableMax1)
 	{
 		unsigned char c2 = *c;
 		if (c2 >= cTableOffset21 && c2 <= cTableMax21)

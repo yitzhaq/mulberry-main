@@ -2097,7 +2097,7 @@ wchar_t CMacTradChinese::c_2_w(const unsigned char*& c)
 		return *c++;
 		
 	// Look for two-byte lead byte
-	else if (c1 >= cTableOffset1 && c1 <= cTableMax1)
+	else if (c1 >= cTableOffset1 && c1 < cTableMax1)
 	{
 		unsigned char c2 = *c;
 		if (c2 >= cTableOffset21 && c2 <= cTableMax21)

@@ -51,11 +51,13 @@ void CAdminLock::ReadFromMap(COptionsMap* theMap)
 	StMapSection section(theMap, cAdminSection);
 
 	// Read prefs version
-	NumVersion vers_prefs;
-	*(long*) &vers_prefs = 0L;
+	NumVersionVariant vers_var;
+	vers_var.whole = 0;
 	cdstring txt;
+	NumVersion vers_prefs;
 	theMap->ReadValue(cVersionKey, txt, vers_prefs);
-	*(long*) &vers_prefs = ::strtol(txt, nil, 0);
+	vers_var.whole = (uint32_t)::strtol(txt, nil, 0);
+	vers_prefs = vers_var.parts;
 
 //--------------------General Prefs
 	// Preference usage
