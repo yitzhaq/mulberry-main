@@ -250,6 +250,9 @@ IMPORT_FUNCTION_VOID(sSSLLoader, void, ERR_print_errors, (BIO *bp), (bp))
 //const EVP_CIPHER *EVP_des_ede3_cbc(void);
 IMPORT_FUNCTION(sSSLLoader, const EVP_CIPHER *, EVP_des_ede3_cbc, (void), ())
 
+//const EVP_CIPHER *EVP_aes_128_cbc(void);
+IMPORT_FUNCTION(sSSLLoader, const EVP_CIPHER *, EVP_aes_128_cbc, (void), ())
+
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
 //void EVP_cleanup(void);
 IMPORT_FUNCTION_VOID(sSSLLoader, void, EVP_cleanup, (void), ())

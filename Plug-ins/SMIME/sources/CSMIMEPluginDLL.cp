@@ -735,11 +735,11 @@ long CSMIMEPluginDLL::EncryptFileX(fspec in, const char** to, fspec out, bool us
 			throw -1L;
 		}
 
-		// Try to encrypt it (use 3-DES cipher)
+		// Encrypt with AES-128-CBC (default, broad compatibility)
 #ifdef USE_CMS
-		p7 = ::CMS_encrypt(encrypted_to, in_bio, EVP_des_ede3_cbc(), 0);
+		p7 = ::CMS_encrypt(encrypted_to, in_bio, EVP_aes_128_cbc(), 0);
 #else
-		p7 = ::PKCS7_encrypt(encrypted_to, in_bio, EVP_des_ede3_cbc(), 0);
+		p7 = ::PKCS7_encrypt(encrypted_to, in_bio, EVP_aes_128_cbc(), 0);
 #endif
 		if (!p7)
 		{
