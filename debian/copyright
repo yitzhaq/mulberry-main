@@ -14,7 +14,7 @@ Comment: Mulberry was originally developed by Cyrus Daboo and released
  compiler compatibility.
 
 Files: *
-Copyright: 2007-2011 Cyrus Daboo
+Copyright: 2006-2014 Cyrus Daboo
 License: Apache-2.0
 
 Files: debian/*

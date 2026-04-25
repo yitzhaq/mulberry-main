@@ -360,7 +360,7 @@ extern const char* cPrefsSection;
 		extern const char* cForwardEndKey;				// New as of v1.4
 		extern const char* cForwardCursorTopKey;		// New as of v1.4
 		extern const char* cForwardSubjectKey;			// New as of v3.0a4
-		extern const char* cSubjectStripPrefixesKey;	// New as of v4.1a3
+		extern const char* cSubjectStripPrefixesKey;	// New as of v4.2a1
 		extern const char* cLtrHeaderCaptionKey;		// New as of v1.4
 		//extern const char* cLtrHeaderBoxKey;			// Deprecated as of v3.1b1
 		extern const char* cLtrFooterCaptionKey;		// New as of v1.4

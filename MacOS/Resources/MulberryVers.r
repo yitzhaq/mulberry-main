@@ -18,20 +18,20 @@
 
 resource 'vers' (1) {
 	0x4,
-	0x10,
-	beta,
+	0x20,
+	alpha,
 	0x1,
 	0,
-	"v4.1b1",
-	"Mulberry v4.1b1, © Cyrus Daboo, 2006-2014."
+	"v4.2a1",
+	"Mulberry v4.2a1, © Cyrus Daboo, 2006-2014."
 };
 
 resource 'vers' (2) {
 	0x4,
-	0x10,
-	beta,
+	0x20,
+	alpha,
 	0x1,
 	0,
-	"v4.1b1",
-	"Mulberry v4.1b1"
+	"v4.2a1",
+	"Mulberry v4.2a1"
 };

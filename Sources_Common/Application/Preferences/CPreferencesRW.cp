@@ -392,7 +392,7 @@ void CPreferences::WriteToMap(COptionsMap* theMap, bool dirty_only,
 		WRITETOMAP(mForwardEnd, cForwardEndKey)						// >= v1.4a6
 		WRITETOMAP(mForwardCursorTop, cForwardCursorTopKey)			// >= v1.4a7
 		WRITETOMAP(mForwardSubject, cForwardSubjectKey)				// >= v3.0a4
-		WRITETOMAP(mSubjectStripPrefixes, cSubjectStripPrefixesKey)	// >= v4.1a3
+		WRITETOMAP(mSubjectStripPrefixes, cSubjectStripPrefixesKey)	// >= v4.2a1
 		WRITETOMAP(mLtrHeaderCaption, cLtrHeaderCaptionKey)			// >= v1.4a6
 		WRITETOMAP(mLtrFooterCaption, cLtrFooterCaptionKey)			// >= v1.4a6
 		WRITETOMAP(mSeparateBCC, cSeparateBCCKey)					// >= v2.1a3
