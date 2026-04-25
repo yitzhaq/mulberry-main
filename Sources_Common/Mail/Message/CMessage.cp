@@ -1624,8 +1624,14 @@ CAttachment* CMessage::CreateMDNSeenBody(const CIdentity* id, bool automatic)
 	// Add parameters
 
 	// Add data
-	hdrs->SetData(::strdup(GetHeader()));
-	
+	{
+		const char* hdr = GetHeader();
+		size_t hdr_len = ::strlen(hdr) + 1;
+		char* hdr_copy = new char[hdr_len];
+		::memcpy(hdr_copy, hdr, hdr_len);
+		hdrs->SetData(hdr_copy);
+	}
+
 	return report;
 }
 
@@ -1781,7 +1787,13 @@ CAttachment* CMessage::CreateRejectDSNBody(bool return_msg)
 		// Add parameters
 
 		// Add data
-		hdrs->SetData(::strdup(GetHeader()));
+		{
+			const char* hdr = GetHeader();
+			size_t hdr_len = ::strlen(hdr) + 1;
+			char* hdr_copy = new char[hdr_len];
+			::memcpy(hdr_copy, hdr, hdr_len);
+			hdrs->SetData(hdr_copy);
+		}
 	}
 	
 	return report;

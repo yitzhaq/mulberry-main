@@ -1209,7 +1209,12 @@ bool CSecurityPlugin::VerifyDecryptPartInternal(CMessage* msg, CAttachment* part
 			{
 				// Replace existing part data with output
 				if (out)
-					part->SetData(::strdup(out));
+				{
+						size_t out_len = ::strlen(out) + 1;
+						char* out_copy = new char[out_len];
+						::memcpy(out_copy, out, out_len);
+						part->SetData(out_copy);
+					}
 			}
 			else
 				HandleError(&info);

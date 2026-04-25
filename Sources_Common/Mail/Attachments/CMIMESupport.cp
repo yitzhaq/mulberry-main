@@ -367,7 +367,10 @@ cdstring CMIMESupport::GenerateMultipartBoundary(const CAttachment* attach, EEnd
 			txt += CONTENT_MULTIPART_BOUNDARY;
 
 			// Cache in attachment
-			const_cast<CAttachment*>(attach)->SetData(::strdup(txt));
+			size_t len = txt.length() + 1;
+			char* copy = new char[len];
+			::memcpy(copy, txt.c_str(), len);
+			const_cast<CAttachment*>(attach)->SetData(copy);
 		}
 
 		// Return quoted
