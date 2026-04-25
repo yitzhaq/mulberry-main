@@ -3,4 +3,4 @@ Mulberry® is an email and calendar client for Mac OS X, Win32 and Unix based co
 http://www.mulberrymail.com
 mailto:mulberry-support@mulberrymail.com
 
-Mulberry® is © Cyrus Daboo, 2006-2011. All Rights Reserved.*
+Mulberry® is © Cyrus Daboo, 2006-2014. All Rights Reserved.*

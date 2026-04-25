@@ -4,4 +4,4 @@ const char* cAboutText =
 "http://www.mulberrymail.com\n"
 "mailto:mulberry@mulberrymail.com\n"
 "\n"
-"Mulberry\256 is Copyright: Cyrus Daboo, 2006-2011. All Rights Reserved.";
+"Mulberry\256 is Copyright: Cyrus Daboo, 2006-2014. All Rights Reserved.";

@@ -75,7 +75,7 @@ void CSplashScreen::OnCreate()
     mVersion->SetFontSize(10);
 
     CStaticText* obj2 =
-        new CStaticText("Copyright Cyrus Daboo, 2006-2011.", mSplash,
+        new CStaticText("Copyright Cyrus Daboo, 2006-2014.", mSplash,
                     JXWidget::kHElastic, JXWidget::kVElastic, 5,184, 275,17);
     assert( obj2 != NULL );
     obj2->SetFontSize(10);

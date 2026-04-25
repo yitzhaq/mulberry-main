@@ -81,7 +81,7 @@ void CAboutDialog::OnCreate()
     obj2->SetFontSize(10);
 
     JXStaticText* obj3 =
-        new JXStaticText("Copyright Cyrus Daboo, 2006-2011. All Rights Reserved.", obj1,
+        new JXStaticText("Copyright Cyrus Daboo, 2006-2014. All Rights Reserved.", obj1,
                     JXWidget::kHElastic, JXWidget::kVElastic, 10,155, 340,20);
     assert( obj3 != NULL );
     obj3->SetFontSize(10);
