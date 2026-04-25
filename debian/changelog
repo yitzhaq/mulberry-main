@@ -1,36 +1,55 @@
-mulberry (4.1.0a3-git-20260304-0035) unstable; urgency=medium
+mulberry (4.2.0a1) unstable; urgency=medium
 
-  * Modernization for Ubuntu 24.04 x86_64 with GCC 13 and OpenSSL 3.x
-  * Compiler compatibility: removed deprecated register keyword, replaced
-    std::auto_ptr with std::unique_ptr, changed throw() to noexcept
-  * 64-bit fixes: corrected NumVersionVariant union size, fixed sentinel
-    values for LP64 memory model
-  * OpenSSL 3.x compatibility: migrated to opaque BIO API, updated
-    deprecated function calls, added version guards for backward compatibility
-  * Desktop integration: added .desktop file for application menu and
-    mailto:/webcal: URL handler registration
-  * SVN r515 patches: integrated local address book support and attendee
-    dialog improvements from archived upstream repository
-  * Timezone database: automated IANA tzdata integration via vzic
-  * Bug fixes: preferences corruption defense, clipboard paste improvements,
-    locale handling for 12-hour clock format
-  * Security: added User-Agent header to HTTP requests matching email
-    X-Mailer format
+  * Version 4.2a1 — see CHANGELOG.md for full details
+  * 64-bit portability (LP64): fix type sizes in offline cache, network
+    protocol buffers, plugin interfaces, file format parsers, preferences
+  * OpenSSL 1.1/3.x: migrate to opaque API, update dynamic loading,
+    rewrite BIO CRLF filter, add version guards for all three generations
+  * C++17 / GCC 13+: remove register keyword, auto_ptr, throw() specs,
+    fix narrowing conversions, reserved identifiers
+  * Fix connection drop leaving application permanently unusable
+  * Fix UTF-16 BOM handling causing mojibake on Outlook/iOS messages
+  * Fix format=flowed delsp buffer boundary bug, add delsp=yes generation
+  * Fix bare CR rendering as spurious blank lines (RFC 5322 s4)
+  * Fix preferences corruption causing 100% CPU on 64-bit
+  * Fix offline cache corruption on 64-bit (unsigned long vs uint32_t)
+  * Unicode clipboard copy/paste via UTF8_STRING selection
+  * Compose key and dead key support (JX locale path fix)
+  * Font menu: use fontconfig instead of XListFonts
+  * xdg-open fallback for attachments and URL links
+  * Accept bare mailto: URLs on command line
+  * setlocale(LC_ALL, "") at startup (fixes 12-hour clock)
+  * IMAP ID extension (RFC 2971)
+  * User-Agent header on HTTP requests
+  * Subject prefix stripping for multilingual Re:/Fwd: chains
+  * Timezone database: build-time generation from IANA tzdata via vzic
+  * Recovered 16 patches from original developer's SVN repository
+  * Static analysis fixes (cppcheck, clang-tidy, Infer, GCC warnings):
+    use-after-free, null derefs, format strings, array delete mismatch,
+    uninitialized variables, realloc leaks, double-scaled pointer math
+  * Removed bundled OpenSSL 0.9.8m (22MB)
+  * Removed obsolete lround() polyfill
 
   [ Debian Packaging ]
   * Updated to Standards-Version 4.7.0.0 (from 3.8.3)
   * Migrated to debhelper compatibility level 13 (from 7)
   * Rewrote debian/rules using modern dh sequencer
-  * Build flags: full hardening (including bindnow), LTO optimization,
-    QA error checks for problematic code patterns
+  * Build with full hardening flags (bindnow, PIE, RELRO,
+    stack protector, FORTIFY_SOURCE, format security)
   * Added debian/copyright in DEP-5 machine-readable format
-  * Added Homepage, Vcs-Git, and Vcs-Browser fields
-  * Added AppStream metadata and desktop integration files
-  * Improved package description with current features
+  * Added debian/source/format (3.0 native)
+  * Added desktop entry and .install file
+  * Added AppStream metadata (mulberry.metainfo.xml)
+  * Added upstream/metadata with repository links
+  * Added lintian overrides for upstream source artifacts
+  * Added Homepage, Vcs-Git, and Vcs-Browser fields to control
+  * Updated build-depends: libfontconfig1-dev, pkg-config, zlib1g-dev
+  * Removed obsolete build-depends (libesd0-dev)
+  * Fixed resource file permissions (chmod 644 after install)
+  * Removed bundled OpenSSL build step, use system libssl-dev
   * Updated maintainer to reflect current maintenance
-  * Removed bundled OpenSSL build, use system libssl-dev
 
- -- yitzhaq <github@anonmail.uk>  Wed, 04 Mar 2026 00:35:18 +0100
+ -- yitzhaq <github@anonmail.uk>  Fri, 25 Apr 2026 03:00:00 +0200
 
 mulberry (4.1.0a3-git-20120727-2206) unstable; urgency=low
 

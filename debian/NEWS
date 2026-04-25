@@ -1,40 +1,35 @@
-mulberry (4.1.0a3-git-20260304-0035) unstable; urgency=medium
+mulberry (4.2.0a1) unstable; urgency=medium
 
-  IMPORTANT: Modernization Changes
+  IMPORTANT: Upgrading from older builds
 
-  This version represents a major modernization of Mulberry for current
-  Linux systems. Users upgrading from older builds should be aware of
-  the following significant changes:
-
-  * OpenSSL 3.x Compatibility
-    - Rebuilt against OpenSSL 3.x instead of legacy OpenSSL 1.0
-    - All SSL/TLS functionality verified working with modern libraries
-    - Certificate validation now uses system CA certificate store
+  This is the first version with significant development activity in
+  over a decade. Users upgrading from older builds should be aware of
+  the following:
 
   * 64-bit Native Build
     - This is a native 64-bit build (x86_64)
-    - Preferences files from 32-bit builds should migrate automatically
-    - If you experience preferences corruption, remove ~/.mulberry/preferences.mbp
-      and reconfigure from scratch
+    - Offline mail cache files from 32-bit builds may be corrupted due
+      to type size changes; delete and re-sync if you encounter issues
+    - If you experience preferences corruption, remove
+      ~/.mulberry/preferences.mbp and reconfigure
+
+  * OpenSSL 3.x
+    - Mulberry now loads system OpenSSL dynamically (1.1 through 3.x)
+    - The bundled OpenSSL 0.9.8m has been removed
 
   * Desktop Integration
     - Mulberry now appears in application menus under Network > Email
-    - Registered as system handler for mailto: and webcal: URLs
-    - Click email addresses in other applications to compose in Mulberry
-
-  * Timezone Database
-    - Calendar timezone data now automatically updated from IANA tzdata
-    - Improves accuracy of calendar scheduling across time zones
-
-  * Clipboard Improvements
-    - Fixed paste of UTF-8 text from modern applications
-    - Eliminated CRLF mojibake when pasting from some sources
+    - Registered as handler for mailto: and webcal: URLs
+    - Attachments and links open via xdg-open when no mailcap/helpers
+      mapping exists
 
   * Known Limitations
-    - Upstream development appears to be very limited
-    - Some modern email features (OAuth2 authentication, etc.) not supported
-    - Users with modern requirements should consider Thunderbird or Evolution
+    - Compose key input limited to ISO 8859-1 characters (JX toolkit)
+    - No OAuth2 authentication support
+    - Subject prefix stripping has no preferences UI yet (editable in
+      preferences file directly)
 
-  For detailed technical changes, see /usr/share/doc/mulberry/changelog.gz
+  For the full list of changes, see CHANGELOG.md or
+  /usr/share/doc/mulberry/changelog.gz
 
- -- yitzhaq <github@anonmail.uk>  Wed, 04 Mar 2026 00:35:18 +0100
+ -- yitzhaq <github@anonmail.uk>  Fri, 25 Apr 2026 03:00:00 +0200
