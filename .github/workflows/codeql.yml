@@ -26,11 +26,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y \
           build-essential autoconf \
-          libssl-dev libldap-dev \
-          libaspell-dev libfontconfig-dev libfreetype-dev \
-          libxft-dev libxext-dev libxpm-dev \
-          pkg-config zlib1g-dev \
-          libx11-dev libpcre3-dev
+          libaspell-dev libfl-dev libfontconfig-dev libfreetype-dev \
+          libglib2.0-dev libkrb5-dev libldap-dev \
+          libpcre3-dev libssl-dev \
+          libx11-dev libxext-dev libxft-dev libxpm-dev \
+          pkg-config zlib1g-dev
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
