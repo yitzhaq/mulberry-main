@@ -26,13 +26,18 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Recovered 16 patches from original developer's SVN repository
   * Replace 3DES with AES-128-CBC for S/MIME encryption
   * Replace SHA-1 with SHA-256 for PGP signatures
+  * Replace MD5+RC4 keyring encryption with Argon2id + XChaCha20-Poly1305
+    via libsodium (automatic migration of existing keyrings)
   * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
   * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, Coverity, GCC):
     use-after-free, null derefs, format strings, array delete mismatch,
     uninitialized variables, realloc leaks, double-scaled pointer math,
     23 allocation/deallocation mismatches, buffer over-read in JX
   * Removed bundled OpenSSL 0.9.8m (22MB)
-  * Removed bundled PCRE 4.5 and GNU regex from JX, use system libs
+  * Removed bundled PCRE 4.5 and GNU regex from JX, use system libs.
+    JX's regex backend selector (regex.h) now includes system pcre.h
+    directly, disabling the POSIX fallback path which relied on Henry
+    Spencer's GNU extensions no longer provided by modern glibc
   * Removed obsolete lround() polyfill
 
   [ Debian Packaging ]
