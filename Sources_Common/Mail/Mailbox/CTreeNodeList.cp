@@ -248,11 +248,14 @@ CTreeNode* CTreeNodeList::AddNode(CTreeNode* node, iterator pos)
 				unsigned long change_pos = prev - begin();
 
 				// Determine type
-				if (dynamic_cast<CMbox*>(*prev))
+				CMbox* prev_mbox = dynamic_cast<CMbox*>(*prev);
+				if (prev_mbox)
 				{
 					// Remove existing IMAP flags (only) first then add in new ones
-					dynamic_cast<CMbox*>(*prev)->SetFlags(eIMAPFlags, false);
-					dynamic_cast<CMbox*>(*prev)->SetFlags(static_cast<NMbox::EFlags>(dynamic_cast<CMbox*>(node)->GetFlags() & NMbox::eIMAPFlags));
+					prev_mbox->SetFlags(eIMAPFlags, false);
+					CMbox* node_mbox = dynamic_cast<CMbox*>(node);
+					if (node_mbox)
+						prev_mbox->SetFlags(static_cast<NMbox::EFlags>(node_mbox->GetFlags() & NMbox::eIMAPFlags));
 				}
 				else if (dynamic_cast<CMboxRef*>(*prev))
 				{

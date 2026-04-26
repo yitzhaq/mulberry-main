@@ -841,7 +841,7 @@ void CDayWeekTable::ColumnateEvents()
 				// Remove from column
 				column_usage[(*iter).mEvent->GetColumnOffset()] = NULL;
 				(*iter).mColumn = (*iter).mEvent->GetColumnOffset();
-				(*iter).mTotalCol = --total_col;
+				(*iter).mTotalCol = (total_col > 0) ? --total_col : 0;
 			}
 		}
 		

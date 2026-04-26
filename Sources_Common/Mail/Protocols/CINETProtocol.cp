@@ -781,7 +781,7 @@ void CINETProtocol::RenameOffline()
 		InitOfflineCWD(false);
 		cdstring new_cwd = mOfflineCWD;
 
-		if (!new_cwd.empty())
+		if (!old_cwd.empty() && !new_cwd.empty())
 		{
 			// Strip trailing dir delims
 			old_cwd[old_cwd.length() - 1] = 0;

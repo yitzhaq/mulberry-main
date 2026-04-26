@@ -1437,7 +1437,7 @@ void CPreferences::RenameAccount(CINETAccount* acct, const cdstring& new_acct)
 		}
 		if (changed)
 		{
-			mCalendarColours.Value() = newmap;
+			mCalendarColours.Value() = std::move(newmap);
 			mCalendarColours.SetDirty();
 		}
 		
@@ -1529,7 +1529,7 @@ void CPreferences::DeleteAccount(CINETAccount* acct)
 		}
 		if (changed)
 		{
-			mCalendarColours.Value() = newmap;
+			mCalendarColours.Value() = std::move(newmap);
 			mCalendarColours.SetDirty();
 		}
 	}
