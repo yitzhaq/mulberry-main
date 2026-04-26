@@ -1382,9 +1382,6 @@ void CServerBrowse::AddChildHierarchy(CTreeNodeList* list, unsigned long parent,
 	unsigned long index = start;
 	ulvector parents;
 
-	// Tweak for better memory usage
-	mData.reserve(mData.size() + (end_iter - start_iter));
-
 	// Insert required number of mbox entries
 	for(CMboxList::const_iterator iter = start_iter; iter != end_iter; iter++)
 	{
@@ -1460,9 +1457,6 @@ void CServerBrowse::AddSiblingHierarchy(CTreeNodeList* list, unsigned long sibli
 	unsigned long index = start;
 	ulvector parents;
 	bool first_child = (start == 0) && !as_sibling;
-
-	// Tweak for better memory usage
-	mData.reserve(mData.size() + (end_iter - start_iter));
 
 	// Insert required number of mbox entries
 	for(CMboxList::const_iterator iter = start_iter; iter != end_iter; iter++)
