@@ -2091,9 +2091,9 @@ void CLocalClient::_MapLocalUIDs(const ulvector& uids, ulvector* missing, ulmap*
 void CLocalClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set)
 {
 	// Determine status info
-	const char* status_strid;
-	const char* oserr_strid;
-	const char* nobad_strid;
+	const char* status_strid = NULL;
+	const char* oserr_strid = NULL;
+	const char* nobad_strid = NULL;
 	if (flags & NMessage::eAnswered)
 	{
 		status_strid = "Status::IMAP::MarkingAnswered";

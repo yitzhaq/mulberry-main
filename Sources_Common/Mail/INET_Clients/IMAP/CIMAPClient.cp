@@ -1638,9 +1638,9 @@ void CIMAPClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 // Set specified flag
 void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set)
 {
-	const char* status_strid;
-	const char* oserr_strid;
-	const char* nobad_strid;
+	const char* status_strid = NULL;
+	const char* oserr_strid = NULL;
+	const char* nobad_strid = NULL;
 
 	// Send xFLAGS /DELETED message to server
 	CSequence sequence(nums);
