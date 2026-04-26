@@ -53,7 +53,7 @@ to fetch the required libraries.
 ```sh
 sudo apt install build-essential autoconf libssl-dev libldap-dev \
     libaspell-dev libfl-dev libfontconfig-dev libfreetype-dev \
-    libpcre3-dev libxft-dev libxext-dev libxpm-dev \
+    libpcre3-dev libsodium-dev libxft-dev libxext-dev libxpm-dev \
     pkg-config zlib1g-dev debhelper
 dpkg-buildpackage -us -uc -b
 ```

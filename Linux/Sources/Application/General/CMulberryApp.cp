@@ -54,6 +54,8 @@
 #include "COptionsProtocol.h"
 #include "CPasswordManagerKeyring.h"
 #include "CPeriodicCheck.h"
+
+#include <sodium.h>
 #include "CPluginManager.h"
 #include "CPreferences.h"
 #include "CPreferencesDialog.h"
@@ -650,6 +652,10 @@ void CMulberryApp::OpenUp(bool first_time)
 		if (CErrorHandler::PutCautionAlertRsrc(true, "Alerts::General::LoggingInsecure") == CErrorHandler::Cancel)
 			CLog::DisableActiveLogs();
 	}
+
+	// Initialize libsodium for keyring encryption
+	if (sodium_init() < 0)
+		CLOG_LOGTHROW(CGeneralException, -1L);
 
 	// Do keyring load
 	CPasswordManagerKeyring::MakePasswordManagerKeyring();

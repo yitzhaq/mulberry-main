@@ -404,6 +404,14 @@ AC_SUBST(ASPELL)
 #   AC_MSG_ERROR("libxml/parser.h not found."))
 
 # ---------------------------------------------------------------------------
+# libsodium (required for keyring encryption)
+# ---------------------------------------------------------------------------
+
+AC_CHECK_HEADER([sodium.h], [],
+    AC_MSG_ERROR([sodium.h not found. Install libsodium-dev.]))
+LDFLAGS="$LDFLAGS -lsodium"
+
+# ---------------------------------------------------------------------------
 # Almost there...
 # ---------------------------------------------------------------------------
 

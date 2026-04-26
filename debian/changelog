@@ -26,8 +26,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Recovered 16 patches from original developer's SVN repository
   * Replace 3DES with AES-128-CBC for S/MIME encryption
   * Replace SHA-1 with SHA-256 for PGP signatures
-  * Replace MD5+RC4 keyring encryption with Argon2id + XChaCha20-Poly1305
-    via libsodium (automatic migration of existing keyrings)
+  * Modernize internal keyring encryption from MD5+RC4 to Argon2id +
+    XChaCha20-Poly1305 via libsodium; fix keyring file permissions
   * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
   * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, Coverity, GCC):
     use-after-free, null derefs, format strings, array delete mismatch,

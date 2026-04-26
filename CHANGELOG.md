@@ -67,6 +67,8 @@ X11 bitmap fonts).
   appropriate API, supporting all three major OpenSSL generations
   (pre-1.1, 1.1-2.x, and 3.x).
 - GCC 13+ and Clang 18+ compatibility (C++17 standard).
+- libsodium dependency for keyring encryption (replaces use of
+  OpenSSL MD5 and RC4, which are deprecated in OpenSSL 3.x).
 - Add delsp=yes to outgoing format=flowed messages, as recommended by
   RFC 3676. Mulberry already supported format=flowed for both sending
   and receiving, but without delsp, which caused trailing spaces in
@@ -141,6 +143,9 @@ X11 bitmap fonts).
   for collision attacks since 2017 (SHAttered) and has been deprecated
   by GPG since 2019. SHA-256 is universally supported by all current
   OpenPGP implementations.
+- Modernize internal keyring encryption from MD5+RC4 to Argon2id
+  key derivation and XChaCha20-Poly1305 authenticated encryption
+  via libsodium. Fix keyring file permissions to 0600.
 - Fix numerous latent bugs discovered through comprehensive static
   analysis with cppcheck, clang-tidy, Facebook Infer, CodeQL,
   Coverity, and extended GCC warnings. Notable finds include:
