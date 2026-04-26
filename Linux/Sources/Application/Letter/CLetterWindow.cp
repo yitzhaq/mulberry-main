@@ -1584,7 +1584,7 @@ void CLetterWindow::HideToolbar(bool override)
 // Handle style text popup command
 void CLetterWindow::OnDraftCurrentText(unsigned long cmd)
 {
-	EContentSubType subtype;
+	EContentSubType subtype = eContentSubPlain;
 
 	switch(cmd)
 	{

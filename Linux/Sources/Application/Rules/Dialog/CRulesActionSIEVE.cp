@@ -230,7 +230,7 @@ CActionItem* CRulesActionSIEVE::GetActionItem() const
 	{
 		cdstring text = mText->GetText();
 
-		CActionItem::EActionItem type1;
+		CActionItem::EActionItem type1 = CActionItem::eReject;
 		switch(mPopup1->GetValue())
 		{
 		case ePopup_Reject:

@@ -370,8 +370,8 @@ void CEditFormattedTextDisplay::DoAlignmentCommand(unsigned long cmd)
 
 void CEditFormattedTextDisplay::DoColorCommand(unsigned long cmd)
 {
-	JIndex color;
-	
+	JIndex color = CColorPopup::eColorIndex_Black;
+
 	switch(cmd)
 	{
 	case CCommand::eColourBlack:

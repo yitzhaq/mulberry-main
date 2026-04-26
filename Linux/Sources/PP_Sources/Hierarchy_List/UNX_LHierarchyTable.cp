@@ -534,7 +534,7 @@ LHierarchyTable::RevealRow(
 											// Row is not currently exposed
 											// Expand all its ancestors
 		TableIndexT	woIndex = inWideOpenRow;
-		TableIndexT	lastExpanded;
+		TableIndexT	lastExpanded = inWideOpenRow;
 		while (true) {
 			woIndex = mCollapsableTree->GetParentIndex(woIndex);
 

@@ -329,7 +329,7 @@ void CBodyTable::ResetTable()
 
 void CBodyTable::InsertPart(TableIndexT& parentRow, CAttachment* part, bool child)
 {
-	TableIndexT thisRow;
+	TableIndexT thisRow = parentRow;
 
 	bool has_multiparts = part->IsMultipart() || part->IsMessage();
 	bool is_aggregate = part->IsMultipart() && part->IsApplefile();

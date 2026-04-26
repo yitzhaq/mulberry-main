@@ -264,9 +264,9 @@ void CACLTable::DrawCell(JPainter* pDC, const STableCell& inCell, const JRect& i
 
 	cdstring name;
 	SACLRight rights;
-	int icon;
-	int icon_on;
-	int icon_off;
+	int icon = 0;
+	int icon_on = eACLUnsetIcon;
+	int icon_off = eACLUnsetIcon;
 
 	// Draw selection
 	DrawCellSelection(pDC, inCell);
