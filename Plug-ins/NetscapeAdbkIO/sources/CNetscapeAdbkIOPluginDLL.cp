@@ -693,7 +693,8 @@ long CNetscapeAdbkIOPluginDLL::ExportGroup(SAdbkIOPluginGroup* grp)
 		::fwrite(html_address_nickname, 1, ::strlen(html_address_nickname), mExportFile);
 
 		// Convert to Netscape nickname (lowercase and no space)
-		::strcpy(write, txt);
+		::strncpy(write, txt, sizeof(write) - 1);
+		write[sizeof(write) - 1] = 0;
 		{
 			char* p = write;
 			char* q = write;

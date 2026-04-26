@@ -655,7 +655,8 @@ long CGSSAPIPluginDLL::ProcessNegStepData(SAuthPluginData* info)
 	if(mUseUserID)
     {
         char *p;
-		::strcpy(buf + 4, mUserID);
+		::strncpy(buf + 4, mUserID, sizeof(buf) - 5);
+		buf[sizeof(buf) - 1] = 0;
         p = ::strchr(buf+4, '@');
         if (p)
             *p = 0;
@@ -688,7 +689,8 @@ long CGSSAPIPluginDLL::ProcessNegStepData(SAuthPluginData* info)
 		{
 			if (::strchr((char*) name_token.value, '@'))
 				*::strchr((char*) name_token.value, '@') = 0;
-			::strcpy(buf + 4, (char*) name_token.value);
+			::strncpy(buf + 4, (char*) name_token.value, sizeof(buf) - 5);
+			buf[sizeof(buf) - 1] = 0;
 		    ::gss_release_buffer(&min_stat, &name_token);
 			::gss_release_name(&min_stat, &user);
 		}

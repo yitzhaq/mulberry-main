@@ -1309,7 +1309,8 @@ char* CAddressBook::ExportAddress(const CAdbkAddress* addr) const
 	else
 		str = addr->GetName();
 	char whole_name[256];
-	::strcpy(whole_name, str);
+	::strncpy(whole_name, str, sizeof(whole_name) - 1);
+	whole_name[sizeof(whole_name) - 1] = 0;
 
 	// Find last name
 	char* last_name = ::strrchr(whole_name, ' ');

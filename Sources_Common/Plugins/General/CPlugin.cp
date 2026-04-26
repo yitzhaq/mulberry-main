@@ -792,9 +792,7 @@ bool CPlugin::ReadFromMap(COptionsMap* theMap, NumVersion vers_app, NumVersion& 
 	theMap->ReadValue(cVersionKey, txt, vers_app);
 	actual_var.whole = (uint32_t)::strtol(txt, NULL, 0);
 	NumVersion actual_vers = actual_var.parts;
-	NumVersionVariant info_var;
-	info_var.parts = mInfo.mVersion;
-	mUpdateVers = (actual_var.whole != info_var.whole);
+	mUpdateVers = (actual_var.whole != (uint32_t)mInfo.mVersion);
 
 	DoReadFromMap(theMap, vers_prefs, actual_vers);
 

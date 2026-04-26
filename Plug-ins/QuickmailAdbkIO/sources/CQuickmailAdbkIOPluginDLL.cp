@@ -167,9 +167,10 @@ long CQuickmailAdbkIOPluginDLL::ImportAddresses(char* data)
 		SkipTerm(&p);
 		
 		// Create whole name
-		::strcpy(whole_name, first_name);
-		::strcat(whole_name, " ");
-		::strcat(whole_name, last_name);
+		::strncpy(whole_name, first_name, sizeof(whole_name) - 1);
+		whole_name[sizeof(whole_name) - 1] = 0;
+		::strncat(whole_name, " ", sizeof(whole_name) - ::strlen(whole_name) - 1);
+		::strncat(whole_name, last_name, sizeof(whole_name) - ::strlen(whole_name) - 1);
 
 		// Gateway will be next - ignore
 		SkipTerm(&p);
@@ -216,7 +217,8 @@ long CQuickmailAdbkIOPluginDLL::ExportAddress(SAdbkIOPluginAddress* addr)
 	
 	// Copy user name for modification
 	char whole_name[256];
-	::strcpy(whole_name, addr->mName);
+	::strncpy(whole_name, addr->mName, sizeof(whole_name) - 1);
+	whole_name[sizeof(whole_name) - 1] = 0;
 	
 	// Find last name
 	char* last_name = ::strrchr(whole_name, ' ');

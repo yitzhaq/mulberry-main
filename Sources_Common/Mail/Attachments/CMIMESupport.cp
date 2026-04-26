@@ -354,10 +354,10 @@ cdstring CMIMESupport::GenerateMultipartBoundary(const CAttachment* attach, EEnd
 				// Generate random string
 				cdstring rstr;
 				rstr.reserve(256);
-#if __dest_os == __linux_os
-				::snprintf(rstr.c_str_mod(), 256, "%ld%ld%d%ld%p", clock(), time(NULL), rand(), level, attach);
-#else
+#if __dest_os == __win32_os
 				::snprintf(rstr.c_str_mod(), 256, "%f%ld%ld%d%p", clock(), time(NULL), rand(), level, attach);
+#else
+				::snprintf(rstr.c_str_mod(), 256, "%ld%ld%u%ld%p", clock(), time(NULL), arc4random(), level, attach);
 #endif
 				cdstring boundary;
 				rstr.md5(boundary);

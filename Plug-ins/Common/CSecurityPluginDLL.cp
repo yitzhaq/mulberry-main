@@ -289,6 +289,7 @@ void CSecurityPluginDLL::TempCreate(fspec in_tmp, fspec out_tmp, const char* in)
 	}
 #else
 	int fd = -1;
+	mode_t old_umask = ::umask(077);
 
 	try
 	{
@@ -319,9 +320,12 @@ void CSecurityPluginDLL::TempCreate(fspec in_tmp, fspec out_tmp, const char* in)
 			::close(fd);
 			fd = -1;
 		}
+		::umask(old_umask);
 	}
 	catch(...)
 	{
+		::umask(old_umask);
+
 		// Clean up
 		if (fd != -1)
 			::close(fd);
