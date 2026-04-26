@@ -1625,6 +1625,8 @@ void CIMSPClient::IMSPParseFetchAddress(char** txt)
 				mMembersGroups = new CGroupList;
 			mMembersGroups->push_back(grp);
 		}
+		else
+			delete grp;
 	}
 	// Determine if group or single
 	else if (group || (email && (::strchr(email, '\r') != 0)))
@@ -1647,6 +1649,8 @@ void CIMSPClient::IMSPParseFetchAddress(char** txt)
 		// Add group to address book if not searching
 		if (!mSearchMode && mActionAdbk)
 			mActionAdbk->GetGroupList()->push_back(grp);
+		else
+			delete grp;
 	}
 	else
 	{
@@ -1668,6 +1672,8 @@ void CIMSPClient::IMSPParseFetchAddress(char** txt)
 			if (mActionAdbk->GetVCardAdbk() != NULL)
 				mActionAdbk->GetVCardAdbk()->AddCard(vcardstore::GenerateVCard(mActionAdbk->GetVCardAdbk()->GetRef(), addr));
 		}
+		else
+			delete addr;
 	}
 
 	// delete all strings
@@ -1678,6 +1684,7 @@ void CIMSPClient::IMSPParseFetchAddress(char** txt)
 	delete company;
 	delete address;
 	delete city;
+	delete calendar;
 	delete phone_work;
 	delete phone_home;
 	delete fax;

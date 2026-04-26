@@ -173,6 +173,7 @@ void CWindowsIcon::ParseData(const unsigned long* ico, unsigned long size, unsig
 											  &colorTable[i]))
 		{
 			GetColormap()->MassColorAllocationFinished();
+			delete [] colorTable;
 			return;
 		}
 	}
@@ -186,6 +187,7 @@ void CWindowsIcon::ParseData(const unsigned long* ico, unsigned long size, unsig
 	const JError allocErr = AllocateImageData(size, size, &data, &cols);
 	if (!allocErr.OK())
 	{
+		delete [] colorTable;
 		return;
 	}
 

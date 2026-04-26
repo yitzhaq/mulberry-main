@@ -396,6 +396,8 @@ long CCommAdbkIOPluginDLL::ImportAddresses(char* data)
 			// add to list
 			members.push_back(item);
 		}
+
+		free(type);
 	}
 
 	// last one

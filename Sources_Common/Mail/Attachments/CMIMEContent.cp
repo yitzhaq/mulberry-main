@@ -415,6 +415,7 @@ void CMIMEContent::SetContent(const char* mime)
 	char* type_token = txt ? ::strtok(txt, " /") : NULL;
 	if (!type_token || !*type_token)
 	{
+		free(txt);
 		SetContent(eNoContentType, eNoContentSubType);
 		return;
 	}

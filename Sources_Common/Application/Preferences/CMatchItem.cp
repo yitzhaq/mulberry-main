@@ -339,7 +339,10 @@ CSearchItem* CMatchItem::ConstructSearch(const CMessageList* msgs) const
 		if (items && this_item)
 			items->push_back(this_item);
 		else if (this_item)
+		{
+			delete result;
 			result = this_item;
+		}
 	}
 
 	for(cdstrvect::const_iterator iter = mSearchSet.begin(); iter != mSearchSet.end(); iter++)
@@ -353,7 +356,10 @@ CSearchItem* CMatchItem::ConstructSearch(const CMessageList* msgs) const
 		if (items && this_item)
 			items->push_back(this_item);
 		else if (this_item)
+		{
+			delete result;
 			result = this_item;
+		}
 	}
 
 	// Look for not

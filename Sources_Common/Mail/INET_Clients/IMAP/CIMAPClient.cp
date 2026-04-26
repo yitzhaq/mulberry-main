@@ -2913,6 +2913,15 @@ void CIMAPClient::IMAPParseEnvelope(char** txt)
 			new_envelope = new CEnvelope(date, subject, from_list, sender_list, reply_to_list, to_list, cc_list, bcc_list, in_reply_to, message_id);
 			SetEnvelope(new_envelope);
 		}
+		else
+		{
+			delete from_list;
+			delete sender_list;
+			delete reply_to_list;
+			delete to_list;
+			delete cc_list;
+			delete bcc_list;
+		}
 
 		// Strings not owned
 		delete date;

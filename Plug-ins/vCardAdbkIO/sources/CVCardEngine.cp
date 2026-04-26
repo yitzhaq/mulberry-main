@@ -80,9 +80,11 @@ bool CVCardEngine::ReadOne(std::istream& in, CAdbkIOPluginDLL::SAdbkIOPluginAddr
 			{
 				addr.mFax = cellPhone;
 			}
-            /* else ???
-             * TODO make phone number a [type, value] list for arbitrary types of phone numbers
-             */
+			else
+			{
+				// TODO: make phone number a [type, value] list for arbitrary types
+				free(const_cast<char*>(cellPhone));
+			}
 		}
 		addr.mURL = vCard.CountItems("URL") ? ::strdup(vCard.GetValue("URL")) : NULL;
 		addr.mNotes = vCard.CountItems("NOTE") ? ::strdup(vCard.GetValue("NOTE")) : NULL;

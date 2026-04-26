@@ -480,6 +480,7 @@ void CSpellCheckDialog::ReplaceWord(const CSpellPlugin::SpError* sperr)
 	::strcpy(new_txt + sperr->sel_start + replace_len, mCheckText->c_str() + sperr->sel_end);
 
 	*mCheckText = new_txt;
+	delete[] new_txt;
 
 	// Now do visual replace
 	mText->InsertUTF8(sperr->replacement);

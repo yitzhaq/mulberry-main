@@ -1139,6 +1139,8 @@ void CAddressBook::ImportAddress(char* txt, bool add, CAdbkAddress** raddr, CGro
 			GetGroupList()->push_back(grp);
 		else if (rgrp)
 			*rgrp = grp;
+		else
+			delete grp;
 	}
 
 	// Got address
@@ -1253,6 +1255,8 @@ void CAddressBook::ImportAddress(char* txt, bool add, CAdbkAddress** raddr, CGro
 			GetAddressList()->push_back(addr);
 		else if (raddr)
 			*raddr = addr;
+		else
+			delete addr;
 	}
 }
 

@@ -171,6 +171,8 @@ void CRulesTable::MakeRule(const CMessageList& msgs)
 		rule->SetCriteria(list->front());
 		delete list;
 	}
+	else
+		delete list;
 
 	// Now do rule edit dialog
 	bool trigger_change;
