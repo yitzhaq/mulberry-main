@@ -1134,7 +1134,7 @@ void CBinHexFilter::DecodeIt(unsigned char** inbuffer,
 			case eStartRun:
 			{
 				// Read char from input
-				unsigned char got_char;
+				unsigned char got_char = 0;
 				char read_byte = *(*inbuffer)++;
 				mBufferLength--;
 

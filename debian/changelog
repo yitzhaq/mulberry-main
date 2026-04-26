@@ -27,7 +27,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Replace 3DES with AES-128-CBC for S/MIME encryption
   * Replace SHA-1 with SHA-256 for PGP signatures
   * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
-  * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, GCC):
+  * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, Coverity, GCC):
     use-after-free, null derefs, format strings, array delete mismatch,
     uninitialized variables, realloc leaks, double-scaled pointer math,
     23 allocation/deallocation mismatches, buffer over-read in JX

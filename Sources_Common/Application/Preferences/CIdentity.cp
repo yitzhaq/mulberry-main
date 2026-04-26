@@ -56,6 +56,7 @@ CIdentity::CIdentity()
 	mCopyReplied = false;
 	mHeader.second = false;
 	mSignature.second = false;
+	mSignatureFile = false;
 
 	mAddTo.second = false;
 	mAddCC.second = false;

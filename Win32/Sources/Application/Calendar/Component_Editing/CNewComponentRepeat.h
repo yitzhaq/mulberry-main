@@ -86,7 +86,7 @@ protected:
 	CTabController			mRepeatsTabs;
 
 	CNewComponentRepeatSimple*		mRepeatSimpleItems;
-	CNewComponentRepeatAdvanced*	mRepeatAdavancedItems;
+	CNewComponentRepeatAdvanced*	mRepeatAdvancedItems;
 	CNewComponentRepeatComplex*		mRepeatComplexItems;
 
 	iCal::CICalendarRecurrence	mAdvancedRecur;

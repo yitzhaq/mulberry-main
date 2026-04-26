@@ -557,7 +557,7 @@ SInt32 CUUFilter::Encode(unsigned char* dest, unsigned char* src, long len)
 	// Check for remainder
 	if (len % 3)
 	{
-		TAtom atom;
+		TAtom atom = {};
 
 		switch(len % 3)
 		{

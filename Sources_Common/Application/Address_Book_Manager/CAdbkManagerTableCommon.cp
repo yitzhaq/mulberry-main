@@ -510,6 +510,7 @@ void CAdbkManagerTable::OnNewAddressBook(void)
 	create.open_on_startup = true;
 	create.use_nicknames = true;
 	create.use_search = true;
+	create.use_wd = false;
 
 	CAdbkProtocol* proto = NULL;
 	CAddressBook* node = NULL;

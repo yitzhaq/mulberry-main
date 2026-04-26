@@ -142,15 +142,16 @@ X11 bitmap fonts).
   by GPG since 2019. SHA-256 is universally supported by all current
   OpenPGP implementations.
 - Fix numerous latent bugs discovered through comprehensive static
-  analysis with cppcheck, clang-tidy, Facebook Infer, CodeQL, and
-  extended GCC warnings. Notable finds include: use-after-free in stack
-  operations, null pointer dereferences in message display and drag
-  operations, double-scaled pointer arithmetic in UTF-16 string
-  operations, missing comma concatenating adjacent string literals in
-  match descriptors, array delete/delete mismatch in DIGEST-MD5 plugin,
-  memory leaks on realloc failure, uninitialized variables in
-  HTTP content handling and window setup, and 23 allocation/deallocation
-  mismatches (strdup freed with delete, new[] freed with delete).
+  analysis with cppcheck, clang-tidy, Facebook Infer, CodeQL,
+  Coverity, and extended GCC warnings. Notable finds include:
+  use-after-free in stack operations, null pointer dereferences in
+  message display and drag operations, double-scaled pointer
+  arithmetic in UTF-16 string operations, missing comma concatenating
+  adjacent string literals in match descriptors, array delete/delete
+  mismatch in DIGEST-MD5 plugin, memory leaks on realloc failure,
+  uninitialized variables in HTTP content handling and window setup,
+  and 23 allocation/deallocation mismatches (strdup freed with delete,
+  new[] freed with delete).
 
 ### Removed
 

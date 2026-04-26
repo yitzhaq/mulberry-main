@@ -72,8 +72,8 @@ BOOL CNewComponentRepeat::OnInitDialog()
 	mRepeatSimpleItems = new CNewComponentRepeatSimple(this);
 	mRepeatsTabs.AddPanel(mRepeatSimpleItems);
 
-	mRepeatAdavancedItems = new CNewComponentRepeatAdvanced(this);
-	mRepeatsTabs.AddPanel(mRepeatAdavancedItems);
+	mRepeatAdvancedItems = new CNewComponentRepeatAdvanced(this);
+	mRepeatsTabs.AddPanel(mRepeatAdvancedItems);
 
 	mRepeatComplexItems = new CNewComponentRepeatComplex;
 	mRepeatsTabs.AddPanel(mRepeatComplexItems);
@@ -121,7 +121,7 @@ void CNewComponentRepeat::DoRepeat(bool repeat)
 {
 	mRepeatsTabs.EnableWindow(repeat);
 	mRepeatSimpleItems->EnableWindow(repeat);
-	mRepeatAdavancedItems->EnableWindow(repeat);
+	mRepeatAdvancedItems->EnableWindow(repeat);
 	if (mRepeatComplexItems != NULL)
 		mRepeatComplexItems->EnableWindow(repeat);
 }
@@ -134,7 +134,7 @@ void CNewComponentRepeat::DoRepeatTab(UInt32 value)
 		break;
 	case eOccurs_Advanced:
 		// Set description to advanced item
-		CUnicodeUtils::SetWindowTextUTF8(&mRepeatAdavancedItems->mOccursDescription, mAdvancedRecur.GetUIDescription());
+		CUnicodeUtils::SetWindowTextUTF8(&mRepeatAdvancedItems->mOccursDescription, mAdvancedRecur.GetUIDescription());
 		break;
 	case eOccurs_Complex:
 		// Set description to complex item
@@ -390,8 +390,8 @@ void CNewComponentRepeat::SetReadOnly(bool read_only)
 
 	if (mRepeatSimpleItems != NULL)
 		mRepeatSimpleItems->EnableWindow(!read_only && (mRepeats.GetCheck() == 1));
-	if (mRepeatAdavancedItems != NULL)
-		mRepeatAdavancedItems->EnableWindow(!read_only && (mRepeats.GetCheck() == 1));
+	if (mRepeatAdvancedItems != NULL)
+		mRepeatAdvancedItems->EnableWindow(!read_only && (mRepeats.GetCheck() == 1));
 	if (mRepeatComplexItems != NULL)
 		mRepeatComplexItems->EnableWindow(!read_only && (mRepeats.GetCheck() == 1));
 }

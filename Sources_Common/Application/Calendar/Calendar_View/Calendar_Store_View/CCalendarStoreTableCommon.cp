@@ -477,6 +477,7 @@ void CCalendarStoreTable::OnNewCalendar()
 calstore::CCalendarStoreNode* CCalendarStoreTable::DoCreateCalendar()
 {
 	CCreateCalendarDialog::SCreateCalendar	create;
+	create.use_wd = false;
 	calstore::CCalendarProtocol* proto = NULL;
 	calstore::CCalendarStoreNode* node = NULL;
 	calstore::CCalendarStoreNode* result = NULL;

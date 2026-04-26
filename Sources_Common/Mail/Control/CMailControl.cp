@@ -810,7 +810,7 @@ void CMailControl::SpendTime(bool force_tickle, bool do_checks)
 			{
 				CLOG_LOGCATCH(...);
 
-				// Éand do nothing
+				// ï¿½and do nothing
 			}
 		}
 	}
@@ -964,7 +964,7 @@ bool CMailControl::DoUserIDPassword(CAuthenticatorUserPswd* auth,
 				title = rsrc::GetString("Alerts::UserPswd::REMOTECALENDARLOGIN");
 			}
 #elif __dest_os == __win32_os
-			int icon;
+			int icon = 0;
 			if (rmail)
 			{
 				icon = (acct->GetServerType() == CINETAccount::ePOP3) ? IDI_USERPSWD_POP3 : IDI_USERPSWD_IMAP;
@@ -1013,7 +1013,7 @@ bool CMailControl::DoUserIDPassword(CAuthenticatorUserPswd* auth,
 			}
 #else
 			title.reserve(256);
-			int icon;
+			int icon = 0;
 			if (rmail)
 			{
 				icon = (acct->GetServerType() == CINETAccount::ePOP3) ? IDI_USERPSWD_POP3 : IDI_USERPSWD_IMAP;
@@ -1862,7 +1862,7 @@ bool CMailControl::ProcessBusy(const CBusyContext* busy, bool allow_cancel)
 	{
 		CLOG_LOGCATCH(...);
 
-		// Éand do nothing
+		// ï¿½and do nothing
 	}
 
 	return cancel;

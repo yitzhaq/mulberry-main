@@ -25,13 +25,12 @@ prioritizes control and efficiency over visual polish.
 activity in over a decade.
 
 This version brings Mulberry to modern 64-bit Linux (x86_64) with
-GCC 13+, OpenSSL 1.1–3.x, and current Debian/Ubuntu packaging. It
-includes comprehensive bug fixes found through static analysis with
-five tools (cppcheck, clang-tidy, Facebook Infer, GCC extended
-warnings, and CodeQL), improved RFC 3676 format=flowed compliance,
-Unicode
-clipboard support, and recovery of sixteen patches from the original
-developer's SVN repository.
+GCC 13+, OpenSSL 1.1–3.x, and current Debian/Ubuntu packaging.
+It includes comprehensive bug fixes found through static analysis
+with six tools (cppcheck, clang-tidy, Facebook Infer, GCC extended
+warnings, CodeQL, and Coverity), improved RFC 3676 format=flowed
+compliance, Unicode clipboard support, and recovery of sixteen
+patches from the original developer's SVN repository.
 
 Development and testing focused exclusively on Linux (x86_64,
 Ubuntu 24.04, GCC 13). Some incidental fixes for Win32 and macOS

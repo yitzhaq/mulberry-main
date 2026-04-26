@@ -69,8 +69,8 @@ void CNewComponentRepeat::OnCreate()
 
 	mRepeatSimpleItems = new CNewComponentRepeatSimple(mRepeatsTabs->GetCardEnclosure(), JXWidget::kFixedLeft, JXWidget::kFixedTop, 0, 0, 500, 120);
 	mRepeatsTabs->AppendCard(mRepeatSimpleItems, "Simple");
-	mRepeatAdavancedItems = new CNewComponentRepeatAdvanced(mRepeatsTabs->GetCardEnclosure(), JXWidget::kFixedLeft, JXWidget::kFixedTop, 0, 0, 500, 120);
-	mRepeatsTabs->AppendCard(mRepeatAdavancedItems, "Advanced");
+	mRepeatAdvancedItems = new CNewComponentRepeatAdvanced(mRepeatsTabs->GetCardEnclosure(), JXWidget::kFixedLeft, JXWidget::kFixedTop, 0, 0, 500, 120);
+	mRepeatsTabs->AppendCard(mRepeatAdvancedItems, "Advanced");
 	mRepeatComplexItems = new CNewComponentRepeatComplex(mRepeatsTabs->GetCardEnclosure(), JXWidget::kFixedLeft, JXWidget::kFixedTop, 0, 0, 500, 120);
 	mRepeatsTabs->AppendCard(mRepeatComplexItems, "Complex");
 
@@ -78,7 +78,7 @@ void CNewComponentRepeat::OnCreate()
 	ListenTo(mRepeats);
 	ListenTo(mRepeatsTabs);
 	ListenTo(mRepeatSimpleItems->mOccursGroup);
-	ListenTo(mRepeatAdavancedItems->mOccursEdit);
+	ListenTo(mRepeatAdvancedItems->mOccursEdit);
 	
 	// Init controls
 	DoRepeat(false);
@@ -108,7 +108,7 @@ void CNewComponentRepeat::Receive(JBroadcaster* sender, const Message& message)
 	}
 	else if (message.Is(JXButton::kPushed))
 	{
-		if (sender == mRepeatAdavancedItems->mOccursEdit)
+		if (sender == mRepeatAdvancedItems->mOccursEdit)
 		{
 			DoOccursEdit();
 			return;
@@ -142,7 +142,7 @@ void CNewComponentRepeat::DoRepeatTab(JIndex value)
 		break;
 	case eOccurs_Advanced:
 		// Set description to advanced item
-		mRepeatAdavancedItems->mOccursDescription->SetText(mAdvancedRecur.GetUIDescription());
+		mRepeatAdvancedItems->mOccursDescription->SetText(mAdvancedRecur.GetUIDescription());
 		break;
 	case eOccurs_Complex:
 		// Set description to complex item
@@ -173,7 +173,7 @@ void CNewComponentRepeat::DoOccursEdit()
 		mAdvancedRecur = temp;
 
 		// Update description
-		mRepeatAdavancedItems->mOccursDescription->SetText(mAdvancedRecur.GetUIDescription());
+		mRepeatAdvancedItems->mOccursDescription->SetText(mAdvancedRecur.GetUIDescription());
 	}
 }
 

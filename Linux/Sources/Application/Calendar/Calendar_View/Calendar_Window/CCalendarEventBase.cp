@@ -346,7 +346,7 @@ void CCalendarEventBase::DrawHorizFrame(JXWindowPainter* pDC, JRect& rect)
 	// Display attendee indicator
 	if (mAttendeeState != iCal::CITIPProcessor::eNone)
 	{
-		resType theResID;
+		resType theResID = IDI_ATTENDEE;
 		switch(mAttendeeState)
 		{
 		case iCal::CITIPProcessor::eNone:
@@ -593,7 +593,7 @@ void CCalendarEventBase::DrawVertFrame(JXWindowPainter* pDC, JRect& rect)
 		if (rect.height() < 16)
 			vOffset = (rect.top + rect.bottom) / 2 - 8;
 
-		resType theResID;
+		resType theResID = IDI_ATTENDEE;
 		switch(mAttendeeState)
 		{
 		case iCal::CITIPProcessor::eNone:

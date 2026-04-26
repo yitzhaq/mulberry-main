@@ -98,7 +98,7 @@ protected:
 
 // end JXLayout1
 	CNewComponentRepeatSimple*		mRepeatSimpleItems;
-	CNewComponentRepeatAdvanced*	mRepeatAdavancedItems;
+	CNewComponentRepeatAdvanced*	mRepeatAdvancedItems;
 	CNewComponentRepeatComplex*		mRepeatComplexItems;
 
 	iCal::CICalendarRecurrence	mAdvancedRecur;
@@ -125,7 +125,10 @@ public:
 				const HSizingOption hSizing, const VSizingOption vSizing,
 				const JCoordinate x, const JCoordinate y,
 				const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h),
+		  mOccursInterval(NULL), mOccursFreq(NULL), mOccursGroup(NULL),
+		  mOccursForEver(NULL), mOccursCount(NULL), mOccursUntil(NULL),
+		  mOccursCounter(NULL), mOccursDateTimeZone(NULL) {}
 	virtual	~CNewComponentRepeatSimple() {}
 
 	virtual void	OnCreate();
@@ -154,7 +157,8 @@ public:
 				const HSizingOption hSizing, const VSizingOption vSizing,
 				const JCoordinate x, const JCoordinate y,
 				const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h),
+		  mOccursDescription(NULL), mOccursEdit(NULL), mTimingPanel(NULL) {}
 	virtual	~CNewComponentRepeatAdvanced() {}
 
 	virtual void	OnCreate();
@@ -180,7 +184,8 @@ public:
 				const HSizingOption hSizing, const VSizingOption vSizing,
 				const JCoordinate x, const JCoordinate y,
 				const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h),
+		  mOccursDescription(NULL) {}
 	virtual	~CNewComponentRepeatComplex() {}
 
 	virtual void	OnCreate();
