@@ -32,6 +32,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
     uninitialized variables, realloc leaks, double-scaled pointer math,
     23 allocation/deallocation mismatches, buffer over-read in JX
   * Removed bundled OpenSSL 0.9.8m (22MB)
+  * Removed bundled PCRE 4.5 and GNU regex from JX, use system libs
   * Removed obsolete lround() polyfill
 
   [ Debian Packaging ]

@@ -157,6 +157,9 @@ X11 bitmap fonts).
 
 - Bundled OpenSSL 0.9.8m library (22MB). Mulberry uses the system
   OpenSSL via dynamic loading; the bundled copy was unused.
+- Bundled PCRE 4.5 (from 2004) and GNU regex from the JX toolkit.
+  Mulberry now links system libpcre3 and glibc regex, eliminating
+  multiple Coverity findings in the outdated bundled copies.
 - Obsolete `lround()` polyfill that conflicted with modern C library
   headers.
 
