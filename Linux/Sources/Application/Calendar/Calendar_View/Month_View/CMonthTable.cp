@@ -153,8 +153,11 @@ void CMonthTable::DrawCell(JPainter* pDC, const STableCell& inCell, const JRect&
 	if ((mday == 1) || (inCell == STableCell(1, 1)))
 	{
 		int32_t month = iCal::CICalendarUtils::UnpackDateMonth(mData[inCell.row - 1][inCell.col - 1]);
-		title += " ";
-		title += iCal::CICalendarLocale::GetMonth(month, (inLocalRect.width() < 80) ? iCal::CICalendarLocale::eShort : iCal::CICalendarLocale::eLong);
+		if (month >= 1 && month <= 12)
+		{
+			title += " ";
+			title += iCal::CICalendarLocale::GetMonth(month, (inLocalRect.width() < 80) ? iCal::CICalendarLocale::eShort : iCal::CICalendarLocale::eLong);
+		}
 	}
 	
 	adjustedRect.Shrink(3, 2);

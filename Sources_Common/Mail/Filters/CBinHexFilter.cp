@@ -1110,7 +1110,7 @@ void CBinHexFilter::Encode(unsigned char** outbuffer, long* total, long maxbuffe
 	}
 
 	// Copy remaining to start of buffer
-	if (mBufferLength && (*total >= maxbuffer))
+	if (mBufferLength > 0 && (*total >= maxbuffer))
 		::memmove(mBuffer, p, mBufferLength);
 
 }

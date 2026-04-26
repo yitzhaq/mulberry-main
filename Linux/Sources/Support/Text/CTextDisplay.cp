@@ -1180,8 +1180,8 @@ JSize CTextDisplay::GetWordAt(JIndex pos, cdustring& word, JIndex* startPos, boo
 	const unichar_t* _buf = buf.c_str();
 	
 	// Locate beginning of word by stepping back
-	pos = std::min(pos, rstart + buf.length());
-	JIndex i = std::min(pos, maxWordSize);
+	pos = std::min(pos, rstart + (JIndex)buf.length());
+	JIndex i = std::min(pos - rstart, (JIndex)buf.length());
 	while((i > 0) &&
 			(IS_WORD_CHAR(_buf[i - 1]) ||
 			 (_buf[i - 1] == '.') ||
