@@ -986,7 +986,7 @@ void CLetterWindow::OnDraftSendMail()
 				size_t old_size = mMsgs->size();
 				for(CMessageList::iterator iter = mMsgs->begin(); mMsgs && (mMsgs->size() == old_size) && (iter != mMsgs->end()); iter++)
 				{
-					if ((*iter)->GetMbox()->HasAllowedFlag(NMessage::eAnswered))
+					if ((*iter)->GetMbox()->HasAllowedFlag(NMessage::eDeleted))
 						(*iter)->ChangeFlags(NMessage::eDeleted, true);
 				}
 			}

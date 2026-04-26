@@ -227,9 +227,9 @@ void JXTabButton::DrawBackground(JXWindowPainter& p, const JRect& frame)
 
 		// Bottom lines
 		p.SetPenColor(selected ? GetColormap()->GetDefaultBackColor() : GetColormap()->Get3DLightColor());
-		p.SetPenLocation(actual_frame.left + selected ? 2 : 0, actual_frame.bottom - 1);
+		p.SetPenLocation(actual_frame.left + (selected ? 2 : 0), actual_frame.bottom - 1);
 		p.LineTo(actual_frame.right - (selected ? 3 : 1), actual_frame.bottom - 1);
-		p.SetPenLocation(actual_frame.left + selected ? 2 : 0, actual_frame.bottom - 2);
+		p.SetPenLocation(actual_frame.left + (selected ? 2 : 0), actual_frame.bottom - 2);
 		p.LineTo(actual_frame.right - (selected ? 3 : 1), actual_frame.bottom - 2);
 	}
 }
