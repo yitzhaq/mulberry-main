@@ -1697,7 +1697,7 @@ unsigned long CMboxProtocol::FetchIndexOf(const CMboxList* list) const
 	unsigned long pos = mINBOX ? 2 : 1;
 
 	// Bump down if no Subscribed
-	if (!mHierarchies.front()->size())
+	if (!mHierarchies.front()->size() && pos > 0)
 		pos--;
 
 	// Look in all hierarchies

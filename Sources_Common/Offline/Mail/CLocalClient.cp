@@ -4494,6 +4494,7 @@ bool CLocalClient::HeaderSearch(const CLocalMessage* lmsg, const cdstring& hdr, 
 {
 	unsigned long ctr = start - 1;								// Subtract first line end (it will be the UNIX From line)
 	unsigned long length = lmsg->GetIndexHeaderLength() + 1;	// Account for first line end
+	if (length > 10 * 1024 * 1024) return false;				// Sanity check: 10MB max header
 
 	// Header to match
 	cdstring actual_hdr = '\r';

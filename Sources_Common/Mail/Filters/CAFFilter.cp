@@ -846,6 +846,7 @@ void CAFFilter::CreateHeader()
 	mLength = offset;
 
 	// Create and fill in header details
+	if (mHeaderBufferLen > 1024 * 1024) return;
 	mHeaderBuffer = new char[mHeaderBufferLen + 1];
 	char* p = mHeaderBuffer;
 
@@ -938,6 +939,7 @@ void CAFFilter::CreateHeader()
 	mLength = offset;
 
 	// Create and fill in header details
+	if (mHeaderBufferLen > 1024 * 1024) return;
 	mHeaderBuffer = new char[mHeaderBufferLen + 1];
 	char* p = mHeaderBuffer;
 
@@ -1040,6 +1042,7 @@ void CAFFilter::CreateHeader()
 	mLength = offset;
 
 	// Create and fill in header details
+	if (mHeaderBufferLen > 1024 * 1024) return;
 	mHeaderBuffer = new char[mHeaderBufferLen + 1];
 	char* p = mHeaderBuffer;
 

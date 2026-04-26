@@ -250,6 +250,7 @@ void CLocalAttachment::ReadCacheFromStream(std::istream& in, CLocalMessage* owne
 		// Read number of parts and verify
 		unsigned long parts = 0;
 		::ReadHost(in, parts);
+		if (parts > 10000) parts = 0;
 		in.ignore();
 
 		// Create and read each part

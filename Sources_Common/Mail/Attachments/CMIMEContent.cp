@@ -966,6 +966,7 @@ void CMIMEContent::ReadCacheFromStream(std::istream& in, unsigned long vers)
 
 	int num = 0;
 	in >> num;
+	if (num < 0 || num > 1000) num = 0;
 	in.ignore();
 	for(int i = 0; i < num ; i++)
 	{
@@ -991,6 +992,7 @@ void CMIMEContent::ReadCacheFromStream(std::istream& in, unsigned long vers)
 
 	num = 0;
 	in >> num;
+	if (num < 0 || num > 1000) num = 0;
 	in.ignore();
 	for(int i = 0; i < num ; i++)
 	{
