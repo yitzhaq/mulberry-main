@@ -67,8 +67,11 @@ X11 bitmap fonts).
   appropriate API, supporting all three major OpenSSL generations
   (pre-1.1, 1.1-2.x, and 3.x).
 - GCC 13+ and Clang 18+ compatibility (C++17 standard).
-- libsodium dependency for keyring encryption (replaces use of
-  OpenSSL MD5 and RC4, which are deprecated in OpenSSL 3.x).
+- libsodium dependency for cryptographic primitives: keyring
+  encryption (Argon2id + XChaCha20-Poly1305), random byte
+  generation (Message-ID, MIME boundaries, UIDValidity), and
+  BLAKE2b hashing (POP3 UIDL). Replaces use of OpenSSL MD5 and
+  RC4, which are deprecated in OpenSSL 3.x.
 - Add delsp=yes to outgoing format=flowed messages, as recommended by
   RFC 3676. Mulberry already supported format=flowed for both sending
   and receiving, but without delsp, which caused trailing spaces in
@@ -105,10 +108,13 @@ X11 bitmap fonts).
 
 ### Fixed
 
-- Fix connection drop rendering Mulberry permanently unusable. After any
-  network interruption, the error recovery flag was never cleared,
-  preventing all further server communication until restart. This bug
-  has existed for the entire life of the open-source release.
+- Fix connection drop rendering Mulberry permanently unusable.
+  Two fixes: clear the error recovery flag after failed reconnection
+  (previously stuck permanently, blocking all server communication),
+  and recover dead per-mailbox connections on demand (previously,
+  open folders became silently non-functional after a transient
+  network interruption). Both bugs have existed for the entire life
+  of the open-source release.
 - Fix mojibake in messages containing a UTF-8 byte-order mark (BOM).
   Several mail clients (notably Outlook and iOS Mail) embed BOMs in
   their messages, which caused Mulberry's UTF-16 converter to flip
@@ -151,10 +157,6 @@ X11 bitmap fonts).
   eliminates platform-specific random number generation.
 - Replace SHA-1 with SHA-256 for X.509 certificate fingerprints.
 - Replace 3DES with AES-256-CBC for private key file encryption.
-- Recover dead per-mailbox IMAP connections on demand. Previously,
-  a transient network interruption left open folders permanently
-  non-functional — messages could not be fetched, flags could not
-  be set, and the only recovery was restarting Mulberry.
 - Fix use-after-free in JX string insert and replace operations
   when the source data pointed into the string being modified.
 - Fix numerous latent bugs discovered through comprehensive static

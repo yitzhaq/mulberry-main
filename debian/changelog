@@ -7,7 +7,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
     rewrite BIO CRLF filter, add version guards for all three generations
   * C++17 / GCC 13+: remove register keyword, auto_ptr, throw() specs,
     fix narrowing conversions, reserved identifiers
-  * Fix connection drop leaving application permanently unusable
+  * Fix connection drop leaving application permanently unusable;
+    recover dead per-mailbox connections on demand
   * Fix UTF-16 BOM handling causing mojibake on Outlook/iOS messages
   * Fix format=flowed delsp buffer boundary bug, add delsp=yes generation
   * Fix bare CR rendering as spurious blank lines (RFC 5322 s4)
@@ -32,7 +33,6 @@ mulberry (4.2.0a1) unstable; urgency=medium
     boundary generation; use BLAKE2b for POP3 UIDL hashing
   * Replace SHA-1 with SHA-256 for certificate fingerprints
   * Replace 3DES with AES-256-CBC for private key file encryption
-  * Recover dead per-mailbox IMAP connections after network interruption
   * Fix use-after-free in JX JString/JString16 insert and replace
   * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
   * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, Coverity, GCC):
