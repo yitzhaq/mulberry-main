@@ -20,6 +20,7 @@
 #include "CWindowsIcon.h"
 
 #include "CGeneralException.h"
+#include "CLog.h"
 
 #include <JColormap.h>
 
@@ -211,7 +212,19 @@ void CWindowsIcon::ParseData(const unsigned long* ico, unsigned long size, unsig
 		}
 	}
 
-	SetImageData(colorCount, colorTable, cols, hasMask, maskColor);
+	try
+	{
+		SetImageData(colorCount, colorTable, cols, hasMask, maskColor);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		delete [] colorTable;
+		delete [] data;
+		delete [] cols;
+		CLOG_LOGRETHROW;
+		throw;
+	}
 
 	// clean up
 

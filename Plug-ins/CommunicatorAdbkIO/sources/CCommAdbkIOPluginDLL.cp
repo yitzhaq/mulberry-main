@@ -249,11 +249,17 @@ long CCommAdbkIOPluginDLL::ImportAddresses(char* data)
 #if (LDAP_VERSION == LDAP_VERSION2) 
 		ber_len_t vlen = 0;
 		if (::ldif_parse_line(line, &type, &value, &vlen) != 0)
+		{
+			free(type);
 			break;
+		}
 #else
 		int vlen = 0;
 		if (::str_parse_line(line, &type, &value, &vlen) != 0)
+		{
+			free(type);
 			break;
+		}
 #endif		
 		// Look for start of new address or group
 		if (::strcmpnocase(type, cEntryType) == 0)
