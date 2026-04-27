@@ -146,6 +146,17 @@ X11 bitmap fonts).
 - Modernize internal keyring encryption from MD5+RC4 to Argon2id
   key derivation and XChaCha20-Poly1305 authenticated encryption
   via libsodium. Fix keyring file permissions to 0600.
+- Replace MD5 hashing in Message-ID and MIME boundary generation
+  with libsodium random bytes. Provides better entropy and
+  eliminates platform-specific random number generation.
+- Replace SHA-1 with SHA-256 for X.509 certificate fingerprints.
+- Replace 3DES with AES-256-CBC for private key file encryption.
+- Recover dead per-mailbox IMAP connections on demand. Previously,
+  a transient network interruption left open folders permanently
+  non-functional — messages could not be fetched, flags could not
+  be set, and the only recovery was restarting Mulberry.
+- Fix use-after-free in JX string insert and replace operations
+  when the source data pointed into the string being modified.
 - Fix numerous latent bugs discovered through comprehensive static
   analysis with cppcheck, clang-tidy, Facebook Infer, CodeQL,
   Coverity, and extended GCC warnings. Notable finds include:

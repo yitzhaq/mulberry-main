@@ -28,6 +28,12 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Replace SHA-1 with SHA-256 for PGP signatures
   * Modernize internal keyring encryption from MD5+RC4 to Argon2id +
     XChaCha20-Poly1305 via libsodium; fix keyring file permissions
+  * Replace MD5 with libsodium random bytes for Message-ID and MIME
+    boundary generation; use BLAKE2b for POP3 UIDL hashing
+  * Replace SHA-1 with SHA-256 for certificate fingerprints
+  * Replace 3DES with AES-256-CBC for private key file encryption
+  * Recover dead per-mailbox IMAP connections after network interruption
+  * Fix use-after-free in JX JString/JString16 insert and replace
   * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
   * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, Coverity, GCC):
     use-after-free, null derefs, format strings, array delete mismatch,
