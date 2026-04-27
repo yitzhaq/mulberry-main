@@ -327,7 +327,7 @@ bool CCertificateStoreDir::WriteCertificateFile(const CCertificate& cert, cdstri
 			// Create cipher to use for passphrase
 			const EVP_CIPHER* cipher = NULL;
 			if (!cert.GetPassphrase().empty())
-				cipher = ::EVP_des_ede3_cbc();
+				cipher = ::EVP_aes_256_cbc();
 	
 			ret = ::PEM_write_PrivateKey(fp, cert.GetPKey(), cipher, NULL, 0, NULL, (void*) cert.GetPassphrase().c_str());
 		}

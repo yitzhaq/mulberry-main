@@ -1698,27 +1698,26 @@ bool CSMIMEPluginDLL::GetHash(X509* cert, cdstring& hash) const
 bool CSMIMEPluginDLL::GetFingerprint(X509* cert, cdstring& finger) const
 {
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-	// Get SHA1 digest of certificate
-	unsigned char sha1_hash[SHA_DIGEST_LENGTH];
-	unsigned int sha1_len = 0;
-	X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_len);
+	// Get SHA-256 digest of certificate
+	unsigned char hash[SHA256_DIGEST_LENGTH];
+	unsigned int hash_len = 0;
+	X509_digest(cert, EVP_sha256(), hash, &hash_len);
 
-	// Now get hex form of SHA1
-	finger.reserve(2 * SHA_DIGEST_LENGTH);
+	// Hex-encode fingerprint
+	finger.reserve(2 * SHA256_DIGEST_LENGTH + 1);
 	char* temp = finger.c_str_mod();
-	for (unsigned int i = 0; i < sha1_len; i++)
+	for (unsigned int i = 0; i < hash_len; i++)
 	{
-		*temp++ = cHexChar[sha1_hash[i] >> 4];
-		*temp++ = cHexChar[sha1_hash[i] & 0x0F];
+		*temp++ = cHexChar[hash[i] >> 4];
+		*temp++ = cHexChar[hash[i] & 0x0F];
 	}
 	*temp = 0;
 #else
-	// Need to make sure SHA1 is actually calculated
-	// Can do this by compare to self
+	// Pre-1.1: force SHA-1 calculation via self-comparison
 	::X509_cmp(cert, cert);
 
-	// Now get hex form of SHA1
-	finger.reserve(2 * SHA_DIGEST_LENGTH);
+	// Hex-encode SHA-1 fingerprint (no SHA-256 field in old API)
+	finger.reserve(2 * SHA_DIGEST_LENGTH + 1);
 	char* temp = finger.c_str_mod();
 	for (int i = 0; i < SHA_DIGEST_LENGTH; i++)
 	{
