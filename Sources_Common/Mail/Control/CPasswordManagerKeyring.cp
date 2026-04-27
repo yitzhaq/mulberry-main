@@ -287,9 +287,10 @@ cdstrmap CPasswordManagerKeyring::ReadEncryptedMap() const
 		cdstring data(file_content.c_str());
 		if (DecryptV1(data, mPassphrase, results))
 		{
-			// Backup old file
+			// Backup old file before overwriting with V2
 			cdstring backup = mKeyringPath + ".v1.bak";
-			::rename_utf8(mKeyringPath, backup);
+			if (::rename_utf8(mKeyringPath, backup) != 0)
+				return results;
 
 			// Re-encrypt with V2
 			WriteEncryptedMap(results);
