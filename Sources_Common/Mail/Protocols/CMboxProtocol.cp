@@ -2225,12 +2225,24 @@ void CMboxProtocol::ExpungeMbox(CMbox* mbox, bool closing)
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
-	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox, false, mbox->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox)
 		return;
-
-	// Make it current (causes an update)
-	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Send EXPUNGE message to server
 	bool did_close = mClient->_ExpungeMbox(closing);
@@ -2556,12 +2568,24 @@ void CMboxProtocol::ReadHeader(CMbox* mbox, CMessage* msg)
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
-	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox, false, mbox->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox)
 		return;
-
-	// Make it current (causes an update)
-	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Read it
 	mClient->_ReadHeader(msg);
@@ -2574,12 +2598,24 @@ void CMboxProtocol::ReadAttachment(CMbox* mbox, unsigned long msg_num, CAttachme
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
-	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox, false, mbox->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox)
 		return;
-
-	// Make it current (causes an update)
-	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Read it
 	mClient->_ReadAttachment(msg_num, attach, aStream, peek, count, start);
@@ -2592,12 +2628,24 @@ void CMboxProtocol::CopyAttachment(CMbox* mbox, unsigned long msg_num, CAttachme
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
-	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox, false, mbox->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox)
 		return;
-
-	// Make it current (causes an update)
-	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Copy it
 	mClient->_CopyAttachment(msg_num, attach, &aStream, peek, count, start);
@@ -2639,12 +2687,24 @@ void CMboxProtocol::SetFlagMessage(CMbox* mbox, const ulvector& nums, bool uids,
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
-	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox, false, mbox->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox)
 		return;
-
-	// Make it current (causes an update)
-	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Change flags
 	mClient->_SetFlag(nums, uids, flags, set);
@@ -2657,12 +2717,24 @@ void CMboxProtocol::CopyMessage(CMbox* mbox_from, const ulvector& nums, bool uid
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
-	if (!IsLoggedOn() || (GetCurrentMbox() != mbox_from))
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox_from, false, mbox_from->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox_from)
 		return;
-
-	// Make it current (causes an update)
-	//SetCurrentMbox(mbox_from, true, mbox_from->IsExamine());
 
 	// Destination must exist in disconnected mode
 	if (IsDisconnected())
@@ -2683,12 +2755,24 @@ void CMboxProtocol::CopyMessage(CMbox* mbox, unsigned long msg_num, bool uids, c
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
-	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox, false, mbox->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox)
 		return;
-
-	// Make it current (causes an update)
-	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Unmark it as deleted
 	mClient->_CopyMessage(msg_num, uids, &aStream, count, start);
