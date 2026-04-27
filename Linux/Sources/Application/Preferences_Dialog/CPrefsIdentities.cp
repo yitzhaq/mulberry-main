@@ -47,6 +47,15 @@ CPrefsIdentities::CPrefsIdentities(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h) 
 	: CPrefsPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAddBtn = NULL;
+	mChangeBtn = NULL;
+	mDuplicateBtn = NULL;
+	mDeleteBtn = NULL;
+	mContextTied = NULL;
+	mMsgTied = NULL;
+	mTiedMboxInherit = NULL;
+	mSmartAddressText = NULL;
+	mIdentitiesList = NULL;
 }
 
 void CPrefsIdentities::OnCreate()

@@ -39,6 +39,12 @@ CTextListChoice::CTextListChoice(JXDirector* supervisor)
 	mSingleSelection = false;
 	mNoSelection = false;
 	mSelectFirst = false;
+	mListTitle = NULL;
+	mEnterTitle = NULL;
+	mEnterCtrl = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mList = NULL;
 }
 
 void CTextListChoice::OnCreate()

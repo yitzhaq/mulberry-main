@@ -41,7 +41,12 @@
 COpenMailboxDialog::COpenMailboxDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
-	mBrowsed = nil;
+	mBrowsed = NULL;
+	mAccountMenu = NULL;
+	mMailboxName = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mBrowseBtn = NULL;
 }
 
 // Default destructor

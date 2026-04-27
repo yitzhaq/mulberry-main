@@ -48,8 +48,13 @@ CRegistrationDialog::CRegistrationDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
 	mAllowDemo = true;
-	
-	// These need to be nulled out as some may not be used
+	mOKBtn = NULL;
+	mDemoBtn = NULL;
+	mCancelBtn = NULL;
+	mLogo = NULL;
+	mLicensee = NULL;
+	mOrganisation = NULL;
+	mSerialNumber = NULL;
 	mRegKey1 = NULL;
 	mRegKey2 = NULL;
 	mRegKey3 = NULL;

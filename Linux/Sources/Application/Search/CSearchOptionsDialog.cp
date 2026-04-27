@@ -40,6 +40,12 @@
 CSearchOptionsDialog::CSearchOptionsDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mMultiple = NULL;
+	mMaximum = NULL;
+	mLoadBalance = NULL;
+	mOpenFirst = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 // Default destructor

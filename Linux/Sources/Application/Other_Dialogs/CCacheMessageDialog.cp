@@ -38,6 +38,9 @@
 CCacheMessageDialog::CCacheMessageDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mEnterCtrl = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 void CCacheMessageDialog::OnCreate()

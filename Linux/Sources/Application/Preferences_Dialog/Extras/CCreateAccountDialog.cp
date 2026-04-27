@@ -42,6 +42,9 @@
 CCreateAccountDialog::CCreateAccountDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
 {
+	mOkBtn = NULL;
+	mCancelBtn = NULL;
+	mText = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

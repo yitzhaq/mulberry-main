@@ -39,6 +39,8 @@
 CChooseServersDialog::CChooseServersDialog(JXDirector* supervisor)
   : CDialogDirector(supervisor)
 {
+	mMailServer = NULL;
+	mSMTPServer = NULL;
 }
 
 void CChooseServersDialog::OnCreate()

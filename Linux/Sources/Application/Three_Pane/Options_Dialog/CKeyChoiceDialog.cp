@@ -62,6 +62,8 @@ CKeyChoiceDialog::CKeyChoiceDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
 {
 	mDone = false;
+	mCancelBtn = NULL;
+	mKeyTrap = NULL;
 }
 
 // Default destructor
