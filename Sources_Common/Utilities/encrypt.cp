@@ -23,6 +23,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <sodium.h>
 
 // nibble_swap	:	swap nibbles in c-string
 //
@@ -89,12 +90,8 @@ char* encrypt_cipher(const char* value, const char* key)
 	unsigned char* result = new unsigned char[rlen];
 
 	// Get one-time key and store at start of result
-#if __dest_os == __win32_os
-	srand(::time(0L));
-	unsigned long t = ((rand() & 0xFFFF) << 16) | (rand() & 0xFFFF);
-#else
-	unsigned long t = arc4random();
-#endif
+	unsigned long t;
+	randombytes_buf(&t, sizeof t);
 	*(long*) result = t;
 	result[4] = 0;
 

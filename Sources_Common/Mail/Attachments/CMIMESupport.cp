@@ -37,6 +37,7 @@
 #include "CPreferences.h"
 #include "CRFC822.h"
 #include "CStringUtils.h"
+#include "CURL.h"
 #include "CUUFilter.h"
 #if __dest_os == __win32_os
 #include "CSDIFrame.h"
@@ -64,6 +65,7 @@
 #include <strstream>
 
 #include <typeinfo>
+#include <sodium.h>
 // __________________________________________________________________________________________________
 // C L A S S __ C M I M E S U P P O R T
 // __________________________________________________________________________________________________
@@ -351,17 +353,17 @@ cdstring CMIMESupport::GenerateMultipartBoundary(const CAttachment* attach, EEnd
 
 			// Boundary generate
 			{
-				// Generate random string
-				cdstring rstr;
-				rstr.reserve(256);
-#if __dest_os == __win32_os
-				::snprintf(rstr.c_str_mod(), 256, "%f%ld%ld%d%p", clock(), time(NULL), rand(), level, attach);
-#else
-				::snprintf(rstr.c_str_mod(), 256, "%ld%ld%u%ld%p", clock(), time(NULL), arc4random(), level, attach);
-#endif
+				unsigned char random_bytes[10];
+				randombytes_buf(random_bytes, sizeof random_bytes);
 				cdstring boundary;
-				rstr.md5(boundary);
-				boundary[(cdstring::size_type)20] = 0;
+				boundary.reserve(22);
+				char* bp = boundary.c_str_mod();
+				for (int i = 0; i < 10; i++)
+				{
+					*bp++ = cHexChar[random_bytes[i] >> 4];
+					*bp++ = cHexChar[random_bytes[i] & 0x0F];
+				}
+				*bp = 0;
 				txt += boundary;
 			}
 			txt += CONTENT_MULTIPART_BOUNDARY;

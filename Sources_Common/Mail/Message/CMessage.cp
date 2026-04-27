@@ -39,6 +39,7 @@
 #include "CStreamFilter.h"
 #include "CStreamType.h"
 #include "CStringUtils.h"
+#include "CURL.h"
 
 #include "ctrbuf.h"
 
@@ -48,6 +49,7 @@
 
 #include <algorithm>
 #include <strstream>
+#include <sodium.h>
 
 extern const char* cSpace;
 
@@ -253,22 +255,25 @@ CMessage::CMessage(const CIdentity* identity,
 
 		// Message-ID generate
 		{
-			// Get left-side of message-id (first 24 chars of MD5 digest of time, clock and ctr)
-			static unsigned long ctr = 1;
-			cdstring lhs_txt;
-			lhs_txt.reserve(256);
-			::snprintf(lhs_txt.c_str_mod(), 256, "%lu.%lu.%lu", (time_t) clock(), time(NULL), ctr++);
+			// Left side: 24 hex chars from 12 random bytes
+			unsigned char random_bytes[12];
+			randombytes_buf(random_bytes, sizeof random_bytes);
 			cdstring lhs;
-			lhs_txt.md5(lhs);
-			lhs[(cdstring::size_type)24] = 0;
+			lhs.reserve(26);
+			char* lp = lhs.c_str_mod();
+			for (int i = 0; i < 12; i++)
+			{
+				*lp++ = cHexChar[random_bytes[i] >> 4];
+				*lp++ = cHexChar[random_bytes[i] & 0x0F];
+			}
+			*lp = 0;
 
-			// Get right side (domain) of message-id
+			// Right side: hostname or domain from sender address
 			cdstring rhs;
 			cdstring host = CTCPSocket::TCPGetLocalHostName();
 			host.trimspace();
 			if (host.length())
 			{
-				// Must put IP numbers inside [..]
 				if (CTCPSocket::TCPIsHostName(host))
 					rhs = host;
 				else
@@ -280,7 +285,6 @@ CMessage::CMessage(const CIdentity* identity,
 			}
 			else
 			{
-				// Get the first from address
 				cdstring domain;
 				if (env->GetFrom() && (env->GetFrom()->size() != 0))
 				{
@@ -288,17 +292,10 @@ CMessage::CMessage(const CIdentity* identity,
 					domain = addr->GetHost();
 				}
 				if (domain.empty())
-				{
 					domain = "localhost";
-					domain += cdstring(ctr);
-				}
-					
-				// Use first 24 chars of MD5 digest of the domain as the right-side of message-id
-				domain.md5(rhs);
-				rhs[(cdstring::size_type)24] = 0;
+				rhs = domain;
 			}
 
-			// Generate the message-id string
 			cdstring msg_id;
 			msg_id += "<";
 			msg_id += lhs;

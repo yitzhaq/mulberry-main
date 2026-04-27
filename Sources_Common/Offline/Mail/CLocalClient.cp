@@ -72,6 +72,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <strstream>
+#include <sodium.h>
 
 #define CHECK_STREAM(x) \
 	{ if ((x).fail()) { int err_no = os_errno; CLOG_LOGTHROW(CGeneralException, err_no); throw CGeneralException(err_no); } }
@@ -2911,11 +2912,10 @@ void CLocalClient::Reconstruct(CMbox* mbox)
 			if (!saved_uids)
 			{
 				// Must generate UIDValidity value from scratch for ALL types (local and disconnected)
-				cdstring hash_key = mbox->GetAccountName();
-				hash_key += CRFC822::GetRFC822Date();
-				unsigned long hash;
-				hash_key.md5(hash);
-				mbox->SetUIDValidity(hash);
+				uint32_t uid_validity;
+				randombytes_buf(&uid_validity, sizeof uid_validity);
+				if (uid_validity == 0) uid_validity = 1;
+				mbox->SetUIDValidity(uid_validity);
 			}
 			if (!mSeparateUIDs)
 				mbox->SetUIDNext((indices.size() ? indices.back().UID() : 0) + 1);

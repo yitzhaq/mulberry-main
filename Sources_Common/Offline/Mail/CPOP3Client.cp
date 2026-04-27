@@ -52,6 +52,7 @@
 #elif __dest_os == __linux_os
 #include "StValueChanger.h"
 #include "UNX_LStream.h"
+#include <sodium.h>
 #endif
 
 #define CHECK_STREAM(x) \
@@ -1064,10 +1065,14 @@ void CPOP3Client::DoUIDL(ulvector& uidls)
 			while(*p && (*p != ' ')) p++;
 			while(*p == ' ') p++;
 
-			// Grab text UIDL and convert to MD5 hash
+			// Grab text UIDL and convert to hash
 			cdstring uidl = p;
+			unsigned char hash_bytes[sizeof(unsigned long)];
+			crypto_generichash(hash_bytes, sizeof hash_bytes,
+				reinterpret_cast<const unsigned char*>(uidl.c_str()),
+				uidl.length(), NULL, 0);
 			unsigned long hash;
-			uidl.md5(hash);
+			::memcpy(&hash, hash_bytes, sizeof hash);
 			uidls.push_back(hash);
 		}
 	}
