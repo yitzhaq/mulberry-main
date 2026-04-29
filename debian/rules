@@ -18,12 +18,6 @@ JXDIST := $(CURDIR)/Libraries/JX/dist
 	dh $@
 
 override_dh_auto_configure:
-	# Generate current timezone data from IANA tzdata
-	./scripts/update-timezones.sh
-	# Generate emoji text substitution table from CLDR annotations
-	python3 scripts/generate-emoji-table.py \
-		/usr/share/unicode/cldr/common/annotations/en.xml \
-		Sources_Common/i18n/Charsets/CEmojiTable.h
 	# Run autoconf to generate configure script
 	autoconf
 	# Configure with custom paths
@@ -52,14 +46,7 @@ override_dh_auto_install:
 	chmod 644 $(CURDIR)/debian/mulberry/usr/lib/mulberry/icons/*.xpm
 
 override_dh_auto_clean:
-	# Clean timezone generated files
-	find Sources_Common/Timezones/zoneinfo -name '*.ics' -delete 2>/dev/null; \
-	rm -f Sources_Common/Timezones/zoneinfo/version.txt \
-	      Sources_Common/Timezones/zoneinfo/zones.h \
-	      Sources_Common/Timezones/zoneinfo/zones.tab
-	# Clean generated emoji table
-	rm -f Sources_Common/i18n/Charsets/CEmojiTable.h
 	# Clean JX distribution and build artifacts
 	rm -rf $(JXDIST)/lib Linux/Includes
-	# Run standard clean (ignore errors from bundled openssl which we don't build)
+	# Run standard clean (includes timezone and emoji table cleanup)
 	-dh_auto_clean

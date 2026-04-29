@@ -7,7 +7,7 @@
 # $Revision$
 #
 
-.PHONY: all clean distclean install uninstall archive timezones
+.PHONY: all clean distclean install uninstall archive timezones emoji-table
 
 OS_NAME = @OS_NAME@
 PROC_NAME = @PROC_NAME@
@@ -20,11 +20,25 @@ PWD := $(shell pwd)
 include Build/make.version
 include Build/make.local
 
-all: timezones
+all: timezones emoji-table
 	(cd Linux; ./links.sh)
 	$(MAKE) -C Libraries $@
 	$(MAKE) -C Plug-ins $@
 	$(MAKE) -C Linux $@
+
+emoji-table:
+	@if [ ! -f Sources_Common/i18n/Charsets/CEmojiTable.h ]; then \
+		if [ -f /usr/share/unicode/cldr/common/annotations/en.xml ]; then \
+			echo "Generating emoji text substitution table..."; \
+			python3 scripts/generate-emoji-table.py \
+				/usr/share/unicode/cldr/common/annotations/en.xml \
+				Sources_Common/i18n/Charsets/CEmojiTable.h; \
+		else \
+			echo "CLDR annotations not found, generating empty emoji table"; \
+			printf '#ifndef __CEMOJITABLE__MULBERRY__\n#define __CEMOJITABLE__MULBERRY__\n#include <stdint.h>\n#include <stddef.h>\nstruct SEmojiEntry { const uint32_t* codepoints; uint8_t length; const char* name; };\nstatic const SEmojiEntry cEmojiTable[] = { { NULL, 0, NULL } };\nstatic const size_t cEmojiTableSize = 0;\n#endif\n' \
+				> Sources_Common/i18n/Charsets/CEmojiTable.h; \
+		fi; \
+	fi
 
 timezones:
 	@if [ ! -d Sources_Common/Timezones/zoneinfo ] || \
@@ -52,6 +66,7 @@ distclean:
 	$(MAKE) -C Libraries $@
 	rm -rf Linux/Includes/*
 	find Sources_Common/Timezones/zoneinfo -name '*.ics' -delete 2>/dev/null; rm -f Sources_Common/Timezones/zoneinfo/version.txt Sources_Common/Timezones/zoneinfo/zones.h Sources_Common/Timezones/zoneinfo/zones.tab
+	rm -f Sources_Common/i18n/Charsets/CEmojiTable.h
 
 clean:
 	$(MAKE) -C Linux $@

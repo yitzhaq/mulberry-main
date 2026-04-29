@@ -26,6 +26,7 @@
 //The various OS's
 #define __win32_os 95
 #define __mac_os 2
+#define __mac_os_x 3
 #define __linux_os 1
 #define __dest_os __linux_os
 #define LINUX_NOTYET
