@@ -697,13 +697,22 @@ bool CMessageWindow::CopyThisMessage(CMbox* mbox, bool option_key)
 	// Copy to another mailbox
 	if (mItsMsg->GetMbox() != mbox)
 	{
-		// Check for sub-message
+		bool want_delete = !mItsMsg->IsSubMessage() &&
+			(CPreferences::sPrefs->deleteAfterCopy.GetValue() ^ option_key);
+
+		// Try MOVE for non-sub-messages when delete-after is active (RFC 6851)
+		bool moved = false;
 		if (mItsMsg->IsSubMessage())
 		{
 			unsigned long ignore;
 			mbox->AppendMessage(mItsMsg, ignore);
 		}
-		else
+		else if (want_delete)
+		{
+			moved = mItsMsg->GetMbox()->MoveMessage(mItsMsg->GetMessageNumber(), false, mbox);
+		}
+
+		if (!moved && !mItsMsg->IsSubMessage())
 			mItsMsg->GetMbox()->CopyMessage(mItsMsg->GetMessageNumber(), false, mbox);
 
 		// Reset any open copied to view
@@ -715,9 +724,8 @@ bool CMessageWindow::CopyThisMessage(CMbox* mbox, bool option_key)
 		if (!mItsMsg)
 			return false;
 
-		// Delete if required
-		if (!mItsMsg->IsSubMessage() &&
-			(CPreferences::sPrefs->deleteAfterCopy.GetValue() ^ option_key) &&
+		// Delete if copy path was used
+		if (!moved && want_delete &&
 			!mItsMsg->IsDeleted() && mItsMsg->GetMbox()->HasAllowedFlag(NMessage::eDeleted))
 			OnMessageDelete();
 

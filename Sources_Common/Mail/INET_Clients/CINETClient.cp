@@ -978,6 +978,13 @@ bool CINETClient::DoAuthentication()
 		{
 			CLOG_LOGCATCH(CINETException&);
 
+			// If SASL-IR was active, retry without it (RFC 4959)
+			if (mAuthInitialClientData)
+			{
+				mAuthInitialClientData = false;
+				continue;
+			}
+
 			// Display error to user
 			if (!ex.handled())
 				INETDisplayError(ex, "Error::INET::OSErrLogon", "Error::INET::NoBadLogon");
@@ -1199,22 +1206,11 @@ void CINETClient::DoExternalAuthentication()
 		INETSendString(NULL, eQueueNoFlags, false);
 	}
 
-	// Form buffer of plain text SASL response
-	// authorization id - unused right now
-	cdstring token = "";
-
-	// Some SASL profiles allow 'raw' data, others require base64
-	if (!mAuthBase64)
-	{
-		// Add as string
-		INETSendString(token, eQueueProcess, false);
-	}
+	// Zero-length EXTERNAL response: "=" per RFC 4959 Section 4
+	if (mAuthInitialClientData)
+		INETSendString("=", eQueueNoFlags, false);
 	else
-	{
-		cdstring b64;
-		b64.steal(::base64_encode(reinterpret_cast<const unsigned char*>(token.c_str()), token.length()));
-		INETSendString(b64, eQueueProcess, false);
-	}
+		INETSendString(cdstring::null_str, eQueueProcess, false);
 
 	// Issue first call
 	INETFinishSend(false);

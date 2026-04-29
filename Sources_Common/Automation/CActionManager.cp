@@ -489,17 +489,25 @@ bool CActionManager::CopyMessage(CMbox* from, CMbox* to, ulvector* nums, bool de
 	for(ulvector::const_iterator iter = nums->begin(); iter != nums->end(); iter++)
 		preserve.push_back(from->GetMessage(*iter));
 
-	// Do copy (NB this may change selection if a new message arrives)
-	ulmap temp;
-	from->CopyMessage(*nums, false, to, temp, false);
+	// Try MOVE if delete-after is active (RFC 6851)
+	bool moved = false;
+	if (delete_after)
+		moved = from->MoveMessage(*nums, false, to, false);
+
+	if (!moved)
+	{
+		// Do copy (NB this may change selection if a new message arrives)
+		ulmap temp;
+		from->CopyMessage(*nums, false, to, temp, false);
+	}
 
 	// Reset any open copied to window
 	CMailboxView* aView = CMailboxView::FindView(to);
 	if (aView)
 		aView->ResetTable();
 
-	// If copy OK then delete selection if required and not all already deleted
-	if (delete_after && from->HasAllowedFlag(NMessage::eDeleted))
+	// If copy path was used, delete if required
+	if (!moved && delete_after && from->HasAllowedFlag(NMessage::eDeleted))
 	{
 		// Redo message numbers for delete operation
 		nums->clear();
@@ -508,9 +516,9 @@ bool CActionManager::CopyMessage(CMbox* from, CMbox* to, ulvector* nums, bool de
 			// See if message still exists and if so where
 			unsigned long index = from->GetMessageIndex(*iter);
 			if (index)
-				nums->push_back(index);	
+				nums->push_back(index);
 		}
-		
+
 		// Set deleted flag on chosen messages
 		from->SetFlagMessage(*nums, false, NMessage::eDeleted, true, false);
 	}
@@ -1732,6 +1740,16 @@ bool CActionManager::SendMessage(CMessage& msg, const CIdentity* id, const CDSN*
 			{
 				if ((*iter)->GetMbox()->HasAllowedFlag(NMessage::eAnswered))
 					(*iter)->ChangeFlags(NMessage::eAnswered, true);
+			}
+		}
+
+		// Mark any forwarded message as $Forwarded (RFC 9051)
+		if ((type == NMessage::eDraftForward) && msgs && msgs->size())
+		{
+			for(CMessageList::const_iterator iter = msgs->begin(); iter != msgs->end(); iter++)
+			{
+				if ((*iter)->GetMbox()->HasAllowedFlag(NMessage::eForwarded))
+					(*iter)->ChangeFlags(NMessage::eForwarded, true);
 			}
 		}
 

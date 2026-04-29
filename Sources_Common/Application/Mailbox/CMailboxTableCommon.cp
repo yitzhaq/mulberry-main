@@ -872,18 +872,27 @@ void CMailboxTable::DoMessageCopy(CMbox* copy_mbox, bool option_key, bool force_
 		// Reset table reset flag
 		mResetTable = false;
 
-		// Do copy (NB this may change selection if a new message arrives)
-		ulmap temp;
-		GetMbox()->CopyMessage(actual_nums, false, copy_mbox, temp, false);
+		bool want_delete = ((CPreferences::sPrefs->deleteAfterCopy.GetValue() ^ option_key) && delete_test) || force_delete;
+
+		// Try MOVE if delete-after-copy is active (RFC 6851)
+		bool moved = false;
+		if (want_delete)
+			moved = GetMbox()->MoveMessage(actual_nums, false, copy_mbox, false);
+
+		if (!moved)
+		{
+			// Do copy (NB this may change selection if a new message arrives)
+			ulmap temp;
+			GetMbox()->CopyMessage(actual_nums, false, copy_mbox, temp, false);
+		}
 
 		// Reset any open copied to window
 		CMailboxView* aView = CMailboxView::FindView(copy_mbox);
 		if (aView)
 			aView->ResetTable();
 
-		// If copy OK then delete selection if required and not all already deleted
-		if (((CPreferences::sPrefs->deleteAfterCopy.GetValue() ^ option_key) && delete_test || force_delete) &&
-			GetMbox()->HasAllowedFlag(NMessage::eDeleted))
+		// If copy path was used, delete selection if required
+		if (!moved && want_delete && GetMbox()->HasAllowedFlag(NMessage::eDeleted))
 		{
 			// Look for possible table reset and redo message number array
 			if (mResetTable)
@@ -895,16 +904,16 @@ void CMailboxTable::DoMessageCopy(CMbox* copy_mbox, bool option_key, bool force_
 					// See if message still exists and if so where
 					unsigned long index = GetMbox()->GetMessageIndex(reinterpret_cast<CMessage*>(*iter));
 					if (index)
-						actual_nums.push_back(index);	
+						actual_nums.push_back(index);
 				}
 			}
-			
+
 			// Set deleted flag on chosen messages
 			GetMbox()->SetFlagMessage(actual_nums, false, NMessage::eDeleted, true, false);
-			
-			// Move selection to next item
-			SelectionNudge();
 		}
+
+		if (want_delete)
+			SelectionNudge();
 	}
 	catch (...)
 	{
