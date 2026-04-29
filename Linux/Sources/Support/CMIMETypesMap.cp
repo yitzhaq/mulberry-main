@@ -96,7 +96,7 @@ const cdstring& CMIMETypesMap::GetMIMEType(const cdstring& extension)
 	return cdstring::null_str;
 }
 
-const cdstring& CMIMETypesMap::GetExtension(const cdstring& MIMEType, const cdstring& original)
+cdstring CMIMETypesMap::GetExtension(const cdstring& MIMEType, const cdstring& original)
 {
 	MIMETypeInfoMap::iterator found = mTypeToInfo.find(MIMEType);
 	if (found != mTypeToInfo.end())

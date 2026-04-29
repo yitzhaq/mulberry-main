@@ -1485,7 +1485,7 @@ void CLocalClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool 
 		bool use_dummy = !GetCurrentMbox()->IsFullOpen();
 
 		// Create search buffer
-		std::unique_ptr<char> search(new char[cSearchBufferSize]);
+		std::unique_ptr<char[]> search(new char[cSearchBufferSize]);
 		StValueChanger<char*> change(mSearchBuffer, search.get());
 
 		//StProfileSection profile("\pSearching", 200, 20);

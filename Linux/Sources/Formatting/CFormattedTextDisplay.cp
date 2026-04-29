@@ -1010,7 +1010,7 @@ void CFormattedTextDisplay::DoQuotation()
 
 	// Get number of lines and create line info array
 	int lines = GetLineCount();
-	std::unique_ptr<lineInfo> info(new lineInfo[lines]);
+	std::unique_ptr<lineInfo[]> info(new lineInfo[lines]);
 
 	// Get quotes and pre-calculate their sizes
 	const cdstrvect& quotes = CPreferences::sPrefs->mRecognizeQuotes.GetValue();

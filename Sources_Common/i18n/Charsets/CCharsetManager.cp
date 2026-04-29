@@ -359,7 +359,7 @@ ECharsetCode CCharsetManager::LookForEuro(ECharsetCode host, const char* data, u
 		{
 			// If its found, pretend local encoding is of a type to
 			// trigger iso-8859-15 when converted to network charset
-			if (*p++ == euro)
+			if ((unsigned char)*p++ == euro)
 				return new_host;
 		}
 	}

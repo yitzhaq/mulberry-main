@@ -38,7 +38,7 @@ class CMIMETypesMap
 
 	//Both return "" if no match
 	const cdstring& GetMIMEType(const cdstring& extension);
-	const cdstring& GetExtension(const cdstring& MIMEType, const cdstring& original);
+	cdstring GetExtension(const cdstring& MIMEType, const cdstring& original);
 		
 	void AddEntry(const cdstring& mimetype, const cdstring& extensions, const cdstring& description);
 	void ReadFromStream(std::istream& ins);

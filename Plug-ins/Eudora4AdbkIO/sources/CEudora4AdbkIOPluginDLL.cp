@@ -677,30 +677,37 @@ CAdbkIOPluginDLL::SAdbkIOPluginAddress* CEudora4AdbkIOPluginDLL::AddressListPars
 			else
 			{
 				// Add new item to list
+				SAdbkIOPluginAddress* temp = NULL;
 				if (!list)
 				{
 					list_num = 1;
-					list = (SAdbkIOPluginAddress*) ::malloc((list_num + 1) * sizeof(SAdbkIOPluginAddress));
+					temp = (SAdbkIOPluginAddress*) ::malloc((list_num + 1) * sizeof(SAdbkIOPluginAddress));
 				}
 				else
-					list = (SAdbkIOPluginAddress*) ::realloc(list, (++list_num + 1) * sizeof(SAdbkIOPluginAddress));
-				
-				// Fill in current fields
-				list[list_num - 1].mNumFields = 10;
-				list[list_num - 1].mNickName = nil;
-				list[list_num - 1].mName = nil;
-				list[list_num - 1].mEmail = nil;
-				list[list_num - 1].mCompany = nil;
-				list[list_num - 1].mAddress = nil;
-				list[list_num - 1].mPhoneWork = nil;
-				list[list_num - 1].mPhoneHome = nil;
-				list[list_num - 1].mFax = nil;
-				list[list_num - 1].mURL = nil;
-				list[list_num - 1].mNotes = nil;
-				ParseAddress(&list[list_num - 1], q);
+					temp = (SAdbkIOPluginAddress*) ::realloc(list, (++list_num + 1) * sizeof(SAdbkIOPluginAddress));
 
-				// Fill in terminator field
-				list[list_num].mNumFields = 0;
+				if (temp)
+				{
+					list = temp;
+					// Fill in current fields
+					list[list_num - 1].mNumFields = 10;
+					list[list_num - 1].mNickName = nil;
+					list[list_num - 1].mName = nil;
+					list[list_num - 1].mEmail = nil;
+					list[list_num - 1].mCompany = nil;
+					list[list_num - 1].mAddress = nil;
+					list[list_num - 1].mPhoneWork = nil;
+					list[list_num - 1].mPhoneHome = nil;
+					list[list_num - 1].mFax = nil;
+					list[list_num - 1].mURL = nil;
+					list[list_num - 1].mNotes = nil;
+					ParseAddress(&list[list_num - 1], q);
+
+					// Fill in terminator field
+					list[list_num].mNumFields = 0;
+				}
+				else
+					list_num--;
 			}
 
 			// Strip leading space, CR's, LF's & ','s and point to next bit

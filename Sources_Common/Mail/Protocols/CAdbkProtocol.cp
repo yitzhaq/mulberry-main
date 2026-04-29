@@ -1998,7 +1998,7 @@ bool CAdbkProtocol::ReadAddressBooks(bool only_if_current)
 			dt.Parse(dtstamp);
 			
 			iCal::CICalendarDuration diff = dtnow - dt;
-			is_current = (diff.GetTotalSeconds() <= 48 * 60 * 60);
+			is_current = (diff.GetTotalSeconds() <= 48L * 60 * 60);
 		}
 
 		if (!only_if_current || is_current)

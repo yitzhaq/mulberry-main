@@ -80,13 +80,13 @@ int kbase64_from64(char *out, char *in)
     do {
     	if (*in == '\r') return (len);
     	if (in[0]==0)	return len;
-		c1 = in[0];
+		c1 = (unsigned char)in[0];
 		if (CHAR64(c1) == -1) return (-1);
-		c2 = in[1];
+		c2 = (unsigned char)in[1];
 		if (CHAR64(c2) == -1) return (-1);
-		c3 = in[2];
-		if (c3 != '=' && CHAR64(c3) == -1) return (-1); 
-		c4 = in[3];
+		c3 = (unsigned char)in[2];
+		if (c3 != '=' && CHAR64(c3) == -1) return (-1);
+		c4 = (unsigned char)in[3];
 		if ((c4 != 0) && (c4 != '\r') && (c4 != '=') && (CHAR64(c4) == -1)) return (-1);
 		in += 4;
 		*out++ = (CHAR64(c1) << 2) | (CHAR64(c2) >> 4);

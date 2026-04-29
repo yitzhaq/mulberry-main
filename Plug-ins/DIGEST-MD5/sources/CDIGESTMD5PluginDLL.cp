@@ -68,7 +68,7 @@ void _KD(unsigned char* digest, char* k, char* s)
 void _HEX_IT(char*, unsigned char*);
 void _HEX_IT(char* digest_hex, unsigned char* digest)
 {
-	for(int i = 0; i < HMAC_MD5_SIZE; i++)
+	for(size_t i = 0; i < HMAC_MD5_SIZE; i++)
 	{
 		unsigned char lo_q = digest[i];
 		unsigned char hi_q = (lo_q >> 4);
@@ -76,7 +76,7 @@ void _HEX_IT(char* digest_hex, unsigned char* digest)
 		digest_hex[2*i] = hi_q + ((hi_q >= 0xA) ? ('a' - 0x0A) : '0');
 		digest_hex[2*i + 1] = lo_q + ((lo_q >= 0xA) ? ('a' - 0x0A) : '0');
 	}
-	digest_hex[2*HMAC_MD5_SIZE] = 0;
+	digest_hex[2UL*HMAC_MD5_SIZE] = 0;
 }
 
 #define AUTHERROR(xx_msg) do { \

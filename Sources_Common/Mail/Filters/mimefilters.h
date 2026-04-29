@@ -87,8 +87,8 @@ protected:
 	};
 	
 	EQPDecodeState mDecodeState;
-	char mQuotedChar;
-	char mEndlLast;
+	unsigned char mQuotedChar;
+	unsigned char mEndlLast;
 	virtual std::streamsize encode (const char_type* s, std::streamsize n);
 	virtual std::streamsize decode (const char_type* s, std::streamsize n);
 };

@@ -1684,7 +1684,7 @@ bool CMailControl::BusyCancel(const CBusyContext* busy, bool allow_cancel)
 
 	// Timeouts
 	time_t busy_start = CPreferences::sPrefs ? CPreferences::sPrefs->mWaitDialogStart.GetValue() : 5;
-	time_t busy_max = CPreferences::sPrefs ? CPreferences::sPrefs->mWaitDialogMax.GetValue() : 5 * 60;
+	time_t busy_max = CPreferences::sPrefs ? CPreferences::sPrefs->mWaitDialogMax.GetValue() : 5L * 60;
 
 	// Beep if busy time exceeded
 	if (allow_cancel && busy && (::time(NULL) > busy->GetBusyTime() + busy_start))
