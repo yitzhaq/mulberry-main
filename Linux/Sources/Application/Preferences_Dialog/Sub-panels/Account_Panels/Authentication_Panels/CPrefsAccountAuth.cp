@@ -20,6 +20,7 @@
 #include "CPrefsAccountAuth.h"
 
 #include "CAuthPlugin.h"
+#include "CErrorHandler.h"
 #include "CCertificateManager.h"
 #include "CINETAccount.h"
 #include "CPluginManager.h"
@@ -127,6 +128,13 @@ void CPrefsAccountAuth::Receive(JBroadcaster* sender, const Message& message)
 		}
     	else if (sender == mTLSPopup)
     	{
+			if (mTLSPopup->GetValue() == 1)
+			{
+				if (CErrorHandler::PutCautionAlertRsrc(true, "Alerts::General::NoEncryption") == CErrorHandler::Cancel)
+				{
+					mTLSPopup->SetValue(2);
+				}
+			}
 			TLSItemsState();
 			return;
 		}
@@ -155,7 +163,23 @@ void CPrefsAccountAuth::SetData(void* data)
 		mCurrentPanel->SetAuth(account->GetAuthenticator().GetAuthenticator());
 
 	InitTLSPopup(account);
-	mTLSPopup->SetValue(account->GetTLSType() + 1);
+	// Map 5-value enum to 3-item popup:
+	// eNoTLS(0)→1, eSSL(1)/eSSLv3(2)→2, eTLS(3)/eTLSBroken(4)→3
+	switch(account->GetTLSType())
+	{
+	case CINETAccount::eNoTLS:
+	default:
+		mTLSPopup->SetValue(1);
+		break;
+	case CINETAccount::eSSL:
+	case CINETAccount::eSSLv3:
+		mTLSPopup->SetValue(2);
+		break;
+	case CINETAccount::eTLS:
+	case CINETAccount::eTLSBroken:
+		mTLSPopup->SetValue(3);
+		break;
+	}
 	mUseTLSClientCert->SetState(JBoolean(account->GetUseTLSClientCert()));
 
 	// Match fingerprint in list
@@ -188,7 +212,14 @@ bool CPrefsAccountAuth::UpdateData(void* data)
 	if (mCurrentPanel)
 		mCurrentPanel->UpdateAuth(account->GetAuthenticator().GetAuthenticator());
 
-	account->SetTLSType((CINETAccount::ETLSType) (mTLSPopup->GetValue() - 1));
+	// Map 3-item popup back to enum: 1→eNoTLS, 2→eSSL, 3→eTLS
+	{
+		static const CINETAccount::ETLSType kPopupToTLS[] =
+			{ CINETAccount::eNoTLS, CINETAccount::eSSL, CINETAccount::eTLS };
+		int idx = mTLSPopup->GetValue() - 1;
+		if (idx >= 0 && idx < 3)
+			account->SetTLSType(kPopupToTLS[idx]);
+	}
 	
 	account->SetUseTLSClientCert(mUseTLSClientCert->IsChecked());
 
@@ -286,22 +317,36 @@ void CPrefsAccountAuth::BuildAuthPopup(CINETAccount* account)
 
 void CPrefsAccountAuth::InitTLSPopup(CINETAccount* account)
 {
-	mTLSPopup->SetMenuItems("No Security %r | SSLv23 %r | SSLv3 %r | STARTTLS - TLSv1 %r | STARTTLS - SSL %r");
+	mTLSPopup->SetMenuItems("None %r | SSL/TLS %r | STARTTLS %r");
 	mTLSPopup->SetUpdateAction(JXMenu::kDisableNone);
 	mTLSPopup->SetToPopupChoice(kTrue, 1);
 
-	// Enable each item based on what the protocol supports
+	// Three items map to the five enum values:
+	//   1 = eNoTLS (0)
+	//   2 = eSSL (1)      — also covers legacy eSSLv3 (2)
+	//   3 = eTLS (3)      — also covers legacy eTLSBroken (4)
 	bool enabled = false;
-	for(int i = CINETAccount::eNoTLS; i <= CINETAccount::eTLSTypeMax; i++)
+	if (account->SupportsTLSType(CINETAccount::eNoTLS))
 	{
-		if (account->SupportsTLSType(static_cast<CINETAccount::ETLSType>(i)))
-		{
-			mTLSPopup->EnableItem(i + 1);
-			enabled = true;
-		}
-		else
-			mTLSPopup->DisableItem(i + 1);
+		mTLSPopup->EnableItem(1);
+		enabled = true;
 	}
+	else
+		mTLSPopup->DisableItem(1);
+	if (account->SupportsTLSType(CINETAccount::eSSL))
+	{
+		mTLSPopup->EnableItem(2);
+		enabled = true;
+	}
+	else
+		mTLSPopup->DisableItem(2);
+	if (account->SupportsTLSType(CINETAccount::eTLS))
+	{
+		mTLSPopup->EnableItem(3);
+		enabled = true;
+	}
+	else
+		mTLSPopup->DisableItem(3);
 	
 	// Hide if no plugin present or none enabled
 	if (enabled && CPluginManager::sPluginManager.HasSSL())

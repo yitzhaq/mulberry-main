@@ -731,6 +731,13 @@ void CINETClient::Logon()
 			((GetAccount()->GetTLSType() == CINETAccount::eTLS) ||
 			 (GetAccount()->GetTLSType() == CINETAccount::eTLSBroken)))
 		{
+			// Server must advertise STARTTLS (RFC 8314 Section 3)
+			if (!mSTARTTLSAllowed)
+			{
+				CLOG_LOGTHROW(CINETException, CINETException::err_NoSTARTTLS);
+				throw CINETException(CINETException::err_NoSTARTTLS);
+			}
+
 			// Check for client cert
 			if (GetAccount()->GetUseTLSClientCert())
 			{
@@ -741,7 +748,7 @@ void CINETClient::Logon()
 					throw 1UL;
 				}
 			}
-			
+
 			DoStartTLS();
 		}
 

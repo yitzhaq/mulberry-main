@@ -20,7 +20,7 @@
 #ifndef __CSMTPCOMMON__MULBERRY__
 #define __CSMTPCOMMON__MULBERRY__
 
-#define kSMTPReceiverPort		25
+#define kSMTPReceiverPort		587
 #define kSMTPReceiverPort_SSL	465
 #define MAX_CC				25
 #define MAX_LINE_LEN		80

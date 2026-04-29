@@ -225,6 +225,10 @@ void CMailAccount::NewAccount()
 	// Force IMAP to init NAMESPACE
 	if (IsIMAP())
 		SetInitNamespace(true);
+
+	// Default to Implicit TLS for IMAP and POP3 (RFC 8314)
+	if (IsIMAP() || IsPOP3())
+		SetTLSType(eSSL);
 }
 
 void CMailAccount::SetServerType(EINETServerType type)

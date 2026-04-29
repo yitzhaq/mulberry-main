@@ -111,6 +111,7 @@ public:
 			err_NoResponse = '*NO ',
 			err_BadResponse = '*BAD',
 			err_BadParse = '*PAR',
+			err_NoSTARTTLS = '*TLS',
 			err_INETUnknown = '*UKN'
 		};
 

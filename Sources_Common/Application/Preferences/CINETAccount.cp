@@ -106,7 +106,18 @@ int CINETAccount::operator==(const CINETAccount& comp) const
 // New account being created
 void CINETAccount::NewAccount()
 {
-	// Does nothing
+	// Default to Implicit TLS (RFC 8314)
+	switch (mServerType)
+	{
+	case eSMTP:
+	case eCalDAVCalendar:
+	case eCardDAVAdbk:
+	case eWebDAVPrefs:
+		mTLSType = eSSL;
+		break;
+	default:
+		break;
+	}
 }
 
 const char* CINETAccount::GetServerTypeString() const

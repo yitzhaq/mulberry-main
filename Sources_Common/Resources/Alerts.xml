@@ -30,6 +30,7 @@
 	<string id="Alerts::General::GetRealName">Enter your Real Name:</string>
 	<string id="Alerts::General::GetRealName_Title">Real Name Dialog</string>
 	<string id="Alerts::General::LoggingInsecure">Protocol logging is turned on. This may store passwords and details of messages you read and send in clear text in local files on disk. Do you want to allow protocol logging to continue for this session of Mulberry?</string>
+	<string id="Alerts::General::NoEncryption">You have selected no encryption for this account. Your password and all message data will be transmitted in clear text over the network. Are you sure you want to disable encryption?</string>
 	<string id="Alerts::General::ReallyQuitSMTPHeldItems">There are draft messages on hold in one of the SMTP Queues. Do you really want to quit Mulberry without sending these drafts?</string>
 	<string id="Alerts::General::ReallyDisconnectSMTPHeldItems">There are draft messages on hold in one of the SMTP Queues. Do you really want to disconnect without sending these drafts?</string>
 	<string id="Alerts::General::ViewAttachmentsStillOpen">The attachments listed below are still open in other applications. Do you want to quit Mulberry, leaving these temporary files on disk?\n\n%s</string>
