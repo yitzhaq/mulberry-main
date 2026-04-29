@@ -1100,7 +1100,14 @@ void CTCPSocket::TCPSelectYield(bool read, unsigned long secs)
 
 		// Do standard UI yield
 		TCPYield();
-		
+
+		// Connection may have been closed during yield
+		if (mSocket == INVALID_SOCKET)
+		{
+			CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPAbort);
+			throw CTCPException(CTCPException::err_TCPAbort);
+		}
+
 		// Check for timeout
 		double time_diff = ::difftime(::time(NULL), tstart);
 		if (time_diff > secs)
@@ -1843,9 +1850,9 @@ void CTCPSocket::TCPSendData(char* buf, long len)
     while ((result = _SendData(buf, len)) != 0) {
         // Select yield while waiting to unblock
         TCPSelectYield(false);
-        
-        buf += result;
-        len += result;
+
+        buf += (len - result);
+        len = result;
     }
     
 	// Reset tickle timer

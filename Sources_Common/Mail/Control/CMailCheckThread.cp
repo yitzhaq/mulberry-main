@@ -29,10 +29,10 @@
 #endif
 
 CMailCheckThread::cthread* CMailCheckThread::sThread = NULL;
-bool CMailCheckThread::sRunning = false;
-bool CMailCheckThread::sDoCheck = false;
-bool CMailCheckThread::sPause = false;
-bool CMailCheckThread::sExit = false;
+std::atomic<bool> CMailCheckThread::sRunning(false);
+std::atomic<bool> CMailCheckThread::sDoCheck(false);
+std::atomic<bool> CMailCheckThread::sPause(false);
+std::atomic<bool> CMailCheckThread::sExit(false);
 cdmutex CMailCheckThread::_can_run;
 cdmutex CMailCheckThread::_can_exit;
 

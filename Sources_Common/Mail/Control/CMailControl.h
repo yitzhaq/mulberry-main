@@ -90,6 +90,7 @@ public:
 	static void		MboxServerDisconnect(CMboxProtocol* server);
 	static bool		CleanUpServerDisconnect(CMboxProtocol* server, bool reconnect);
 	static void		CleanUpMboxClose(CMbox* mbox);
+	static void		CleanUpMboxRecover(CMbox* mbox);
 
 	static void		AdbkServerReconnect(CAdbkProtocol* server);
 	static void		AdbkServerDisconnect(CAdbkProtocol* server);

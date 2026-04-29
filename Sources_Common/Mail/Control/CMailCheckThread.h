@@ -22,6 +22,8 @@
 
 #include "cdmutex.h"
 
+#include <atomic>
+
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 class LThread;
 #endif
@@ -64,10 +66,10 @@ public:
 
 private:
 	static cthread* sThread;
-	static bool sRunning;
-	static bool sDoCheck;
-	static bool sPause;
-	static bool sExit;
+	static std::atomic<bool> sRunning;
+	static std::atomic<bool> sDoCheck;
+	static std::atomic<bool> sPause;
+	static std::atomic<bool> sExit;
 	static cdmutex _can_run;
 	static cdmutex _can_exit;
 

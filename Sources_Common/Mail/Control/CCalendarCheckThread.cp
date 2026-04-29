@@ -29,10 +29,10 @@
 #endif
 
 CCalendarCheckThread::cthread* CCalendarCheckThread::sThread = NULL;
-bool CCalendarCheckThread::sRunning = false;
-bool CCalendarCheckThread::sDoCheck = false;
-bool CCalendarCheckThread::sPause = false;
-bool CCalendarCheckThread::sExit = false;
+std::atomic<bool> CCalendarCheckThread::sRunning(false);
+std::atomic<bool> CCalendarCheckThread::sDoCheck(false);
+std::atomic<bool> CCalendarCheckThread::sPause(false);
+std::atomic<bool> CCalendarCheckThread::sExit(false);
 cdmutex CCalendarCheckThread::_can_run;
 cdmutex CCalendarCheckThread::_can_exit;
 

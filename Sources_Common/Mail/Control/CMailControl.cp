@@ -305,6 +305,42 @@ void CMailControl::CleanUpMboxClose(CMbox* mbox)
 	}
 }
 
+// Clear message references before Recover() deletes messages.
+// Unlike CleanUpMboxClose, this does NOT close mailbox views.
+void CMailControl::CleanUpMboxRecover(CMbox* mbox)
+{
+	// Notify letter windows to drop message references
+	{
+		cdmutexprotect<CLetterWindow::CLetterWindowList>::lock _lock(CLetterWindow::sLetterWindows);
+		for(CLetterWindow::CLetterWindowList::iterator iter = CLetterWindow::sLetterWindows->begin(); iter != CLetterWindow::sLetterWindows->end(); iter++)
+			(*iter)->MailboxState(mbox);
+	}
+
+	// Clear message from all message windows referencing this mailbox
+	{
+		cdmutexprotect<CMessageWindow::CMessageWindowList>::lock _lock(CMessageWindow::sMsgWindows);
+		for(CMessageWindow::CMessageWindowList::reverse_iterator riter = CMessageWindow::sMsgWindows->rbegin();
+				riter != CMessageWindow::sMsgWindows->rend(); riter++)
+		{
+			CMessage* aMsg = (*riter)->GetMessage();
+			if (aMsg && (aMsg->GetMbox() == mbox))
+				(*riter)->ClearMessage();
+		}
+	}
+
+	// Clear message from all message views referencing this mailbox
+	{
+		cdmutexprotect<CMessageView::CMessageViewList>::lock _lock(CMessageView::sMsgViews);
+		for(CMessageView::CMessageViewList::reverse_iterator riter = CMessageView::sMsgViews->rbegin();
+				riter != CMessageView::sMsgViews->rend(); riter++)
+		{
+			CMessage* aMsg = (*riter)->GetMessage();
+			if (aMsg && (aMsg->GetMbox() == mbox))
+				(*riter)->ClearMessage();
+		}
+	}
+}
+
 // Try to recover disconnected server to previous state
 void CMailControl::AdbkServerReconnect(CAdbkProtocol* server)
 {
@@ -783,6 +819,8 @@ void CMailControl::CalendarsChanged()
 
 #pragma mark ____________________________Periodics
 
+static cdmutex sPeriodicsMutex;
+
 void CMailControl::SpendTime(bool force_tickle, bool do_checks)
 {
 	if (!force_tickle && do_checks && CMailAccountManager::sMailAccountManager)
@@ -794,7 +832,11 @@ void CMailControl::SpendTime(bool force_tickle, bool do_checks)
     }
 
 	sPeriodicsChanged = false;
-	CINETProtocolList copy(sPeriodics);
+	CINETProtocolList copy;
+	{
+		cdmutex::lock_cdmutex _lock(sPeriodicsMutex);
+		copy = sPeriodics;
+	}
 	for(CINETProtocolList::iterator iter = copy.begin(); iter != copy.end(); iter++)
 	{
 		// First make sure it is still in the list
@@ -818,6 +860,8 @@ void CMailControl::SpendTime(bool force_tickle, bool do_checks)
 
 void CMailControl::RegisterPeriodic(CINETProtocol* periodic, bool add)
 {
+	cdmutex::lock_cdmutex _lock(sPeriodicsMutex);
+
 	if (add)
 	{
 		// Only add once

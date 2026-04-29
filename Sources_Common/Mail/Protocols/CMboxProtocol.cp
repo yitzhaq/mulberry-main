@@ -2542,14 +2542,33 @@ void CMboxProtocol::FetchItems(const ulvector& nums, bool uids, EFetchItems item
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
+	// Reconnect dead per-mailbox connection
 	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			if (mCurrent_mbox)
+			{
+				CMbox* mbox = mCurrent_mbox;
+				mCurrent_mbox = NULL;
+				SetCurrentMbox(mbox, false, mbox->IsExamine());
+			}
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (!GetCurrentMbox())
 		return;
 
 	// Fetch bits
 	mClient->_FetchItems(nums, uids, items);
 
-} // CMboxProtocol::ReadHeader
+} // CMboxProtocol::FetchItems
 
 // Get messages header text from server
 void CMboxProtocol::ReadHeaders(const ulvector& nums, bool uids, const cdstring& hdrs)
@@ -2557,8 +2576,27 @@ void CMboxProtocol::ReadHeaders(const ulvector& nums, bool uids, const cdstring&
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
+	// Reconnect dead per-mailbox connection
 	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			if (mCurrent_mbox)
+			{
+				CMbox* mbox = mCurrent_mbox;
+				mCurrent_mbox = NULL;
+				SetCurrentMbox(mbox, false, mbox->IsExamine());
+			}
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (!GetCurrentMbox())
 		return;
 
 	// Read it
@@ -2834,8 +2872,27 @@ void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids)
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
+	// Reconnect dead per-mailbox connection
 	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			if (mCurrent_mbox)
+			{
+				CMbox* mbox = mCurrent_mbox;
+				mCurrent_mbox = NULL;
+				SetCurrentMbox(mbox, false, mbox->IsExamine());
+			}
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (!GetCurrentMbox())
 		return;
 
 	// Send EXPUNGE message to server
@@ -2862,8 +2919,27 @@ void CMboxProtocol::Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CS
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
+	// Reconnect dead per-mailbox connection
 	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			if (mCurrent_mbox)
+			{
+				CMbox* mbox = mCurrent_mbox;
+				mCurrent_mbox = NULL;
+				SetCurrentMbox(mbox, false, mbox->IsExamine());
+			}
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (!GetCurrentMbox())
 		return;
 
 	// Send command to server
@@ -2882,8 +2958,27 @@ void CMboxProtocol::Thread(EThreadMessageBy threadby, const CSearchItem* search,
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Verify its still active because mutex wait could have resulted in closure
+	// Reconnect dead per-mailbox connection
 	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			if (mCurrent_mbox)
+			{
+				CMbox* mbox = mCurrent_mbox;
+				mCurrent_mbox = NULL;
+				SetCurrentMbox(mbox, false, mbox->IsExamine());
+			}
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (!GetCurrentMbox())
 		return;
 
 	// Send command to server

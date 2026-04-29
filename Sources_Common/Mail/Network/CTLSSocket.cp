@@ -942,6 +942,13 @@ void CTLSSocket::TLSReceiveData(char* buf, long* len)
     
     *len = read;
 #else
+	// Connection may have been closed during pre-yield
+	if (!m_tls)
+	{
+		CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPSSLError);
+		throw CTCPException(CTCPException::err_TCPSSLError);
+	}
+
 	// Get any data present at the moment
 	int result;
 	while(m_tls && (result = ::SSL_read(m_tls, buf, *len)) == SOCKET_ERROR)
