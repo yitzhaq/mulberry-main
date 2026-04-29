@@ -724,14 +724,22 @@ void CTLSSocket::TLSStartConnection()
 		}
 
 		int result;
-		while((result = ::SSL_connect(m_tls)) == SOCKET_ERROR)
+		while(m_tls && (result = ::SSL_connect(m_tls)) == SOCKET_ERROR)
 		{
 			// Check for failure
 			int ssl_err = ::SSL_get_error(m_tls, result);
 			if ((ssl_err == SSL_ERROR_WANT_READ) || (ssl_err == SSL_ERROR_WANT_WRITE))
-
+			{
 				// Yield while waiting to unblock
 				TCPYield();
+
+				// Connection may have been closed during yield
+				if (!m_tls)
+				{
+					CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPSSLError);
+					throw CTCPException(CTCPException::err_TCPSSLError);
+				}
+			}
 
 			else
 			{
@@ -936,14 +944,21 @@ void CTLSSocket::TLSReceiveData(char* buf, long* len)
 #else
 	// Get any data present at the moment
 	int result;
-	while((result = ::SSL_read(m_tls, buf, *len)) == SOCKET_ERROR)
+	while(m_tls && (result = ::SSL_read(m_tls, buf, *len)) == SOCKET_ERROR)
 	{
 		// Check for failure
 		int ssl_err = ::SSL_get_error(m_tls, result);
 		if (ssl_err == SSL_ERROR_WANT_READ)
-
+		{
 			// Yield while waiting to unblock
 			TCPSelectYield(true);
+
+			if (!m_tls)
+			{
+				CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPSSLError);
+				throw CTCPException(CTCPException::err_TCPSSLError);
+			}
+		}
 
 		else
 		{
@@ -1027,6 +1042,12 @@ void CTLSSocket::TLSSendData(char* buf, long len)
 	char* p = buf;
 	while(len)
 	{
+		if (!m_tls)
+		{
+			CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPSSLError);
+			throw CTCPException(CTCPException::err_TCPSSLError);
+		}
+
 		int result = ::SSL_write(m_tls, p, len);
 
 		// Check for failure
@@ -1035,9 +1056,16 @@ void CTLSSocket::TLSSendData(char* buf, long len)
 			// Check type of error
 			int ssl_err = ::SSL_get_error(m_tls, result);
 			if (ssl_err == SSL_ERROR_WANT_WRITE)
-
+			{
 				// Yield while waiting to unblock
 				TCPSelectYield(false);
+
+				if (!m_tls)
+				{
+					CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPSSLError);
+					throw CTCPException(CTCPException::err_TCPSSLError);
+				}
+			}
 
 			else
 			{
