@@ -29,8 +29,17 @@ GCC 13+, OpenSSL 1.1–3.x, and current Debian/Ubuntu packaging.
 It includes comprehensive bug fixes found through static analysis
 with six tools (cppcheck, clang-tidy, Facebook Infer, GCC extended
 warnings, CodeQL, and Coverity), improved RFC 3676 format=flowed
-compliance, Unicode clipboard support, and recovery of sixteen
-patches from the original developer's SVN repository.
+compliance, Unicode clipboard support, automatic recovery from
+network connection drops, and recovery of sixteen patches from the
+original developer's SVN repository.
+
+Since the JX toolkit cannot render characters outside Latin-1,
+non-ASCII Unicode in messages is now displayed as human-readable
+text: common emoji as ASCII emoticons, other symbols as CLDR short
+names, typographic characters as their ASCII equivalents, and
+mathematical styled letters as plain text. This provides a clean,
+consistent reading experience for modern email without requiring
+a Unicode-capable GUI toolkit.
 
 Development and testing focused exclusively on Linux (x86_64,
 Ubuntu 24.04, GCC 13). Some incidental fixes for Win32 and macOS
@@ -54,7 +63,7 @@ to fetch the required libraries.
 sudo apt install build-essential autoconf libssl-dev libldap-dev \
     libaspell-dev libfl-dev libfontconfig-dev libfreetype-dev \
     libpcre3-dev libsodium-dev libxft-dev libxext-dev libxpm-dev \
-    pkg-config zlib1g-dev debhelper
+    pkg-config python3 unicode-cldr-core zlib1g-dev debhelper
 dpkg-buildpackage -us -uc -b
 ```
 

@@ -930,7 +930,7 @@ void CMessageView::ResetCaption()
 			mCaption1->SetCurrentFontBold(kTrue);
 			mCaption1->InsertUTF8(cHDR_FROM);
 			mCaption1->SetCurrentFontBold(kFalse);
-			cdstring addr = env->GetFrom()->front()->GetFullAddress();
+			cdstring addr = FilterUTF8ForDisplay(env->GetFrom()->front()->GetFullAddress());
 			mCaption1->InsertUTF8(addr);
 		}
 
@@ -940,7 +940,7 @@ void CMessageView::ResetCaption()
 			mCaption2->SetCurrentFontBold(kTrue);
 			mCaption2->InsertUTF8(cHDR_TO);
 			mCaption2->SetCurrentFontBold(kFalse);
-			cdstring addr = env->GetTo()->front()->GetFullAddress();
+			cdstring addr = FilterUTF8ForDisplay(env->GetTo()->front()->GetFullAddress());
 			if (env->GetTo()->size() > 1)
 				addr += ", ...";
 			mCaption2->InsertUTF8(addr);
@@ -955,7 +955,7 @@ void CMessageView::ResetCaption()
 			mCaption2->SetCurrentFontBold(kTrue);
 			mCaption2->InsertUTF8(cHDR_CC);
 			mCaption2->SetCurrentFontBold(kFalse);
-			addr = env->GetCC()->front()->GetFullAddress();
+			addr = FilterUTF8ForDisplay(env->GetCC()->front()->GetFullAddress());
 			if (env->GetCC()->size() > 1)
 				addr += ", ...";
 			addr += "    ";
@@ -972,7 +972,7 @@ void CMessageView::ResetCaption()
 			mCaption1->SetCurrentFontBold(kTrue);
 			mCaption1->InsertUTF8(cHDR_SUBJECT);
 			mCaption1->SetCurrentFontBold(kFalse);
-			cdstring subj = env->GetSubject();
+			cdstring subj = FilterUTF8ForDisplay(env->GetSubject());
 			mCaption1->InsertUTF8(subj);
 		}
 

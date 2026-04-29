@@ -43,11 +43,23 @@ X11 bitmap fonts).
   join soft-wrapped paragraphs before re-quoting, and alternative
   quote markers used by some mail clients (`|`, `#`) are recognized
   and normalized to the user's configured reply prefix (RFC 3676).
-- Show `[U+XXXXX]` placeholder for emoji and other characters above the
-  Basic Multilingual Plane, instead of silently replacing them with `?`.
-  This affects Linux and macOS, where the GUI toolkits (JX and
-  PowerPlant) cannot render characters outside the BMP. The Win32 build
-  may handle these natively, but this has not been tested.
+- Display human-readable text for Unicode characters that the JX
+  toolkit cannot render (anything outside Latin-1). Common emoji
+  show ASCII emoticons (e.g., `[:)]` for 😊, `[<3]` for ❤️);
+  other emoji and symbols show CLDR short names (e.g.,
+  `[:waving hand:]` for 👋); Unicode mathematical styled letters
+  (bold, italic, script, etc.) render as their plain ASCII
+  equivalents; typographic characters like curly quotes, en/em
+  dashes, and ellipsis render transparently as their ASCII
+  counterparts; invisible formatting characters (zero-width
+  joiners, variation selectors, soft hyphens, bidi marks) are
+  suppressed; remaining unmapped characters show `[U+XXXX]`
+  codepoint placeholders. The CLDR annotation table is generated
+  at build time from the `unicode-cldr-core` package. Applies to
+  Linux and macOS, where the GUI toolkits (JX and PowerPlant)
+  cannot render characters outside Latin-1.
+- Use `aria-label` and `title` attributes as fallback for image
+  alt text in HTML messages, before falling back to the filename.
 - Timezone database updated from 2008 (tzdata2008i) to current IANA
   data. Timezone files are now generated at build time from the latest
   IANA source via vzic, so they stay current with each build. Fixes
@@ -157,6 +169,12 @@ X11 bitmap fonts).
   eliminates platform-specific random number generation.
 - Replace SHA-1 with SHA-256 for X.509 certificate fingerprints.
 - Replace 3DES with AES-256-CBC for private key file encryption.
+- Fix HTML attribute values with non-ASCII characters being
+  truncated. Quoted attribute values (alt text, URLs, etc.)
+  containing characters outside US-ASCII were cut off at the
+  first non-ASCII character.
+- Fix empty HTML attribute values (`=""`) causing subsequent
+  attributes to be consumed as part of the value.
 - Fix use-after-free in JX string insert and replace operations
   when the source data pointed into the string being modified.
 - Fix numerous latent bugs discovered through comprehensive static

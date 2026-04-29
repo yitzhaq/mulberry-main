@@ -20,6 +20,8 @@ Build-Depends: debhelper-compat (= 13),
  libssl-dev,
  libxpm-dev,
  pkgconf,
+ python3,
+ unicode-cldr-core,
  zlib1g-dev
 
 Package: mulberry

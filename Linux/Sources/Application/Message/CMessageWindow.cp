@@ -515,7 +515,7 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	SetTwistList(mHeader->mCCField, mHeader->mCCTwister, mHeader->mCCMove, theEnv->GetCC());
 
 	// Set Subject: text
-	theTxt = theEnv->GetSubject();
+	theTxt = FilterUTF8ForDisplay(theEnv->GetSubject());
 	mHeader->mSubjectField->SetText(theTxt.c_str());
 
 	// Set Date: text

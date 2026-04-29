@@ -27,6 +27,7 @@
 #include "CPreferences.h"
 #include "CStringUtils.h"
 #include "CUTF8.h"
+#include "CUnicodeFilter.h"
 
 #include <math.h>
 #include <memory>
@@ -330,7 +331,10 @@ long CParserHTML::FindParam(const unichar_t* param, cdustring& response, bool qu
 			{
 			}
 			else if (*param == '\"')
+			{
 				quoting = true;
+				state = 2;
+			}
 			else if ((*param < 0x80) && cUSASCIIChar[*param])
 			{
 				output.write((const char*)param, sizeof(unichar_t));
@@ -356,6 +360,8 @@ long CParserHTML::FindParam(const unichar_t* param, cdustring& response, bool qu
 				else
 					output.write((const char*)param, sizeof(unichar_t));
 			}
+			else if (quoted || quoting)
+				output.write((const char*)param, sizeof(unichar_t));
 			else if ((*param < 0x80) && cUSASCIIChar[*param])
 				output.write((const char*)param, sizeof(unichar_t));
 			else
@@ -390,13 +396,20 @@ bool CParserHTML::GetLatinChar(wchar_t charNum, std::ostream* out, unsigned long
 	if (!charNum)
 		charNum = ' ';
 
+	// Replace zero-width separators with space
+	if (IsZeroWidthSeparator(charNum))
+		charNum = ' ';
+	// Drop invisible formatting characters
+	else if (IsInvisibleUnicode(charNum))
+		return true;
+
 	// Just add utf16 character
 	unichar_t c = charNum;
 	if (out)
 		out->write((const char*)&c, sizeof(unichar_t));
 	if (added)
 		*added += 1;
-			
+
 	return true;
 }
 
@@ -526,6 +539,13 @@ bool CParserHTML::GetLatinCharUTF8(wchar_t charNum, std::ostream* sout, unsigned
 	// Never allow NULLs
 	if (!charNum)
 		charNum = ' ';
+
+	// Replace zero-width separators with space
+	if (IsZeroWidthSeparator(charNum))
+		charNum = ' ';
+	// Drop invisible formatting characters
+	else if (IsInvisibleUnicode(charNum))
+		return true;
 
 	if (charNum < 128)
 	{
@@ -812,15 +832,95 @@ void CParserHTML::HandleImage(unichar_t* param, std::ostream* out, unsigned long
 			cdustring altStr;
 			param += 3;
 			param += FindParam(param, altStr) - 1;
-			
+
 			// Output the alt text if any available
+			if (!altStr.empty() && out)
+			{
+				// Decode HTML entities in alt text
+				cdustring decoded;
+				const unichar_t* ap = altStr.c_str();
+				while (*ap)
+				{
+					if (*ap == '&')
+					{
+						ap++;
+						const unichar_t* amp_start = ap;
+						while (*ap && *ap != ';') ap++;
+						if (*ap == ';')
+						{
+							cdustring entity(amp_start, ap - amp_start);
+							std::ostrstream eout;
+							unsigned long eadded = 0;
+							if (HandleAmpChar(const_cast<unichar_t*>(entity.c_str()), &eout, &eadded))
+							{
+								eout << std::ends << std::ends;
+								decoded.append((const unichar_t*)eout.str(), eadded);
+							}
+							else
+							{
+								decoded += '&';
+								decoded += entity;
+								decoded += ';';
+							}
+							ap++;
+						}
+						else
+						{
+							decoded += '&';
+							ap = amp_start;
+						}
+					}
+					else
+					{
+						decoded += *ap++;
+					}
+				}
+
+				cdustring temp;
+				temp.append_ascii(" [Image: \"");
+				temp += decoded;
+				temp.append_ascii("\"] ");
+
+				out->write((const char*)temp.c_str(), temp.length() * sizeof(unichar_t));
+				if (added)
+					*added += temp.length();
+				got_alt = true;
+			}
+		}
+
+		else if(!::unistrncmpnocase(param, "aria-label", 10) && !got_alt)
+		{
+			cdustring altStr;
+			param += 10;
+			param += FindParam(param, altStr) - 1;
+
 			if (!altStr.empty() && out)
 			{
 				cdustring temp;
 				temp.append_ascii(" [Image: \"");
 				temp += altStr;
 				temp.append_ascii("\"] ");
-				
+
+				out->write((const char*)temp.c_str(), temp.length() * sizeof(unichar_t));
+				if (added)
+					*added += temp.length();
+				got_alt = true;
+			}
+		}
+
+		else if(!::unistrncmpnocase(param, "title", 5) && !got_alt)
+		{
+			cdustring altStr;
+			param += 5;
+			param += FindParam(param, altStr) - 1;
+
+			if (!altStr.empty() && out)
+			{
+				cdustring temp;
+				temp.append_ascii(" [Image: \"");
+				temp += altStr;
+				temp.append_ascii("\"] ");
+
 				out->write((const char*)temp.c_str(), temp.length() * sizeof(unichar_t));
 				if (added)
 					*added += temp.length();

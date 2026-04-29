@@ -29,6 +29,128 @@
 #include <JRect.h>
 #include <JXDisplay.h>
 
+#include "CUnicodeFilter.h"
+#include "CSmileySubs.h"
+#include "CTypographicSubs.h"
+#include "CEmojiTable.h"
+#include "CUTF8.h"
+
+cdstring FilterUTF8ForDisplay(const char* txt)
+{
+	cdstring result;
+	result.reserve(::strlen(txt) * 2);
+
+	i18n::CUTF8 utf8;
+	const unsigned char* p = reinterpret_cast<const unsigned char*>(txt);
+	const unsigned char* q = p + ::strlen(txt);
+
+	while (p < q)
+	{
+		const unsigned char* start = p;
+		wchar_t wc = utf8.c_2_w(p);
+
+		if (IsLatin1(wc))
+		{
+			// Copy original UTF-8 bytes (not raw Latin-1)
+			result.append((const char*)start, p - start);
+		}
+		else if (IsZeroWidthSeparator(wc))
+		{
+			result += ' ';
+		}
+		else if (IsInvisibleUnicode(wc))
+		{
+			// drop
+		}
+		else if (IsInvalidUnicode(wc))
+		{
+			result += '?';
+		}
+		else if (MathLetterToAscii(wc))
+		{
+			result += MathLetterToAscii(wc);
+		}
+		else
+		{
+			// Typographic substitution (transparent)
+			const char* sub = NULL;
+			size_t lo = 0, hi = cTypographicSubsSize;
+			while (lo < hi)
+			{
+				size_t mid = lo + (hi - lo) / 2;
+				if (cTypographicSubs[mid].codepoint < (uint32_t)wc)
+					lo = mid + 1;
+				else if (cTypographicSubs[mid].codepoint > (uint32_t)wc)
+					hi = mid;
+				else
+				{
+					sub = cTypographicSubs[mid].text;
+					break;
+				}
+			}
+			if (sub)
+			{
+				result += sub;
+				continue;
+			}
+
+			// Smiley substitution
+			lo = 0; hi = cSmileySubsSize;
+			while (lo < hi)
+			{
+				size_t mid = lo + (hi - lo) / 2;
+				if (cSmileySubs[mid].codepoint < (uint32_t)wc)
+					lo = mid + 1;
+				else if (cSmileySubs[mid].codepoint > (uint32_t)wc)
+					hi = mid;
+				else
+				{
+					sub = cSmileySubs[mid].text;
+					break;
+				}
+			}
+			if (sub)
+			{
+				result += '[';
+				result += sub;
+				result += ']';
+				continue;
+			}
+
+			// CLDR lookup (single codepoint only for UTF-8 path)
+			lo = 0; hi = cEmojiTableSize;
+			while (lo < hi)
+			{
+				size_t mid = lo + (hi - lo) / 2;
+				if (cEmojiTable[mid].codepoints[0] < (uint32_t)wc)
+					lo = mid + 1;
+				else if (cEmojiTable[mid].codepoints[0] > (uint32_t)wc)
+					hi = mid;
+				else
+				{
+					if (cEmojiTable[mid].length == 1)
+						sub = cEmojiTable[mid].name;
+					break;
+				}
+			}
+			if (sub)
+			{
+				result += "[:";
+				result += sub;
+				result += ":]";
+				continue;
+			}
+
+			// Fallback
+			char hex[14];
+			::snprintf(hex, sizeof(hex), "[U+%04lX]", (unsigned long)wc);
+			result += hex;
+		}
+	}
+
+	return result;
+}
+
 void MessageBeep(int i)
 {
 	CMulberryApp::sApp->GetCurrentDisplay()->Beep();
@@ -38,6 +160,10 @@ void MessageBeep(int i)
 void DrawClippedStringUTF8(JPainter* pDC, const char* theTxt, const JPoint& start, const JRect& clip,
 						EDrawStringAlignment align, EDrawStringClip clip_string)
 {
+	// Filter non-Latin-1 characters for display
+	cdstring filtered = FilterUTF8ForDisplay(theTxt);
+	theTxt = filtered.c_str();
+
 	// Adjust width for slop
 	const unsigned long cSlop = 4;
 	long width = clip.right - start.x - cSlop;

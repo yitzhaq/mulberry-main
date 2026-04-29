@@ -136,6 +136,9 @@ Win32/ipch/
 Sources_Common/Timezones/zoneinfo/
 Sources_Common/Timezones/zoneinfo-backup-*.tar.gz
 
+# Generated emoji table (built from CLDR annotations)
+Sources_Common/i18n/Charsets/CEmojiTable.h
+
 # Build artifacts
 Linux/Includes/
 debian/.debhelper/

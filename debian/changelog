@@ -15,6 +15,11 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Fix preferences corruption causing 100% CPU on 64-bit
   * Fix offline cache corruption on 64-bit (unsigned long vs uint32_t)
   * Unicode clipboard copy/paste via UTF8_STRING selection
+  * Human-readable text substitution for non-Latin-1 Unicode characters:
+    ASCII emoticons for common emoji, CLDR short names for the rest,
+    transparent typographic substitutions, mathematical letter
+    normalization, and invisible formatting character suppression
+  * Use aria-label and title as image alt text fallbacks in HTML
   * Compose key and dead key support (JX locale path fix)
   * Font menu: use fontconfig instead of XListFonts
   * xdg-open fallback for attachments and URL links
@@ -34,6 +39,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Replace SHA-1 with SHA-256 for certificate fingerprints
   * Replace 3DES with AES-256-CBC for private key file encryption
   * Fix use-after-free in JX JString/JString16 insert and replace
+  * Fix HTML attribute truncation at non-ASCII characters
+  * Fix empty HTML attribute values consuming subsequent attributes
   * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
   * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, Coverity, GCC):
     use-after-free, null derefs, format strings, array delete mismatch,

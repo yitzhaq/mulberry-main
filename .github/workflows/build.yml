@@ -26,7 +26,7 @@ jobs:
           libglib2.0-dev libkrb5-dev libldap-dev \
           libpcre3-dev libsodium-dev libssl-dev \
           libx11-dev libxext-dev libxft-dev libxpm-dev \
-          pkg-config zlib1g-dev
+          pkg-config python3 unicode-cldr-core zlib1g-dev
 
     - name: Configure
       run: |

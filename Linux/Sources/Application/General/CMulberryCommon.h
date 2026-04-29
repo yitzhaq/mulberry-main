@@ -43,6 +43,9 @@ enum EDrawStringClip
 	eClipString_Right
 };
 
+// Filter non-Latin-1 Unicode for JX display
+cdstring FilterUTF8ForDisplay(const char* txt);
+
 // Draw clipped string if too long
 void DrawClippedStringUTF8(JPainter* pDC, const char* theTxt, 
 		       const JPoint& start, const JRect& clip,

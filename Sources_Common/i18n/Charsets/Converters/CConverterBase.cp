@@ -19,6 +19,136 @@
 
 #include "CConverterBase.h"
 
+#if __dest_os != __win32_os
+#include "CUnicodeFilter.h"
+#include "CTypographicSubs.h"
+#include "CSmileySubs.h"
+#include "CEmojiTable.h"
+#include <string.h>
+
+static const char* LookupTypographic(wchar_t wc)
+{
+	size_t lo = 0, hi = cTypographicSubsSize;
+	while (lo < hi)
+	{
+		size_t mid = lo + (hi - lo) / 2;
+		if (cTypographicSubs[mid].codepoint < (uint32_t)wc)
+			lo = mid + 1;
+		else if (cTypographicSubs[mid].codepoint > (uint32_t)wc)
+			hi = mid;
+		else
+			return cTypographicSubs[mid].text;
+	}
+	return NULL;
+}
+
+using namespace i18n;
+
+static const char* LookupSmiley(wchar_t wc)
+{
+	size_t lo = 0, hi = cSmileySubsSize;
+	while (lo < hi)
+	{
+		size_t mid = lo + (hi - lo) / 2;
+		if (cSmileySubs[mid].codepoint < (uint32_t)wc)
+			lo = mid + 1;
+		else if (cSmileySubs[mid].codepoint > (uint32_t)wc)
+			hi = mid;
+		else
+			return cSmileySubs[mid].text;
+	}
+	return NULL;
+}
+
+static const char* LookupEmoji(wchar_t wc, const unsigned char*& p,
+	const unsigned char* q, CConverterBase* conv)
+{
+	uint32_t first = (uint32_t)wc;
+
+	// Find range of entries starting with this codepoint
+	size_t lo = 0, hi = cEmojiTableSize;
+	while (lo < hi)
+	{
+		size_t mid = lo + (hi - lo) / 2;
+		if (cEmojiTable[mid].codepoints[0] < first)
+			lo = mid + 1;
+		else if (cEmojiTable[mid].codepoints[0] > first)
+			hi = mid;
+		else
+		{
+			// Found a match on first codepoint — scan for longest sequence
+			size_t start = mid;
+			while (start > 0 && cEmojiTable[start - 1].codepoints[0] == first)
+				start--;
+			size_t end = mid + 1;
+			while (end < cEmojiTableSize && cEmojiTable[end].codepoints[0] == first)
+				end++;
+
+			// Try longest sequences first
+			for (size_t i = start; i < end; i++)
+			{
+				if (cEmojiTable[i].length == 1)
+					return cEmojiTable[i].name;
+
+				// Try multi-codepoint match
+				const unsigned char* save_p = p;
+				bool match = true;
+				for (uint8_t j = 1; j < cEmojiTable[i].length; j++)
+				{
+					if (save_p >= q)
+					{
+						match = false;
+						break;
+					}
+					wchar_t next = conv->c_2_w(save_p);
+					if ((uint32_t)next != cEmojiTable[i].codepoints[j])
+					{
+						match = false;
+						break;
+					}
+				}
+				if (match && cEmojiTable[i].length > 1)
+				{
+					p = save_p;
+					return cEmojiTable[i].name;
+				}
+			}
+
+			// Fall back to single-codepoint match
+			for (size_t i = start; i < end; i++)
+			{
+				if (cEmojiTable[i].length == 1)
+					return cEmojiTable[i].name;
+			}
+			return NULL;
+		}
+	}
+	return NULL;
+}
+
+static void OutputWChar(std::ostream& wout, char c)
+{
+#ifdef big_endian
+	wout.put('\0');
+	wout.put(c);
+#else
+	wout.put(c);
+	wout.put('\0');
+#endif
+}
+
+static void OutputSubstitution(const char* sub, std::ostream& wout,
+	char open, char close)
+{
+	if (open)
+		OutputWChar(wout, open);
+	for (const char* s = sub; *s; s++)
+		OutputWChar(wout, *s);
+	if (close)
+		OutputWChar(wout, close);
+}
+#endif
+
 using namespace i18n;
 
 char CConverterBase::undefined_charmap = '?';		// Undefined mapping character
@@ -82,35 +212,38 @@ void CConverterBase::ToUTF16(const char* str, size_t len, std::ostream& wout)
 	while(p < q)
 	{
 		wchar_t wc = c_2_w(p);
-		if (wc < 0x10000)
+		if (wc < 0x100)
 		{
+			// Latin-1 — render natively
 #ifdef big_endian
-			unsigned char c1 = (wc & 0xFF00) >> 8;
-			unsigned char c2 = (wc & 0x00FF);
+			wout.put((wc & 0xFF00) >> 8);
+			wout.put(wc & 0x00FF);
 #else
-			unsigned char c1 = (wc & 0x00FF);
-			unsigned char c2 = (wc & 0xFF00) >> 8;
+			wout.put(wc & 0x00FF);
+			wout.put((wc & 0xFF00) >> 8);
 #endif
-			wout.put(c1);
-			wout.put(c2);
 		}
 		else if (wc > 0x10FFFF)
 		{
+			// Invalid codepoint
 #ifdef big_endian
-			unsigned char c1 = 0;
-			unsigned char c2 = '?';
+			wout.put('\0');
+			wout.put('?');
 #else
-			unsigned char c1 = '?';
-			unsigned char c2 = 0;
+			wout.put('?');
+			wout.put('\0');
 #endif
-			wout.put(c1);
-			wout.put(c2);
+		}
+#if __dest_os == __win32_os
+		else if (wc < 0x10000)
+		{
+			// BMP non-Latin-1 — Windows can render natively
+			wout.put(wc & 0x00FF);
+			wout.put((wc & 0xFF00) >> 8);
 		}
 		else
 		{
-#if __dest_os == __win32_os
-			// Win32 may support native emoji rendering via surrogate
-			// pairs — untested, may need text pipeline validation
+			// Above BMP — surrogate pair for Windows
 			wc -= (wchar_t)0x10000;
 			wchar_t wc1 = 0xD800 | ((wc & 0x000FFC00) >> 10);
 			wchar_t wc2 = 0xDC00 | (wc & 0x000003FF);
@@ -118,23 +251,57 @@ void CConverterBase::ToUTF16(const char* str, size_t len, std::ostream& wout)
 			wout.put((wc1 & 0xFF00) >> 8);
 			wout.put(wc2 & 0x00FF);
 			wout.put((wc2 & 0xFF00) >> 8);
-#else
-			// Non-Windows toolkits cannot render emoji —
-			// output a readable codepoint placeholder
-			char hex[14];
-			int hlen = snprintf(hex, sizeof(hex), "[U+%04lX]", (unsigned long)wc);
-			for (int i = 0; i < hlen; i++)
-			{
-#ifdef big_endian
-				wout.put('\0');
-				wout.put(hex[i]);
-#else
-				wout.put(hex[i]);
-				wout.put('\0');
-#endif
-			}
-#endif
 		}
+#else
+		else
+		{
+			// Non-Latin-1 on Linux/Mac — text substitution
+
+			if (IsZeroWidthSeparator(wc))
+			{
+				OutputWChar(wout, ' ');
+				continue;
+			}
+			if (IsInvisibleUnicode(wc))
+				continue;
+
+			// Mathematical styled letters → plain ASCII
+			char mathc = MathLetterToAscii(wc);
+			if (mathc)
+			{
+				OutputWChar(wout, mathc);
+				continue;
+			}
+
+			// Transparent typographic substitutions (no wrapping)
+			const char* sub = LookupTypographic(wc);
+			if (sub)
+			{
+				OutputSubstitution(sub, wout, 0, 0);
+			}
+			// Smiley emoticons [wrapped in brackets]
+			else if ((sub = LookupSmiley(wc)) != NULL)
+			{
+				OutputSubstitution(sub, wout, '[', ']');
+			}
+			else
+			{
+				sub = LookupEmoji(wc, p, q, this);
+				if (sub)
+				{
+					OutputWChar(wout, '[');
+					OutputSubstitution(sub, wout, ':', ':');
+					OutputWChar(wout, ']');
+				}
+				else
+				{
+					char hex[14];
+					snprintf(hex, sizeof(hex), "U+%04lX", (unsigned long)wc);
+					OutputSubstitution(hex, wout, '[', ']');
+				}
+			}
+		}
+#endif
 	}
 }
 
