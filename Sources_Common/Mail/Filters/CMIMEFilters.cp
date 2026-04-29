@@ -441,8 +441,11 @@ CQPFilter::CQPFilter(i18n::ECharsetCode charset, bool is_text, bool is_flowed, b
 	mTempBuffer = new unsigned char[wrap + 16];
 	mReadStatus = eLineBuild;
 	mWriteStatus = eWriteNormal;
-	
+	mQuotedChar = 0;
 	mQuotedCharLast = 0;
+	mQuoted1 = 0;
+	mQuoted2 = 0;
+	mEndlLast = 0;
 }
 
 CQPFilter::~CQPFilter()

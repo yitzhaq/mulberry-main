@@ -44,6 +44,14 @@
 CReplyActionDialog::CReplyActionDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mReplyGroup = NULL;
+	mQuote = NULL;
+	mTextBtn = NULL;
+	mIdentityGroup = NULL;
+	mIdentityPopup = NULL;
+	mCreateDraft = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 }
 
 // Default destructor

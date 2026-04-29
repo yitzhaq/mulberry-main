@@ -47,6 +47,10 @@ CSMTPWindow* CSMTPWindow::sSMTPWindow = NULL;
 CSMTPWindow::CSMTPWindow(JXDirector* owner) :
 	CMailboxWindow(owner)
 {
+	mToolbarView = NULL;
+	mSplitterView = NULL;
+	mSMTPView = NULL;
+	mMessageView = NULL;
 	sSMTPWindow = this;
 }
 

@@ -41,6 +41,16 @@
 CMessagePartProp::CMessagePartProp(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mName = NULL;
+	mType = NULL;
+	mEncoding = NULL;
+	mID = NULL;
+	mDisposition = NULL;
+	mDescription = NULL;
+	mParams = NULL;
+	mOpenWith = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -89,8 +89,21 @@ void CBinHexFilter::InitBinHexFilter()
 {
 	// Init params
 	mStatus1 = eStart1;
+	mSubStatus1 = eNormal;
+	mProcess = eFirstChar;
 	mStatus2 = eStart2;
+	mSubStatus2 = eNormalChar;
 	mDecodedOne = false;
+	mCRC = 0;
+	mLineCount = 0;
+	::memset(&mCurrentAtom, 0, sizeof(mCurrentAtom));
+	mAtomPos = 0;
+	mLastChar = 0;
+	mRunLength = 0;
+	mDataLen = 0;
+	mRsrcLen = 0;
+	mCRCCalc = 0;
+	mCRCFound = 0;
 
 	mFileOutBuffer = NULL;
 

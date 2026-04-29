@@ -43,6 +43,17 @@
 CPluginRegisterDialog::CPluginRegisterDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mLogo = NULL;
+	mName = NULL;
+	mVersion = NULL;
+	mType = NULL;
+	mManufacturer = NULL;
+	mDescription = NULL;
+	mRegKey = NULL;
+	mRegisterBtn = NULL;
+	mCancelBtn = NULL;
+	mRemoveBtn = NULL;
+	mDemoBtn = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

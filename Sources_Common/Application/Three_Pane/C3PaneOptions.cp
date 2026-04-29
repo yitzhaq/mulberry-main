@@ -38,6 +38,8 @@ extern const char* cValueBoolFalse;
 C3PaneOptions::C3PaneOptions()
 {
 	mInitialView = N3Pane::eView_Mailbox;
+	mGeometriesPerView = false;
+	mActionsPerView = false;
 
 	GetViewOptions(N3Pane::eView_Mailbox).SetListVisible(true);
 	GetViewOptions(N3Pane::eView_Mailbox).SetItemsVisible(true);

@@ -81,6 +81,7 @@ CAddressBook::CAddressBook(CAdbkProtocol* proto)
 	mSize = ULONG_MAX;
 	mLastSync = 0;
 	mACLs = NULL;
+	mRefCount = 0;
 	mVCardAdbk = NULL;
 }
 

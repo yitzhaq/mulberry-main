@@ -44,6 +44,11 @@
 CVacationActionDialog::CVacationActionDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mSubject = NULL;
+	mTextBtn = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
+	mAddresses = NULL;
 }
 
 // Default destructor

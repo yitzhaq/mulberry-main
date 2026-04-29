@@ -32,6 +32,8 @@
 
 CAdbkRecord::CAdbkRecord()
 {
+	mPlayRemote = NULL;
+	mPlayLocal = NULL;
 }
 
 #pragma mark ____________________________Addressbook actions

@@ -46,6 +46,13 @@ CSearchEngine CSearchEngine::sSearchEngine;
 CSearchEngine::CSearchEngine()
 	: mSearchItem(CSearchItem::eFrom, cdstring::null_str), mTargets(true)
 {
+	mNextSearchIndex = 0;
+	mCurrentTarget = 0;
+	mDone = 0;
+	mFound = 0;
+	mMessages = 0;
+	mAbort = false;
+	mAbortCompleted = false;
 }
 
 CSearchEngine::~CSearchEngine()

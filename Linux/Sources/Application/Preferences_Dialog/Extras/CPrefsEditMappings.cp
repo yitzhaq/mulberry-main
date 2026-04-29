@@ -50,6 +50,12 @@
 CPrefsEditMappings::CPrefsEditMappings(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mOkBtn = NULL;
+	mCancelBtn = NULL;
+	mAddBtn = NULL;
+	mChangeBtn = NULL;
+	mDeleteBtn = NULL;
+	mItsTable = NULL;
 }
 
 const int cTitleHeight = 16;

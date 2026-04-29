@@ -43,6 +43,8 @@ cdmutexprotect<CServerWindow::CServerWindowList> CServerWindow::sServerWindows;
 CServerWindow::CServerWindow(JXDirector* owner)
   : CTableViewWindow(owner), mDoQuit(false)
 {
+	mToolbarView = NULL;
+	mServerView = NULL;
 	// Add to list
 	{
 		cdmutexprotect<CServerWindowList>::lock _lock(sServerWindows);

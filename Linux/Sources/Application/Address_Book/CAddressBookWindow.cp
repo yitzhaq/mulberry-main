@@ -50,6 +50,10 @@ cdmutexprotect<CAddressBookWindow::CAddressBookWindowList> CAddressBookWindow::s
 CAddressBookWindow::CAddressBookWindow(JXDirector* owner)
 	: CAddressBookDoc(owner)
 {
+	mToolbarView = NULL;
+	mSplitterView = NULL;
+	mAddressBookView = NULL;
+	mAddressView = NULL;
 	mPreviewVisible = true;
 
 	{

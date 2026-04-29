@@ -41,6 +41,11 @@
 CEditAddressAdvancedDialog::CEditAddressAdvancedDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
+	mScroller = NULL;
+	mScrollPane = NULL;
+	mFields = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

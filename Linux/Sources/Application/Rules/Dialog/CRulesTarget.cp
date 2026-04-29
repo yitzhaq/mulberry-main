@@ -55,6 +55,14 @@ CRulesTarget::CRulesTarget(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h) :
 	CCriteriaBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mUp = NULL;
+	mDown = NULL;
+	mPopup1 = NULL;
+	mPopup2 = NULL;
+	mPopup3 = NULL;
+	mText = NULL;
+	mMailboxPopup = NULL;
+	mDlog = NULL;
 }
 
 // Default destructor

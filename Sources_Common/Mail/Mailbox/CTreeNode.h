@@ -26,7 +26,7 @@ class CTreeNode
 {
 public:
 	CTreeNode()
-		{ mWDLevel = -1; mDirDelim = 0; }
+		{ mShortName = NULL; mWDLevel = -1; mDirDelim = 0; }
 	CTreeNode(const CTreeNode& copy);
 	virtual ~CTreeNode() {}
 

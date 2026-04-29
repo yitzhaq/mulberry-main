@@ -281,6 +281,7 @@ void CINETClient::InitINETClient()
 
 	mItemCtr = 0;
 	mItemTotal = 0;
+	mStatusUpdateTime = 0;
 
 	mStatusQueue = 0;
 	mStatusID = NULL;

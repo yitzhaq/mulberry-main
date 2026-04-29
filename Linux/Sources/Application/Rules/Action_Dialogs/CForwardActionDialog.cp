@@ -44,6 +44,17 @@
 CForwardActionDialog::CForwardActionDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mTo = NULL;
+	mCC = NULL;
+	mBcc = NULL;
+	mQuote = NULL;
+	mTextBtn = NULL;
+	mAttach = NULL;
+	mIdentityGroup = NULL;
+	mIdentityPopup = NULL;
+	mCreateDraft = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 }
 
 // Default destructor

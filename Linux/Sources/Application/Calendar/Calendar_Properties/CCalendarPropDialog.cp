@@ -50,6 +50,13 @@
 CCalendarPropDialog::CCalendarPropDialog(JXDirector* supervisor)
 	: CPropDialog(supervisor)
 {
+	mOptionsBtn = NULL;
+	mGeneralBtn = NULL;
+	mServerBtn = NULL;
+	mWebCalBtn = NULL;
+	mAccessBtn = NULL;
+	mCards = NULL;
+	mOKBtn = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

@@ -101,6 +101,10 @@ CISpellPluginDLL::CErrorDetails::CErrorDetails(const CISpellPluginDLL::CErrorDet
 // Constructor
 CISpellPluginDLL::CISpellPluginDLL()
 {
+	mInputfd[0] = -1;
+	mInputfd[1] = -1;
+	mOutputfd[0] = -1;
+	mOutputfd[1] = -1;
 	mData = new SData;
 	mPID = -1;
 	mSelectionAdjust = 0;

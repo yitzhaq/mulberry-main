@@ -49,6 +49,8 @@ CEventPreview::CEventPreview(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 		: CBaseView(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mDetails = NULL;
+	mEditBtn = NULL;
 }
 
 // Default destructor

@@ -137,7 +137,11 @@ void CAFFilter::InitAFFilter()
 	// Init params
 	mFileStream = nil;
 	mSingle = true;
+	::memset(&mIndex, 0, sizeof(mIndex));
 	mHeaderBuffer = nil;
+	mHeaderBufferLen = 0;
+	mGetOffset = 0;
+	mGetTotal = 0;
 
 	mStatus1 = eStart1;
 	mStatus2 = eStart2;

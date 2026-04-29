@@ -39,6 +39,11 @@ CAddressPersonalPanel::CAddressPersonalPanel(JXContainer* enclosure,
 							 const JCoordinate w, const JCoordinate h)
 		: CAddressPanelBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mFullName = NULL;
+	mNickName = NULL;
+	mEmail = NULL;
+	mCalendar = NULL;
+	mCompany = NULL;
 }
 
 // Default destructor

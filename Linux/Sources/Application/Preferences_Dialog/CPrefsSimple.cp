@@ -51,12 +51,30 @@
 
 
 CPrefsSimple::CPrefsSimple( JXContainer* enclosure,
-														const HSizingOption hSizing, 
+														const HSizingOption hSizing,
 														const VSizingOption vSizing,
 														const JCoordinate x, const JCoordinate y,
-														const JCoordinate w, const JCoordinate h) 
+														const JCoordinate w, const JCoordinate h)
 	:CPrefsPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mRealName = NULL;
+	mEmailAddress = NULL;
+	mIMAPuid = NULL;
+	mIMAPip = NULL;
+	mServerTypeGroup = NULL;
+	mSMTPip = NULL;
+	mCheckMailGroup = NULL;
+	mNewMailAlert = NULL;
+	mSaveUser = NULL;
+	mSavePswd = NULL;
+	mLogonStartup = NULL;
+	mLeaveOnServer = NULL;
+	mDirectorySeparatorTitle = NULL;
+	mDirectorySeparator = NULL;
+	mSignatureBtn = NULL;
+	mDoCopyTo = NULL;
+	mCopyToMailbox = NULL;
+	mCopyToMailboxPopup = NULL;
 }
 
 void CPrefsSimple::OnCreate()

@@ -40,6 +40,13 @@ CAddressFieldBase::CAddressFieldBase(JXContainer* enclosure,
 		const JCoordinate w, const JCoordinate h) :
 		JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAdd = NULL;
+	mRemove = NULL;
+	mTitle = NULL;
+	mType = NULL;
+	mDataMove = NULL;
+	mUsesType = false;
+	mOriginalType = 0;
 }
 
 // Default destructor

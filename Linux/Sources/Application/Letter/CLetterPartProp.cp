@@ -44,6 +44,17 @@
 CLetterPartProp::CLetterPartProp(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mName = NULL;
+	mType = NULL;
+	mTypePopup = NULL;
+	mSubtype = NULL;
+	mSubtypePopup = NULL;
+	mEncodingPopup = NULL;
+	mDispositionPopup = NULL;
+	mCharsetPopup = NULL;
+	mDescription = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -38,6 +38,7 @@ CAddressNotesPanel::CAddressNotesPanel(JXContainer* enclosure,
 							 const JCoordinate w, const JCoordinate h)
 		: CAddressPanelBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mNotes = NULL;
 }
 
 // Default destructor

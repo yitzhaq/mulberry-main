@@ -47,6 +47,23 @@
 CRecurrenceDialog::CRecurrenceDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mOccursInterval = NULL;
+	mOccursFreq = NULL;
+	mOccursGroup = NULL;
+	mOccursForEver = NULL;
+	mOccursCount = NULL;
+	mOccursUntil = NULL;
+	mOccursCounter = NULL;
+	mOccursDateTimeZone = NULL;
+	mByDayView = NULL;
+	mByDayPopup = NULL;
+	mBySetPosPopup = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
+	::memset(mByMonth, 0, sizeof(mByMonth));
+	::memset(mByMonthDay, 0, sizeof(mByMonthDay));
+	::memset(mByMonthDayLast, 0, sizeof(mByMonthDayLast));
+	::memset(mByDay, 0, sizeof(mByDay));
 }
 
 

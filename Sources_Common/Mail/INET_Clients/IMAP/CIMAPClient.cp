@@ -108,6 +108,7 @@ void CIMAPClient::InitIMAPClient()
 
 	mFindingHier = false;
 	mFindingSubs = false;
+	mCurrentWD = NULL;
 	mMboxNew = 0;
 	mInPostProcess = false;
 	mMboxUpdate = false;

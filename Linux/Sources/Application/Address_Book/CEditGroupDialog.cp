@@ -43,6 +43,12 @@
 CEditGroupDialog::CEditGroupDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mGroupName = NULL;
+	mNickName = NULL;
+	mAddressList = NULL;
+	mSortBtn = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

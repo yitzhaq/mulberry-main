@@ -156,7 +156,10 @@ CPlugin::CPlugin(fspec file_spec)
 CPlugin::CPlugin(const CPlugin& copy)
 {
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
+	mFSSpec = copy.mFSSpec;
 	mResFile = copy.mResFile;
+#else
+	mFname = copy.mFname;
 #endif
 
 #if __dest_os == __mac_os
@@ -175,8 +178,10 @@ CPlugin::CPlugin(const CPlugin& copy)
 	mUsePreferences = copy.mUsePreferences;
 	mUpdateVers = copy.mUpdateVers;
 
+	mReplaced = false;
 	mClone = true;
 	mLog = copy.mLog;
+	mLogProc = NULL;
 }
 
 // Destructor

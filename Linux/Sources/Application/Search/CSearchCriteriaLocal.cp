@@ -204,6 +204,20 @@ CSearchCriteriaLocal::CSearchCriteriaLocal(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h) :
 	CSearchCriteria(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mUp = NULL;
+	mDown = NULL;
+	mPopup4 = NULL;
+	mPopup1 = NULL;
+	mPopup2 = NULL;
+	mText1 = NULL;
+	mText2 = NULL;
+	mText3 = NULL;
+	mPopup3 = NULL;
+	mDate = NULL;
+	mPopup5 = NULL;
+	mPopup6 = NULL;
+	mPopup7 = NULL;
+	mPopup8 = NULL;
 }
 
 // Default destructor

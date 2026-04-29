@@ -60,6 +60,7 @@ CSpellPreferences::~CSpellPreferences()
 // Constructor
 CSpellPluginDLL::CSpellPluginDLL()
 {
+	mCheckTxt = NULL;
 	mMaxPerPage = 1024;
 	mErrorCount = 0;
 	mCurrentError = 0;

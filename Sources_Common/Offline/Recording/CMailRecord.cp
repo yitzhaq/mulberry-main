@@ -38,6 +38,9 @@
 
 CMailRecord::CMailRecord()
 {
+	mPlayRemote = NULL;
+	mPlayLocal = NULL;
+	mPlayReuse = NULL;
 }
 
 #pragma mark ____________________________Mailbox actions

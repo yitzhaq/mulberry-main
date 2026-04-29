@@ -43,6 +43,12 @@
 CRejectActionDialog::CRejectActionDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mReturnGroup = NULL;
+	mIdentityGroup = NULL;
+	mIdentityPopup = NULL;
+	mCreateDraft = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 }
 
 // Default destructor

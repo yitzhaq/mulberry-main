@@ -47,6 +47,16 @@ CUploadScriptDialog::SUploadScript CUploadScriptDialog::sLastChoice = {false, 0,
 CUploadScriptDialog::CUploadScriptDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mSaveGroup = NULL;
+	mFileBtn = NULL;
+	mUploadGroup = NULL;
+	mServerBtn = NULL;
+	mAccountPopup = NULL;
+	mUploadOnlyBtn = NULL;
+	mUploadActivateBtn = NULL;
+	mDeleteBtn = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 

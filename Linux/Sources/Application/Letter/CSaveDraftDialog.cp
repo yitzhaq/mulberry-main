@@ -41,6 +41,12 @@ CSaveDraftDialog::SSaveDraft CSaveDraftDialog::sDetails;
 CSaveDraftDialog::CSaveDraftDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mGroup = NULL;
+	mFile = NULL;
+	mMailbox = NULL;
+	mMailboxPopup = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

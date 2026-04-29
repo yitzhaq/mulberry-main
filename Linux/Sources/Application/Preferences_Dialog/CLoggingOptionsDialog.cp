@@ -37,6 +37,24 @@
 CLoggingOptionsDialog::CLoggingOptionsDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mActivate = NULL;
+	mIMAP = NULL;
+	mPOP3 = NULL;
+	mSMTP = NULL;
+	mIMSP = NULL;
+	mACAP = NULL;
+	mHTTP = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mAuthentication = NULL;
+	mPlayback = NULL;
+	mPlugins = NULL;
+	mFiltering = NULL;
+	mErrors = NULL;
+	mOverwrite = NULL;
+	mClearBtn = NULL;
+	mFlushBtn = NULL;
+	::memset(mLogs, 0, sizeof(mLogs));
 }
 
 void CLoggingOptionsDialog::OnCreate()

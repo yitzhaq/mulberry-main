@@ -137,7 +137,7 @@ private:
 	public:
 		SpError mError;
 
-		CErrorDetails() {}
+		CErrorDetails() { ::memset(&mError, 0, sizeof(mError)); }
 		CErrorDetails(const CErrorDetails& copy);
 		~CErrorDetails() {}
 	};

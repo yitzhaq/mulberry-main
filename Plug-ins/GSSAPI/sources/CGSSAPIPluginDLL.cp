@@ -130,9 +130,12 @@ CGSSAPIPluginDLL::CGSSAPIPluginDLL()
 {
 	mState = eStep;
 	mInitContext = true;
+	::memset(hex_response_server, 0, sizeof(hex_response_server));
+	mLiteralLength = 0;
+	::memset(mLiteralBuffer, 0, sizeof(mLiteralBuffer));
 	mGSSAPI_Context = GSS_C_NO_CONTEXT;
 	mGSSAPI_ServerName = GSS_C_NO_NAME;
-	
+
 #if __dest_os == __win32_os
 	if (sGSSLoader == NULL)
 		sGSSLoader = new CDLLLoader("gssapi32.dll");

@@ -41,6 +41,11 @@
 CEditMacro::CEditMacro(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
 {
+	mOkBtn = NULL;
+	mCancelBtn = NULL;
+	mRuler = NULL;
+	mText = NULL;
+	mName = NULL;
 	mTextItem = NULL;
 }
 

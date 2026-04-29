@@ -36,6 +36,7 @@ CAddressFieldText::CAddressFieldText(JXContainer* enclosure,
 		const JCoordinate w, const JCoordinate h) :
 		CAddressFieldBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mData = NULL;
 }
 
 // Default destructor

@@ -38,6 +38,10 @@
 CMDNPromptDialog::CMDNPromptDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mAddress = NULL;
+	mSave = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 }
 
 // Default destructor

@@ -28,7 +28,7 @@ namespace i18n
 class CCJKBase : public CConverterBase
 {
 public:
-	CCJKBase() {}
+	CCJKBase() { mOffset1 = 0; mOffset2 = 0; mSize1 = 0; mSize2 = 0; mMax1 = 0; mMax2 = 0; mNumPages = 0; }
 	virtual ~CCJKBase() {}
 
 	virtual wchar_t c_2_w(const unsigned char*& c);

@@ -44,6 +44,14 @@
 CBounceActionDialog::CBounceActionDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mTo = NULL;
+	mCC = NULL;
+	mBcc = NULL;
+	mIdentityGroup = NULL;
+	mIdentityPopup = NULL;
+	mCreateDraft = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 }
 
 // Default destructor

@@ -397,7 +397,7 @@ void CGroupTable::InsertedAddress(CGroup* grp, int num)
 		AddLastChildRow(woRow, &addr_item, sizeof(SGroupTableItem), false, false);
 
 	// Refill address rows with new group
-	for(short i = 0; i < grp->GetAddressList().size(); i++)
+	for(size_t i = 0; i < grp->GetAddressList().size(); i++)
 	{
 		SGroupTableItem addr_item(false, grp);
 		STableCell aCell(woRow + 1 + i, 1);
@@ -435,7 +435,7 @@ void CGroupTable::DeletedAddress(CGroup* grp, int num)
 		RemoveRows(1, woRow+1, false);
 		
 	// Refill address rows with new group
-	for(short i = 0; i < grp->GetAddressList().size(); i++)
+	for(size_t i = 0; i < grp->GetAddressList().size(); i++)
 	{
 		SGroupTableItem addr_item(false, grp);
 		STableCell aCell(woRow + 1 + i, 1);
@@ -463,7 +463,7 @@ void CGroupTable::ResetTable()
 			last_grp_row = InsertSiblingRows(1, last_grp_row, &grp_item, sizeof(SGroupTableItem), true, false);
 
 			// Add all addresses in group
-			for(short i = 0; i < (*iter)->GetAddressList().size(); i++)
+			for(size_t i = 0; i < (*iter)->GetAddressList().size(); i++)
 			{
 				SGroupTableItem addr_item(false, *iter);
 				AddLastChildRow(last_grp_row, &addr_item, sizeof(SGroupTableItem), false, false);
@@ -758,7 +758,7 @@ bool CGroupTable::AddAddressesToList(TableIndexT row, CAddressList* list)
 	{
 	
 		// Add all addresses in this group
-		for(short i = 0; i < item.mGroup->GetAddressList().size(); i++)
+		for(size_t i = 0; i < item.mGroup->GetAddressList().size(); i++)
 		{
 			cdstring& aStr = item.mGroup->GetAddressList().at(i);
 			list->push_back(new CAddress(aStr));

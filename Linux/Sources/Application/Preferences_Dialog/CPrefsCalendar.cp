@@ -39,12 +39,37 @@
 // CPrefsCalendar dialog
 
 CPrefsCalendar::CPrefsCalendar( JXContainer* enclosure,
-														const HSizingOption hSizing, 
+														const HSizingOption hSizing,
 														const VSizingOption vSizing,
 														const JCoordinate x, const JCoordinate y,
-														const JCoordinate w, const JCoordinate h) 
+														const JCoordinate w, const JCoordinate h)
 	:CPrefsPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mWeekStartBtn = NULL;
+	mWorkDay0 = NULL;
+	mWorkDay1 = NULL;
+	mWorkDay2 = NULL;
+	mWorkDay3 = NULL;
+	mWorkDay4 = NULL;
+	mWorkDay5 = NULL;
+	mWorkDay6 = NULL;
+	mHandleICS = NULL;
+	mAutomaticIMIP = NULL;
+	mDisplayTime = NULL;
+	mDT1 = NULL;
+	mDT2 = NULL;
+	mDT3 = NULL;
+	mDT4 = NULL;
+	mDT5 = NULL;
+	mDT6 = NULL;
+	mDT7 = NULL;
+	mDT8 = NULL;
+	mDT9 = NULL;
+	mDT10 = NULL;
+	mAutomaticEDST = NULL;
+	::memset(mWorkDay, 0, sizeof(mWorkDay));
+	::memset(mRangeStarts, 0, sizeof(mRangeStarts));
+	::memset(mRangeEnds, 0, sizeof(mRangeEnds));
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -138,6 +138,8 @@ CTCPSocket::CTCPSocket()
 	mLocalPort = 0;
 	::memset((char *) &mRemote, 0, sizeof(mRemote));
 
+	mSocket = 0;
+
 	mTCPState = TCPNotOpen;
 	mCancel = false;
 	mAbort = false;
@@ -172,6 +174,8 @@ CTCPSocket::CTCPSocket(const CTCPSocket& copy)
 	mOriginalName = copy.mOriginalName;
 	mRemoteName = copy.mRemoteName;
 	mRemoteCName = copy.mRemoteCName;
+
+	mSocket = 0;
 
 	mTCPState = TCPNotOpen;
 	mCancel = false;
@@ -1658,8 +1662,8 @@ void CTCPSocket::TCPCloseConnection()
 	{
 		struct linger aLinger;
 
-		aLinger.l_onoff  = false;						// dont lingerÉ
-		aLinger.l_linger = cTCPDefaultTimeout;			// Éfor a graceful close
+		aLinger.l_onoff  = false;						// dont lingerï¿½
+		aLinger.l_linger = cTCPDefaultTimeout;			// ï¿½for a graceful close
 		int result = ::setsockopt(mSocket, SOL_SOCKET, SO_LINGER, (char *)&aLinger, sizeof(aLinger));
 
 #ifdef _winsock
@@ -1714,7 +1718,7 @@ void CTCPSocket::TCPAbort(bool silent, bool full_close)
 	{
 		struct linger aLinger;
 
-		aLinger.l_onoff  = false;						// dont lingerÉ
+		aLinger.l_onoff  = false;						// dont lingerï¿½
 		aLinger.l_linger = 0;							// force close immediately
 		int result = ::setsockopt(mSocket, SOL_SOCKET, SO_LINGER, (char *)&aLinger, sizeof(aLinger));
 

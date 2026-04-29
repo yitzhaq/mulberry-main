@@ -46,6 +46,16 @@
 CCreateAdbkDialog::CCreateAdbkDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mDirectoryGroup = NULL;
+	mMkAdbk = NULL;
+	mMkCol = NULL;
+	mAdbkName = NULL;
+	mWhichPath = NULL;
+	mFullPath = NULL;
+	mUseDirectory = NULL;
+	mInHierarchy = NULL;
+	mAccount = NULL;
+	mAccountPopup = NULL;
 }
 
 // Default destructor

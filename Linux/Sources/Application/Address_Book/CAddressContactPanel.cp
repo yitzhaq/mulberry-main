@@ -39,6 +39,11 @@ CAddressContactPanel::CAddressContactPanel(JXContainer* enclosure,
 							 const JCoordinate w, const JCoordinate h)
 		: CAddressPanelBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAddress = NULL;
+	mPhoneWork = NULL;
+	mPhoneHome = NULL;
+	mFax = NULL;
+	mURL = NULL;
 }
 
 // Default destructor

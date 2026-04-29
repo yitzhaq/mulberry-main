@@ -30,6 +30,7 @@ CRulesAction::CRulesAction(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h) :
 	CCriteriaBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mDlog = NULL;
 }
 
 // Default destructor

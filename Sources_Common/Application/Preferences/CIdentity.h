@@ -304,7 +304,7 @@ class CTiedIdentityList
 {
 public:
 	CTiedIdentityList()
-		{ mList = NULL; }
+		{ mList = NULL; mType = CIdentity::eMbox; }
 	CTiedIdentityList(const CTiedIdentityList& copy)
 		{ mList = copy.mList; mType = copy.mType; }
 	~CTiedIdentityList() { mList = NULL; }

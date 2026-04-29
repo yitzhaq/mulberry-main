@@ -22,6 +22,7 @@
 // Copy construct
 CTreeNode::CTreeNode(const CTreeNode& copy)
 {
+	mShortName = NULL;
 	mName = copy.mName;
 	mWDLevel = copy.mWDLevel;
 	mDirDelim = copy.mDirDelim;

@@ -42,6 +42,16 @@
 CEditAddressDialog::CEditAddressDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mFullName = NULL;
+	mNickName = NULL;
+	mEmail = NULL;
+	mCalendar = NULL;
+	mCompany = NULL;
+	mPhoneWork = NULL;
+	mPhoneHome = NULL;
+	mFax = NULL;
+	mAddress = NULL;
+	mURL = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

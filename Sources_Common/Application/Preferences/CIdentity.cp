@@ -46,6 +46,7 @@ extern const char* cValueBoolFalse;
 CIdentity::CIdentity()
 {
 	mTemp = false;
+	mSMTPAccount.second = false;
 	mFrom.second = false;
 	mReplyTo.second = false;
 	mSender.second = false;
@@ -57,6 +58,7 @@ CIdentity::CIdentity()
 	mHeader.second = false;
 	mSignature.second = false;
 	mSignatureFile = false;
+	mSignatureApp = false;
 
 	mAddTo.second = false;
 	mAddCC.second = false;

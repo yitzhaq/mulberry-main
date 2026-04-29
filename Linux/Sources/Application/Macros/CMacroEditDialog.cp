@@ -47,7 +47,15 @@
 CMacroEditDialog::CMacroEditDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mNewBtn = NULL;
+	mEditBtn = NULL;
+	mDeleteBtn = NULL;
+	mKey = NULL;
+	mChooseBtn = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 	mTable = NULL;
+	mActualKey = 0;
 }
 
 // Default destructor

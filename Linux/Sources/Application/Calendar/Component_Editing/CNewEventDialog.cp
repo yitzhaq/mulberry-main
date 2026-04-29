@@ -56,6 +56,8 @@
 CNewEventDialog::CNewEventDialog(JXDirector* supervisor)
 		: CNewComponentDialog(supervisor)
 {
+	mStatus = NULL;
+	mAvailability = NULL;
 }
 
 
@@ -365,7 +367,7 @@ void CNewEventDialog::StartNew(const iCal::CICalendarDateTime& dtstart, const iC
 	std::unique_ptr<iCal::CICalendarVEvent> vevent(static_cast<iCal::CICalendarVEvent*>(iCal::CICalendarVEvent::Create(cal->GetRef())));
 	
 	// End is one hour after start
-	iCal::CICalendarDuration duration(60 * 60);
+	iCal::CICalendarDuration duration(60L * 60);
 	
 	// Set event with initial timing
 	vevent->EditTiming(dtstart, duration);

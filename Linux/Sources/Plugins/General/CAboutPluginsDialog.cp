@@ -45,6 +45,15 @@
 CAboutPluginsDialog::CAboutPluginsDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mName = NULL;
+	mVersion = NULL;
+	mType = NULL;
+	mManufacturer = NULL;
+	mDescription = NULL;
+	mMode = NULL;
+	mOKBtn = NULL;
+	mRegisterBtn = NULL;
+	mList = NULL;
 }
 
 

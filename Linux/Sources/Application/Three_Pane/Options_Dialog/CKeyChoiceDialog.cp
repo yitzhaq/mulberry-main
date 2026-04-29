@@ -37,6 +37,7 @@ CKeyTrap::CKeyTrap(const JCharacter* text, JXContainer* enclosure,
 			 const JCoordinate w, const JCoordinate h)
 	: JXStaticText(text, enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mDialog = NULL;
 	mKey = 0;
 	WantInput(kTrue, kTrue, kTrue, kTrue);
 }

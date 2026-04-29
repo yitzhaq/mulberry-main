@@ -41,6 +41,11 @@
 CAcceptCertDialog::CAcceptCertDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mCertificate = NULL;
+	mAcceptOnceBtn = NULL;
+	mCancelBtn = NULL;
+	mAcceptSaveBtn = NULL;
+	mErrors = NULL;
 }
 
 void CAcceptCertDialog::OnCreate()

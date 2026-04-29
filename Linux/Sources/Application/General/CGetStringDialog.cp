@@ -31,7 +31,12 @@
 
 CGetStringDialog::CGetStringDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
-{}
+{
+	mPromptText = NULL;
+	mStringInput = NULL;
+	mOkBtn = NULL;
+	mCancelBtn = NULL;
+}
 
 void CGetStringDialog::OnCreate()
 {

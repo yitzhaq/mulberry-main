@@ -40,6 +40,14 @@
 CSpellOptionsDialog::CSpellOptionsDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mAutoPositionDialog = NULL;
+	mSpellOnSend = NULL;
+	mSpellAsYouType = NULL;
+	mSpellColourBackground = NULL;
+	mSpellBackgroundColour = NULL;
+	mDictionaries = NULL;
 }
 
 // Default destructor

@@ -57,10 +57,10 @@ public:
 	// Actual plug-in class
 
 	CAuthPlugin(fspec files) :
-		CPlugin(files) {}
+		CPlugin(files) { mAuthUIType = eAuthUserPswd; }
 	CAuthPlugin(const CAuthPlugin& copy) :
 		CPlugin(copy)
-		{ mAuthTypeID = copy.mAuthTypeID; }
+		{ mAuthTypeID = copy.mAuthTypeID; mPrefsDescriptor = copy.mPrefsDescriptor; mAuthUIType = copy.mAuthUIType; }
 	virtual ~CAuthPlugin() {}
 
 	// Initialisation

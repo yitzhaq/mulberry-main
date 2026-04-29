@@ -43,12 +43,24 @@ extern const char* cSMIMEName;
 // CPrefsSecurity dialog
 
 CPrefsSecurity::CPrefsSecurity( JXContainer* enclosure,
-														const HSizingOption hSizing, 
+														const HSizingOption hSizing,
 														const VSizingOption vSizing,
 														const JCoordinate x, const JCoordinate y,
-														const JCoordinate w, const JCoordinate h) 
+														const JCoordinate w, const JCoordinate h)
 	:CPrefsPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mPreferredPlugin = NULL;
+	mUseMIMESecurity = NULL;
+	mEncryptToSelf = NULL;
+	mCachePassphrase = NULL;
+	mAutoVerify = NULL;
+	mAutoDecrypt = NULL;
+	mWarnUnencryptedSend = NULL;
+	mUseErrorAlerts = NULL;
+	mSigAlert = NULL;
+	mSigPlaySound = NULL;
+	mSigSound = NULL;
+	mCertificatesBtn = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

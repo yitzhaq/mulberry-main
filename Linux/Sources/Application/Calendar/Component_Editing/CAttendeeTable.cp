@@ -37,6 +37,8 @@ CAttendeeTable::CAttendeeTable(JXScrollbarSet* scrollbarSet,
 					 const JCoordinate w, const JCoordinate h) :
 	CTableDragAndDrop(scrollbarSet, enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAttendees = NULL;
+	mOrganizer = NULL;
 	mTableGeometry = new CTableRowGeometry(this, w, 18);
 	mTableSelector = new CTableRowSelector(this);
 }

@@ -53,6 +53,19 @@ cdstrvect CFindReplaceWindow::sReplaceHistory;
 CFindReplaceWindow::CFindReplaceWindow(JXDirector* owner)
 	: JXWindowDirector(owner)
 {
+	mFindBtn = NULL;
+	mReplaceBtn = NULL;
+	mReplaceFindBtn = NULL;
+	mReplaceAllBtn = NULL;
+	mFindText = NULL;
+	mFindPopup = NULL;
+	mReplaceText = NULL;
+	mReplacePopup = NULL;
+	mCaseSensitive = NULL;
+	mBackwards = NULL;
+	mWrap = NULL;
+	mEntireWord = NULL;
+	mTargetDisplay = NULL;
 	sFindReplaceWindow = this;
 }
 

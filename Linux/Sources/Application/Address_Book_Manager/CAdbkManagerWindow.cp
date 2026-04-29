@@ -48,6 +48,8 @@ CAdbkManagerWindow*	CAdbkManagerWindow::sAdbkManager = nil;
 CAdbkManagerWindow::CAdbkManagerWindow(JXDirector* owner)
 	: CTableViewWindow(owner)
 {
+	mToolbarView = NULL;
+	mAdbkView = NULL;
 	sAdbkManager = this;
 
 	// Add to list

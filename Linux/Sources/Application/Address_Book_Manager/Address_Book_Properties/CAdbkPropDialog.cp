@@ -47,6 +47,11 @@
 CAdbkPropDialog::CAdbkPropDialog(JXDirector* supervisor)
 	: CPropDialog(supervisor)
 {
+	mGeneralBtn = NULL;
+	mAccessBtn = NULL;
+	mCards = NULL;
+	mOKBtn = NULL;
+	mAdbkList = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

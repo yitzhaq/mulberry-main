@@ -24,6 +24,7 @@
 CCalendarViewPrintout::CCalendarViewPrintout(LStream *inStream) :
 	LPrintout(inStream)
 {
+	mPage = NULL;
 }
 
 

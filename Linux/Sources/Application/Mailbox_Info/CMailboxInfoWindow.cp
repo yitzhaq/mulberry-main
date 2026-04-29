@@ -40,6 +40,10 @@
 CMailboxInfoWindow::CMailboxInfoWindow(JXDirector* owner)
 	: CMailboxWindow(owner)
 {
+	mToolbarView = NULL;
+	mSplitterView = NULL;
+	mMailboxInfoView = NULL;
+	mMessageView = NULL;
 }
 
 

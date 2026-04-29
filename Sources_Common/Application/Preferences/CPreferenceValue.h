@@ -61,7 +61,7 @@ template <class T> class CPreferenceValue
 	friend class CPreferences;
 
 public:
-	CPreferenceValue() {}
+	CPreferenceValue() { mValue = T(); }
 	explicit CPreferenceValue(const T& value)
 		{ mValue = value; }
 	explicit CPreferenceValue(const CPreferenceValue<T>& copy)

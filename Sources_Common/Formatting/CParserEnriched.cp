@@ -63,6 +63,7 @@ void CParserEnriched::InitParserEnriched()
 	mFormatList = NULL;
 	mUseStyles = true;
 	mDoAlignment = true;
+	mStrLen = 0;
 	mTxt = NULL;
 	mStack = new CParserEnrichedStack;
 

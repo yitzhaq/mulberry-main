@@ -44,6 +44,31 @@
 CMatchOptionsDialog::CMatchOptionsDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mViewGroup = NULL;
+	mMatchUsingGroup = NULL;
+	mMatchIfGroup = NULL;
+	mNew = NULL;
+	mUnseen = NULL;
+	mImportant = NULL;
+	mAnswered = NULL;
+	mDeleted = NULL;
+	mDraft = NULL;
+	mSentToday = NULL;
+	mSentSinceYesterday = NULL;
+	mSentThisWeek = NULL;
+	mSentWithin7Days = NULL;
+	mSentByMe = NULL;
+	mSentToMe = NULL;
+	mSentToList = NULL;
+	mSelectedTo = NULL;
+	mSelectedFrom = NULL;
+	mSelectedCorrespondents = NULL;
+	mSelectedSubjects = NULL;
+	mSelectedDates = NULL;
+	mClearBtn = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
+	mTable = NULL;
 }
 
 // Default destructor

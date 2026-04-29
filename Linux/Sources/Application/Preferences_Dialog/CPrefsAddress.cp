@@ -40,12 +40,14 @@
 // CPrefsAddress property page
 
 CPrefsAddress::CPrefsAddress(JXContainer* enclosure,
-								const HSizingOption hSizing, 
+								const HSizingOption hSizing,
 								const VSizingOption vSizing,
 								const JCoordinate x, const JCoordinate y,
-								const JCoordinate w, const JCoordinate h) 
+								const JCoordinate w, const JCoordinate h)
 	:CPrefsPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAddressChoiceGroup = NULL;
+	mTabs = NULL;
 }
 
 // Set up params for DDX

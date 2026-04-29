@@ -53,6 +53,7 @@
 CPswdChangePlugin::CPswdChangePlugin(fspec file_spec) :
 		CPlugin(file_spec)
 {
+	::memset(&mPswdChangeInfo, 0, sizeof(mPswdChangeInfo));
 	mUsePreferences = true;
 	mEnabled.Value() = CAdminLock::sAdminLock.mUsePASSD;
 }

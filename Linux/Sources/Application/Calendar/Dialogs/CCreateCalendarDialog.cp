@@ -53,6 +53,16 @@
 CCreateCalendarDialog::CCreateCalendarDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mDirectoryGroup = NULL;
+	mCalendar = NULL;
+	mDirectory = NULL;
+	mCalendarName = NULL;
+	mWhichPath = NULL;
+	mFullPath = NULL;
+	mUseDirectory = NULL;
+	mInHierarchy = NULL;
+	mAccount = NULL;
+	mAccountPopup = NULL;
 }
 
 // Default destructor

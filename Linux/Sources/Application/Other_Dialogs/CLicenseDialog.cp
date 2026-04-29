@@ -44,6 +44,10 @@
 CLicenseDialog::CLicenseDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mLicenseText = NULL;
+	mLogo = NULL;
 }
 
 void CLicenseDialog::OnCreate()

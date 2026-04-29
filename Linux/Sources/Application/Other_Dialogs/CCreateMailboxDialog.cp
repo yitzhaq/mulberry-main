@@ -45,6 +45,16 @@
 CCreateMailboxDialog::CCreateMailboxDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mMailboxName = NULL;
+	mWhichPath = NULL;
+	mFullPathnameBtn = NULL;
+	mInHierBtn = NULL;
+	mInHierarchy = NULL;
+	mAccount = NULL;
+	mAccountMenu = NULL;
+	mSubscribe = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 

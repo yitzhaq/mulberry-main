@@ -93,6 +93,14 @@ CRulesActionLocal::CRulesActionLocal(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h) :
 	CRulesAction(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mUp = NULL;
+	mDown = NULL;
+	mPopup1 = NULL;
+	mPopup2 = NULL;
+	mOptionsBtn = NULL;
+	mText = NULL;
+	mMailboxPopup = NULL;
+	mSaveSingle = NULL;
 }
 
 // Default destructor

@@ -38,6 +38,8 @@
 CViewCertDialog::CViewCertDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mCertificate = NULL;
+	mOKBtn = NULL;
 }
 
 void CViewCertDialog::OnCreate()

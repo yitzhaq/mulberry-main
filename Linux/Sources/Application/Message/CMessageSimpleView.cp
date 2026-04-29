@@ -29,12 +29,13 @@
 
 // Default constructor
 CMessageSimpleView::CMessageSimpleView(JXContainer* enclosure,
-						 const HSizingOption hSizing, 
+						 const HSizingOption hSizing,
 						 const VSizingOption vSizing,
 						 const JCoordinate x, const JCoordinate y,
-						 const JCoordinate w, const JCoordinate h) 
+						 const JCoordinate w, const JCoordinate h)
 	: CBaseView(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mToolbar = NULL;
 }
 
 // Default destructor

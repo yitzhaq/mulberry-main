@@ -43,6 +43,8 @@
 CSplashScreen::CSplashScreen(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kFalse)
 {
+	mSplash = NULL;
+	mVersion = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

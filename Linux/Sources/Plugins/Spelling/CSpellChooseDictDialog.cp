@@ -38,6 +38,9 @@
 CSpellChooseDictDialog::CSpellChooseDictDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mDictionaries = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 // Default destructor

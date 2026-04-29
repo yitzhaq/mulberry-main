@@ -44,6 +44,8 @@
 CAboutDialog::CAboutDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mOKBtn = NULL;
+	mVersion = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

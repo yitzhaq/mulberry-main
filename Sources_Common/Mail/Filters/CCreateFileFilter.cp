@@ -66,8 +66,13 @@ void CCreateFileFilter::InitCreateFileFilter()
 	mFileStream = NULL;
 	mFileCreated = false;
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
+	::memset(&mDecodedInfo, 0, sizeof(mDecodedInfo));
+	mUseRsrc = false;
+#else
+	mDummy = 0;
 	mUseRsrc = false;
 #endif
+	mDecodedNameLen = 0;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

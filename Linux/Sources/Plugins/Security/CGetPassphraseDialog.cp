@@ -44,6 +44,12 @@
 CGetPassphraseDialog::CGetPassphraseDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mPassphrase1 = NULL;
+	mPassphrase2 = NULL;
+	mKeyPopup = NULL;
+	mHideTyping = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 void CGetPassphraseDialog::OnCreate()

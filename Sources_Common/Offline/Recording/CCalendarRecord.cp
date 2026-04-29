@@ -32,6 +32,8 @@
 
 CCalendarRecord::CCalendarRecord()
 {
+	mPlayRemote = NULL;
+	mPlayLocal = NULL;
 }
 
 #pragma mark ____________________________Calendar actions

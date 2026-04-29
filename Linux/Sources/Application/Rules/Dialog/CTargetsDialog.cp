@@ -60,6 +60,19 @@ const char* cTargetAction =
 CTargetsDialog::CTargetsDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mName = NULL;
+	mEnabled = NULL;
+	mApplyPopup = NULL;
+	mScroller = NULL;
+	mScrollPane = NULL;
+	mCriteria = NULL;
+	mMoreTargetsBtn = NULL;
+	mFewerTargetsBtn = NULL;
+	mClearTargetsBtn = NULL;
+	mBottomArea = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
+	mTarget = NULL;
 }
 
 // Default destructor
