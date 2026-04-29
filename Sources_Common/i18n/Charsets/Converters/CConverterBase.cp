@@ -257,6 +257,11 @@ void CConverterBase::ToUTF16(const char* str, size_t len, std::ostream& wout)
 		{
 			// Non-Latin-1 on Linux/Mac — text substitution
 
+			if (IsUnicodeLineSeparator(wc))
+			{
+				OutputWChar(wout, '\n');
+				continue;
+			}
 			if (IsZeroWidthSeparator(wc))
 			{
 				OutputWChar(wout, ' ');

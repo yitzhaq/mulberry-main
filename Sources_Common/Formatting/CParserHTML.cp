@@ -396,8 +396,11 @@ bool CParserHTML::GetLatinChar(wchar_t charNum, std::ostream* out, unsigned long
 	if (!charNum)
 		charNum = ' ';
 
+	// Unicode line/paragraph separators → newline
+	if (IsUnicodeLineSeparator(charNum))
+		charNum = '\n';
 	// Replace zero-width separators with space
-	if (IsZeroWidthSeparator(charNum))
+	else if (IsZeroWidthSeparator(charNum))
 		charNum = ' ';
 	// Drop invisible formatting characters
 	else if (IsInvisibleUnicode(charNum))
@@ -540,8 +543,11 @@ bool CParserHTML::GetLatinCharUTF8(wchar_t charNum, std::ostream* sout, unsigned
 	if (!charNum)
 		charNum = ' ';
 
+	// Unicode line/paragraph separators → newline
+	if (IsUnicodeLineSeparator(charNum))
+		charNum = '\n';
 	// Replace zero-width separators with space
-	if (IsZeroWidthSeparator(charNum))
+	else if (IsZeroWidthSeparator(charNum))
 		charNum = ' ';
 	// Drop invisible formatting characters
 	else if (IsInvisibleUnicode(charNum))
@@ -1578,6 +1584,21 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 				{
 					std::unique_ptr<unichar_t> lformat(::unistrdup(format.get()));
 					::unistrlower(lformat.get());
+
+					// Skip elements with display:none (preheader text, hidden content)
+					{
+						cdustring uwide(lformat.get());
+						cdstring narrow = uwide.ToUTF8();
+						if (::strstr(narrow.c_str(), "display:none") || ::strstr(narrow.c_str(), "display: none"))
+						{
+							char* pname = narrow.c_str_mod();
+							while(*pname && *pname != ' ')
+								pname++;
+							*pname = 0;
+							p = CommentTag(p, narrow.c_str(), ::strlen(narrow.c_str()));
+							break;
+						}
+					}
 
 					// Trim to starting tag
 					{

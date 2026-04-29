@@ -54,6 +54,10 @@ cdstring FilterUTF8ForDisplay(const char* txt)
 			// Copy original UTF-8 bytes (not raw Latin-1)
 			result.append((const char*)start, p - start);
 		}
+		else if (IsUnicodeLineSeparator(wc))
+		{
+			result += ' ';
+		}
 		else if (IsZeroWidthSeparator(wc))
 		{
 			result += ' ';

@@ -27,6 +27,12 @@ inline bool IsZeroWidthSeparator(wchar_t wc)
 		   wc == 0x2060;                         // word joiner
 }
 
+// Unicode line/paragraph separators (should render as newline)
+inline bool IsUnicodeLineSeparator(wchar_t wc)
+{
+	return wc == 0x2028 || wc == 0x2029;        // LS, PS
+}
+
 // Characters that should be silently dropped (invisible formatting)
 inline bool IsInvisibleUnicode(wchar_t wc)
 {
