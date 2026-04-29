@@ -22,6 +22,7 @@
 
 #include "CDrawUtils.h"
 #include "CMulberryCommon.h"
+#include <cinttypes>
 #include "CPreferences.h"
 #include "CTableRowSelector.h"
 #include "CTableRowGeometry.h"
@@ -104,28 +105,34 @@ void CQuotaTable::DrawCell(CDC* pDC, const STableCell& inCell, const CRect& inLo
 		// Draw current
 		if (!is_root)
 		{
-			theTxt = item->GetCurrent();
+			char buf[32];
+			::snprintf(buf, sizeof(buf), "%" PRId64, item->GetCurrent());
+			theTxt = buf;
 			::DrawClippedStringUTF8(pDC, theTxt, CPoint(inLocalRect.left, inLocalRect.top + mTextOrigin), inLocalRect, eDrawString_Right);
 		}
 		break;
-	
+
 	case 3:
 		// Draw max
 		if (!is_root)
 		{
-			theTxt = item->GetMax();
+			char buf[32];
+			::snprintf(buf, sizeof(buf), "%" PRId64, item->GetMax());
+			theTxt = buf;
 			::DrawClippedStringUTF8(pDC, theTxt, CPoint(inLocalRect.left, inLocalRect.top + mTextOrigin), inLocalRect, eDrawString_Right);
 		}
 		break;
-	
+
 	case 4:
 		// Draw % used
 		if (!is_root)
 		{
 			if (item->GetMax() > 0)
 			{
-				theTxt = (100* item->GetCurrent()) / item->GetMax();
-				theTxt += '%';
+				char buf[32];
+				::snprintf(buf, sizeof(buf), "%" PRId64 "%%",
+					(int64_t(100) * item->GetCurrent()) / item->GetMax());
+				theTxt = buf;
 			}
 			else
 				theTxt = "-";

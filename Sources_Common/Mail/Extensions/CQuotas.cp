@@ -35,12 +35,12 @@ CQuotaItem::CQuotaItem(const char* txt1, const char* txt2, const char* txt3)
 		mItem = txt1;
 
 	if (txt2)
-		mCurrent = ::atol(txt2);
+		mCurrent = ::strtoll(txt2, NULL, 10);
 	else
 		mCurrent = 0;
 
 	if (txt3)
-		mMax = ::atol(txt3);
+		mMax = ::strtoll(txt3, NULL, 10);
 	else
 		mMax = 0;
 }

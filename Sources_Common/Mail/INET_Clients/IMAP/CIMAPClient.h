@@ -75,6 +75,8 @@ private:
 	bool			mHasThreadSubject;				// Supports THREAD=ORDEREDSUBJECT
 	bool			mHasThreadReferences;			// Supports THREAD=REFERENCES
 	bool			mHasID;							// Supports ID extension (RFC 2971)
+	bool			mHasMove;						// Supports MOVE extension (RFC 6851)
+	bool			mHasESearch;					// Supports ESEARCH extension (RFC 4731)
 	threadvector*	mThreadResults;					// Place to store thread results
 
 	// C O N S T R U C T I O N / D E S T R U C T I O N  M E T H O D S
@@ -130,6 +132,7 @@ protected:
 	virtual void	_UnsubscribeMbox(CMbox* mbox);		// Do unsubscribe mbox
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names);	// Get namespace
 	virtual void	_SendID();					// Send RFC 2971 ID command
+	virtual void	_Enable();					// Send RFC 5161 ENABLE command
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes);		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes);			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) {}		// Starting multiple append
@@ -201,8 +204,13 @@ protected:
 									costream* aStream,
 									unsigned long count = 0,
 									unsigned long start = 1);	// Do copy message to stream
+	virtual void	_MoveMessage(const ulvector& nums,
+									bool uids,
+									CMbox* mbox_to);			// Do move sequence to mailbox
 	virtual bool	_DoesCopy() const							// Does server handle copy?
 		{ return true; }
+	bool			_HasMove() const							// Does server support MOVE?
+		{ return mHasMove; }
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids);	// Expunge uids
 	virtual bool	_DoesExpungeMessage() const					// Does server handle copy?
 		{ return mHasUIDPlus; }
@@ -254,6 +262,7 @@ protected:
 								char delim,
 								NMbox::EFlags mbox_flags);			// Parse IMAP MAILBOX reply
 	void	IMAPParseSearch(char** txt);						// Parse IMAP SEARCH reply
+	void	IMAPParseESearch(char** txt);					// Parse IMAP ESEARCH reply (RFC 4731)
 	void	IMAPParseStatus(char** txt);						// Parse IMAP STATUS reply
 
 	void	IMAPParseFetch(char** txt);							// Parse IMAP FETCH reply

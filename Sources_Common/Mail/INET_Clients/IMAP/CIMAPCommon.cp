@@ -38,6 +38,14 @@ const char* cIMAP4 =					"IMAP4";
 const char* cIMAP4REV1 =				"IMAP4REV1";
 const char* cIMAP_ACL =					"ACL";
 const char* cIMAP_QUOTA =				"QUOTA";
+const char* cIMAP_QUOTA_RES =			"QUOTA=RES-";
+const char* cIMAP_MOVE =				"MOVE";
+const char* cIMAP_SASL_IR =			"SASL-IR";
+const char* cIMAP_ENABLE =				"ENABLE";
+const char* cIMAP_ESEARCH =			"ESEARCH";
+const char* cENABLE =					"ENABLE";
+const char* cESEARCH =					"ESEARCH";
+const char* cRETURN_ALL =				" RETURN (ALL)";
 const char* cIMAP_LITERAL_PLUS =		"LITERAL+";
 const char* cIMAP_NAMESPACE =			"NAMESPACE";
 const char* cIMAP_UIDPLUS =				"UIDPLUS";
@@ -64,6 +72,7 @@ const char* cSTATUS =					"STATUS";
 const char* cEXPUNGE =					"EXPUNGE";
 const char* cCLOSE =					"CLOSE";
 const char* cCOPY =						"COPY";
+const char* cMOVE =						"MOVE";
 const char* cFETCH =					"FETCH";
 const char* cSTORE =					"STORE";
 const char* cPARTIAL =					"PARTIAL";
@@ -78,6 +87,7 @@ const char* cSUBSCRIBEMBOX4 =			"SUBSCRIBE";
 const char* cUNSUBSCRIBEMBOX4 =			"UNSUBSCRIBE";
 
 const char* cUIDCOPY					= "UID COPY";
+const char* cUIDMOVE					= "UID MOVE";
 const char* cUIDFETCH					= "UID FETCH";
 const char* cUIDSTORE					= "UID STORE";
 const char* cUIDSEARCH					= "UID SEARCH";
@@ -136,6 +146,7 @@ const char* cFLAGDELETED =				"\\Deleted";
 const char* cFLAGSEEN =					"\\Seen";
 const char* cFLAGDRAFT =				"\\Draft";
 const char* cFLAGMDNSENT =				"$MDNSent";
+const char* cFLAGFORWARDED =			"$Forwarded";
 const char* cFLAGLABELS[] =				{"Cyrusoft.Mulberry.01",
 										 "Cyrusoft.Mulberry.02",
 										 "Cyrusoft.Mulberry.03",

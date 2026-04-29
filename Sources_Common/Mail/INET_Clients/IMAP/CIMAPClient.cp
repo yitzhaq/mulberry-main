@@ -168,6 +168,8 @@ void CIMAPClient::_InitCapability()
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
 	mHasID = false;
+	mHasMove = false;
+	mHasESearch = false;
 
 	mAuthLoginAllowed = false;
 	mAuthPlainAllowed = false;
@@ -202,7 +204,8 @@ void CIMAPClient::_ProcessCapability()
 
 	// Look for other capabilities
 	GetMboxOwner()->SetHasACL(mLastResponse.CheckUntagged(cIMAP_ACL, true));
-	GetMboxOwner()->SetHasQuota(mLastResponse.CheckUntagged(cIMAP_QUOTA, true));
+	GetMboxOwner()->SetHasQuota(mLastResponse.CheckUntagged(cIMAP_QUOTA, true) ||
+								   mLastResponse.CheckUntagged(cIMAP_QUOTA_RES, false));
 	mAsyncLiteral = mLastResponse.CheckUntagged(cIMAP_LITERAL_PLUS, true);
 	mHasNamespace = mLastResponse.CheckUntagged(cIMAP_NAMESPACE, true);
 	mHasUIDPlus = mLastResponse.CheckUntagged(cIMAP_UIDPLUS, true);
@@ -211,11 +214,14 @@ void CIMAPClient::_ProcessCapability()
 	mHasThreadSubject = mLastResponse.CheckUntagged(cIMAP_THREAD_SUBJECT, true);
 	mHasThreadReferences = mLastResponse.CheckUntagged(cIMAP_THREAD_REFERENCES, true);
 	mHasID = mLastResponse.CheckUntagged(cIMAP_ID, true);
+	mHasMove = mLastResponse.CheckUntagged(cIMAP_MOVE, true);
+	mHasESearch = mLastResponse.CheckUntagged(cIMAP_ESEARCH, true);
 
 	mAuthLoginAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHLOGIN, true);
 	mAuthPlainAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHPLAIN, true);
 	mAuthAnonAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHANON, true);
 	mSTARTTLSAllowed = mLastResponse.CheckUntagged(cSTARTTLS, true);
+	mAuthInitialClientData = mLastResponse.CheckUntagged(cIMAP_SASL_IR, true);
 }
 
 // Handle failed capability response
@@ -334,8 +340,11 @@ void CIMAPClient::_PostProcess()
 				else if (CheckStrAdv(&p,cFLAGMDNSENT))
 					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eMDNSent);
 
+				else if (CheckStrAdv(&p,cFLAGFORWARDED))
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eForwarded);
+
 				else if (CheckStrAdv(&p,cFLAGKEYWORDS))
-					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent);
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent | NMessage::eForwarded);
 
 				else
 				{
@@ -840,6 +849,15 @@ void CIMAPClient::_SendID()
 	}
 }
 
+// Send ENABLE command (RFC 5161)
+void CIMAPClient::_Enable()
+{
+	if (!mLastResponse.CheckUntagged(cIMAP_ENABLE, true))
+		return;
+
+	// Nothing to enable yet — CONDSTORE/QRESYNC will add extensions here
+}
+
 // Find all subscribed mboxes
 void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 {
@@ -997,6 +1015,12 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 					flags += cFLAGMDNSENT;
 					added = true;
 				}
+				if (theMsg->IsForwarded())
+				{
+					if (added) flags += SPACE;
+					flags += cFLAGFORWARDED;
+					added = true;
+				}
 				for(unsigned long i = 0; i < NMessage::eMaxLabels; i++)
 				{
 					if (theMsg->HasLabel(i))
@@ -1099,6 +1123,8 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 		// Issue SEARCH call
 		INETStartSend("Status::IMAP::Searching", "Error::IMAP::OSErrSearch", "Error::IMAP::NoBadSearch", GetCurrentMbox()->GetName());
 		INETSendString(uids ? cUIDSEARCH : cSEARCH);
+		if (mHasESearch)
+			INETSendString(cRETURN_ALL);
 
 		// Parse out search hierarchy!
 		AddSearchItem(spec);
@@ -1722,6 +1748,17 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 		oserr_strid = "Error::IMAP::OSErrLabelMsg";
 		nobad_strid = "Error::IMAP::NoBadLabelMsg";
 	}
+	if ((flags & NMessage::eForwarded) && (mVersion != eIMAP2bis))	// Only IMAP4 and above
+	{
+		if (got_one)
+			flag += ' ';
+		flag += cFLAGFORWARDED;
+		got_one = true;
+
+		status_strid = "Status::IMAP::MarkingLabel";
+		oserr_strid = "Error::IMAP::OSErrLabelMsg";
+		nobad_strid = "Error::IMAP::NoBadLabelMsg";
+	}
 	if ((flags & NMessage::eLabels) && (mVersion != eIMAP2bis))	// Only IMAP4 and above
 	{
 		// Scan over all labels and add each
@@ -1800,6 +1837,45 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 	}
 
 } // CIMAPClient::_CopyMessage
+
+// Do move message to mailbox (RFC 6851)
+void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to)
+{
+	// Get full name
+	cdstring wd_name = mbox_to->GetName();
+	if (mVersion == eIMAP4rev1)
+		wd_name.ToModifiedUTF7(true);
+
+	// Send MOVE message to server
+	CSequence sequence(nums);
+	const char* msgnum_txt = sequence.GetSequenceText();
+
+	INETStartSend("Status::IMAP::Moving", "Error::IMAP::OSErrMoveMsg", "Error::IMAP::NoBadMoveMsg", GetCurrentMbox()->GetName());
+	INETSendString(uids ? cUIDMOVE : cMOVE, eQueueNoFlags);
+	INETSendString(cSpace, eQueueNoFlags);
+	INETSendString(msgnum_txt, eQueueNoFlags);
+	INETSendString(cSpace, eQueueNoFlags);
+	INETSendString(wd_name, eQueueProcess);
+	INETFinishSend();
+
+	// Servers with UIDPLUS SHOULD send COPYUID in OK response (RFC 6851 §4.3)
+	if (mLastResponse.FindTagged(cCOPYUID))
+	{
+		const cdstring& temp = mLastResponse.GetTagged();
+		const char* p = ::strstrnocase(temp, cCOPYUID);
+		if (p)
+		{
+			p += ::strlen(cCOPYUID);
+
+			unsigned long uidv = ::strtoul(p, const_cast<char**>(&p), 10);
+			CSequence source;
+			CSequence destination;
+			source.ParseSequence(&p, nums.size());
+			destination.ParseSequence(&p, nums.size());
+		}
+	}
+
+} // CIMAPClient::_MoveMessage
 
 // Do copy message to stream
 void CIMAPClient::_CopyMessage(unsigned long msg_num, bool uids, costream* aStream, unsigned long count, unsigned long start)
@@ -2270,6 +2346,13 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 		IMAPParseSearch(txt);
 	}
 
+	// Got ESEARCH spec (RFC 4731)
+	else if (::stradvtokcmp(txt,cESEARCH)==0)
+	{
+		response->code = cStarSEARCH;
+		IMAPParseESearch(txt);
+	}
+
 	// Got status
 	else if (::stradvtokcmp(txt,cSTATUS)==0)
 	{
@@ -2487,11 +2570,11 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		else if (CheckStrAdv(&p,cMBOXFLAGUNMARKED))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eUnMarked);
 
-		//else if (CheckStrAdv(&p,cMBOXHASCHILDREN))
-		//	new_flags = (NMbox::EFlags) (new_flags | NMbox::eHasExpanded | eHasInferiors);
+		else if (CheckStrAdv(&p, cMBOXFLAGUNMARKEDHASCHILDREN))
+			new_flags = (NMbox::EFlags) (new_flags | NMbox::eHasExpanded | NMbox::eHasInferiors);
 
-		//else if (CheckStrAdv(&p,cMBOXHASNOCHILDREN))
-		//	new_flags = (NMbox::EFlags) (new_flags | NMbox::eHasExpanded);
+		else if (CheckStrAdv(&p, cMBOXFLAGUNMARKEDHASNOCHILDREN))
+			new_flags = (NMbox::EFlags) (new_flags | NMbox::eHasExpanded);
 
 		else
 		{
@@ -2651,6 +2734,54 @@ void CIMAPClient::IMAPParseSearch(char** txt)
 		mCurrentResults->push_back(msg_num);
 
 } // CIMAPClient::IMAPParseSearch
+
+// Parse ESEARCH response (RFC 4731)
+void CIMAPClient::IMAPParseESearch(char** txt)
+{
+	if (!mCurrentResults)
+		return;
+
+	char* p = *txt;
+
+	// Skip correlator "(TAG ...)" if present
+	while(*p == ' ') p++;
+	if (*p == '(')
+	{
+		while(*p && *p != ')') p++;
+		if (*p == ')') p++;
+	}
+
+	// Skip optional UID indicator
+	while(*p == ' ') p++;
+	if (::strncasecmp(p, "UID", 3) == 0)
+		p += 3;
+
+	// Look for ALL result
+	while(*p)
+	{
+		while(*p == ' ') p++;
+		if (::strncasecmp(p, "ALL", 3) == 0)
+		{
+			p += 3;
+			while(*p == ' ') p++;
+			CSequence seq;
+			seq.ParseSequence(const_cast<const char**>(&p));
+			for(CSequence::const_iterator iter = seq.begin(); iter != seq.end(); iter++)
+				mCurrentResults->push_back(*iter);
+			break;
+		}
+		else
+		{
+			// Skip unknown keyword (COUNT, MIN, MAX, MODSEQ, etc.) and its value
+			while(*p && *p != ' ') p++;
+			while(*p == ' ') p++;
+			if (*p == '(' || isdigit((unsigned char)*p))
+				::strtoul(p, &p, 10);
+		}
+	}
+
+	*txt = p;
+}
 
 // Parse status message
 void CIMAPClient::IMAPParseStatus(char** txt)
@@ -3670,6 +3801,9 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 
 		else if (CheckStrAdv(&p,cFLAGMDNSENT))
 			new_flags.Set(NMessage::eMDNSent);
+
+		else if (CheckStrAdv(&p,cFLAGFORWARDED))
+			new_flags.Set(NMessage::eForwarded);
 
 		else
 		{

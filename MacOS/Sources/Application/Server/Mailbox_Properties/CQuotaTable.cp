@@ -22,6 +22,7 @@
 #include "CMulberryCommon.h"
 #include "CPreferences.h"
 #include "CTableMultiRowSelector.h"
+#include <cinttypes>
 #include "CTableRowGeometry.h"
 
 #include <LDropFlag.h>
@@ -120,7 +121,9 @@ void CQuotaTable::DrawCell(const STableCell &inCell, const Rect &inLocalRect)
 		// Draw current
 		if (!is_root)
 		{
-			theTxt = item->GetCurrent();
+			char buf[32];
+			::snprintf(buf, sizeof(buf), "%" PRId64, item->GetCurrent());
+			theTxt = buf;
 			::MoveTo(inLocalRect.left, inLocalRect.bottom - mTextDescent);
 			::DrawClippedStringUTF8(theTxt, inLocalRect.right - inLocalRect.left, eDrawString_Right);
 		}
@@ -130,7 +133,9 @@ void CQuotaTable::DrawCell(const STableCell &inCell, const Rect &inLocalRect)
 		// Draw max
 		if (!is_root)
 		{
-			theTxt = item->GetMax();
+			char buf[32];
+			::snprintf(buf, sizeof(buf), "%" PRId64, item->GetMax());
+			theTxt = buf;
 			::MoveTo(inLocalRect.left, inLocalRect.bottom - mTextDescent);
 			::DrawClippedStringUTF8(theTxt, inLocalRect.right - inLocalRect.left, eDrawString_Right);
 		}
@@ -142,8 +147,10 @@ void CQuotaTable::DrawCell(const STableCell &inCell, const Rect &inLocalRect)
 		{
 			if (item->GetMax() > 0)
 			{
-				theTxt = (100* item->GetCurrent()) / item->GetMax();
-				theTxt += '%';
+				char buf[32];
+				::snprintf(buf, sizeof(buf), "%" PRId64 "%%",
+					(int64_t(100) * item->GetCurrent()) / item->GetMax());
+				theTxt = buf;
 			}
 			else
 				theTxt = "-";

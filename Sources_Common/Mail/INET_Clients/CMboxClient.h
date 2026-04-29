@@ -83,6 +83,7 @@ public:
 	virtual void	_UnsubscribeMbox(CMbox* mbox) = 0;		// Do unsubscribe mbox
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names) = 0;	// Get namespace
 	virtual void	_SendID() {}					// Send RFC 2971 ID command (IMAP-specific, default no-op)
+	virtual void	_Enable() {}					// Send RFC 5161 ENABLE command (IMAP-specific, default no-op)
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes) = 0;		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes) = 0;			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) = 0;			// Starting multiple append
@@ -137,6 +138,11 @@ public:
 									unsigned long count = 0,
 									unsigned long start = 1) = 0;	// Do copy message to stream
 	virtual bool	_DoesCopy() const = 0;							// Does server handle copy?
+
+	virtual void	_MoveMessage(const ulvector& nums,
+									bool uids,
+									CMbox* mbox_to) {}				// Move message (default: no-op)
+	virtual bool	_HasMove() const { return false; }				// Does server support MOVE?
 
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids) = 0;			// Expunge uids
 	virtual bool	_DoesExpungeMessage() const = 0;				// Does server handle copy?

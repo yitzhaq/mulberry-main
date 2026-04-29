@@ -66,6 +66,8 @@
 	<string id="Error::IMAP::NoBadLabelMsg">Could not change a label for message:\n</string>
 	<string id="Error::IMAP::OSErrCopyMsg">while copying message.</string>
 	<string id="Error::IMAP::NoBadCopyMsg">Could not copy message:\n</string>
+	<string id="Error::IMAP::OSErrMoveMsg">while moving message.</string>
+	<string id="Error::IMAP::NoBadMoveMsg">Could not move message:\n</string>
 	<string id="Error::IMAP::OSErrCheck">while checking mailbox.</string>
 	<string id="Error::IMAP::NoBadCheck">Could not check mailbox:\n</string>
 	<string id="Error::IMAP::OSErrSort">while sorting mailbox.</string>

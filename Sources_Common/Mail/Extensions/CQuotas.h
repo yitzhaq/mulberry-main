@@ -22,6 +22,7 @@
 
 #include "cdstring.h"
 
+#include <cstdint>
 #include <vector>
 
 // Typedefs
@@ -53,20 +54,20 @@ public:
 	const cdstring GetItem() const
 		{ return mItem; }
 
-	void SetCurrent(long current)
+	void SetCurrent(int64_t current)
 		{ mCurrent = current; }
-	long GetCurrent() const
+	int64_t GetCurrent() const
 		{ return mCurrent; }
 
-	void SetMax(long max)
+	void SetMax(int64_t max)
 		{ mMax = max; }
-	long GetMax() const
+	int64_t GetMax() const
 		{ return mMax; }
 
 private:
 	cdstring	mItem;					// Description of item
-	long		mCurrent;				// Current usage
-	long		mMax;					// Maximum allowed usage
+	int64_t		mCurrent;				// Current usage (RFC 9208: 63-bit)
+	int64_t		mMax;					// Maximum allowed usage
 };
 
 // CQuotaRoot: contains list of quota items

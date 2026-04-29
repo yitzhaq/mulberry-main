@@ -49,6 +49,7 @@
 	<string id="Status::IMAP::MarkingLabel">Changing message label...</string>
 	<string id="Status::IMAP::Copying">Copying message...</string>
 	<string id="Status::IMAP::CopyingProgress">Copying message %d of %d...</string>
+	<string id="Status::IMAP::Moving">Moving message...</string>
 	<string id="Status::IMAP::Checking">Checking mailbox...</string>
 	<string id="Status::IMAP::MailboxFind">Found %d mailboxes...</string>
 	<string id="Status::IMAP::SubscribeFind">Found %d subscribed mailboxes...</string>
