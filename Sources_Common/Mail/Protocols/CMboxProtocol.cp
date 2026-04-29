@@ -665,6 +665,9 @@ void CMboxProtocol::Logon()
 	// Send RFC 2971 ID command (IMAP only, for bug reports and statistics)
 	mClient->_SendID();
 
+	// Send RFC 5161 ENABLE command (IMAP only)
+	mClient->_Enable();
+
 	// Do not reset current mbox for clone
 	if (!IsCloned())
 		mCurrent_mbox = NULL;
@@ -2786,6 +2789,45 @@ bool CMboxProtocol::DoesCopy() const
 	return true;
 }
 
+// Move message to mailbox (RFC 6851)
+void CMboxProtocol::MoveMessage(CMbox* mbox_from, const ulvector& nums, bool uids, CMbox* mbox_to)
+{
+	// Must block
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	// Reconnect dead per-mailbox connection
+	if (!IsLoggedOn())
+	{
+		try
+		{
+			Open();
+			Logon();
+			mCurrent_mbox = NULL;
+			SetCurrentMbox(mbox_from, false, mbox_from->IsExamine());
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			return;
+		}
+	}
+	if (GetCurrentMbox() != mbox_from)
+		return;
+
+	// Destination must exist in disconnected mode
+	if (IsDisconnected())
+		TouchMbox(mbox_to);
+
+	mClient->_MoveMessage(nums, uids, mbox_to);
+
+	CMailAccountManager::sMailAccountManager->AddMRUCopyTo(mbox_to);
+}
+
+bool CMboxProtocol::HasMove() const
+{
+	return mClient->_HasMove();
+}
+
 // Do message expunge
 void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids)
 {
@@ -3528,6 +3570,8 @@ void CMboxProtocol::SyncRemote(CMbox* remote, CMbox* local, bool fast, bool part
 				ulvector unset_draft;
 				ulvector set_mdn;
 				ulvector unset_mdn;
+				ulvector set_forwarded;
+				ulvector unset_forwarded;
 
 				// Will throw if a message is out of range
 				try
@@ -3551,6 +3595,8 @@ void CMboxProtocol::SyncRemote(CMbox* remote, CMbox* local, bool fast, bool part
 					unsigned long unset_draft_size = 0;
 					unsigned long set_mdn_size = 0;
 					unsigned long unset_mdn_size = 0;
+					unsigned long set_forwarded_size = 0;
+					unsigned long unset_forwarded_size = 0;
 
 					for(ulvector::const_iterator iter = flag_sync.begin(); iter != flag_sync.end(); iter++)
 					{
@@ -3589,6 +3635,8 @@ void CMboxProtocol::SyncRemote(CMbox* remote, CMbox* local, bool fast, bool part
 							(remote_msg->IsDraft() ? set_draft_size++ : unset_draft_size++);
 						if (remote_msg->IsMDNSent() ^ local_msg->IsMDNSent())
 							(remote_msg->IsMDNSent() ? set_mdn_size++ : unset_mdn_size++);
+						if (remote_msg->IsForwarded() ^ local_msg->IsForwarded())
+							(remote_msg->IsForwarded() ? set_forwarded_size++ : unset_forwarded_size++);
 					}
 
 					set_seen.reserve(set_seen_size);
@@ -3603,6 +3651,8 @@ void CMboxProtocol::SyncRemote(CMbox* remote, CMbox* local, bool fast, bool part
 					unset_draft.reserve(unset_draft_size);
 					set_mdn.reserve(set_mdn_size);
 					unset_mdn.reserve(unset_mdn_size);
+					set_forwarded.reserve(set_forwarded_size);
+					unset_forwarded.reserve(unset_forwarded_size);
 
 					for(ulvector::const_iterator iter = flag_sync.begin(); iter != flag_sync.end(); iter++)
 					{
@@ -3641,6 +3691,8 @@ void CMboxProtocol::SyncRemote(CMbox* remote, CMbox* local, bool fast, bool part
 							(remote_msg->IsAnswered() ? set_draft : unset_draft).push_back(remote_msg->GetUID());
 						if (remote_msg->IsMDNSent() ^ local_msg->IsMDNSent())
 							(remote_msg->IsMDNSent() ? set_mdn : unset_mdn).push_back(remote_msg->GetUID());
+						if (remote_msg->IsForwarded() ^ local_msg->IsForwarded())
+							(remote_msg->IsForwarded() ? set_forwarded : unset_forwarded).push_back(remote_msg->GetUID());
 					}
 				}
 				catch (...)
@@ -3673,6 +3725,10 @@ void CMboxProtocol::SyncRemote(CMbox* remote, CMbox* local, bool fast, bool part
 					local->SetFlagMessage(set_mdn, true, NMessage::eMDNSent, true);
 				if (unset_mdn.size())
 					local->SetFlagMessage(unset_mdn, true, NMessage::eMDNSent, false);
+				if (set_forwarded.size())
+					local->SetFlagMessage(set_forwarded, true, NMessage::eForwarded, true);
+				if (unset_forwarded.size())
+					local->SetFlagMessage(unset_forwarded, true, NMessage::eForwarded, false);
 			}
 		}
 	}

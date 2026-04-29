@@ -411,6 +411,12 @@ protected:
 								unsigned long start = 1);			// Copy message to stream
 			bool	DoesCopy() const;						// Does server do copies?
 
+			void	MoveMessage(CMbox* mbox_from,			// Move message to mailbox (RFC 6851)
+								const ulvector& nums,
+								bool uids,
+								CMbox* mbox_to);
+			bool	HasMove() const;						// Does server support MOVE?
+
 			void	ExpungeMessage(const ulvector& nums, bool uids);		// Do message expunge
 			bool	DoesExpungeMessage() const;					// Does server handle copy?
 

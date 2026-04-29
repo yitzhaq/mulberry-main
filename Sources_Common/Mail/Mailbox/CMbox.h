@@ -604,6 +604,14 @@ public:
 						ulmap& copy_uids,
 						bool sorted = false);					// Copy the specified sequence to another mbox
 
+	bool	MoveMessage(const ulvector& nums,
+						bool uids,
+						CMbox* mbox_to,
+						bool sorted = false);					// Move via MOVE or fall back to copy
+	bool	MoveMessage(unsigned long msg_num,
+						bool uids,
+						CMbox* mbox_to);						// Move single message
+
 	void	CopyMessage(unsigned long msg_num,
 						bool uids,
 						costream* aStream,

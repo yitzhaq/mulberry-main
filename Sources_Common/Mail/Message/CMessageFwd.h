@@ -38,6 +38,7 @@ namespace NMessage
 		eMDNSent =			1L << 6,
 		ePartial =			1L << 7,			// Partially cached message
 		eError =			1L << 8,			// Local message in error state
+		eForwarded =		1L << 9,
 		
 		// Labels
 		eLabel1 =			1L << 12,
@@ -52,10 +53,10 @@ namespace NMessage
 
 		eUserFlags = eAnswered | eFlagged | eDeleted | eSeen | eDraft,
 		eLabels = eLabel1 | eLabel2 | eLabel3 | eLabel4 | eLabel5 | eLabel6 | eLabel7 | eLabel8,
-		eIMAPFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eLabels,
-		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | ePartial | eError | eLabels,
-		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | ePartial | eError | eLabels,
-		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | ePartial | eLabels,
+		eIMAPFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eLabels,
+		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | ePartial | eError | eLabels,
+		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | ePartial | eError | eLabels,
+		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | ePartial | eLabels,
 		
 		// SMTP Flags
 		eSendingNow =		eAnswered,

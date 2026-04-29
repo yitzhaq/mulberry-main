@@ -696,6 +696,12 @@ bool CMessage::IsMDNSent() const
 	return (GetOwner() ? GetOwner()->IsMDNSent() : GetFlags().IsSet(eMDNSent));
 }
 
+// Check Forwarded flag (cannot be inline because of recursion)
+bool CMessage::IsForwarded() const
+{
+	return (GetOwner() ? GetOwner()->IsForwarded() : GetFlags().IsSet(eForwarded));
+}
+
 // Check Partial flag (cannot be inline because of recursion)
 bool CMessage::IsPartial() const
 {

@@ -257,6 +257,7 @@ public:
 	bool IsFlagged() const;										// Check flagged flag
 	bool IsDraft() const;										// Check draft flag
 	bool IsMDNSent() const;										// Check MDNSent flag
+	bool IsForwarded() const;									// Check Forwarded flag
 	bool IsPartial() const;										// Check for partial message
 	bool IsError() const;										// Check for error message
 	bool HasLabel(unsigned long index) const;					// Check for label

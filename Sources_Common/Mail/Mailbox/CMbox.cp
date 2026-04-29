@@ -323,8 +323,9 @@ void CMbox::DetermineAllowedFlags()
 	{
 		NMessage::EFlags flags = NMessage::eNone;
 
-		// Special case support of labels/mdnsent
+		// Special case support of labels/mdnsent/forwarded
 		NMessage::EFlags mdnsent = ((GetAllowedFlags() & NMessage::eMDNSent) != 0) ? NMessage::eMDNSent : NMessage::eNone;
+		NMessage::EFlags forwarded = ((GetAllowedFlags() & NMessage::eForwarded) != 0) ? NMessage::eForwarded : NMessage::eNone;
 		NMessage::EFlags labels = ((GetAllowedFlags() & NMessage::eLabels) != 0) ? NMessage::eLabels : NMessage::eNone;
 
 		// Check MYRIGHTS
@@ -337,14 +338,14 @@ void CMbox::DetermineAllowedFlags()
 		if (myrights.HasRight(CMboxACL::eMboxACL_Seen))
 			flags = static_cast<NMessage::EFlags>(flags | NMessage::eSeen);
 
-		// w - \Answered \Flagged \Draft $MDNSent labels allowed
+		// w - \Answered \Flagged \Draft $MDNSent $Forwarded labels allowed
 		if (myrights.HasRight(CMboxACL::eMboxACL_Write))
 		{
 			if (IsLocalMbox())
 				flags = static_cast<NMessage::EFlags>(flags | NMessage::eAnswered | NMessage::eFlagged | NMessage::eDraft |
-																mdnsent | NMessage::ePartial | NMessage::eError | labels);
+																mdnsent | forwarded | NMessage::ePartial | NMessage::eError | labels);
 			else
-				flags = static_cast<NMessage::EFlags>(flags | NMessage::eAnswered | NMessage::eFlagged | NMessage::eDraft | mdnsent | labels);
+				flags = static_cast<NMessage::EFlags>(flags | NMessage::eAnswered | NMessage::eFlagged | NMessage::eDraft | mdnsent | forwarded | labels);
 		}
 
 		// d - \Deleted allowed
@@ -3685,6 +3686,31 @@ void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& 
 	mbox_to->Check(true, true);
 
 } // CMbox::CopyMessage
+
+// Move message to mailbox — uses MOVE if same server supports it,
+// otherwise returns false so caller can do COPY + DELETE.
+bool CMbox::MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, bool sorted)
+{
+	// MOVE only works within the same server, not on EXAMINEd mailboxes
+	if ((mMailer == mbox_to->mMailer) && mMailer->DoesCopy() && mMailer->HasMove() && !IsExamine())
+	{
+		ulvector actual_nums;
+		MapSorted(actual_nums, nums, !uids && sorted);
+
+		mOpenInfo->mMsgMailer->MoveMessage(this, actual_nums, uids, mbox_to);
+
+		mbox_to->Check(true, true);
+		return true;
+	}
+
+	return false;
+}
+
+bool CMbox::MoveMessage(unsigned long msg_num, bool uids, CMbox* mbox_to)
+{
+	ulvector nums(1, msg_num);
+	return MoveMessage(nums, uids, mbox_to);
+}
 
 // Read the specified message
 void CMbox::CopyMessage(unsigned long msg_num, bool uids, costream* aStream, bool sorted)

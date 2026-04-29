@@ -824,6 +824,10 @@ void CActionItem::GenerateSIEVEScript(std::ostream& out) const
         {
             temp =  "$MDNSent";
         }
+        else if (flags & NMessage::eForwarded)
+        {
+            temp =  "$Forwarded";
+        }
         else if (flags & NMessage::eLabels)
         {
             // Scan over all labels and add each
