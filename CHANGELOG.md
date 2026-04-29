@@ -58,17 +58,66 @@ X11 bitmap fonts).
   at build time from the `unicode-cldr-core` package. Applies to
   Linux and macOS, where the GUI toolkits (JX and PowerPlant)
   cannot render characters outside Latin-1.
+- Hide HTML elements with inline `display:none` style. Prevents
+  preheader text, hidden tracking content, and soft-hyphen padding
+  from being rendered as visible text in HTML messages.
 - Use `aria-label` and `title` attributes as fallback for image
   alt text in HTML messages, before falling back to the filename.
 - Timezone database updated from 2008 (tzdata2008i) to current IANA
   data. Timezone files are now generated at build time from the latest
   IANA source via vzic, so they stay current with each build. Fixes
   18 years of DST rule changes affecting calendar operations.
+- Default new accounts to Implicit TLS (RFC 8314). New IMAP, POP3,
+  SMTP, CalDAV, CardDAV, and WebDAV accounts now use SSL/TLS on the
+  dedicated secure port (993, 995, 465, 443) instead of connecting
+  in cleartext. Existing accounts are unaffected.
+- Change default SMTP submission port from 25 to 587 (RFC 6409).
+  Port 25 is the MTA relay port, commonly blocked by ISPs. Port 587
+  is the standard submission port for email clients. Existing accounts
+  are unaffected.
+- Rename TLS security options to match modern terminology (Thunderbird
+  convention). "SSLv23" → "SSL/TLS", "STARTTLS - TLSv1" → "STARTTLS".
+  The legacy SSLv3 and STARTTLS-SSL variants are hidden from the UI as
+  they are functionally identical with modern OpenSSL. Existing
+  preferences files are read correctly.
+- Update IMAP QUOTA from RFC 2087 to RFC 9208. Quota values now use
+  64-bit integers (was platform-dependent `long`), and the capability
+  check recognizes both `QUOTA` (RFC 2087) and `QUOTA=RES-*` (RFC 9208)
+  capability strings. The existing quota UI already supported arbitrary
+  resource types, so no display changes were needed.
+- Require STARTTLS capability advertisement before attempting STARTTLS
+  upgrade (RFC 8314). Previously, Mulberry issued the STARTTLS command
+  without checking whether the server advertised the capability in IMAP,
+  ACAP, and SIEVE. SMTP already checked correctly.
 - Modernize Debian packaging with desktop entry, AppStream metadata,
   updated dependencies, and lintian compliance.
 
 ### Added
 
+- IMAP ENABLE extension (RFC 5161). Capability detection and
+  scaffolding for CONDSTORE/QRESYNC activation.
+- IMAP CHILDREN extension (RFC 3348). Parse \HasChildren and
+  \HasNoChildren LIST attributes for accurate hierarchy display.
+  The constants and flag bits already existed but parsing was
+  disabled.
+- IMAP ESEARCH extension (RFC 4731). When the server advertises
+  ESEARCH, search results are returned in compact sequence-set
+  format instead of individual message numbers. Prerequisite for
+  MULTISEARCH (RFC 7377, cross-mailbox search).
+- SASL-IR initial response (RFC 4959). When the server advertises
+  SASL-IR, Mulberry sends the initial authentication data on the
+  same line as the AUTHENTICATE command, eliminating one round-trip.
+- IMAP MOVE command (RFC 6851). When moving messages between folders
+  on the same account, Mulberry now uses the atomic MOVE command
+  instead of COPY + flag \Deleted. This prevents duplicate messages
+  if the connection drops mid-operation. MOVE is mandatory in
+  IMAP4rev2 and supported by all major servers. Cross-account moves
+  (between different IMAP servers) continue to use COPY + DELETE
+  as before — the operation remains completely transparent.
+- $Forwarded keyword (RFC 9051). Source messages are now flagged with
+  the $Forwarded IMAP keyword after forwarding, so other clients and
+  the server can distinguish forwarded from merely-read messages.
+  Analogous to the existing \Answered flag set on replies.
 - 64-bit Linux support (x86_64 / LP64). Mulberry now builds and runs
   correctly on 64-bit systems. This required fixing type sizes in
   offline cache file formats, network protocol buffers, plugin
