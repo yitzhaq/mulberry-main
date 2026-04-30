@@ -147,8 +147,9 @@ debian/autoreconf.before
 *.log
 
 # Static analysis artifacts
-compile_commands.json
-infer-out/
+compile_commands*.json
+infer-out*/
+cov-int/
 
 # Claude Code
 CLAUDE.md

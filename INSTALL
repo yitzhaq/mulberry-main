@@ -236,79 +236,77 @@ operates.
 Mulberry specific build instructions
 ====================================
 
-There is a `configure' script provided with the sources. This file is
-generated from `configure.in', simply by invoking `autoconf'. During
-the configure process there will be some include paths generated from
-the directory in which `configure' is run. This means that after the
-makefiles have been created by the script, they will contain some 
-absolute paths to the build directory. Thus, when moving the build
-directory to a different place in the file system, `configure' needs
-to be invoked again before building.
+Debian package build (recommended)
+-----------------------------------
 
-The configure script generated for building mulberry supports a number
-of additional flags.
+On Debian/Ubuntu systems, the recommended build method is:
 
-These flags control the way mulberry is installed:
+  dpkg-buildpackage -us -uc -b
 
-  --with-mulberry-dir
+This handles autoconf, configure, building (JX, app, plugins), and
+packaging into a .deb file. The package appears in the parent
+directory. Build dependencies are listed in debian/control.
 
-    Specify location relative to the prefix where mulberry plugins
-    go (default: .mulberry). 
+Manual build with autoconf
+--------------------------
 
-  --with-help-dir
+  autoconf                  # Generate configure from configure.in
+  ./configure               # Configure build
+  make                      # Build everything (Libraries, Plug-ins, app)
+  make install              # Install to configured prefix
 
-    Specify location relative to the prefix where mulberry
-    documentation files go (default: .mulberry)
+After a successful build, subsequent rebuilds can skip the JX library:
 
-  --with-program-dir
+  make SKIPJX="yes"
 
-   Specify location relative to the prefix where the mulberry
-   program goes (default: '')
+The binary appears in Linux/mulberry. Plugins build as .so files in
+their respective Plug-ins/*/ directories.
 
+Build dependencies
+------------------
 
-By default, the mulberry binary will be installed in your $HOME
-directory. Documentation, plugins and resources will go to
-$HOME/.mulberry/.
+Required:
+  - GCC 13+ or Clang 18+ (C++17)
+  - OpenSSL 1.1+ development headers (libssl-dev)
+  - LDAP development headers (libldap2-dev)
+  - libsodium development headers (libsodium-dev)
+  - PCRE development headers (libpcre3-dev)
+  - X11/Xft/XPM development headers
+  - Unicode CLDR annotations (unicode-cldr-core, for emoji table)
 
-For a system-wide installation, you may want to run configure like
-this:
+Optional:
+  - aspell development headers (for spell checking plugin)
+  - Kerberos 5 development headers (for GSSAPI plugin)
 
-  ./configure --prefix=/usr/local --with-mulberry-dir=lib/mulberry \
+Configure flags
+---------------
+
+These flags control the install layout:
+
+  --with-mulberry-dir     Plugin directory relative to prefix
+                          (default: .mulberry)
+  --with-help-dir         Documentation directory relative to prefix
+                          (default: .mulberry)
+  --with-program-dir      Binary directory relative to prefix
+                          (default: '')
+
+For a system-wide FHS installation:
+
+  ./configure --prefix=/usr --with-mulberry-dir=lib/mulberry \
     --with-help-dir=share/doc/mulberry --with-program-dir=bin
 
-The Makefiles also honor the DESTDIR variable which is prepended to
-the prefix without a slash if overridden at invocation.
+Optional library paths:
 
-Mulberry will not build without OpenSSL and LDAP headers and libs.
-Other features are optional, i.e. if not found the corresponding
-features (plugins) will be disabled and not built. You can help
-configure finding those features if they are not located in the
-default places on your system:
-
-  --with-ldap-include     Specify location of LDAP headers
-  --with-ldap-libs        Specify link args for LDAP
   --with-openssl-include  Specify location of openssl headers
   --with-openssl-libs     Specify link args for openssl
-  --with-krb4-include     Specify location of kerberos4 headers
-  --with-krb4-libs        Specify link args for kerberos4
+  --with-ldap-include     Specify location of LDAP headers
+  --with-ldap-libs        Specify link args for LDAP
   --with-krb5-include     Specify location of kerberos5 headers
   --with-krb5-libs        Specify link args for kerberos5
   --with-aspell-include   Specify location of aspell headers
   --with-aspell-libs      Specify link args for aspell
   --with-extra-cppflags   Specify additional C preprocessor options
 
-The switches for include paths accept both compiler switches, e.g.
-"-I/foo/bar -I/baz" or simply a directory, e.g. "/usr/include/foo".
-The switches for libs expect link args, like "-L/foo/bar -lbaz" which
-will be passed directly to the linker.
-
-For compiling the software, simply type `make'. A few cups of coffee
-later you may find the mulberry binary in the `Linux/' directory, also
-the different plugins in their own subdirectories under `Plug-ins'.
-
-To install the program, you may either want to run `make install'. To
-speed things up, after a successful build you may also add `SKIPJX="yes"'
-to your `make' command line, so that the time consuming recursion into
-the JX library is skipped.
-
-The tar archive for distribution is generated using `make archive'.
+Note: OpenSSL is loaded dynamically at runtime via dlopen/dlsym.
+The build-time headers are needed for compilation but the library
+is not linked directly.
