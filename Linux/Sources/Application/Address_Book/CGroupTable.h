@@ -40,7 +40,7 @@ struct SGroupTableItem
 	bool		mIsGroup;
 	CGroup*		mGroup;
 
-	SGroupTableItem() { mIsGroup = true; }
+	SGroupTableItem() { mIsGroup = true; mGroup = NULL; }
 	SGroupTableItem(bool is_group, CGroup* grp) { mIsGroup = is_group; mGroup = grp; }
 	~SGroupTableItem() {};
 };

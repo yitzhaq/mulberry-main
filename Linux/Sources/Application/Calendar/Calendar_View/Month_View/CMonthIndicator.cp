@@ -183,7 +183,7 @@ void CMonthIndicator::LDblClickCell(const STableCell& inCell, const JXKeyModifie
 	Broadcast_Message(msg, &dt);
 }
 
-void CMonthIndicator::SelectDate(const iCal::CICalendarDateTime date)
+void CMonthIndicator::SelectDate(const iCal::CICalendarDateTime& date)
 {
 	UnselectAllCells();
 

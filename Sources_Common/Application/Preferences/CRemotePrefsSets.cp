@@ -162,7 +162,7 @@ void CRemotePrefsSet::DeleteSet(cdstring set)
 	}
 }
 
-void CRemotePrefsSet::RenameSet(cdstring old_set, cdstring new_set)
+void CRemotePrefsSet::RenameSet(const cdstring& old_set, const cdstring& new_set)
 {
 	cdstrvect::iterator name = std::find(mSets.begin(), mSets.end(), old_set);
 

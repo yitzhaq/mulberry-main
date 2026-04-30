@@ -52,7 +52,7 @@ public:
 	bool				IsTodayCell(const STableCell& cell) const
 		{ return cell == mTodayCell; }
 
-			void		SelectDate(const iCal::CICalendarDateTime date);
+			void		SelectDate(const iCal::CICalendarDateTime& date);
 	virtual void		SelectionChanged();
 
 	virtual void		HandleKeyPress(const int key, const JXKeyModifiers& modifiers);

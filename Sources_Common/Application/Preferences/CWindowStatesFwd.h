@@ -146,6 +146,9 @@ struct SColumnInfo
 	long	column_type;
 	long	column_width;
 
+	SColumnInfo() : column_type(0), column_width(0) {}
+	SColumnInfo(long type, long width) : column_type(type), column_width(width) {}
+
 	static const char** s_descriptors;
 	static long s_max;
 	static long s_max_value;
@@ -190,6 +193,7 @@ struct SFontInfo
 {
 	cdstring fontname;
 	JSize size;
+	SFontInfo() : size(0) {}
 	int operator==(const SFontInfo& state) const				// Dummy for template - never used
 		{ return (size == state.size) &&
 			 (fontname == state.fontname);
@@ -208,6 +212,8 @@ struct SStyleTraits
 {
 	short			style;
 	RGBColor		color;
+
+	SStyleTraits() : style(0) { memset(&color, 0, sizeof(color)); }
 
 	// Compare with another
 	int operator==(const SStyleTraits& traits) const
@@ -233,6 +239,9 @@ struct SStyleTraits2
 	RGBColor		bkgcolor;
 	bool			usebkgcolor;
 	cdstring		name;
+
+	SStyleTraits2() : style(0), usecolor(false), usebkgcolor(false)
+		{ memset(&color, 0, sizeof(color)); memset(&bkgcolor, 0, sizeof(bkgcolor)); }
 
 	// Compare with another
 	int operator==(const SStyleTraits2& traits) const

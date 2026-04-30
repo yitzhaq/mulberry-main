@@ -275,7 +275,7 @@ void C3PaneItems::OnTabs(unsigned long index)
 	}
 }
 
-void C3PaneItems::OnTabsMove(std::pair<unsigned long, unsigned long> indices)
+void C3PaneItems::OnTabsMove(const std::pair<unsigned long, unsigned long>& indices)
 {
 	// Only do for mailboxes right now
 	if (mMailbox && (mMailbox == mCurrent) && GetMailboxView())

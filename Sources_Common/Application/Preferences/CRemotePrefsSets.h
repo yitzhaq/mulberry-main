@@ -39,7 +39,7 @@ public:
 	
 	bool	IsDuplicateName(const cdstring& test, cdstring& duplicate) const;
 	void	DeleteSet(cdstring set);
-	void	RenameSet(cdstring old_set, cdstring new_set);
+	void	RenameSet(const cdstring& old_set, const cdstring& new_set);
 
 private:
 	cdstrvect	mSets;

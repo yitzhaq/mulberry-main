@@ -242,7 +242,7 @@ protected:
 class StMapSection
 {
 public:
-	StMapSection(COptionsMap* aMap, cdstring section) : mMap(aMap)
+	StMapSection(COptionsMap* aMap, const cdstring& section) : mMap(aMap)
 		{ mMap->PushSection(section); }
 	~StMapSection()
 		{ mMap->PopSection(); }

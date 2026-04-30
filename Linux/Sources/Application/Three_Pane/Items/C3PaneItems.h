@@ -115,7 +115,7 @@ protected:
 	virtual void	Receive(JBroadcaster* sender, const Message& message);
 
 			void	OnTabs(unsigned long index);
-			void	OnTabsMove(std::pair<unsigned long, unsigned long> indices);
+			void	OnTabsMove(const std::pair<unsigned long, unsigned long>& indices);
 			void	OnTabsClose(unsigned long index);
 			void	OnTabsCloseAll();
 			void	OnTabsCloseOthers(unsigned long index);
