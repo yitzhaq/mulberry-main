@@ -156,22 +156,7 @@ AC_CHECK_HEADER([esd.h],
         AC_MSG_WARN([esd.h not found - EsounD support disabled (loaded dynamically via dlopen anyway).])
 )
 
-CPPFLAGS_ORG="$CPPFLAGS"
-CPPFLAGS="$CXXFLAGS $CPPFLAGS"
-AC_CHECK_HEADER([cstdint],
-	HAS_CSTDINT=1,
-	HAS_CSTDINT=0
-)
-if test ${HAS_CSTDINT} = 0; then
-AC_CHECK_HEADER([boost/cstdint.hpp],
-        CPPFLAGS="$CPPFLAGS_ORG"
-	CPPFLAGS="$CPPFLAGS -I`pwd`/Wrapper_Includes/cstdint",
-        CPPFLAGS="$CPPFLAGS_ORG"
-        AC_MSG_ERROR(neither cstdint nor boost/cstdint.hpp found - one from them is required for compiling mulberry.)
-)
-else
-CPPFLAGS="$CPPFLAGS_ORG"
-fi
+dnl cstdint is standard in C++11 and later — no fallback needed
 
 
 # Checks for LDAP
