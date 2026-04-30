@@ -79,7 +79,9 @@ X11 bitmap fonts).
   convention). "SSLv23" → "SSL/TLS", "STARTTLS - TLSv1" → "STARTTLS".
   The legacy SSLv3 and STARTTLS-SSL variants are hidden from the UI as
   they are functionally identical with modern OpenSSL. Existing
-  preferences files are read correctly.
+  preferences files are read correctly. Updated on Linux and Win32;
+  macOS labels are in binary PowerPlant resources (PPob) and cannot
+  be updated without macOS build tools.
 - Update IMAP QUOTA from RFC 2087 to RFC 9208. Quota values now use
   64-bit integers (was platform-dependent `long`), and the capability
   check recognizes both `QUOTA` (RFC 2087) and `QUOTA=RES-*` (RFC 9208)
@@ -146,14 +148,14 @@ X11 bitmap fonts).
 - IMAP ID extension (RFC 2971). Mulberry identifies itself to the
   server, aiding server-side diagnostics and statistics.
 - User-Agent header on all HTTP requests (CalDAV, CardDAV, WebDAV).
-- Compose key and dead key support on modern Linux. Accented character
+- Compose key and dead key support on Linux. Accented character
   input (e.g., AltGr+e for é) now works throughout the application.
   Limited to characters available in ISO 8859-1 (Western European) due
   to JX toolkit constraints; Eastern European and other accented
   characters beyond Latin-1 are not supported via compose sequences.
-- Unicode clipboard support. Copy and paste of non-ASCII text (accented
-  characters, CJK, etc.) now works correctly with modern desktop
-  applications via UTF8_STRING selection.
+- Unicode clipboard support on Linux. Copy and paste of non-ASCII text
+  (accented characters, CJK, etc.) now works correctly with modern
+  desktop applications via UTF8_STRING X11 selection.
 - Fall back to xdg-open for opening attachments on Linux when no
   mailcap entry matches the MIME type. Previously, attachments with
   no mailcap match (notably application/octet-stream) simply could
@@ -169,7 +171,8 @@ X11 bitmap fonts).
 
 ### Fixed
 
-- Fix ACE_Thread_ID::operator== returning inverted result on Linux.
+- Fix ACE_Thread_ID::operator== returning inverted result on Linux
+  (macOS and Windows unaffected — they use native thread ID types).
   pthread_equal() returns non-zero for equal threads, but the
   comparison used == 0. This silently broke all mutex recursion on
   Linux: cdomutex deadlocked on re-entry (despite having full
@@ -199,6 +202,18 @@ X11 bitmap fonts).
   open folders became silently non-functional after a transient
   network interruption). Both bugs have existed for the entire life
   of the open-source release.
+- Fix crash when cancelling timezone "Other..." dialog on Linux.
+  The CTimezonePopup::mOldValue member was uninitialized, causing
+  the popup to use a garbage index value on cancel. Also fix
+  the "Other..." dialog not appearing immediately in the event
+  editor (was deferred until form read).
+- Fix 36 issues found by Infer static analysis (biabduction + Pulse):
+  32 null dereferences across mail core, UI, calendar, and plugin
+  code (unchecked GetEnvelope, GetAttachment, GetNode, GetCellMbox,
+  dynamic_cast, and malloc results), 4 uninitialized POD members in
+  preference structs (SColumnInfo, SFontInfo, SStyleTraits,
+  SStyleTraits2), and an operator precedence bug in TPopupMenu::Draw
+  on Linux.
 - Fix mojibake in messages containing a UTF-8 byte-order mark (BOM).
   Several mail clients (notably Outlook and iOS Mail) embed BOMs in
   their messages, which caused Mulberry's UTF-16 converter to flip

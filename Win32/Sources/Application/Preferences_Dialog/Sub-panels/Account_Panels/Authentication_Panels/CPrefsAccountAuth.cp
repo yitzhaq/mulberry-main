@@ -258,10 +258,17 @@ void CPrefsAccountAuth::BuildAuthPopup(CINETAccount* account)
 void CPrefsAccountAuth::InitTLSItems(CINETAccount* account)
 {
 	// Enable each item based on what the protocol supports
+	// Hide legacy variants (eSSLv3, eTLSBroken) — functionally
+	// identical to eSSL and eTLS with modern OpenSSL
 	CMenu* pPopup = mTLSPopup.GetPopupMenu();
 	bool enabled = false;
 	for(int i = CINETAccount::eNoTLS; i <= CINETAccount::eTLSTypeMax; i++)
 	{
+		if ((i == CINETAccount::eSSLv3) || (i == CINETAccount::eTLSBroken))
+		{
+			pPopup->EnableMenuItem(i + IDM_TLSPOPUP_NOSECURITY, MF_GRAYED);
+			continue;
+		}
 		if (account->SupportsTLSType((CINETAccount::ETLSType) i))
 		{
 			pPopup->EnableMenuItem(i + IDM_TLSPOPUP_NOSECURITY, MF_ENABLED);

@@ -573,7 +573,7 @@ BEGIN
             VALUE "FileDescription", "Mulberry"
             VALUE "FileVersion", "4.1a1"
             VALUE "InternalName", "Mulberry"
-            VALUE "LegalCopyright", "Copyright © Cyrus Daboo, 2006-2009."
+            VALUE "LegalCopyright", "Copyright ï¿½ Cyrus Daboo, 2006-2009."
             VALUE "OriginalFilename", "Mulberry.exe"
             VALUE "ProductName", "Mulberry"
             VALUE "ProductVersion", "4.1a1"
@@ -3379,11 +3379,11 @@ IDR_POPUP_AUTHENTICATE_TLS MENU
 BEGIN
     POPUP ""
     BEGIN
-        MENUITEM "No Security",                 IDM_TLSPOPUP_NOSECURITY
-        MENUITEM "SSLv23",                      IDM_TLSPOPUP_SSLV23
-        MENUITEM "SSLv3",                       IDM_TLSPOPUP_SSLV3
-        MENUITEM "STARTTLS - TLSv1",            IDM_TLSPOPUP_TLSV1
-        MENUITEM "STARTTLS - SSL",              IDM_TLSPOPUP_TLSBROKEN
+        MENUITEM "None",                        IDM_TLSPOPUP_NOSECURITY
+        MENUITEM "SSL/TLS",                     IDM_TLSPOPUP_SSLV23
+        MENUITEM "SSL/TLS",                     IDM_TLSPOPUP_SSLV3
+        MENUITEM "STARTTLS",                    IDM_TLSPOPUP_TLSV1
+        MENUITEM "STARTTLS",                    IDM_TLSPOPUP_TLSBROKEN
     END
 END
 
@@ -5103,7 +5103,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     LTEXT           "Version:",IDC_STATIC,213,113,28,8
     LTEXT           "",IDC_SPLASHVERSION,244,113,38,8
-    LTEXT           "Copyright © Cyrus Daboo, 2006-2011.",IDC_STATIC,4,113,180,8
+    LTEXT           "Copyright ï¿½ Cyrus Daboo, 2006-2011.",IDC_STATIC,4,113,180,8
 END
 
 IDD_SPLASHBOXBIG DIALOGEX 0, 0, 249, 126
@@ -5112,7 +5112,7 @@ FONT 7, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     LTEXT           "Version:",IDC_STATIC,182,103,26,8
     LTEXT           "",IDC_SPLASHVERSION,209,103,33,8
-    LTEXT           "Copyright © Cyrus Daboo, 2006-2011.",IDC_STATIC,4,103,154,8
+    LTEXT           "Copyright ï¿½ Cyrus Daboo, 2006-2011.",IDC_STATIC,4,103,154,8
 END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 243, 108
@@ -5123,7 +5123,7 @@ BEGIN
     CONTROL         800,IDC_STATIC,"Static",SS_BITMAP,0,0,171,60
     CTEXT           "Version v%s",IDC_ABOUTVERSION,0,68,171,8
     CTEXT           "http://www.mulberrymail.com",IDC_STATIC,0,84,171,8
-    CTEXT           "Copyright © Cyrus Daboo, 2006-2011.",IDC_STATIC,0,96,171,8
+    CTEXT           "Copyright ï¿½ Cyrus Daboo, 2006-2011.",IDC_STATIC,0,96,171,8
 END
 
 IDD_ABOUTPLUGINS DIALOGEX 0, 0, 290, 220
