@@ -461,8 +461,21 @@ void CMbox::CheckMyRights()
 	// Force status info
 	InitStatusInfo();
 
-	if (mOpenInfo && mOpenInfo->mMsgMailer)
-		mOpenInfo->mMsgMailer->MyRights(this);
+	if (OpenIfOpen())
+	{
+		try
+		{
+			mOpenInfo->mMsgMailer->MyRights(this);
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			Close();
+			CLOG_LOGRETHROW;
+			throw;
+		}
+		Close();
+	}
 	else
 		mMailer->MyRights(this);
 }
@@ -1639,8 +1652,21 @@ void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool n
 	if (spec)
 	{
 		// Check it on suitable server
-		if (mOpenInfo && mOpenInfo->mMsgMailer)
-			mOpenInfo->mMsgMailer->SearchMbox(this, spec, results, uids);
+		if (OpenIfOpen())
+		{
+			try
+			{
+				mOpenInfo->mMsgMailer->SearchMbox(this, spec, results, uids);
+			}
+			catch (...)
+			{
+				CLOG_LOGCATCH(...);
+				Close();
+				CLOG_LOGRETHROW;
+				throw;
+			}
+			Close();
+		}
 		else
 			mMailer->SearchMbox(this, spec, results, uids);
 	}
@@ -1764,8 +1790,11 @@ bool CMbox::ReSort()
 {
 	bool external = false;
 	
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return false;
+
+	try
+	{
 
 	// Check to see whether there is a change in size due to sorting
 	// This can happen when fake messages are inserted into threads and must be
@@ -1859,7 +1888,18 @@ bool CMbox::ReSort()
 	SetFlags(eExternalSort, external);
 
 	// Indicate change in size of sorted message list - forces mailbox window update
-	return mOpenInfo->mSortedMessages->size() != old_size;
+	bool result = mOpenInfo->mSortedMessages->size() != old_size;
+	Close();
+	return result;
+
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
 }
 
 
@@ -2021,9 +2061,11 @@ bool CMbox::FullyCached() const
 // Expunge
 void CMbox::Expunge(bool closing)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
 
+	try
+	{
 	// Do punt unseen action here if closing since the expunge action will actually close the mailbox here
 	if (closing && HasAllowedFlag(NMessage::eSeen) && !mFlags.IsSet(eExamine) && mFlags.IsSet(ePuntOnClose))
 		PuntUnseen();
@@ -2053,6 +2095,15 @@ void CMbox::Expunge(bool closing)
 		SetNumberFound(GetNumberFound() - deleted_removed);
 		SetNumberUnseen(GetNumberUnseen() - unseen_removed);
 	}
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 
 } // CMbox::Expunge
 
@@ -2578,10 +2629,20 @@ void CMbox::CacheMessage(const ulvector& nums, bool uids)
 // Force message into cache
 void CMbox::CacheUIDs(const ulvector& nums)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
-
-	mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eUID);
+	try
+	{
+		mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eUID);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 }
 
 // Force messages from cache
@@ -3164,23 +3225,43 @@ CMessage* CMbox::GetNextFlagMessage(CMessage* aMsg, NMessage::EFlags set_flag, N
 // Read the specified message cache
 void CMbox::ReadCache(CMessage* msg)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
-
-	ulvector nums;
-	nums.push_back(msg->GetMessageNumber());
-	mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eSummary);
+	try
+	{
+		ulvector nums;
+		nums.push_back(msg->GetMessageNumber());
+		mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eSummary);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 }
 
 // Read the specified message size
 void CMbox::ReadSize(CMessage* msg)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
-
-	ulvector nums;
-	nums.push_back(msg->GetMessageNumber());
-	mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eSize);
+	try
+	{
+		ulvector nums;
+		nums.push_back(msg->GetMessageNumber());
+		mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eSize);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 }
 
 // Read the specified message header
@@ -3192,11 +3273,21 @@ void CMbox::ReadHeader(unsigned long msg_num, bool sorted)
 // Read the specified message header
 void CMbox::ReadHeader(CMessage* msg)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
-
-	if (!msg->HasHeader())
-		mOpenInfo->mMsgMailer->ReadHeader(this, msg);
+	try
+	{
+		if (!msg->HasHeader())
+			mOpenInfo->mMsgMailer->ReadHeader(this, msg);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 }
 
 // Read the specified message attachment
@@ -3389,30 +3480,60 @@ void CMbox::RemoveMessageUID(unsigned long uid)
 // Change the specified message uid on the server
 void CMbox::RemapUID(unsigned long local_uid, unsigned long new_uid)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
-
-	mOpenInfo->mMsgMailer->RemapUID(this, local_uid, new_uid);
+	try
+	{
+		mOpenInfo->mMsgMailer->RemapUID(this, local_uid, new_uid);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 }
 
 // Map from local to remote uids
 void CMbox::MapLocalUIDs(const ulvector& uids, ulvector* missing, ulmap* local_map)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
-
-	mOpenInfo->mMsgMailer->MapLocalUIDs(this, uids, missing, local_map);
+	try
+	{
+		mOpenInfo->mMsgMailer->MapLocalUIDs(this, uids, missing, local_map);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 }
 
 // Read the specified message flags
 void CMbox::ReadMessageFlags(CMessage* msg)
 {
-	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
+	if (!OpenIfOpen())
 		return;
-
-	ulvector nums;
-	nums.push_back(msg->GetMessageNumber());
-	mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eFlags);
+	try
+	{
+		ulvector nums;
+		nums.push_back(msg->GetMessageNumber());
+		mOpenInfo->mMsgMailer->FetchItems(nums, false, CMboxProtocol::eFlags);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		Close();
+		CLOG_LOGRETHROW;
+		throw;
+	}
+	Close();
 }
 
 // Change the specified message flags
@@ -3988,8 +4109,21 @@ void CMbox::MapUIDs(const ulvector& nums, ulvector& uids, bool sorted)
 	}
 
 	// Read in missing UIDs
-	if (read_seq.size() && mOpenInfo && mOpenInfo->mMsgMailer)
-		mOpenInfo->mMsgMailer->FetchItems(read_seq, false, CMboxProtocol::eUID);
+	if (read_seq.size() && OpenIfOpen())
+	{
+		try
+		{
+			mOpenInfo->mMsgMailer->FetchItems(read_seq, false, CMboxProtocol::eUID);
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			Close();
+			CLOG_LOGRETHROW;
+			throw;
+		}
+		Close();
+	}
 
 	// Map sorted list to actual list
 	for(ulvector::const_iterator iter = nums.begin(); iter != nums.end(); iter++)
