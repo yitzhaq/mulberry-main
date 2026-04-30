@@ -862,7 +862,7 @@ CAddressList* CRFC822::ParseAddressList(const char* line)
 // Set number of chars to wrap to
 void CRFC822::SetWrapLength(short wrap)
 {
-	sWrapLength = (wrap == 0) ? 1000 : wrap;
+	sWrapLength = (wrap == 0) ? 998 : wrap;
 }
 
 // Get number of chars to wrap to

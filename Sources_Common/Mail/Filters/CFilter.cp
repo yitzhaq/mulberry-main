@@ -113,7 +113,7 @@ CFilterEndls::CFilterEndls(LStream* aStream, CProgress* progress) : CFilter(aStr
 	// Make wrap safe
 	unsigned long wrap = CPreferences::sPrefs->wrap_length.GetValue();
 	if (wrap == 0)
-		wrap = 1000;
+		wrap = 998;
 
 	mLineBuffer = NULL;
 	mLineBuffer = new unsigned char[wrap + 2];
@@ -145,7 +145,7 @@ ExceptionCode CFilterEndls::GetBytes(void* outBuffer, SInt32& inByteCount)
 
 	// Make wrap safe
 	if (prefs_wrap == 0)
-		prefs_wrap = 1000;
+		prefs_wrap = 998;
 
 	while((total < inByteCount) && !done) {
 

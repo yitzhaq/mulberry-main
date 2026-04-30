@@ -38,7 +38,7 @@ const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsig
 
 	// Make wrap length safe
 	if (wrap_len == 0)
-		wrap_len = 1000;
+		wrap_len = 998;
 
 	// Loop over all text and wrap
 	long remaining = length;
@@ -251,7 +251,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 {
 	// Make wrap length safe
 	if (wrap_len == 0)
-		wrap_len = 1000;
+		wrap_len = 998;
 
 	// Fake input parameter for now...
 	cdstrvect prefix_matches;
