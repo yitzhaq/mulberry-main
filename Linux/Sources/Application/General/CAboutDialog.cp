@@ -55,18 +55,18 @@ void CAboutDialog::OnCreate()
 {
 // begin JXLayout
 
-    JXWindow* window = new JXWindow(this, 360,230, "");
+    JXWindow* window = new JXWindow(this, 360,250, "");
     assert( window != NULL );
     SetWindow(window);
 
     JXUpRect* obj1 =
         new JXUpRect(window,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 0,0, 360,230);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 0,0, 360,250);
     assert( obj1 != NULL );
 
     mOKBtn =
         new JXTextButton("OK", obj1,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 145,185, 70,25);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 145,205, 70,25);
     assert( mOKBtn != NULL );
     mOKBtn->SetShortcuts("^M");
 
@@ -83,8 +83,8 @@ void CAboutDialog::OnCreate()
     obj2->SetFontSize(10);
 
     JXStaticText* obj3 =
-        new JXStaticText("Copyright Cyrus Daboo, 2006-2014. All Rights Reserved.", obj1,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 10,155, 340,20);
+        new JXStaticText("Copyright Cyrus Daboo, 2006-2014.\nCopyright Mulberry Contributors, 2011-2026.\nAll Rights Reserved.", obj1,
+                    JXWidget::kHElastic, JXWidget::kVElastic, 10,155, 340,40);
     assert( obj3 != NULL );
     obj3->SetFontSize(10);
 

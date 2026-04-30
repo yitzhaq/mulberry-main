@@ -164,7 +164,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Mulberry v4.2a1, Copyright © Cyrus Daboo, 2006-2014.  All rights reserved.</string>
+	<string>Mulberry v4.2a1, Copyright © Cyrus Daboo, 2006-2014. Copyright © Mulberry Contributors, 2011-2026. All rights reserved.</string>
 	<key>CFBundleHelpBookFolder</key>
 	<string>Mulberry Help</string>
 	<key>CFBundleHelpBookName</key>

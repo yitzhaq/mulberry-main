@@ -578,7 +578,7 @@ BEGIN
             VALUE "FileDescription", "Mulberry\0"
             VALUE "FileVersion", "4.2a1\0"
             VALUE "InternalName", "Mulberry\0"
-            VALUE "LegalCopyright", "Copyright  2006-2014 Cyrus Daboo.\0"
+            VALUE "LegalCopyright", "Copyright 2006-2014 Cyrus Daboo. Copyright 2011-2026 Mulberry Contributors.\0"
             VALUE "OriginalFilename", "Mulberry.exe\0"
             VALUE "ProductName", "Mulberry\0"
             VALUE "ProductVersion", "4.2a1\0"
