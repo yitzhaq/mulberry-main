@@ -296,6 +296,7 @@ static const SSmileySub cSmileySubs[] = {
 	{ 0x1FA77, "<3" },            // pink heart
 	{ 0x1FA79, "bandage" },       // adhesive bandage
 	{ 0x1FAC0, "<3" },            // anatomical heart
+	{ 0x1FAC8, "O_O" },           // face with open eyes and hand over mouth
 	{ 0x1FAF6, "<3" },            // heart hands
 
 };

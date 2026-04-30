@@ -707,7 +707,9 @@ void CMessageWindow::SetMessageList(CMessageList* msgs)
 	cdstring		theTitle;
 
 	// Set window title to subject (if there), else from (if there) else unknown
-	if (!theEnv->GetSubject().empty())
+	if (!theEnv)
+		theTitle = "Unknown";
+	else if (!theEnv->GetSubject().empty())
 	{
 		unsigned short subj_len = theEnv->GetSubject().length();
 		if (subj_len < cMaxTitleLength)

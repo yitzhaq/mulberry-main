@@ -510,6 +510,8 @@ void CRFC822::SendHeader(CMessage* theMsg, CDSN& dsn, bool allow_content)
 	std::ostrstream out;
 
 	const char* p = theMsg->GetHeader();
+	if (!p)
+		return;
 
 	// Look for unwanted headers
 	bool got_line_end = true;

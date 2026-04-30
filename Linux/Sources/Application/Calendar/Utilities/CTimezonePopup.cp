@@ -41,6 +41,7 @@ CTimezonePopup::CTimezonePopup(
 	HPopupMenu(title, enclosure, hSizing, vSizing, x, y, w, h)
 {
 	mNoFloating = false;
+	mOldValue = 1;
 }
 
 

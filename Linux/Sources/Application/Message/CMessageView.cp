@@ -472,10 +472,12 @@ void CMessageView::MakeToolbars(CToolbarView* parent)
 	else
 	{
 		CMailboxWindow* mbox_window = dynamic_cast<CMailboxWindow*>(mOwnerWindow);
-		CMailboxView* mbox_view = mbox_window->GetMailboxView();
-
-		Add_Listener(mbox_view->GetToolbar());
-		mbox_view->GetToolbar()->AddCommander(mText);
+		if (mbox_window)
+		{
+			CMailboxView* mbox_view = mbox_window->GetMailboxView();
+			Add_Listener(mbox_view->GetToolbar());
+			mbox_view->GetToolbar()->AddCommander(mText);
+		}
 	}
 }
 
@@ -490,8 +492,12 @@ CMailboxToolbarPopup* CMessageView::GetCopyBtn() const
 	{
 		// Copy btn from toolbar
 		CMailboxWindow* mbox_window = dynamic_cast<CMailboxWindow*>(mOwnerWindow);
-		CMailboxView* mbox_view = mbox_window->GetMailboxView();
-		return static_cast<CMailboxInfoToolbar*>(mbox_view->GetToolbar())->GetCopyBtn();
+		if (mbox_window)
+		{
+			CMailboxView* mbox_view = mbox_window->GetMailboxView();
+			return static_cast<CMailboxInfoToolbar*>(mbox_view->GetToolbar())->GetCopyBtn();
+		}
+		return NULL;
 	}
 }
 
@@ -1295,7 +1301,7 @@ bool CMessageView::SpacebarScroll(bool shift_key)
 	JXScrollbar* horiz;
 	JXScrollbar* vert;
 	mText->GetScrollbars(&horiz, &vert);
-	if (vert->IsVisible())
+	if (vert && vert->IsVisible())
 	{
 		if (shift_key)
 		{

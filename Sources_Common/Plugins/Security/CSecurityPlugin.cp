@@ -317,6 +317,8 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 
 	// Sign entire message
 	CAttachment* part = msg->GetBody();
+	if (!part)
+		return;
 	CAttachment* generated_part = NULL;
 
 	// Special processing for crypto - only needed for broken PGP implementations
@@ -1607,6 +1609,8 @@ bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bo
 			part2 = msg->GetBody()->GetParts()->at(1);
 		else
 			part2 = msg->GetBody();
+		if (!part2)
+			return false;
 
 		// Make sure its treated as text even though its application/octet-stream
 		part2->SetFakeText(true);

@@ -1153,6 +1153,8 @@ void CCalendarStoreManager::CheckAllSubscribedCalendars()
         try
         {
             calstore::CCalendarStoreNode* node = const_cast<calstore::CCalendarStoreNode*>(calstore::CCalendarStoreManager::sCalendarStoreManager->GetNode(*iter));
+            if (!node)
+                continue;
             if (node->GetProtocol()->CheckCalendar(*node, *node->GetCalendar()))
                 changed = true;
         }

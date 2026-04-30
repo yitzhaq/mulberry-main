@@ -584,6 +584,8 @@ CSplitterView::HandleMouseUp
 		JPainter* p = NULL;
 		const JBoolean ok = GetDragPainter(&p);
 		assert( ok );
+		if (!p)
+			return;
 
 		JRect ap = GetAperture();
 		if (mHorizontal)

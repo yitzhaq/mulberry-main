@@ -380,6 +380,8 @@ bool CScriptsTable::DropDataIntoCell(Atom theFlavor, unsigned char* drag_data,
 	STableCell	woCell(woRow, cell.col);
 	UInt32 dataSize = sizeof(CFilterScript*);
 	GetCellData(woCell, &script, dataSize);
+	if (!script)
+		return false;
 
 	if (theFlavor == CMulberryApp::sFlavorRuleType)
 	{

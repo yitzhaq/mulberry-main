@@ -1309,6 +1309,8 @@ bool CGroupTable::DropDataIntoCell(Atom theFlavor,
 		for(CMessageList::const_iterator iter = msgs->begin(); iter != msgs->end(); iter++)
 		{
 			CEnvelope* theEnv = (*iter)->GetEnvelope();
+			if (!theEnv)
+				continue;
 
 			// Add From
 			if (theEnv->GetFrom()->size())

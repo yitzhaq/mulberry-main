@@ -20,6 +20,7 @@
 #include "COptionsProtocol.h"
 
 #include "CACAPClient.h"
+#include "CGeneralException.h"
 #include "CConnectionManager.h"
 #include "CIMSPClient.h"
 #include "CLocalPrefsClient.h"
@@ -91,6 +92,12 @@ void COptionsProtocol::CreateClient()
 		InitDisconnect();
 		mClient = new CLocalPrefsClient(this);
 		mFlags.Set(eCanPartialReadWrite, false);
+	}
+
+	if (!mClient)
+	{
+		CLOG_LOGTHROW(CGeneralException, -1);
+		throw CGeneralException(-1);
 	}
 
 	mClient->SetVendor(cVendor);

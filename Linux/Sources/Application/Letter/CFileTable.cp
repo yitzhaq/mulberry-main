@@ -440,6 +440,8 @@ bool CFileTable::TestSelectionChangeable(TableIndexT row)
 {
 	// Is it changeable?
 	CAttachment* attach = GetAttachment(row);
+	if (!attach)
+		return false;
 	return attach->CanChange();
 }
 
@@ -448,6 +450,8 @@ bool CFileTable::TestSelectionUnchangeable(TableIndexT row)
 {
 	// Is it unchangeable?
 	CAttachment* attach = GetAttachment(row);
+	if (!attach)
+		return false;
 	return !attach->CanChange();
 }
 
@@ -1275,6 +1279,8 @@ bool CFileTable::ShowPart(TableIndexT row)
 	TableIndexT	woRow = GetWideOpenIndex(row);
 	
 	CAttachment* attach = GetAttachment(row);
+	if (!attach)
+		return false;
 	if ((woRow != mRowShow) && attach->CanEdit())
 	{
 		// Refresh old one to force row show off
@@ -1300,9 +1306,11 @@ void CFileTable::DrawCell(JPainter* pDC, const STableCell& inCell, const JRect& 
 	UInt32	woRow = GetWideOpenIndex(inCell.row);
 	
 	CAttachment* attach = GetAttachment(inCell.row);
+	if (!attach)
+		return;
 
 	unsigned long col_type = 0;
-	
+
 	switch(inCell.col)
 	{
 	case 1:

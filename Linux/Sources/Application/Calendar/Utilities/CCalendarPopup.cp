@@ -43,6 +43,8 @@ void CCalendarPopup::Reset()
 		{
 			// Make a string from UTF8 data
 			const calstore::CCalendarStoreNode* node = calstore::CCalendarStoreManager::sCalendarStoreManager->GetNode(*iter);
+			if (!node)
+				continue;
 			cdstring name = node->GetAccountDisplayName(calstore::CCalendarStoreManager::sCalendarStoreManager->HasMultipleProtocols());
 			if (name.empty())
 			{

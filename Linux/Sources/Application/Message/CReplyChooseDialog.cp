@@ -964,6 +964,8 @@ void CReplyChooseTable::SetMessage(CMessage* aMsg)
 	mItsMsg = aMsg;
 
 	CEnvelope* env = mItsMsg->GetEnvelope();
+	if (!env)
+		return;
 
 	// Add reply to
 	AddAddrList(env->GetReplyTo(), replyReplyTo, replyTo);

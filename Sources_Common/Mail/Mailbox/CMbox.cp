@@ -1501,7 +1501,7 @@ void CMbox::DoInitialSearchUsingSearch()
 			for(ulvector::const_iterator iter = results.begin(); iter != results.end(); iter++)
 			{
 				CMessage* aMsg = GetMessage(*iter);
-				if (aMsg->IsRecent())
+				if (aMsg && aMsg->IsRecent())
 				{
 					if (!mOpenInfo->mFirstNew)
 						mOpenInfo->mFirstNew = *iter;

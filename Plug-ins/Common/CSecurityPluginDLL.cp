@@ -421,6 +421,11 @@ void CSecurityPluginDLL::TempRead(fspec out_tmp, char** out, unsigned long* out_
 
 		// Create output buffer and read in data
 		*out = (char*) ::malloc(fbuf.st_size + 1);
+		if (!*out)
+		{
+			REPORTERROR(eSecurity_UnknownError, "Could not allocate memory for temporary output file");
+			throw -1L;
+		}
 		ssize_t rdsize = ::read(fd, *out, fbuf.st_size);
 		(*out)[rdsize] = 0;
 		*out_len = rdsize;

@@ -844,6 +844,8 @@ bool CAddressBookManager::ResolveNickName(const char* nick_name, CAddressList* l
 		// Try to get nick-name from address book
 		if (adbk->FindNickName(nick_name, addr))
 		{
+			if (!addr)
+				continue;
 			// Add to list if found (must copy to prevent double-deleting of address)
 			list->push_back(new CAdbkAddress(*addr));
 			found = true;

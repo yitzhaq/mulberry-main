@@ -311,6 +311,8 @@ void CDisconnectDialog::Receive(JBroadcaster* sender, const Message& message)
 	{
 		// Iterate over every item in the menu
 		JXTextMenu* menu = dynamic_cast<JXTextMenu*>(sender);
+		if (!menu)
+			return;
   		menu->EnableAll();
 	}
 	else if(message.Is(JXMenu::kItemSelected) && (sender == mMailboxListPanel->mCabinets))

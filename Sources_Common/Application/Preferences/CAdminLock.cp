@@ -667,6 +667,8 @@ bool CAdminLock::CanSend(const CMessage* msg) const
 	// Get address sizes
 	long addr_size = 0;
 	const CEnvelope* env = msg->GetEnvelope();
+	if (!env)
+		return false;
 	addr_size += env->GetTo()->size();
 	addr_size += env->GetCC()->size();
 	addr_size += env->GetBcc()->size();

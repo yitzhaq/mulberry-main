@@ -169,6 +169,29 @@ X11 bitmap fonts).
 
 ### Fixed
 
+- Fix ACE_Thread_ID::operator== returning inverted result on Linux.
+  pthread_equal() returns non-zero for equal threads, but the
+  comparison used == 0. This silently broke all mutex recursion on
+  Linux: cdomutex deadlocked on re-entry (despite having full
+  recursion code), and cdmutex never enforced mutual exclusion
+  between threads. The architecture's implicit serialization
+  (per-mailbox connections, single-threaded UI) masked the broken
+  mutexes. Fixed by changing == 0 to != 0 in the ACE submodule.
+- Comprehensive concurrency audit fixing 21 crash sites in CMbox
+  where mOpenInfo->mMsgMailer was dereferenced without protection
+  against concurrent mailbox close. Applied Cyrus's OpenIfOpen()
+  refcount pattern (previously used on only 2 methods) to all
+  methods that do network I/O through the per-mailbox connection
+  clone. Also fixed: Recover() deleting messages without notifying
+  open windows (dangling CMessage pointers), sPeriodics vector
+  data race, TCPSelectYield/TLSReceiveData yield guards,
+  TCPSendData arithmetic bug, and 5 additional protocol reconnect
+  guards.
+- Fix TLS teardown crash during search. SSL_connect/SSL_read/
+  SSL_write loops yield to process UI events; if the connection
+  is torn down by another thread during the yield, the SSL
+  object becomes NULL. Guard all three TLS operations against
+  connection teardown during yield.
 - Fix connection drop rendering Mulberry permanently unusable.
   Two fixes: clear the error recovery flag after failed reconnection
   (previously stuck permanently, blocking all server communication),

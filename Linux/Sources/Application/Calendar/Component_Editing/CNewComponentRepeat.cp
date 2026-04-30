@@ -246,6 +246,8 @@ void CNewComponentRepeat::SetRecurrence(const iCal::CICalendarRecurrenceSet* rec
 		else if (recurs->IsAdvancedUI())
 		{
 			const iCal::CICalendarRecurrence* recur = recurs->GetUIRecurrence();
+			if (!recur)
+				return;
 
 			// Cache the value we will be editing
 			mAdvancedRecur = *recur;

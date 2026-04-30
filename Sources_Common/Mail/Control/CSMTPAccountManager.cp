@@ -596,6 +596,8 @@ CMbox* CSMTPAccountManager::GetOfflineMbox(CSMTPSender* sender, bool create) con
 		}
 
 		// Must never appear in cabinets
+		if (!mbox)
+			return NULL;
 		mbox->SetFlags(NMbox::eNoCabinet);
 		
 		// Now give mbox to async SMTP sender

@@ -325,6 +325,8 @@ void CCalendarView::OnCheckCalendar()
 	if (mSingleCalendar)
 	{
 		calstore::CCalendarStoreNode* node = const_cast<calstore::CCalendarStoreNode*>(calstore::CCalendarStoreManager::sCalendarStoreManager->GetNode(GetCalendar()));
+		if (!node)
+			return;
 		node->GetProtocol()->CheckCalendar(*node, *node->GetCalendar());
         
         // Reset all views

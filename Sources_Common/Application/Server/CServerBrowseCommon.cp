@@ -432,6 +432,8 @@ const char* CServerBrowse::GetRowText(UInt32 woRow)
 		{
 			// Always do INBOX
 			CMbox* mbox = GetCellMbox(woRow);
+			if (!mbox)
+				return cdstring::null_str;
 			if (!IsCellINBOX(woRow) && GetCellMboxList(woRow)->IsHierarchic())
 				return mbox->GetShortName();
 			else

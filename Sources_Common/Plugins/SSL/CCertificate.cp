@@ -356,18 +356,22 @@ const cdstrpair CCertificate::GetValidity() const
 		// Make copy of times
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
 			mValidity = ::X509_VAL_new();
+			if (!mValidity)
+				return cdstrpair(cdstring::null_str, cdstring::null_str);
 			ASN1_TIME_free(mValidity->notBefore);
 			ASN1_TIME_free(mValidity->notAfter);
 			mValidity->notBefore = ASN1_TIME_dup(X509_get0_notBefore(cert));
 			mValidity->notAfter = ASN1_TIME_dup(X509_get0_notAfter(cert));
 #else
 		mValidity = ::X509_VAL_new();
+		if (!mValidity)
+			return cdstrpair(cdstring::null_str, cdstring::null_str);
         M_ASN1_TIME_free(mValidity->notBefore);
         M_ASN1_TIME_free(mValidity->notAfter);
 		mValidity->notBefore = M_ASN1_TIME_dup(X509_get_notBefore(cert));
 		mValidity->notAfter = M_ASN1_TIME_dup(X509_get_notAfter(cert));
 #endif
-		
+
 		mValidityOK = true;
 	}
 	

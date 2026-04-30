@@ -358,7 +358,7 @@ void CTreeNodeList::RemoveNode(CTreeNode* node, bool delete_it)
 			CMbox* mbox = dynamic_cast<CMbox*>(*found);
 			if (mbox)
 				mbox->SetFlags(NMbox::eNoSelect, true);
-			else
+			else if (ref)
 				ref->SetDirectory(true);
 		}
 		else

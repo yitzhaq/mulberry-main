@@ -77,6 +77,8 @@ CFontSizeMenu::CFontSizeMenu
 void CFontSizeMenu::OnCreate(CFontNameMenu* fontMenu)
 {
 	CFontSizeMenuX(fontMenu);
+	if (!itsFontNameMenu)
+		return;
 	const JString fontName = itsFontNameMenu->GetFontName();
 	BuildMenu(fontName);
 	SetFontSize(kJXDefaultFontSize);

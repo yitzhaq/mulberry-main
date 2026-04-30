@@ -94,6 +94,7 @@ void CDateTimeZoneSelect::OnCreate()
 	mZone->OnCreate();
 
 	ListenTo(mDateBtn);
+	ListenTo(mZone);
 }
 
 // Handle OK button
@@ -103,6 +104,15 @@ void CDateTimeZoneSelect::Receive(JBroadcaster* sender, const Message& message)
 	{
 		if (sender == mDateBtn)
 			OnDateBtn();
+	}
+	else if (message.Is(JXMenu::kItemSelected))
+	{
+		if (sender == mZone)
+		{
+			// Trigger "Other..." dialog immediately when selected
+			iCal::CICalendarTimezone tz;
+			mZone->GetTimezone(tz);
+		}
 	}
 }
 

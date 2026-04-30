@@ -136,6 +136,8 @@ void CServerBrowse::LClickCell(const STableCell& inCell, const JXKeyModifiers& m
 	{
 	case eServerBrowseMbox:
 		mbox = GetCellMbox(woRow);
+		if (!mbox)
+			return;
 		directory = mbox->IsDirectory();
 		break;
 	case eServerBrowseMboxRef:

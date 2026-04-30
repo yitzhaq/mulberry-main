@@ -166,12 +166,14 @@ template <class T> void TPopupMenu<T>::Draw(JXWindowPainter& p, const JRect& rec
 	const JXImage* image = NULL;
 	r.left += 2;
 	r.right += 6;		// Gets tighter packing of string to arrow
-	if (mValue && this->GetItemImage(mValue, &image) || this->GetTitleImage(&image))
+	if ((mValue && this->GetItemImage(mValue, &image)) || this->GetTitleImage(&image))
 	{
-		
-		p.JPainter::Image(*image, image->GetBounds(), r.left + 2,
-					r.top + (r.height() - image->GetBounds().height())/2);
-		r.left += image->GetBounds().width() + 4;
+		if (image)
+		{
+			p.JPainter::Image(*image, image->GetBounds(), r.left + 2,
+						r.top + (r.height() - image->GetBounds().height())/2);
+			r.left += image->GetBounds().width() + 4;
+		}
 	}
 
 	{

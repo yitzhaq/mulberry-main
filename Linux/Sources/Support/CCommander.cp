@@ -179,6 +179,8 @@ bool CCommander::ReceiveMenu(JBroadcaster* sender, const JBroadcaster::Message& 
 	{
 		// Iterate over every item in the menu
 		JXTextMenu* menu = dynamic_cast<JXTextMenu*>(sender);
+		if (!menu)
+			return false;
 
 		// Do not do menus that are marked to not disable items as they will do their own enabling
 		if (menu->GetUpdateAction() == JXMenu::kDisableNone)

@@ -127,6 +127,8 @@ void CSMTPView::SetSMTPSender(CSMTPSender* sender)
 	
 	// Get offline mbox
 	CMbox* mbox = CSMTPAccountManager::sSMTPAccountManager->GetOfflineMbox(mSender);
+	if (!mbox)
+		return;
 
 	// Close any existing mailbox
 	if (GetMbox() && (GetMbox() != mbox))
