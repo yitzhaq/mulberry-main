@@ -432,7 +432,7 @@ void CNewComponentRepeatSimple::OnCreate()
 
 	mOccursInterval->OnCreate(1, 0x7FFFFFFF);
 	mOccursFreq->SetMenuItems("Year(s) %r | Month(s) %r | Week(s) %r | Day(s) %r | Hour(s) %r | Minute(s) %r | Second(s) %r");
-	mOccursFreq->SetValue(eOccurs_Daily);
+	mOccursFreq->SetValue(CNewComponentRepeat::eOccurs_Daily);
 	mOccursCounter->OnCreate(1, 0x7FFFFFFF);
 	mOccursDateTimeZone->OnCreate();
 }
