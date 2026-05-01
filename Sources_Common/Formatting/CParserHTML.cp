@@ -1595,7 +1595,35 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 							while(*pname && *pname != ' ')
 								pname++;
 							*pname = 0;
-							p = CommentTag(p, narrow.c_str(), ::strlen(narrow.c_str()));
+							const char* tagname = narrow.c_str();
+							size_t taglen = ::strlen(tagname);
+
+							// Nesting-aware skip: track depth so nested
+							// same-name tags don't cause early exit
+							int depth = 1;
+							while(*p && depth > 0)
+							{
+								if (*p == '<')
+								{
+									if (*(p + 1) == '/' &&
+										::unistrncmpnocase(p + 2, tagname, taglen) == 0)
+									{
+										depth--;
+									}
+									else if (::unistrncmpnocase(p + 1, tagname, taglen) == 0 &&
+										(isuspace(*(p + 1 + taglen)) || *(p + 1 + taglen) == '>'))
+									{
+										depth++;
+									}
+								}
+								if (depth > 0)
+									p++;
+							}
+							// Skip past closing tag
+							while(*p && (*p != '>'))
+								p++;
+							if (*p)
+								p++;
 							break;
 						}
 					}

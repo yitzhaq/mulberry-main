@@ -63,14 +63,6 @@ public:
 	virtual void	GetToDo(iCal::CICalendarVToDo& vtodo);
 
 	virtual	void	SetReadOnly(bool read_only);
-			
-protected:
-	enum
-	{
-		eOccurs_Simple = 1,
-		eOccurs_Advanced,
-		eOccurs_Complex
-	};
 
 	enum
 	{
@@ -81,6 +73,14 @@ protected:
 		eOccurs_Hourly,
 		eOccurs_Minutely,
 		eOccurs_Secondly
+	};
+
+protected:
+	enum
+	{
+		eOccurs_Simple = 1,
+		eOccurs_Advanced,
+		eOccurs_Complex
 	};
 
 	enum
