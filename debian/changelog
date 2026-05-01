@@ -42,10 +42,32 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Fix HTML attribute truncation at non-ASCII characters
   * Fix empty HTML attribute values consuming subsequent attributes
   * Remove -fpermissive compiler flag (unnecessary since GCC 4.x era)
+  * Replace custom XML parser with system libxml2 for CalDAV/CardDAV/
+    WebDAV parsing, with XXE/entity expansion protection. Custom parser
+    remains as fallback (--without-libxml2). New dependency: libxml2-dev
+  * Fix ACE_Thread_ID::operator== inverting pthread_equal() on Linux,
+    silently breaking all mutex recursion. Enables full OpenIfOpen()
+    refcount protection for CMbox operations across all platforms
+  * Comprehensive concurrency audit: 21 CMbox crash sites guarded,
+    Recover() message notification, TLS teardown race fix, sPeriodics
+    data race fix, 5 additional protocol reconnect guards
+  * Fix background mailbox tabs closing instead of reconnecting after
+    idle timeout
+  * RFC modernization: Implicit TLS defaults (8314), port 587 (6409),
+    IMAP MOVE (6851), ESEARCH (4731), SASL-IR (4959), ENABLE (5161),
+    CHILDREN (3348), QUOTA update (9208), $Forwarded keyword (9051),
+    APPENDLIMIT (7889), RFC 5322 line length compliance
+  * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux
+    and Win32, legacy options hidden
+  * HTML display:none support, U+2028 line separator handling
   * Static analysis fixes (cppcheck, clang-tidy, Infer, CodeQL, Coverity, GCC):
     use-after-free, null derefs, format strings, array delete mismatch,
     uninitialized variables, realloc leaks, double-scaled pointer math,
     23 allocation/deallocation mismatches, buffer over-read in JX
+  * Infer biabduction + Pulse: 36 null derefs, 4 struct initializations,
+    CTimezonePopup crash fix, operator precedence fix
+  * Fix recurrence frequency not saving (read from wrong control)
+  * Default recurrence frequency changed from Yearly to Daily
   * Removed bundled OpenSSL 0.9.8m (22MB)
   * Removed bundled PCRE 4.5 and GNU regex from JX, use system libs.
     JX's regex backend selector (regex.h) now includes system pcre.h
@@ -66,7 +88,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Added upstream/metadata with repository links
   * Added lintian overrides for upstream source artifacts
   * Added Homepage, Vcs-Git, and Vcs-Browser fields to control
-  * Updated build-depends: libfontconfig1-dev, pkg-config, zlib1g-dev
+  * Updated build-depends: libfontconfig1-dev, libxml2-dev, pkg-config,
+    zlib1g-dev
   * Removed obsolete build-depends (libesd0-dev)
   * Fixed resource file permissions (chmod 644 after install)
   * Removed bundled OpenSSL build step, use system libssl-dev

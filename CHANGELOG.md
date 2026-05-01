@@ -63,6 +63,13 @@ X11 bitmap fonts).
   from being rendered as visible text in HTML messages.
 - Use `aria-label` and `title` attributes as fallback for image
   alt text in HTML messages, before falling back to the filename.
+- Replace custom XML parser with system libxml2 for CalDAV, CardDAV,
+  WebDAV, and address book XML parsing. Adds XXE protection, entity
+  expansion limits, and network access blocking. The custom parser
+  (XMLSAXSimple) remains available as fallback via --without-libxml2.
+- IMAP APPENDLIMIT extension (RFC 7889). Parse server-advertised
+  maximum message size from CAPABILITY and STATUS responses. Reject
+  oversized APPENDs before transmission with a clear error message.
 - Timezone database updated from 2008 (tzdata2008i) to current IANA
   data. Timezone files are now generated at build time from the latest
   IANA source via vzic, so they stay current with each build. Fixes
@@ -171,6 +178,11 @@ X11 bitmap fonts).
 
 ### Fixed
 
+- Fix background mailbox tabs closing instead of reconnecting.
+  When switching back to a mailbox tab after idle time, the IMAP
+  connection may have died (server timeout). Previously, the tab
+  assumed the connection was alive, hit the dead connection, and
+  closed the folder. Now verifies and re-opens if needed.
 - Fix ACE_Thread_ID::operator== returning inverted result on Linux
   (macOS and Windows unaffected — they use native thread ID types).
   pthread_equal() returns non-zero for equal threads, but the
@@ -214,6 +226,17 @@ X11 bitmap fonts).
   preference structs (SColumnInfo, SFontInfo, SStyleTraits,
   SStyleTraits2), and an operator precedence bug in TPopupMenu::Draw
   on Linux.
+- Fix recurrence frequency not saving in calendar event repeat dialog.
+  The frequency popup (Daily/Weekly/Monthly/Yearly) was read from the
+  wrong control (the end-condition radio group instead of the frequency
+  dropdown), so the saved frequency was always wrong. Copy-paste bug
+  in Linux platform code; Mac and Win32 were correct.
+- Fix calendar event cross mark constant (copy-paste: same bytes as
+  tick mark). Wire up cross mark prefix for cancelled events.
+- Change default recurrence frequency from Yearly to Daily (all
+  platforms), matching Google Calendar, Outlook, and Thunderbird.
+- Add check mark, heavy check mark, ballot X, and heavy ballot X to
+  typographic substitution table for calendar status display.
 - Fix mojibake in messages containing a UTF-8 byte-order mark (BOM).
   Several mail clients (notably Outlook and iOS Mail) embed BOMs in
   their messages, which caused Mulberry's UTF-16 converter to flip
