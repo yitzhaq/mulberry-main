@@ -1148,7 +1148,13 @@ bool CMailboxInfoView::Substitute(CMbox* anMbox, bool select, bool is_search)
 				anMbox->OpenSearch();
 		}
 		else
-			was_open = true;
+		{
+			// Substitute mailbox should still be open, but connection
+			// may have died while backgrounded. Verify and re-open if needed.
+			was_open = anMbox->OpenIfOpen();
+			if (!was_open)
+				anMbox->Open();
+		}
 
 		// Reset status changed by DoCloseMbox
 		// Must do this after opening mailbox so redisplay is blocked while messages are being recached
