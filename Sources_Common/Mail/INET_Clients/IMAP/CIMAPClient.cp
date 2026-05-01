@@ -42,6 +42,7 @@
 #include "CSequence.h"
 #include "CStreamType.h"
 #include "CStatusWindow.h"
+#include "CXStringResources.h"
 #include "CStringUtils.h"
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
@@ -216,6 +217,25 @@ void CIMAPClient::_ProcessCapability()
 	mHasID = mLastResponse.CheckUntagged(cIMAP_ID, true);
 	mHasMove = mLastResponse.CheckUntagged(cIMAP_MOVE, true);
 	mHasESearch = mLastResponse.CheckUntagged(cIMAP_ESEARCH, true);
+
+	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
+	{
+		const cdstring& cap = mLastResponse.GetUntagged(cIMAP_APPENDLIMIT);
+		if (!cap.empty())
+		{
+			const char* p = ::strstrnocase(cap, cIMAP_APPENDLIMIT);
+			if (p)
+			{
+				p += ::strlen(cIMAP_APPENDLIMIT);
+				if (*p == '=')
+				{
+					unsigned long limit = ::strtoul(p + 1, NULL, 10);
+					if (limit > 0)
+						GetMboxOwner()->SetAppendLimit(limit);
+				}
+			}
+		}
+	}
 
 	mAuthLoginAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHLOGIN, true);
 	mAuthPlainAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHPLAIN, true);
@@ -1043,6 +1063,26 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 					internaldate = "\"";
 					internaldate += CRFC822::GetIMAPDate(theMsg->GetInternalDate(), theMsg->GetInternalZone());
 					internaldate += "\"";
+				}
+			}
+
+			// Check APPENDLIMIT (RFC 7889) before sending
+			{
+				mProcessMessage = theMsg;
+				unsigned long append_limit = mbox->GetAppendLimit();
+				if (append_limit == 0)
+					append_limit = GetMboxOwner()->GetAppendLimit();
+				if (append_limit > 0)
+				{
+					unsigned long msg_size = GetManualLiteralLength();
+					if (msg_size > append_limit)
+					{
+						cdstring error = rsrc::GetString("Error::IMAP::MessageTooBig");
+						error += cdstring(msg_size);
+						::strcpy(mLineData, error.c_str());
+						CLOG_LOGTHROW(CINETException, CINETException::err_NoResponse);
+						throw CINETException(CINETException::err_NoResponse);
+					}
 				}
 			}
 
@@ -2881,6 +2921,14 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 					update->SetNumberUnseen(msg_unseen);
 					changed = true;
 				}
+			}
+			else if (::CheckStrAdv(&q, cSTATUS_APPENDLIMIT))
+			{
+				while(*q && (*q == ' ')) q++;
+				if (::strncasecmp(q, "NIL", 3) == 0)
+					q += 3;
+				else
+					update->SetAppendLimit(::strtoul(q, &q, 10));
 			}
 			// Got an unknown item - just step over it
 			else

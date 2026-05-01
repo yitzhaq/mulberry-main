@@ -28,6 +28,7 @@ extern const tcp_port cIMAPServerPort_SSL;
 // Response Messages
 extern const char* cPERMANENTFLAGS;
 extern const char* cTRYCREATE;
+extern const char* cTOOBIG;
 extern const char* cUIDVALIDITY;
 extern const char* cUIDNEXT;
 extern const char* cUNSEEN;
@@ -57,6 +58,7 @@ extern const char* cIMAP_SORT;
 extern const char* cIMAP_THREAD_SUBJECT;
 extern const char* cIMAP_THREAD_REFERENCES;
 extern const char* cIMAP_ID;
+extern const char* cIMAP_APPENDLIMIT;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
 extern const char* cIMAP_AUTHANON;
@@ -170,6 +172,7 @@ extern const char* cSTATUS_UIDNEXT;
 extern const char* cSTATUS_UIDVALIDITY;
 extern const char* cSTATUS_UNSEEN;
 extern const char* cSTATUS_CHECK;
+extern const char* cSTATUS_APPENDLIMIT;
 
 // SEARCH criteria
 extern const char* cSEARCH_CHARSET;

@@ -69,6 +69,7 @@ CMboxProtocol::CMboxProtocol(CMailAccount* account)
 	mCloneOwner = NULL;
 	mCurrent_mbox = NULL;
 	mClient = NULL;
+	mAppendLimit = 0;
 
 	// Do the rest
 	mHierarchies.push_back(new CMboxList(this));								// Always have subscribed list
@@ -97,6 +98,7 @@ CMboxProtocol::CMboxProtocol(const CMboxProtocol& copy, bool force_local, bool f
 	mCloneOwner = &copy;		// Do not destroy mailboxes on delete
 	mAccount = NULL;			// Clones never have an account but rely on their owner's account
 	mCurrent_mbox = NULL;
+	mAppendLimit = copy.mAppendLimit;
 
 	mRecorder = NULL; 				// Only original proto uses this - clones do not
 

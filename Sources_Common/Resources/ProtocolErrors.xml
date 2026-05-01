@@ -46,6 +46,7 @@
 	<string id="Error::IMAP::NoBadFindAll">Could not find all subscribed mailboxes:\n</string>
 	<string id="Error::IMAP::OSErrAppend">while appending a message to a mailbox.</string>
 	<string id="Error::IMAP::NoBadAppend">Could not append message to mailbox:\n</string>
+	<string id="Error::IMAP::MessageTooBig">Message exceeds server size limit (APPENDLIMIT).\nMessage size: </string>
 	<string id="Error::IMAP::OSErrSearch">while searching a mailbox.</string>
 	<string id="Error::IMAP::NoBadSearch">Could not search a mailbox:\n</string>
 	<string id="Error::IMAP::OSErrReadMsg">while reading the message text.</string>

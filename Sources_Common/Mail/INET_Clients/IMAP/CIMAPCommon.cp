@@ -25,6 +25,7 @@ const tcp_port cIMAPServerPort_SSL =	993;
 // Response Messages
 const char* cPERMANENTFLAGS =			"[PERMANENTFLAGS ";
 const char* cTRYCREATE =				"[TRYCREATE]";
+const char* cTOOBIG =					"[TOOBIG]";
 const char* cUIDVALIDITY =				"[UIDVALIDITY ";
 const char* cUIDNEXT =					"[UIDNEXT ";
 const char* cUNSEEN =					"[UNSEEN ";
@@ -54,6 +55,7 @@ const char* cIMAP_SORT =				"SORT";
 const char* cIMAP_THREAD_SUBJECT =		"THREAD=ORDEREDSUBJECT";
 const char* cIMAP_THREAD_REFERENCES =	"THREAD=REFERENCES";
 const char* cIMAP_ID =					"ID";
+const char* cIMAP_APPENDLIMIT =		"APPENDLIMIT";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
 const char* cIMAP_AUTHANON =			"AUTH=ANONYMOUS";
@@ -174,6 +176,7 @@ const char* cSTATUS_UIDNEXT =			"UIDNEXT";
 const char* cSTATUS_UIDVALIDITY =		"UIDVALIDITY";
 const char* cSTATUS_UNSEEN =			"UNSEEN";
 const char* cSTATUS_CHECK =				"(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT)";
+const char* cSTATUS_APPENDLIMIT =		"APPENDLIMIT";
 
 // SEARCH criteria
 const char* cSEARCH_CHARSET =			"CHARSET";
