@@ -173,6 +173,7 @@ void CIMAPClient::_InitCapability()
 	mHasESearch = false;
 	mHasListExtended = false;
 	mHasListStatus = false;
+	mHasStatusSize = false;
 	mListStatusDone = false;
 
 	mAuthLoginAllowed = false;
@@ -222,6 +223,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasESearch = mLastResponse.CheckUntagged(cIMAP_ESEARCH, true);
 	mHasListExtended = mLastResponse.CheckUntagged(cIMAP_LIST_EXTENDED, true);
 	mHasListStatus = mLastResponse.CheckUntagged(cIMAP_LIST_STATUS, true);
+	mHasStatusSize = mLastResponse.CheckUntagged(cIMAP_STATUS_SIZE, false);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -917,7 +919,7 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 			// Add RETURN options
 			cdstring return_opts = "CHILDREN";
 			if (mHasListStatus)
-				return_opts += " STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT)";
+				return_opts += " STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT SIZE)";
 			INETSendString(" RETURN (");
 			INETSendString(return_opts);
 			INETSendString(")");
@@ -1004,7 +1006,7 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 				{
 					if (return_opts.length())
 						return_opts += " ";
-					return_opts += "STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT)";
+					return_opts += "STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT SIZE)";
 				}
 				INETSendString(" RETURN (");
 				INETSendString(return_opts);
@@ -2993,6 +2995,15 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 				if (update->GetNumberUnseen() != msg_unseen)
 				{
 					update->SetNumberUnseen(msg_unseen);
+					changed = true;
+				}
+			}
+			else if (::CheckStrAdv(&q, cSTATUS_SIZE))
+			{
+				uint64_t size = ::strtoull(q, &q, 10);
+				if (update->GetSize() != size)
+				{
+					update->SetSize(size);
 					changed = true;
 				}
 			}

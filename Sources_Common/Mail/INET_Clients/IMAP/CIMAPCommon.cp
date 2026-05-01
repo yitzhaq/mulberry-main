@@ -58,6 +58,7 @@ const char* cIMAP_ID =					"ID";
 const char* cIMAP_APPENDLIMIT =		"APPENDLIMIT";
 const char* cIMAP_LIST_EXTENDED =	"LIST-EXTENDED";
 const char* cIMAP_LIST_STATUS =		"LIST-STATUS";
+const char* cIMAP_STATUS_SIZE =		"STATUS=SIZE";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
 const char* cIMAP_AUTHANON =			"AUTH=ANONYMOUS";
@@ -179,8 +180,9 @@ const char* cSTATUS_RECENT =			"RECENT";
 const char* cSTATUS_UIDNEXT =			"UIDNEXT";
 const char* cSTATUS_UIDVALIDITY =		"UIDVALIDITY";
 const char* cSTATUS_UNSEEN =			"UNSEEN";
-const char* cSTATUS_CHECK =				"(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT)";
+const char* cSTATUS_CHECK =				"(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT SIZE)";
 const char* cSTATUS_APPENDLIMIT =		"APPENDLIMIT";
+const char* cSTATUS_SIZE =				"SIZE";
 
 // SEARCH criteria
 const char* cSEARCH_CHARSET =			"CHARSET";

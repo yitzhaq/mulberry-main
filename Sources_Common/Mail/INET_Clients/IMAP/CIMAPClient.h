@@ -79,6 +79,7 @@ private:
 	bool			mHasESearch;					// Supports ESEARCH extension (RFC 4731)
 	bool			mHasListExtended;				// Supports LIST-EXTENDED (RFC 5258)
 	bool			mHasListStatus;					// Supports LIST-STATUS (RFC 5819)
+	bool			mHasStatusSize;					// Supports STATUS=SIZE (RFC 8438)
 	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
 	threadvector*	mThreadResults;					// Place to store thread results
 
@@ -125,7 +126,7 @@ protected:
 								bool fast = false);
 	virtual void	_MailboxSize(CMbox* mbox) {}		// Get mailbox size;
 	virtual bool	_DoesMailboxSize() const			// Does server handle mailbox size?
-		{ return false; }
+		{ return mHasStatusSize; }
 	virtual bool	_ExpungeMbox(bool closing);			// Do expunge mailbox
 	virtual void	_DeleteMbox(CMbox* mbox);			// Do delete mailbox
 	virtual void	_RenameMbox(CMbox* mbox_old,

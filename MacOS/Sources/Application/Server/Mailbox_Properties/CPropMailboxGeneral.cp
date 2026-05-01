@@ -205,13 +205,13 @@ void CPropMailboxGeneral::SetMbox(CMbox* mbox)
 		}
 
 		{
-			unsigned long size = mbox->GetSize();
-			if ((size == ULONG_MAX) && mbox->IsLocalMbox() && mbox->IsCachedMbox())
+			uint64_t size = mbox->GetSize();
+			if ((size == UINT64_MAX) && mbox->IsLocalMbox() && mbox->IsCachedMbox())
 			{
 				mbox->CheckSize();
 				size = mbox->GetSize();
 			}
-			if (size != ULONG_MAX)
+			if (size != UINT64_MAX)
 			{
 				mSize->SetText(::GetNumericFormat(size));
 			}
@@ -290,8 +290,8 @@ void CPropMailboxGeneral::CheckSize()
 	}
 
 	{
-		unsigned long size = static_cast<CMbox*>(mMboxList->front())->GetSize();
-		if (size != ULONG_MAX)
+		uint64_t size = static_cast<CMbox*>(mMboxList->front())->GetSize();
+		if (size != UINT64_MAX)
 		{
 			mSize->SetText(::GetNumericFormat(size));
 		}

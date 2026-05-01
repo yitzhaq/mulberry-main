@@ -95,7 +95,7 @@ protected:
 		unsigned long		mNumberExists;				// Number found in box on server
 		unsigned long		mNumberRecent;				// Number new on server
 		unsigned long		mNumberUnseen;				// Number unseen (STATUS)
-		unsigned long		mSize;						// Size of mailbox
+		uint64_t			mSize;						// Size of mailbox (RFC 8438: 63-bit)
 		unsigned long		mUIDValidity;				// UIDValidity
 		unsigned long		mUIDNext;					// UIDNext
 		unsigned long		mLastSync;					// UIDNext
@@ -305,10 +305,10 @@ public:
 				{ return (IsFullOpen() ?
 							mOpenInfo->mViewSearchResults.size() : 0); }
 
-	unsigned long	GetSize() const
-				{ return (mStatusInfo ? mStatusInfo->mSize : ULONG_MAX); }
+	uint64_t	GetSize() const
+				{ return (mStatusInfo ? mStatusInfo->mSize : UINT64_MAX); }
 	void	CheckSize();
-	void	SetSize(unsigned long size)
+	void	SetSize(uint64_t size)
 				{ if (mStatusInfo) mStatusInfo->mSize = size; }
 
 	unsigned long	GetUIDValidity() const

@@ -80,7 +80,7 @@ CMbox::CMboxStatus::CMboxStatus()
 	mNumberExists = 0;
 	mNumberRecent = 0;
 	mNumberUnseen = 0;
-	mSize = ULONG_MAX;
+	mSize = UINT64_MAX;
 	mUIDValidity = 0;
 	mUIDNext = 0;
 	mLastSync = 0;
@@ -2254,17 +2254,10 @@ void CMbox::CheckSize()
 				mOpenInfo->mMsgMailer->FetchItems(seq_all, false, CMboxProtocol::eSize);
 
 			// Now get the total size of the mailbox
-			unsigned long size = 0;
+			uint64_t size = 0;
 			for(CMessageList::iterator iter = mOpenInfo->mMessages->begin(); iter != mOpenInfo->mMessages->end(); iter++)
 			{
-				unsigned long msg_size = (*iter)->GetSize();
-				if (0xFFFFFFFE - size < msg_size)
-				{
-					size = 0xFFFFFFFE;
-					break;
-				}
-
-				size += msg_size;
+				size += (*iter)->GetSize();
 			}
 
 			// Tell mailbox the size
