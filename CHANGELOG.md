@@ -70,6 +70,13 @@ X11 bitmap fonts).
 - IMAP APPENDLIMIT extension (RFC 7889). Parse server-advertised
   maximum message size from CAPABILITY and STATUS responses. Reject
   oversized APPENDs before transmission with a clear error message.
+- IMAP LIST-EXTENDED (RFC 5258). Extended LIST command with selection
+  and return options. Replaces LSUB with `LIST (SUBSCRIBED)` for
+  accurate subscription flags. Parses `\Subscribed`, `\NonExistent`
+  attributes and CHILDINFO extended data.
+- IMAP LIST-STATUS (RFC 5819). Combines STATUS data into LIST
+  responses, retrieving message counts for all mailboxes in a single
+  round-trip instead of individual STATUS commands per mailbox.
 - Timezone database updated from 2008 (tzdata2008i) to current IANA
   data. Timezone files are now generated at build time from the latest
   IANA source via vzic, so they stay current with each build. Fixes

@@ -56,7 +56,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * RFC modernization: Implicit TLS defaults (8314), port 587 (6409),
     IMAP MOVE (6851), ESEARCH (4731), SASL-IR (4959), ENABLE (5161),
     CHILDREN (3348), QUOTA update (9208), $Forwarded keyword (9051),
-    APPENDLIMIT (7889), RFC 5322 line length compliance
+    APPENDLIMIT (7889), LIST-EXTENDED (5258), LIST-STATUS (5819),
+    RFC 5322 line length compliance
   * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux
     and Win32, legacy options hidden
   * HTML display:none support, U+2028 line separator handling
