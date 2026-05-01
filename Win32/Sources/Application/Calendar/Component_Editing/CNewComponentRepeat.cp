@@ -444,7 +444,7 @@ BOOL CNewComponentRepeatSimple::OnInitDialog()
 	mOccursIntervalSpin.SetRange(1, 1000);
 	mOccursFreq.SubclassDlgItem(IDC_CALENDAR_REPEAT_FREQ, this, IDI_POPUPBTN, 0, 0, 0, true, false);
 	mOccursFreq.SetMenu(IDR_CALENDAR_REPEAT_FREQ);
-	mOccursFreq.SetValue(IDM_CALENDAR_REPEAT_FREQ_YEARS);
+	mOccursFreq.SetValue(IDM_CALENDAR_REPEAT_FREQ_DAYS);
 
 	mOccursForEver.SubclassDlgItem(IDC_CALENDAR_REPEAT_FOREVER, this);
 	mOccursCount.SubclassDlgItem(IDC_CALENDAR_REPEAT_COUNT, this);

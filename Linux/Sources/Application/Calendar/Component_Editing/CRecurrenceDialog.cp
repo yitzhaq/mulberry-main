@@ -508,7 +508,7 @@ void CRecurrenceDialog::OnCreate()
 
 	mOccursInterval->OnCreate(1, 0x7FFFFFFF);
 	mOccursFreq->SetMenuItems("Year(s) %r | Month(s) %r | Week(s) %r | Day(s) %r | Hour(s) %r | Minute(s) %r | Second(s) %r");
-	mOccursFreq->SetValue(1);
+	mOccursFreq->SetValue(eOccurs_Daily);
 	mOccursCounter->OnCreate(1, 0x7FFFFFFF);
 	mOccursDateTimeZone->OnCreate();
 
@@ -523,7 +523,7 @@ void CRecurrenceDialog::OnCreate()
 	ListenTo(mOccursGroup);
 	
 	// Init controls
-	DoOccursFreq(eOccurs_Yearly);
+	DoOccursFreq(eOccurs_Daily);
 	DoOccursGroup(eOccurs_ForEver);
 
 	// Focus on summary

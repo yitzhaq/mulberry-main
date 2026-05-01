@@ -90,7 +90,7 @@ void CRecurrenceDialog::FinishCreateSelf()
 	UReanimator::LinkListenerToBroadcasters(this, this, pane_ID);
 	
 	// Init controls
-	DoOccursFreq(eOccurs_Yearly);
+	DoOccursFreq(eOccurs_Daily);
 	DoOccursGroup(eOccurs_ForEver);
 
 	// Focus on summary

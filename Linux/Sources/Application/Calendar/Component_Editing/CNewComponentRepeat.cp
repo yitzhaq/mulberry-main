@@ -322,7 +322,7 @@ bool CNewComponentRepeat::GetRecurrence(iCal::CICalendarRecurrenceSet& recurs)
 		iCal::CICalendarRecurrence recur;
 		
 		// Set frequency
-		recur.SetFreq(cFreqPopupToValue[mRepeatSimpleItems->mOccursGroup->GetSelectedItem() - 1]);
+		recur.SetFreq(cFreqPopupToValue[mRepeatSimpleItems->mOccursFreq->GetValue() - 1]);
 		
 		// Set interval
 		recur.SetInterval(mRepeatSimpleItems->mOccursInterval->GetNumberValue());
@@ -432,7 +432,7 @@ void CNewComponentRepeatSimple::OnCreate()
 
 	mOccursInterval->OnCreate(1, 0x7FFFFFFF);
 	mOccursFreq->SetMenuItems("Year(s) %r | Month(s) %r | Week(s) %r | Day(s) %r | Hour(s) %r | Minute(s) %r | Second(s) %r");
-	mOccursFreq->SetValue(1);
+	mOccursFreq->SetValue(eOccurs_Daily);
 	mOccursCounter->OnCreate(1, 0x7FFFFFFF);
 	mOccursDateTimeZone->OnCreate();
 }
