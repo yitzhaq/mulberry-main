@@ -77,6 +77,9 @@ X11 bitmap fonts).
 - IMAP LIST-STATUS (RFC 5819). Combines STATUS data into LIST
   responses, retrieving message counts for all mailboxes in a single
   round-trip instead of individual STATUS commands per mailbox.
+- IMAP STATUS=SIZE (RFC 8438). Server-reported mailbox storage size,
+  replacing the expensive manual fetch-all-sizes calculation. Mailbox
+  size field widened to 64-bit for 63-bit RFC compliance.
 - Timezone database updated from 2008 (tzdata2008i) to current IANA
   data. Timezone files are now generated at build time from the latest
   IANA source via vzic, so they stay current with each build. Fixes
