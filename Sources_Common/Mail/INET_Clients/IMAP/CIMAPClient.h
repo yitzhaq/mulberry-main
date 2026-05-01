@@ -80,6 +80,9 @@ private:
 	bool			mHasListExtended;				// Supports LIST-EXTENDED (RFC 5258)
 	bool			mHasListStatus;					// Supports LIST-STATUS (RFC 5819)
 	bool			mHasStatusSize;					// Supports STATUS=SIZE (RFC 8438)
+	bool			mHasSearchRes;					// Supports SEARCHRES (RFC 5182)
+	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
+	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
 	threadvector*	mThreadResults;					// Place to store thread results
 
@@ -164,7 +167,8 @@ protected:
 
 	virtual void	_FetchItems(const ulvector& nums,					// Do fetch envelopes
 										bool uids,
-										CMboxProtocol::EFetchItems items);
+										CMboxProtocol::EFetchItems items,
+										bool use_saved = false);
 	virtual void	_ReadHeaders(const ulvector& nums,				// Get header list from messages
 									bool uids,
 									const cdstring& hdrs);
@@ -197,12 +201,14 @@ protected:
 	virtual void	_SetFlag(const ulvector& nums,
 									bool uids,
 									NMessage::EFlags flags,
-									bool set);					// Change flag
+									bool set,
+									bool use_saved = false);	// Change flag
 
 	virtual void	_CopyMessage(const ulvector& nums,
 									bool uids,
 									CMbox* mbox_to,
-									ulmap& copy_uids);			// Do copy sequence to mailbox
+									ulmap& copy_uids,
+									bool use_saved = false);	// Do copy sequence to mailbox
 	virtual void	_CopyMessage(unsigned long msg_num,
 									bool uids,
 									costream* aStream,
@@ -210,12 +216,15 @@ protected:
 									unsigned long start = 1);	// Do copy message to stream
 	virtual void	_MoveMessage(const ulvector& nums,
 									bool uids,
-									CMbox* mbox_to);			// Do move sequence to mailbox
+									CMbox* mbox_to,
+									bool use_saved = false);	// Do move sequence to mailbox
 	virtual bool	_DoesCopy() const							// Does server handle copy?
 		{ return true; }
 	bool			_HasMove() const							// Does server support MOVE?
 		{ return mHasMove; }
-	virtual void	_ExpungeMessage(const ulvector& nums, bool uids);	// Expunge uids
+	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
+									bool use_saved = false);	// Expunge uids
+			bool	MatchesSavedSearch(const ulvector& nums) const;
 	virtual bool	_DoesExpungeMessage() const					// Does server handle copy?
 		{ return mHasUIDPlus; }
 

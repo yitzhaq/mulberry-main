@@ -267,7 +267,7 @@ void CActionItem::ExecuteFlags(CMbox* mbox, const ulvector& uids) const
 {
 	NMessage::EFlags flags = GetFlagData()->GetData().GetFlags();
 	bool set = GetFlagData()->GetData().IsSet();
-	mbox->SetFlagMessage(uids, true, flags, set);
+	mbox->SetFlagMessage(uids, true, flags, set, false, true);
 }
 
 void CActionItem::ExecuteCopyMove(CMbox* mbox, const ulvector& uids, bool move) const
@@ -279,18 +279,26 @@ void CActionItem::ExecuteCopyMove(CMbox* mbox, const ulvector& uids, bool move) 
 
 	// Try to resolve mailbox - force it to be listed if not already
 	CMbox* mbox_to = ref.ResolveMbox(true);
-	
+
 	// Only do copy if destination exists and not the same as source
 	if (mbox_to && (mbox_to->GetAccountName() != mbox->GetAccountName()))
 	{
-		// Do copy followed by delete
-		// NB Copy now automatically does check of destination mailbox
-		ulmap ignore;
-		mbox->CopyMessage(uids, true, mbox_to, ignore);
-		
-		// Do delete of originals if moving
 		if (move)
-			mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true);
+		{
+			// Use atomic MOVE (RFC 6851) when available
+			if (!mbox->MoveMessage(uids, true, mbox_to, false, true))
+			{
+				// Fall back to COPY + DELETE
+				ulmap ignore;
+				mbox->CopyMessage(uids, true, mbox_to, ignore, false, true);
+				mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true, false, true);
+			}
+		}
+		else
+		{
+			ulmap ignore;
+			mbox->CopyMessage(uids, true, mbox_to, ignore, false, true);
+		}
 	}
 	
 	// For safety reasons we need to generate an error when copying to the same/missing mailbox
@@ -503,7 +511,7 @@ void CActionItem::ExecuteExpunge(CMbox* mbox, const ulvector& uids) const
 	std::set_difference(uids.begin(), uids.end(), undeleted.begin(), undeleted.end(), std::back_inserter<ulvector>(actual_uids));
 
 	// Now do UID expunge
-	mbox->ExpungeMessage(actual_uids, true);
+	mbox->ExpungeMessage(actual_uids, true, false, true);
 }
 
 void CActionItem::ExecutePrint(CMbox* mbox, const ulvector& uids) const

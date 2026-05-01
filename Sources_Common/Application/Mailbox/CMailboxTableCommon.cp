@@ -704,7 +704,7 @@ void CMailboxTable::DoFlagMailMessage(NMessage::EFlags flags, bool set)
 		try
 		{
 			// Change flag
-			GetMbox()->SetFlagMessage(nums, false, flags, test, true);
+			GetMbox()->SetFlagMessage(nums, false, flags, test, true, true);
 		}
 		catch (...)
 		{
@@ -877,13 +877,13 @@ void CMailboxTable::DoMessageCopy(CMbox* copy_mbox, bool option_key, bool force_
 		// Try MOVE if delete-after-copy is active (RFC 6851)
 		bool moved = false;
 		if (want_delete)
-			moved = GetMbox()->MoveMessage(actual_nums, false, copy_mbox, false);
+			moved = GetMbox()->MoveMessage(actual_nums, false, copy_mbox, false, true);
 
 		if (!moved)
 		{
 			// Do copy (NB this may change selection if a new message arrives)
 			ulmap temp;
-			GetMbox()->CopyMessage(actual_nums, false, copy_mbox, temp, false);
+			GetMbox()->CopyMessage(actual_nums, false, copy_mbox, temp, false, true);
 		}
 
 		// Reset any open copied to window
@@ -909,7 +909,7 @@ void CMailboxTable::DoMessageCopy(CMbox* copy_mbox, bool option_key, bool force_
 			}
 
 			// Set deleted flag on chosen messages
-			GetMbox()->SetFlagMessage(actual_nums, false, NMessage::eDeleted, true, false);
+			GetMbox()->SetFlagMessage(actual_nums, false, NMessage::eDeleted, true, false, true);
 		}
 
 		if (want_delete)

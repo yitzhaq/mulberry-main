@@ -62,6 +62,8 @@ extern const char* cIMAP_APPENDLIMIT;
 extern const char* cIMAP_LIST_EXTENDED;
 extern const char* cIMAP_LIST_STATUS;
 extern const char* cIMAP_STATUS_SIZE;
+extern const char* cIMAP_SEARCHRES;
+extern const char* cRETURN_SAVE_ALL;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
 extern const char* cIMAP_AUTHANON;

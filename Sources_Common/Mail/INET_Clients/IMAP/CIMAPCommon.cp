@@ -59,6 +59,8 @@ const char* cIMAP_APPENDLIMIT =		"APPENDLIMIT";
 const char* cIMAP_LIST_EXTENDED =	"LIST-EXTENDED";
 const char* cIMAP_LIST_STATUS =		"LIST-STATUS";
 const char* cIMAP_STATUS_SIZE =		"STATUS=SIZE";
+const char* cIMAP_SEARCHRES =			"SEARCHRES";
+const char* cRETURN_SAVE_ALL =			" RETURN (SAVE ALL)";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
 const char* cIMAP_AUTHANON =			"AUTH=ANONYMOUS";

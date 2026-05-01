@@ -361,7 +361,8 @@ protected:
 
 			void	FetchItems(const ulvector& nums,
 									bool uids,
-									EFetchItems items);		// Do fetch envelopes
+									EFetchItems items,
+									bool use_saved = false);	// Do fetch envelopes
 			void	ReadHeaders(const ulvector& nums,
 									bool uids,
 									const cdstring& hdrs);	// Get messages header text from server
@@ -395,14 +396,16 @@ protected:
 									const ulvector& nums,
 									bool uids,
 									NMessage::EFlags flags,
-									bool deleted);			// Change flags
+									bool deleted,
+									bool use_saved = false);	// Change flags
 
 			void	CopyMessage(CMbox* mbox_from,			// Copy message to mailbox
 								const ulvector& nums,
 								bool uids,
 								CMbox* mbox_to,
 								ulmap& copy_uids,
-								bool doMRU = true);
+								bool doMRU = true,
+								bool use_saved = false);
 
 			void	CopyMessage(CMbox* mbox,
 								unsigned long msg_num,
@@ -415,10 +418,12 @@ protected:
 			void	MoveMessage(CMbox* mbox_from,			// Move message to mailbox (RFC 6851)
 								const ulvector& nums,
 								bool uids,
-								CMbox* mbox_to);
+								CMbox* mbox_to,
+								bool use_saved = false);
 			bool	HasMove() const;						// Does server support MOVE?
 
-			void	ExpungeMessage(const ulvector& nums, bool uids);		// Do message expunge
+			void	ExpungeMessage(const ulvector& nums, bool uids,
+								bool use_saved = false);	// Do message expunge
 			bool	DoesExpungeMessage() const;					// Does server handle copy?
 
 	// Sort/thread support

@@ -1376,7 +1376,7 @@ void CMailboxInfoTable::DoThreadFlag(NMessage::EFlags flag)
 			
 		// Now toggle flag on chosen messages (if they all currently have the specified flag set
 		// then turn the flag off rather than on)
-		GetMbox()->SetFlagMessage(nums, false, flag, all_set ? false : true, false);
+		GetMbox()->SetFlagMessage(nums, false, flag, all_set ? false : true, false, true);
 	}
 }
 

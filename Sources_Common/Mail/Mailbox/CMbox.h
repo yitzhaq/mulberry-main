@@ -589,7 +589,8 @@ public:
 							bool uids,
 							NMessage::EFlags flags,
 							bool set,
-							bool sorted = false);				// Change specified message flags
+							bool sorted = false,
+							bool use_saved = false);			// Change specified message flags
 
 	void	MatchMessageFlags(NMessage::EFlags set_flag,		// Find messages with matching flags set/unset
 								NMessage::EFlags unset_flag,
@@ -608,12 +609,14 @@ public:
 						bool uids,
 						CMbox* mbox_to,
 						ulmap& copy_uids,
-						bool sorted = false);					// Copy the specified sequence to another mbox
+						bool sorted = false,
+						bool use_saved = false);				// Copy the specified sequence to another mbox
 
 	bool	MoveMessage(const ulvector& nums,
 						bool uids,
 						CMbox* mbox_to,
-						bool sorted = false);					// Move via MOVE or fall back to copy
+						bool sorted = false,
+						bool use_saved = false);				// Move via MOVE or fall back to copy
 	bool	MoveMessage(unsigned long msg_num,
 						bool uids,
 						CMbox* mbox_to);						// Move single message
@@ -628,7 +631,8 @@ public:
 							bool uids);							// Expunge the specified message
 	void	ExpungeMessage(const ulvector& nums,
 							bool uids,
-							bool sorted = false);				// Expunge the specified sequence
+							bool sorted = false,
+							bool use_saved = false);			// Expunge the specified sequence
 
 	void	SynchroniseMessage(const ulvector& nums,
 							bool uids,

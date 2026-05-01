@@ -2539,7 +2539,7 @@ unsigned long CMboxProtocol::GetMessageLocalUID(unsigned long uid)
 }
 
 // Get message header text from server
-void CMboxProtocol::FetchItems(const ulvector& nums, bool uids, EFetchItems items)
+void CMboxProtocol::FetchItems(const ulvector& nums, bool uids, EFetchItems items, bool use_saved)
 {
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
@@ -2568,7 +2568,7 @@ void CMboxProtocol::FetchItems(const ulvector& nums, bool uids, EFetchItems item
 		return;
 
 	// Fetch bits
-	mClient->_FetchItems(nums, uids, items);
+	mClient->_FetchItems(nums, uids, items, use_saved);
 
 } // CMboxProtocol::FetchItems
 
@@ -2725,7 +2725,7 @@ void CMboxProtocol::MapLocalUIDs(CMbox* mbox, const ulvector& uids, ulvector* mi
 }
 
 // Change flags on server
-void CMboxProtocol::SetFlagMessage(CMbox* mbox, const ulvector& nums, bool uids, NMessage::EFlags flags, bool set)
+void CMboxProtocol::SetFlagMessage(CMbox* mbox, const ulvector& nums, bool uids, NMessage::EFlags flags, bool set, bool use_saved)
 {
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
@@ -2750,12 +2750,12 @@ void CMboxProtocol::SetFlagMessage(CMbox* mbox, const ulvector& nums, bool uids,
 		return;
 
 	// Change flags
-	mClient->_SetFlag(nums, uids, flags, set);
+	mClient->_SetFlag(nums, uids, flags, set, use_saved);
 
 } // CMboxProtocol::SetFlagMessage
 
 // Copy message to mailbox
-void CMboxProtocol::CopyMessage(CMbox* mbox_from, const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids, bool doMRU)
+void CMboxProtocol::CopyMessage(CMbox* mbox_from, const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids, bool doMRU, bool use_saved)
 {
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
@@ -2784,7 +2784,7 @@ void CMboxProtocol::CopyMessage(CMbox* mbox_from, const ulvector& nums, bool uid
 		TouchMbox(mbox_to);
 
 	// Unmark it as deleted
-	mClient->_CopyMessage(nums, uids, mbox_to, copy_uids);
+	mClient->_CopyMessage(nums, uids, mbox_to, copy_uids, use_saved);
 
 	// Add to MRU list
 	if (doMRU)
@@ -2830,7 +2830,7 @@ bool CMboxProtocol::DoesCopy() const
 }
 
 // Move message to mailbox (RFC 6851)
-void CMboxProtocol::MoveMessage(CMbox* mbox_from, const ulvector& nums, bool uids, CMbox* mbox_to)
+void CMboxProtocol::MoveMessage(CMbox* mbox_from, const ulvector& nums, bool uids, CMbox* mbox_to, bool use_saved)
 {
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
@@ -2858,7 +2858,7 @@ void CMboxProtocol::MoveMessage(CMbox* mbox_from, const ulvector& nums, bool uid
 	if (IsDisconnected())
 		TouchMbox(mbox_to);
 
-	mClient->_MoveMessage(nums, uids, mbox_to);
+	mClient->_MoveMessage(nums, uids, mbox_to, use_saved);
 
 	CMailAccountManager::sMailAccountManager->AddMRUCopyTo(mbox_to);
 }
@@ -2869,7 +2869,7 @@ bool CMboxProtocol::HasMove() const
 }
 
 // Do message expunge
-void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids)
+void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids, bool use_saved)
 {
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
@@ -2898,7 +2898,7 @@ void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids)
 		return;
 
 	// Send EXPUNGE message to server
-	mClient->_ExpungeMessage(nums, uids);
+	mClient->_ExpungeMessage(nums, uids, use_saved);
 }
 
 // Does server handle copy?

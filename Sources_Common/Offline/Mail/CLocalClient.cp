@@ -1669,7 +1669,7 @@ unsigned long CLocalClient::_GetMessageLocalUID(unsigned long uid)
 }
 
 // Do fetch envelopes
-void CLocalClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EFetchItems items)
+void CLocalClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EFetchItems items, bool use_saved)
 {
 	StINETClientAction action(this, "Status::IMAP::Fetching", "Error::IMAP::OSErrSelect", "Error::IMAP::NoBadSelect", GetCurrentMbox()->GetName());
 	StLocalProcess process(this);
@@ -2089,7 +2089,7 @@ void CLocalClient::_MapLocalUIDs(const ulvector& uids, ulvector* missing, ulmap*
 }
 
 // Set specified flag
-void CLocalClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set)
+void CLocalClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set, bool use_saved)
 {
 	// Determine status info
 	const char* status_strid = NULL;
@@ -2243,7 +2243,7 @@ void CLocalClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fl
 }
 
 // Copy specified message to specified mailbox
-void CLocalClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids)
+void CLocalClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids, bool use_saved)
 {
 	// Determine if destination open elsewhere
 	CLocalClient* dest_client = mbox_to->IsFullOpen() ?
@@ -2424,7 +2424,7 @@ void CLocalClient::_CopyMessage(unsigned long msg_num, bool uids, costream* aStr
 	}
 }
 
-void CLocalClient::_ExpungeMessage(const ulvector& nums, bool uids)
+void CLocalClient::_ExpungeMessage(const ulvector& nums, bool uids, bool use_saved)
 {
 	StINETClientAction action(this, "Status::IMAP::Expunging", "Error::IMAP::OSErrExpunge", "Error::IMAP::NoBadExpunge", GetCurrentMbox()->GetName());
 	StLocalProcess process(this);

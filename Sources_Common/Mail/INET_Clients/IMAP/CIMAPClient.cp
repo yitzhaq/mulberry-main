@@ -174,6 +174,9 @@ void CIMAPClient::_InitCapability()
 	mHasListExtended = false;
 	mHasListStatus = false;
 	mHasStatusSize = false;
+	mHasSearchRes = false;
+	mSearchSaved = false;
+	mSavedSearchResults.clear();
 	mListStatusDone = false;
 
 	mAuthLoginAllowed = false;
@@ -224,6 +227,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasListExtended = mLastResponse.CheckUntagged(cIMAP_LIST_EXTENDED, true);
 	mHasListStatus = mLastResponse.CheckUntagged(cIMAP_LIST_STATUS, true);
 	mHasStatusSize = mLastResponse.CheckUntagged(cIMAP_STATUS_SIZE, false);
+	mHasSearchRes = mLastResponse.CheckUntagged(cIMAP_SEARCHRES, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -551,6 +555,10 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 		INETSendString(cSpace, eQueueNoFlags, false);
 		INETSendString(wd_name, eQueueProcess, false);
 		INETFinishSend();
+
+		// SEARCHRES variable resets on SELECT/EXAMINE (RFC 5182)
+		mSearchSaved = false;
+		mSavedSearchResults.clear();
 
 		// Can select - set flag
 		mbox->SetFlags(NMbox::eError, false);
@@ -1210,11 +1218,18 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 		INETStartSend("Status::IMAP::Searching", "Error::IMAP::OSErrSearch", "Error::IMAP::NoBadSearch", GetCurrentMbox()->GetName());
 		INETSendString(uids ? cUIDSEARCH : cSEARCH);
 		if (mHasESearch)
-			INETSendString(cRETURN_ALL);
+			INETSendString(mHasSearchRes ? cRETURN_SAVE_ALL : cRETURN_ALL);
 
 		// Parse out search hierarchy!
 		AddSearchItem(spec);
 		INETFinishSend();
+
+		// Store saved search results for $ substitution
+		if (mHasSearchRes && results)
+		{
+			mSavedSearchResults = *results;
+			mSearchSaved = true;
+		}
 
 		// Reset results
 		mCurrentResults = NULL;
@@ -1298,13 +1313,20 @@ void CIMAPClient::AddSearchItem(const CSearchItem* spec, bool force_charset)
 #pragma mark ____________________________Messages
 
 // Do fetch envelopes
-void CIMAPClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EFetchItems items)
+void CIMAPClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EFetchItems items, bool use_saved)
 {
 	//StProfileSection profile("\pMulberry Profile", 200, 20);
 
 	// Fetch info for new messages in cache
-	CSequence sequence(nums);
-	const char* msgnum_txt = sequence.GetSequenceText();
+	CSequence sequence;
+	const char* msgnum_txt;
+	if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
+		msgnum_txt = "$";
+	else
+	{
+		sequence = CSequence(nums);
+		msgnum_txt = sequence.GetSequenceText();
+	}
 
 	// Reset item counter for feedback
 	InitItemCtr(nums.size());
@@ -1749,15 +1771,22 @@ void CIMAPClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 } // CIMAPClient::_CopyAttachment
 
 // Set specified flag
-void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set)
+void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set, bool use_saved)
 {
 	const char* status_strid = NULL;
 	const char* oserr_strid = NULL;
 	const char* nobad_strid = NULL;
 
 	// Send xFLAGS /DELETED message to server
-	CSequence sequence(nums);
-	const char* msgnum_txt = sequence.GetSequenceText();
+	CSequence sequence;
+	const char* msgnum_txt;
+	if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
+		msgnum_txt = "$";
+	else
+	{
+		sequence = CSequence(nums);
+		msgnum_txt = sequence.GetSequenceText();
+	}
 
 	// Form flag string
 	cdstring flag;
@@ -1876,7 +1905,7 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 } // CIMAPClient::_SetFlag
 
 // Copy specified message to specified mailbox
-void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids)
+void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids, bool use_saved)
 {
 	// Get full name
 	cdstring wd_name = mbox_to->GetName();
@@ -1884,8 +1913,15 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 		wd_name.ToModifiedUTF7(true);
 
 	// Send COPY message to server
-	CSequence sequence(nums);
-	const char* msgnum_txt = sequence.GetSequenceText();
+	CSequence sequence;
+	const char* msgnum_txt;
+	if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
+		msgnum_txt = "$";
+	else
+	{
+		sequence = CSequence(nums);
+		msgnum_txt = sequence.GetSequenceText();
+	}
 
 	INETStartSend("Status::IMAP::Copying", "Error::IMAP::OSErrCopyMsg", "Error::IMAP::NoBadCopyMsg", GetCurrentMbox()->GetName());
 	INETSendString(uids ? cUIDCOPY : cCOPY, eQueueNoFlags);
@@ -1925,7 +1961,7 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 } // CIMAPClient::_CopyMessage
 
 // Do move message to mailbox (RFC 6851)
-void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to)
+void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, bool use_saved)
 {
 	// Get full name
 	cdstring wd_name = mbox_to->GetName();
@@ -1933,8 +1969,15 @@ void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send MOVE message to server
-	CSequence sequence(nums);
-	const char* msgnum_txt = sequence.GetSequenceText();
+	CSequence sequence;
+	const char* msgnum_txt;
+	if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
+		msgnum_txt = "$";
+	else
+	{
+		sequence = CSequence(nums);
+		msgnum_txt = sequence.GetSequenceText();
+	}
 
 	INETStartSend("Status::IMAP::Moving", "Error::IMAP::OSErrMoveMsg", "Error::IMAP::NoBadMoveMsg", GetCurrentMbox()->GetName());
 	INETSendString(uids ? cUIDMOVE : cMOVE, eQueueNoFlags);
@@ -2035,7 +2078,7 @@ void CIMAPClient::_CopyMessage(unsigned long msg_num, bool uids, costream* aStre
 }
 
 // Expunge messages
-void CIMAPClient::_ExpungeMessage(const ulvector& nums, bool uids)
+void CIMAPClient::_ExpungeMessage(const ulvector& nums, bool uids, bool use_saved)
 {
 	ulvector actual_uids;
 	if (uids)
@@ -2043,8 +2086,15 @@ void CIMAPClient::_ExpungeMessage(const ulvector& nums, bool uids)
 	else
 		GetCurrentMbox()->MapUIDs(nums, actual_uids);
 
-	CSequence sequence(actual_uids);
-	const char* msgnum_txt = sequence.GetSequenceText();
+	CSequence sequence;
+	const char* msgnum_txt;
+	if (use_saved && mSearchSaved && MatchesSavedSearch(actual_uids))
+		msgnum_txt = "$";
+	else
+	{
+		sequence = CSequence(actual_uids);
+		msgnum_txt = sequence.GetSequenceText();
+	}
 
 	INETStartSend("Status::IMAP::Expunging", "Error::IMAP::OSErrExpunge", "Error::IMAP::NoBadExpunge", GetCurrentMbox()->GetName());
 	INETSendString(cUIDEXPUNGE);
@@ -2397,6 +2447,15 @@ void CIMAPClient::INETRecoverDisconnect()
 const char*	CIMAPClient::INETGetErrorDescriptor() const
 {
 	return "Mailbox: ";
+}
+
+bool CIMAPClient::MatchesSavedSearch(const ulvector& nums) const
+{
+	if (mSavedSearchResults.empty())
+		return false;
+	if (nums.size() != mSavedSearchResults.size())
+		return false;
+	return nums == mSavedSearchResults;
 }
 
 #pragma mark ____________________________Parsing

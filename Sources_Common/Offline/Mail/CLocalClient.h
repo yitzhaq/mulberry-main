@@ -309,7 +309,8 @@ protected:
 
 	virtual void	_FetchItems(const ulvector& nums,					// Do fetch envelopes
 										bool uids,
-										CMboxProtocol::EFetchItems items);
+										CMboxProtocol::EFetchItems items,
+										bool use_saved = false);
 	virtual void	_ReadHeaders(const ulvector& nums,				// Get header list from messages
 									bool uids,
 									const cdstring& hdrs);
@@ -336,12 +337,14 @@ protected:
 	virtual void	_SetFlag(const ulvector& nums,
 									bool uids,
 									NMessage::EFlags flags,
-									bool set);					// Change flag
+									bool set,
+									bool use_saved = false);	// Change flag
 
 	virtual void	_CopyMessage(const ulvector& nums,
 									bool uids,
 									CMbox* mbox_to,
-									ulmap& copy_uids);			// Do copy sequence to mailbox
+									ulmap& copy_uids,
+									bool use_saved = false);	// Do copy sequence to mailbox
 	virtual void	_CopyMessage(unsigned long msg_num,
 									bool uids,
 									costream* aStream,
@@ -350,7 +353,8 @@ protected:
 	virtual bool	_DoesCopy() const							// Does server handle copy?
 		{ return false; }
 
-	virtual void	_ExpungeMessage(const ulvector& nums, bool uids);	// Expunge uids
+	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
+									bool use_saved = false);	// Expunge uids
 	virtual bool	_DoesExpungeMessage() const					// Does server handle copy?
 		{ return true; }
 

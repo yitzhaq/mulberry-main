@@ -101,7 +101,8 @@ public:
 
 	virtual void	_FetchItems(const ulvector& nums,					// Do fetch envelopes
 										bool uids,
-										CMboxProtocol::EFetchItems items) = 0;
+										CMboxProtocol::EFetchItems items,
+										bool use_saved = false) = 0;
 	virtual void	_ReadHeaders(const ulvector& nums,				// Get header list from messages
 									bool uids,
 									const cdstring& hdrs) = 0;
@@ -127,11 +128,13 @@ public:
 	virtual void	_SetFlag(const ulvector& nums,
 									bool uids,
 									NMessage::EFlags flags,
-									bool set) = 0;					// Change flag
+									bool set,
+									bool use_saved = false) = 0;	// Change flag
 	virtual void	_CopyMessage(const ulvector& nums,
 									bool uids,
 									CMbox* mbox_to,
-									ulmap& copy_uids) = 0;			// Do copy message to mailbox
+									ulmap& copy_uids,
+									bool use_saved = false) = 0;	// Do copy message to mailbox
 	virtual void	_CopyMessage(unsigned long msg_num,
 									bool uids,
 									costream* aStream,
@@ -141,10 +144,12 @@ public:
 
 	virtual void	_MoveMessage(const ulvector& nums,
 									bool uids,
-									CMbox* mbox_to) {}				// Move message (default: no-op)
+									CMbox* mbox_to,
+									bool use_saved = false) {}		// Move message (default: no-op)
 	virtual bool	_HasMove() const { return false; }				// Does server support MOVE?
 
-	virtual void	_ExpungeMessage(const ulvector& nums, bool uids) = 0;			// Expunge uids
+	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
+									bool use_saved = false) = 0;	// Expunge uids
 	virtual bool	_DoesExpungeMessage() const = 0;				// Does server handle copy?
 
 	// S O R T / T H R E A D

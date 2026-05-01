@@ -3540,7 +3540,7 @@ void CMbox::SetFlagMessage(unsigned long msg_num, bool uids, NMessage::EFlags fl
 } // CMbox::SetFlagMessage
 
 // Change the specified message flags
-void CMbox::SetFlagMessage(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set, bool sorted)
+void CMbox::SetFlagMessage(const ulvector& nums, bool uids, NMessage::EFlags flags, bool set, bool sorted, bool use_saved)
 {
 	// Map sorted nums to actual nums
 	ulvector actual_nums;
@@ -3556,7 +3556,7 @@ void CMbox::SetFlagMessage(const ulvector& nums, bool uids, NMessage::EFlags fla
 			return;
 		try
 		{
-			mOpenInfo->mMsgMailer->SetFlagMessage(this, actual_nums, uids, flags, set);
+			mOpenInfo->mMsgMailer->SetFlagMessage(this, actual_nums, uids, flags, set, use_saved);
 
 			if (IsFullOpen() && (mOpenInfo->mSortBy == cSortMessageFlags))
 				ReSort();
@@ -3721,7 +3721,7 @@ void CMbox::CopyMessage(unsigned long msg_num, bool uids, CMbox* mbox_to)
 } // CMbox::CopyMessage
 
 // Copy the specified message to another mailbox
-void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids, bool sorted)
+void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids, bool sorted, bool use_saved)
 {
 	if (!OpenIfOpen())
 		return;
@@ -3737,7 +3737,7 @@ void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& 
 	if ((mMailer == mbox_to->mMailer) && mMailer->DoesCopy())
 	{
 		// Copy message to server
-		mOpenInfo->mMsgMailer->CopyMessage(this, actual_nums, uids, mbox_to, copy_uids);
+		mOpenInfo->mMsgMailer->CopyMessage(this, actual_nums, uids, mbox_to, copy_uids, true, use_saved);
 	}
 	else
 	{
@@ -3862,7 +3862,7 @@ void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& 
 
 // Move message to mailbox — uses MOVE if same server supports it,
 // otherwise returns false so caller can do COPY + DELETE.
-bool CMbox::MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, bool sorted)
+bool CMbox::MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, bool sorted, bool use_saved)
 {
 	// MOVE only works within the same server, not on EXAMINEd mailboxes
 	if ((mMailer == mbox_to->mMailer) && mMailer->DoesCopy() && mMailer->HasMove() && !IsExamine())
@@ -3874,7 +3874,7 @@ bool CMbox::MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, bool so
 			ulvector actual_nums;
 			MapSorted(actual_nums, nums, !uids && sorted);
 
-			mOpenInfo->mMsgMailer->MoveMessage(this, actual_nums, uids, mbox_to);
+			mOpenInfo->mMsgMailer->MoveMessage(this, actual_nums, uids, mbox_to, use_saved);
 
 			mbox_to->Check(true, true);
 		}
@@ -3950,7 +3950,7 @@ void CMbox::ExpungeMessage(unsigned long msg_num, bool uids)
 }
 
 // Expunge the specified message
-void CMbox::ExpungeMessage(const ulvector& nums, bool uids, bool sorted)
+void CMbox::ExpungeMessage(const ulvector& nums, bool uids, bool sorted, bool use_saved)
 {
 	if (!OpenIfOpen())
 		return;
@@ -3963,7 +3963,7 @@ void CMbox::ExpungeMessage(const ulvector& nums, bool uids, bool sorted)
 		ulvector actual_nums;
 		MapSorted(actual_nums, nums, !uids && sorted);
 
-		mOpenInfo->mMsgMailer->ExpungeMessage(actual_nums, uids);
+		mOpenInfo->mMsgMailer->ExpungeMessage(actual_nums, uids, use_saved);
 	}
 	else
 	{
