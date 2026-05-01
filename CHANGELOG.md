@@ -80,6 +80,14 @@ X11 bitmap fonts).
 - IMAP STATUS=SIZE (RFC 8438). Server-reported mailbox storage size,
   replacing the expensive manual fetch-all-sizes calculation. Mailbox
   size field widened to 64-bit for 63-bit RFC compliance.
+- IMAP SEARCHRES (RFC 5182). Save search results on server via
+  SEARCH RETURN (SAVE ALL), reference with `$` in subsequent COPY,
+  MOVE, STORE, FETCH, and EXPUNGE commands. Avoids retransmitting
+  large result sets. Safety check ensures `$` only used when the
+  command set matches the saved results exactly.
+- Fix filter rules using COPY+DELETE instead of atomic MOVE (RFC
+  6851) when moving messages. MOVE was implemented but the filter
+  pipeline was never updated to use it.
 - Timezone database updated from 2008 (tzdata2008i) to current IANA
   data. Timezone files are now generated at build time from the latest
   IANA source via vzic, so they stay current with each build. Fixes
