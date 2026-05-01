@@ -56,6 +56,8 @@ const char* cIMAP_THREAD_SUBJECT =		"THREAD=ORDEREDSUBJECT";
 const char* cIMAP_THREAD_REFERENCES =	"THREAD=REFERENCES";
 const char* cIMAP_ID =					"ID";
 const char* cIMAP_APPENDLIMIT =		"APPENDLIMIT";
+const char* cIMAP_LIST_EXTENDED =	"LIST-EXTENDED";
+const char* cIMAP_LIST_STATUS =		"LIST-STATUS";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
 const char* cIMAP_AUTHANON =			"AUTH=ANONYMOUS";
@@ -168,6 +170,8 @@ const char* cMBOXFLAGNOSELECT =					"\\Noselect";
 const char* cMBOXFLAGUNMARKED =					"\\Unmarked";
 const char* cMBOXFLAGUNMARKEDHASCHILDREN =		"\\HasChildren";
 const char* cMBOXFLAGUNMARKEDHASNOCHILDREN =	"\\HasNoChildren";
+const char* cMBOXFLAGSUBSCRIBED =				"\\Subscribed";
+const char* cMBOXFLAGNONEXISTENT =				"\\NonExistent";
 
 // STATUS bits
 const char* cSTATUS_MESSAGES =			"MESSAGES";

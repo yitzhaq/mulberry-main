@@ -59,6 +59,8 @@ extern const char* cIMAP_THREAD_SUBJECT;
 extern const char* cIMAP_THREAD_REFERENCES;
 extern const char* cIMAP_ID;
 extern const char* cIMAP_APPENDLIMIT;
+extern const char* cIMAP_LIST_EXTENDED;
+extern const char* cIMAP_LIST_STATUS;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
 extern const char* cIMAP_AUTHANON;
@@ -164,6 +166,8 @@ extern const char* cMBOXFLAGNOSELECT;
 extern const char* cMBOXFLAGUNMARKED;
 extern const char* cMBOXFLAGUNMARKEDHASCHILDREN;
 extern const char* cMBOXFLAGUNMARKEDHASNOCHILDREN;
+extern const char* cMBOXFLAGSUBSCRIBED;
+extern const char* cMBOXFLAGNONEXISTENT;
 
 // STATUS bits
 extern const char* cSTATUS_MESSAGES;

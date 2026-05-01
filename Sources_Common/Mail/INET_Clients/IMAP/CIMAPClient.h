@@ -77,6 +77,9 @@ private:
 	bool			mHasID;							// Supports ID extension (RFC 2971)
 	bool			mHasMove;						// Supports MOVE extension (RFC 6851)
 	bool			mHasESearch;					// Supports ESEARCH extension (RFC 4731)
+	bool			mHasListExtended;				// Supports LIST-EXTENDED (RFC 5258)
+	bool			mHasListStatus;					// Supports LIST-STATUS (RFC 5819)
+	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
 	threadvector*	mThreadResults;					// Place to store thread results
 
 	// C O N S T R U C T I O N / D E S T R U C T I O N  M E T H O D S

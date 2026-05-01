@@ -171,6 +171,9 @@ void CIMAPClient::_InitCapability()
 	mHasID = false;
 	mHasMove = false;
 	mHasESearch = false;
+	mHasListExtended = false;
+	mHasListStatus = false;
+	mListStatusDone = false;
 
 	mAuthLoginAllowed = false;
 	mAuthPlainAllowed = false;
@@ -217,6 +220,8 @@ void CIMAPClient::_ProcessCapability()
 	mHasID = mLastResponse.CheckUntagged(cIMAP_ID, true);
 	mHasMove = mLastResponse.CheckUntagged(cIMAP_MOVE, true);
 	mHasESearch = mLastResponse.CheckUntagged(cIMAP_ESEARCH, true);
+	mHasListExtended = mLastResponse.CheckUntagged(cIMAP_LIST_EXTENDED, true);
+	mHasListStatus = mLastResponse.CheckUntagged(cIMAP_LIST_STATUS, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -671,6 +676,9 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 			break;
 
 		case eIMAP4rev1:
+			// Skip if LIST-STATUS already provided status data
+			if (mListStatusDone && mbox->HasStatus())
+				break;
 			try
 			{
 				// Cache actionable mailbox
@@ -898,19 +906,34 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 
 	case eIMAP4:
 	case eIMAP4rev1:
+		if (mHasListExtended && mVersion == eIMAP4rev1)
 		{
-			// Get full name
+			// Use LIST (SUBSCRIBED) instead of LSUB (RFC 5258)
+			INETSendString(cLIST);
+			INETSendString(" (SUBSCRIBED) \"\" \"");
+			INETSendString(cWILDCARD);
+			INETSendString("\"");
+
+			// Add RETURN options
+			cdstring return_opts = "CHILDREN";
+			if (mHasListStatus)
+				return_opts += " STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT)";
+			INETSendString(" RETURN (");
+			INETSendString(return_opts);
+			INETSendString(")");
+		}
+		else
+		{
 			cdstring lsub_spec;
 			lsub_spec = "\"\" \"";
 			lsub_spec += cWILDCARD;
 			lsub_spec += '\"';
 
-			// Send LSUB "" "*" message to server
 			INETSendString(cLSUB);
 			INETSendString(cSpace);
 			INETSendString(lsub_spec);
-			break;
 		}
+		break;
 	}
 	INETFinishSend();
 
@@ -964,15 +987,36 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 			cdstring list_spec = "\"\"";
 
 			// Send LIST "" "xxx" message to server
+			mListStatusDone = false;
 			INETSendString(cLIST);
 			INETSendString(cSpace);
 			INETSendString(list_spec);
 			INETSendString(cSpace);
 			INETSendString(wd, eQueueProcess);
+
+			// Add RETURN options (RFC 5258 / RFC 5819)
+			if (mHasListExtended || mHasListStatus)
+			{
+				cdstring return_opts;
+				if (mHasListExtended)
+					return_opts += "CHILDREN";
+				if (mHasListStatus)
+				{
+					if (return_opts.length())
+						return_opts += " ";
+					return_opts += "STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT)";
+				}
+				INETSendString(" RETURN (");
+				INETSendString(return_opts);
+				INETSendString(")");
+			}
 			break;
 		}
 	}
 	INETFinishSend();
+
+	if (mHasListStatus)
+		mListStatusDone = true;
 
 } // CIMAPClient::_FindAllMbox
 
@@ -2616,6 +2660,15 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		else if (CheckStrAdv(&p, cMBOXFLAGUNMARKEDHASNOCHILDREN))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eHasExpanded);
 
+		else if (CheckStrAdv(&p, cMBOXFLAGSUBSCRIBED))
+		{
+			new_flags = (NMbox::EFlags) (new_flags | NMbox::eSubscribed);
+			mFindingSubs = true;
+		}
+
+		else if (CheckStrAdv(&p, cMBOXFLAGNONEXISTENT))
+			new_flags = (NMbox::EFlags) (new_flags | NMbox::eNoSelect);
+
 		else
 		{
 			// Unknown flag - ignore
@@ -2636,8 +2689,29 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		*delim = 0;
 
 	// Now get rest of name as mailbox
-	mFindingSubs = lsub;
+	// \Subscribed flag from LIST-EXTENDED sets mFindingSubs in flag loop;
+	// only fall back to the lsub parameter if \Subscribed was not seen.
+	if (!(new_flags & NMbox::eSubscribed))
+		mFindingSubs = lsub;
 	IMAPParseMailbox(txt, *delim, new_flags);
+
+	// Skip any extended data items after mailbox name (RFC 5258)
+	if (txt && *txt)
+	{
+		while(**txt == ' ') (*txt)++;
+		if (**txt == '(')
+		{
+			int depth = 0;
+			char* q = *txt;
+			while (*q)
+			{
+				if (*q == '(') depth++;
+				else if (*q == ')') { depth--; if (depth == 0) { q++; break; } }
+				q++;
+			}
+			*txt = q;
+		}
+	}
 
 } // CIMAPClient::IMAPParseList
 
