@@ -27,7 +27,7 @@
 
 #ifdef __MULBERRY
 #include "XMLDocument.h"
-#include "XMLSAXSimple.h"
+#include "XMLSAXDefault.h"
 #endif
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
@@ -106,7 +106,7 @@ void CXStringResources::LoadStringsFile(const cdstring& file_path)
 {
 #ifdef __MULBERRY
 	// XML parse the data
-	XMLSAXSimple parser;
+	XMLSAXDefault parser;
 	parser.ParseFile(file_path.c_str());
 
 	// See if we got any valid XML

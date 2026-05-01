@@ -44,7 +44,7 @@
 #include "XMLDocument.h"
 #include "XMLNode.h"
 #include "XMLObject.h"
-#include "XMLSAXSimple.h"
+#include "XMLSAXDefault.h"
 
 #if __dest_os == __win32_os || __dest_os == __linux_os
 #include "StValueChanger.h"
@@ -2214,7 +2214,7 @@ bool CCalendarProtocol::ReadCalendars(bool only_if_current)
 	cdstring list_name = mOfflineCWD + cCalendarListName;
 	
 	// XML parse the data
-	xmllib::XMLSAXSimple parser;
+	xmllib::XMLSAXDefault parser;
 	parser.ParseFile(list_name);
 
 	// See if we got any valid XML

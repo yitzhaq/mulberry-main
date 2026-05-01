@@ -379,14 +379,31 @@ AC_SUBST(ASPELLINC)
 AC_SUBST(ASPELLLIB)
 AC_SUBST(ASPELL)
 
-# not used right now, see Libraries/XMLLib/Makefile.in
-#AC_ARG_WITH(libxml-include,
-#    [  --with-libxml-include Specify location of libxml headers],
-#    XMLINC="$withval")
-#CPPFLAGS="$CPPFLAGS -I$XMLINC"
-#
-#AC_CHECK_HEADER(libxml/parser.h,,
-#   AC_MSG_ERROR("libxml/parser.h not found."))
+AC_ARG_WITH(libxml2,
+    [  --without-libxml2       disable libxml2 XML parser],
+    [with_libxml2=$withval],
+    [with_libxml2=auto])
+
+XML_PARSER_OBJ="Source/XMLSAXSimple\$O"
+if test "$with_libxml2" != "no"; then
+    LIBXML2_CFLAGS=`xml2-config --cflags 2>/dev/null`
+    LIBXML2_LIBS=`xml2-config --libs 2>/dev/null`
+    if test -n "$LIBXML2_CFLAGS"; then
+        CPPFLAGS="$CPPFLAGS $LIBXML2_CFLAGS -DHAVE_LIBXML2"
+        LIBS="$LIBS $LIBXML2_LIBS"
+        XML_PARSER_OBJ="Source/XMLSAXlibxml2\$O"
+        echo "using libxml2 for XML parsing"
+    else
+        if test "$with_libxml2" = "yes"; then
+            echo "error: libxml2 requested but xml2-config not found"
+            exit 1
+        fi
+        echo "libxml2 not found, using built-in XML parser"
+    fi
+fi
+AC_SUBST(XML_PARSER_OBJ)
+AC_SUBST(LIBXML2_CFLAGS)
+AC_SUBST(LIBXML2_LIBS)
 
 # ---------------------------------------------------------------------------
 # libsodium (required for keyring encryption)

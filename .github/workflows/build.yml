@@ -24,7 +24,7 @@ jobs:
           build-essential autoconf \
           libaspell-dev libfl-dev libfontconfig-dev libfreetype-dev \
           libglib2.0-dev libkrb5-dev libldap-dev \
-          libpcre3-dev libsodium-dev libssl-dev \
+          libpcre3-dev libsodium-dev libssl-dev libxml2-dev \
           libx11-dev libxext-dev libxft-dev libxpm-dev \
           pkg-config python3 unicode-cldr-core zlib1g-dev
 

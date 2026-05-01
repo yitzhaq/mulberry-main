@@ -852,7 +852,7 @@ OBJS = \
 	../Libraries/XMLLib/Source/XMLName$O \
 	../Libraries/XMLLib/Source/XMLObject$O \
 	../Libraries/XMLLib/Source/XMLParserSAX$O \
-	../Libraries/XMLLib/Source/XMLSAXSimple$O \
+	../Libraries/XMLLib/@XML_PARSER_OBJ@ \
 	../Sources_Common/Resources/CXStringResources$O \
 	../Sources_Common/Formatting/CParserPlain$O \
 	../Sources_Common/Formatting/CParserPlainElement$O \
@@ -934,7 +934,7 @@ JXLINK = $(JX_LDFLAGS) \
 	$(J_X11_LIBS) @LDAPLIB@ @SSLLIB@ \
 	$(LINK_STATIC) $(STL_LIB) $(LINK_DYNAMIC)
 
-LDFLAGS =  $(JXLINK) @LDFLAGS@ -lsodium -lpcre -lpthread -ldl
+LDFLAGS =  $(JXLINK) @LDFLAGS@ @LIBXML2_LIBS@ -lsodium -lpcre -lpthread -ldl
 #
 # Automatic stuff, should not be changed:
 #

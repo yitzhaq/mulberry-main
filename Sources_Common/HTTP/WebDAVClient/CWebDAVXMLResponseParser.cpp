@@ -23,7 +23,7 @@
 
 #include "CWebDAVXMLResponseParser.h"
 
-#include "XMLSAXSimple.h"
+#include "XMLSAXDefault.h"
 
 using namespace http; 
 using namespace webdav; 
@@ -32,7 +32,7 @@ using namespace xmllib;
 void CWebDAVXMLResponseParser::ParseData(const cdstring& data)
 {
 	// XML parse the data
-	XMLSAXSimple parser;
+	XMLSAXDefault parser;
 	parser.ParseData(data.c_str());
 
 	// See if we got any valid XML
@@ -49,7 +49,7 @@ void CWebDAVXMLResponseParser::ParseData(const cdstring& data)
 void CWebDAVXMLResponseParser::ParseFile(const cdstring& fpath)
 {
 	// XML parse the data
-	XMLSAXSimple parser;
+	XMLSAXDefault parser;
 	parser.ParseFile(fpath.c_str());
 
 	// See if we got any valid XML

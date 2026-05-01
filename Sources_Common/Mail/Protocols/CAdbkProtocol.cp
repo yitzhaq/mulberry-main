@@ -53,7 +53,7 @@
 #include "XMLDocument.h"
 #include "XMLNode.h"
 #include "XMLObject.h"
-#include "XMLSAXSimple.h"
+#include "XMLSAXDefault.h"
 
 #include <algorithm>
 #include <memory>
@@ -1976,7 +1976,7 @@ bool CAdbkProtocol::ReadAddressBooks(bool only_if_current)
 	cdstring list_name = mOfflineCWD + cAdbkListName;
 	
 	// XML parse the data
-	xmllib::XMLSAXSimple parser;
+	xmllib::XMLSAXDefault parser;
 	parser.ParseFile(list_name);
 
 	// See if we got any valid XML
