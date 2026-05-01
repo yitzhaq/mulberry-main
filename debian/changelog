@@ -97,7 +97,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Removed bundled OpenSSL build step, use system libssl-dev
   * Updated maintainer to reflect current maintenance
 
- -- yitzhaq <github@anonmail.uk>  Fri, 25 Apr 2026 03:00:00 +0200
+ -- yitzhaq <github@anonmail.uk>  Sat, 25 Apr 2026 03:00:00 +0200
 
 mulberry (4.1.0a3-git-20120727-2206) unstable; urgency=low
 
