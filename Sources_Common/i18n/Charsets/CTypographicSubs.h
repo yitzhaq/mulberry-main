@@ -77,6 +77,10 @@ static const STypographicSub cTypographicSubs[] = {
 	{ 0x2260, "!=" },            // not equal to
 	{ 0x2264, "<=" },            // less-than or equal to
 	{ 0x2265, ">=" },            // greater-than or equal to
+	{ 0x2713, "v" },             // check mark
+	{ 0x2714, "v" },             // heavy check mark
+	{ 0x2717, "x" },             // ballot x
+	{ 0x2718, "x" },             // heavy ballot x
 	{ 0x25CF, "*" },             // black circle
 	{ 0x2800, " " },             // braille blank pattern
 	{ 0x3000, " " },             // ideographic space
