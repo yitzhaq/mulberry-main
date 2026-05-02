@@ -1807,6 +1807,30 @@ void CSMTPSender::SMTPAuthenticate()
 }
 
 // Send 'RSET' from
+bool CSMTPSender::SMTPVerifyAddress(const cdstring& addr, cdstring& result)
+{
+	mStream << "VRFY " << addr << CRLF << std::flush;
+
+	if (mAllowLog && mLog.DoLog())
+		*mLog.GetLog() << "VRFY " << addr << os_endl << std::flush;
+
+	mStream.qgetline(mLineData, cSMTPBufferLen);
+	while (SMTPContinuation())
+		mStream.qgetline(mLineData, cSMTPBufferLen);
+
+	if (mAllowLog && mLog.DoLog())
+		*mLog.GetLog() << mLineData << os_endl << std::flush;
+
+	if (*mLineData == OK_RESPONSE)
+	{
+		result = mLineData + 4;
+		return true;
+	}
+
+	result = cdstring::null_str;
+	return false;
+}
+
 void CSMTPSender::SMTPSendRset()
 {
 	mStream << RSET << CRLF << std::flush;

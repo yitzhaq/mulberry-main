@@ -148,6 +148,8 @@ public:
 
 	void SMTPSend(CMessage* theMsg, bool async);						// Send message
 
+	bool SMTPVerifyAddress(const cdstring& addr, cdstring& result);
+
 	bool SMTPStartAsync();
 	bool SMTPNextAsync(bool reset = true);
 	void SMTPStopAsync();
