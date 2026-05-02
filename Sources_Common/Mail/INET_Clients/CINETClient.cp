@@ -2274,7 +2274,12 @@ char* CINETClient::INETParseString(char** txt, bool nullify)
 		return NULL;
 	}
 
-	// Is it a literal (ie {###} ..... )
+	// Is it a literal (ie {###} or ~{###} for literal8)
+	if (*p == '~' && *(p+1) == '{')
+	{
+		p++;
+		(*txt)++;
+	}
 	if (*p=='{')
 	{
 		try
@@ -2361,7 +2366,12 @@ void CINETClient::INETParseStringStream(char** txt)
 		return;
 	}
 
-	// Is it a literal (ie {###} ..... )
+	// Is it a literal (ie {###} or ~{###} for literal8)
+	if (*p == '~' && *(p+1) == '{')
+	{
+		p++;
+		(*txt)++;
+	}
 	if (*p=='{')
 	{
 		// Match the bracket (fail if no match) update text ptr

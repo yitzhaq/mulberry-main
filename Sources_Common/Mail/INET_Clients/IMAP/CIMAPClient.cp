@@ -124,6 +124,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasNamespace = false;
 	mHasUIDPlus = false;
 	mHasUnselect = false;
+	mHasBinary = false;
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
@@ -168,6 +169,7 @@ void CIMAPClient::_InitCapability()
 	mHasNamespace = false;
 	mHasUIDPlus = false;
 	mHasUnselect = false;
+	mHasBinary = false;
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
@@ -224,6 +226,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasNamespace = mLastResponse.CheckUntagged(cIMAP_NAMESPACE, true);
 	mHasUIDPlus = mLastResponse.CheckUntagged(cIMAP_UIDPLUS, true);
 	mHasUnselect = mLastResponse.CheckUntagged(cIMAP_UNSELECT, true);
+	mHasBinary = mLastResponse.CheckUntagged(cIMAP_BINARY, true);
 	mHasSort = mLastResponse.CheckUntagged(cIMAP_SORT, true);
 	mHasSortDisplay = mLastResponse.CheckUntagged(cIMAP_SORT_DISPLAY, false);
 	mHasESort = mLastResponse.CheckUntagged(cIMAP_ESORT, true);
@@ -1630,10 +1633,14 @@ void CIMAPClient::_ReadAttachment(unsigned long msg_num, const char* attach_spec
 		}
 		default:
 		{
-			// BODY - PEEK
-			size_t body_reserve = ::strlen(peek ? cBODYSECTIONPEEK_OUT : cBODYSECTION_OUT) + modified_spec.length() + 1;
+			const char* fmt;
+			if (mHasBinary)
+				fmt = peek ? cBINARYSECTIONPEEK_OUT : cBINARYSECTION_OUT;
+			else
+				fmt = peek ? cBODYSECTIONPEEK_OUT : cBODYSECTION_OUT;
+			size_t body_reserve = ::strlen(fmt) + modified_spec.length() + 1;
 			body.reserve(body_reserve);
-			::snprintf(body.c_str_mod(), body_reserve, peek ? cBODYSECTIONPEEK_OUT : cBODYSECTION_OUT, modified_spec.c_str());
+			::snprintf(body.c_str_mod(), body_reserve, fmt, modified_spec.c_str());
 			break;
 		}
 		}
@@ -1667,7 +1674,10 @@ void CIMAPClient::_ReadAttachment(unsigned long msg_num, const char* attach_spec
 		case eIMAP4rev1:
 			// <> syntax - PEEK
 			cmd = cFETCH;
-			templ = peek ? "%d BODY.PEEK[%s]<%d.%d>" : "%d BODY[%s]<%d.%d>";
+			if (mHasBinary)
+				templ = peek ? "%d BINARY.PEEK[%s]<%d.%d>" : "%d BINARY[%s]<%d.%d>";
+			else
+				templ = peek ? "%d BODY.PEEK[%s]<%d.%d>" : "%d BODY[%s]<%d.%d>";
 			break;
 		}
 
@@ -3181,6 +3191,12 @@ void CIMAPClient::IMAPParseFetch(char** txt)
 		else if (::CheckStrAdv(&q, cUID))
 			IMAPParseUID(&q);
 
+		else if (::CheckStrAdv(&q, cBINARYSECTION_IN))
+			IMAPParseBodySection(&q);
+
+		else if (::CheckStrAdv(&q, cBINARYSIZE_IN))
+			IMAPParseBinarySize(&q);
+
 		else if (::CheckStrAdv(&q, cBODYSECTION_IN))
 			IMAPParseBodySection(&q);
 
@@ -3968,6 +3984,19 @@ void CIMAPClient::IMAPParseBodySection(char** txt)
 		*txt = q;
 		INETParseStringStream(txt);
 	}
+}
+
+void CIMAPClient::IMAPParseBinarySize(char** txt)
+{
+	char* p = *txt;
+	char* q = ::strchr(p, ']');
+	if (q)
+	{
+		q++;
+		*txt = q;
+	}
+	while(**txt == ' ') (*txt)++;
+	::strtoul(*txt, txt, 10);
 }
 
 // Parse IMAP BODY[HEADER.XXX] reply

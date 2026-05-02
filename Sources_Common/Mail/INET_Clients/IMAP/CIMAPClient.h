@@ -71,6 +71,7 @@ private:
 	bool			mHasNamespace;					// Supports NAMESPACE extension
 	bool			mHasUIDPlus;					// Supports UIDPLUS/LITERAL+ extension
 	bool			mHasUnselect;					// Supports UNSELECT
+	bool			mHasBinary;						// Supports BINARY (RFC 3516)
 	bool			mHasSort;						// Supports SORT
 	bool			mHasSortDisplay;				// Supports SORT=DISPLAY (RFC 5957)
 	bool			mHasESort;						// Supports ESORT (RFC 5267)
@@ -225,6 +226,8 @@ protected:
 		{ return true; }
 	bool			_HasMove() const							// Does server support MOVE?
 		{ return mHasMove; }
+	virtual bool	_HasBinary() const							// Does server support BINARY?
+		{ return mHasBinary; }
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
 									bool use_saved = false);	// Expunge uids
 			bool	MatchesSavedSearch(const ulvector& nums) const;
@@ -304,6 +307,7 @@ protected:
 										CMIMEContent& content);	// Parse IMAP body_fld_extension
 	void	IMAPParseBodySection(char** txt);					// Parse IMAP BODY[#] reply
 	void	IMAPParseBodySectionHeader(char** txt);				// Parse IMAP BODY[HEADER.XXX] reply
+	void	IMAPParseBinarySize(char** txt);					// Parse IMAP BINARY.SIZE[#] reply
 	void	IMAPParseInternalDate(char** txt);					// Parse IMAP INTERNALDATE reply
 	void	IMAPParseUID(char** txt);							// Parse IMAP UID reply
 	void	IMAPParseRFC822(char** txt);						// Parse IMAP RFC822 reply

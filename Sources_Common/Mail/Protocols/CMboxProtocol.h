@@ -279,6 +279,8 @@ public:
 			void	AutoCreate(const cdstring& mbox_name,	// Do possible auto create of this mailbox
 								bool subscribe);
 
+			bool	HasBinary() const;						// Does server support BINARY?
+
 protected:
 	CMbox*				mINBOX;								// INBOX
 	CHierarchies		mHierarchies;						// List of lists (first is subscribed)

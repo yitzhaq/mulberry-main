@@ -147,6 +147,7 @@ public:
 									CMbox* mbox_to,
 									bool use_saved = false) {}		// Move message (default: no-op)
 	virtual bool	_HasMove() const { return false; }				// Does server support MOVE?
+	virtual bool	_HasBinary() const { return false; }			// Does server support BINARY?
 
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
 									bool use_saved = false) = 0;	// Expunge uids

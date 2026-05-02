@@ -2868,6 +2868,11 @@ bool CMboxProtocol::HasMove() const
 	return mClient->_HasMove();
 }
 
+bool CMboxProtocol::HasBinary() const
+{
+	return mClient->_HasBinary();
+}
+
 // Do message expunge
 void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids, bool use_saved)
 {

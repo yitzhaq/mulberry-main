@@ -42,6 +42,7 @@
 #include "CMailcapMap.h"
 #endif
 #include "CMbox.h"
+#include "CMboxProtocol.h"
 #include "CMessage.h"
 #include "CMessageAttachment.h"
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
@@ -1696,8 +1697,16 @@ void CAttachment::ReadAttachment(CMessage* msg, bool peek, bool filter)
 #error __dest_os
 #endif
 
-		// Get appropriate filter
-		CFilter* aFilter = (filter ? CMIMESupport::GetFilter(this, true) : new CFilterEndls());
+		// Get appropriate filter — skip CTE decoding when server
+		// supports BINARY (RFC 3516) as data arrives already decoded
+		bool use_binary = msg->GetMbox() &&
+			msg->GetMbox()->GetProtocol() &&
+			msg->GetMbox()->GetProtocol()->HasBinary();
+		CFilter* aFilter;
+		if (use_binary || !filter)
+			aFilter = new CFilterEndls();
+		else
+			aFilter = CMIMESupport::GetFilter(this, true);
 		aFilter->SetStream(&data);
 		aFilter->SetForNetwork(lendl);
 
