@@ -66,13 +66,13 @@ void CSplashScreen::OnCreate()
 
     CStaticText* obj1 =
         new CStaticText("Version", mSplash,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 320,184, 55,17);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 330,184, 46,17);
     assert( obj1 != NULL );
     obj1->SetFontSize(10);
 
     mVersion =
         new CStaticText("v2.0", mSplash,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 375,184, 55,17);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 376,184, 54,17);
     assert( mVersion != NULL );
     mVersion->SetFontSize(10);
 
