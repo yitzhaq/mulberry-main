@@ -93,6 +93,10 @@ X11 bitmap fonts).
   SORT commands via RETURN (ALL).
 - IMAP WITHIN (RFC 5032). OLDER and YOUNGER search keys for
   date-relative searches (e.g., messages from the last N days).
+- IMAP BINARY (RFC 3516). Server-side CTE decoding for FETCH,
+  eliminating client-side base64/QP decoding and reducing
+  attachment bandwidth by ~25%. Includes literal8 (~{size})
+  response parsing.
 - Fix filter rules using COPY+DELETE instead of atomic MOVE (RFC
   6851) when moving messages. MOVE was implemented but the filter
   pipeline was never updated to use it.
