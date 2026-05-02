@@ -192,5 +192,6 @@
 	<string id="Error::SMTP::NoBadAUTHType">The chosen SMTP server does not support the method of authentication assigned in the preferences. To use this server, change the authentication method to one supported by this server in the preferences.</string>
 	<string id="Error::SMTP::NoBadTLS">The chosen SMTP server does not support a secure connection as requested in the preferences.</string>
 	<string id="Error::SMTP::OversizeMessage">The message is too large to be sent.\nMessage size = </string>
+	<string id="Error::SMTP::AuthRequiresTLS">Authentication refused: plaintext login requires an encrypted (TLS) connection.\nEnable SSL/TLS or STARTTLS in your SMTP account settings.</string>
 
 </stringlist>

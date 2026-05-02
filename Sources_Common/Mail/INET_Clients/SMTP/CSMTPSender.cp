@@ -1680,6 +1680,15 @@ void CSMTPSender::SMTPAuthenticate()
 		{
 			CAuthenticatorUserPswd* auth = static_cast<CAuthenticatorUserPswd*>(acct_auth);
 
+			// RFC 4954: MUST NOT use PLAIN/LOGIN without TLS
+			if (!mStream.TLSIsTLSOn())
+			{
+				cdstring error = rsrc::GetString("Error::SMTP::AuthRequiresTLS");
+				::strcpy(mLineData, error.c_str());
+				CLOG_LOGTHROW(CSMTPException, FAIL_RESPONSE);
+				throw CSMTPException(FAIL_RESPONSE);
+			}
+
 			// Look for AUTH PLAIN
 			cdstrvect::const_iterator found1 = std::find(mAUTHTypes.begin(), mAUTHTypes.end(), cPLAIN);
 			cdstrvect::const_iterator found2 = std::find(mAUTHTypes.begin(), mAUTHTypes.end(), cLOGIN);
