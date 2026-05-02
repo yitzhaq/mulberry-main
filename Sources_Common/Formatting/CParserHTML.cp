@@ -1592,7 +1592,7 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 						if (::strstr(narrow.c_str(), "display:none") || ::strstr(narrow.c_str(), "display: none"))
 						{
 							char* pname = narrow.c_str_mod();
-							while(*pname && *pname != ' ' && *pname != '/')
+							while(*pname && !isspace((unsigned char)*pname) && *pname != '/')
 								pname++;
 							*pname = 0;
 							const char* tagname = narrow.c_str();
