@@ -611,32 +611,51 @@ void CSMTPSender::SMTPSendMessage(CMessage* theMsg)
 		}
 		else
 		{
-			// Synchronous fallback
+			// Synchronous fallback — with partial failure handling
 			mMailState = cSMTPSendingMail;
 			SMTPSendMail();
 			mMailState = cSMTPWaitingMailResponse;
 			SMTPReceiveData();
 
+			unsigned long accepted = 0;
 			for(mToCtr = 0; mToCtr < mMessage->GetEnvelope()->GetTo()->size(); mToCtr++)
 			{
 				mMailState = cSMTPSendingToRcpt;
 				SMTPSendToRcpt();
 				mMailState = cSMTPWaitingRcptResponse;
-				SMTPReceiveData();
+				mStream.qgetline(mLineData, cSMTPBufferLen);
+				while (SMTPContinuation())
+					mStream.qgetline(mLineData, cSMTPBufferLen);
+				if (*mLineData == OK_RESPONSE)
+					accepted++;
 			}
 			for(mCcCtr = 0; mCcCtr < mMessage->GetEnvelope()->GetCC()->size(); mCcCtr++)
 			{
 				mMailState = cSMTPSendingCCRcpt;
 				SMTPSendCCRcpt();
 				mMailState = cSMTPWaitingRcptResponse;
-				SMTPReceiveData();
+				mStream.qgetline(mLineData, cSMTPBufferLen);
+				while (SMTPContinuation())
+					mStream.qgetline(mLineData, cSMTPBufferLen);
+				if (*mLineData == OK_RESPONSE)
+					accepted++;
 			}
 			for(mBccCtr = 0; mBccCtr < mMessage->GetEnvelope()->GetBcc()->size(); mBccCtr++)
 			{
 				mMailState = cSMTPSendingBCCRcpt;
 				SMTPSendBCCRcpt();
 				mMailState = cSMTPWaitingRcptResponse;
-				SMTPReceiveData();
+				mStream.qgetline(mLineData, cSMTPBufferLen);
+				while (SMTPContinuation())
+					mStream.qgetline(mLineData, cSMTPBufferLen);
+				if (*mLineData == OK_RESPONSE)
+					accepted++;
+			}
+
+			if (accepted == 0)
+			{
+				CLOG_LOGTHROW(CSMTPException, FAIL_RESPONSE);
+				throw CSMTPException(FAIL_RESPONSE);
 			}
 		}
 
