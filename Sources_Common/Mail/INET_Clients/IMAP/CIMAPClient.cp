@@ -930,7 +930,14 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 			// Add RETURN options
 			cdstring return_opts = "CHILDREN";
 			if (mHasListStatus)
-				return_opts += " STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT SIZE)";
+			{
+				cdstring status_atts = "MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
+				if (mHasStatusSize)
+					status_atts += " SIZE";
+				return_opts += " STATUS (";
+				return_opts += status_atts;
+				return_opts += ")";
+			}
 			INETSendString(" RETURN (");
 			INETSendString(return_opts);
 			INETSendString(")");
@@ -1017,7 +1024,12 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 				{
 					if (return_opts.length())
 						return_opts += " ";
-					return_opts += "STATUS (MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT APPENDLIMIT SIZE)";
+					cdstring status_atts = "MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
+					if (mHasStatusSize)
+						status_atts += " SIZE";
+					return_opts += "STATUS (";
+					return_opts += status_atts;
+					return_opts += ")";
 				}
 				INETSendString(" RETURN (");
 				INETSendString(return_opts);
