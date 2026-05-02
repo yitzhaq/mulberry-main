@@ -99,7 +99,7 @@ protected:
 		unsigned long		mUIDValidity;				// UIDValidity
 		unsigned long		mUIDNext;					// UIDNext
 		unsigned long		mLastSync;					// UIDNext
-		unsigned long		mAppendLimit;				// APPENDLIMIT (0 = unknown)
+		uint64_t			mAppendLimit;				// APPENDLIMIT (UINT64_MAX = unknown)
 		NMessage::EFlags	mAllowedFlags;				// Flags that can be changed
 		ulvector			mSearchResults;				// SEARCH results
 		SACLRight			mMyRights;					// User's rights on this mailbox
@@ -328,9 +328,9 @@ public:
 		{ if (mStatusInfo) mStatusInfo->mLastSync = sync; }
 	void	ChangeLastSync(unsigned long sync);
 
-	unsigned long	GetAppendLimit() const
-		{ return (mStatusInfo ? mStatusInfo->mAppendLimit : 0); }
-	void	SetAppendLimit(unsigned long limit)
+	uint64_t	GetAppendLimit() const
+		{ return (mStatusInfo ? mStatusInfo->mAppendLimit : UINT64_MAX); }
+	void	SetAppendLimit(uint64_t limit)
 		{ if (mStatusInfo) mStatusInfo->mAppendLimit = limit; }
 
 	unsigned long GetPartialCount() const

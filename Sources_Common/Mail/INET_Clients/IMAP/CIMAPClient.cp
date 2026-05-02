@@ -240,9 +240,8 @@ void CIMAPClient::_ProcessCapability()
 				p += ::strlen(cIMAP_APPENDLIMIT);
 				if (*p == '=')
 				{
-					unsigned long limit = ::strtoul(p + 1, NULL, 10);
-					if (limit > 0)
-						GetMboxOwner()->SetAppendLimit(limit);
+					uint64_t limit = ::strtoull(p + 1, NULL, 10);
+					GetMboxOwner()->SetAppendLimit(limit);
 				}
 			}
 		}
@@ -1138,13 +1137,21 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 			// Check APPENDLIMIT (RFC 7889) before sending
 			{
 				mProcessMessage = theMsg;
-				unsigned long append_limit = mbox->GetAppendLimit();
-				if (append_limit == 0)
+				uint64_t append_limit = mbox->GetAppendLimit();
+				if (append_limit == UINT64_MAX)
 					append_limit = GetMboxOwner()->GetAppendLimit();
-				if (append_limit > 0)
+				if (append_limit != UINT64_MAX)
 				{
+					if (append_limit == 0)
+					{
+						cdstring error = rsrc::GetString("Error::IMAP::MessageTooBig");
+						error += "0 (server does not accept APPEND)";
+						::strcpy(mLineData, error.c_str());
+						CLOG_LOGTHROW(CINETException, CINETException::err_NoResponse);
+						throw CINETException(CINETException::err_NoResponse);
+					}
 					unsigned long msg_size = GetManualLiteralLength();
-					if (msg_size > append_limit)
+					if ((uint64_t)msg_size > append_limit)
 					{
 						cdstring error = rsrc::GetString("Error::IMAP::MessageTooBig");
 						error += cdstring(msg_size);
@@ -1228,6 +1235,14 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 	{
 		// Set results pointer
 		mCurrentResults = results;
+
+		// Clear saved search state before issuing new SEARCH.
+		// If SAVE fails (NO response), the variable must be empty (RFC 5182).
+		if (mHasSearchRes)
+		{
+			mSearchSaved = false;
+			mSavedSearchResults.clear();
+		}
 
 		// Issue SEARCH call
 		INETStartSend("Status::IMAP::Searching", "Error::IMAP::OSErrSearch", "Error::IMAP::NoBadSearch", GetCurrentMbox()->GetName());
@@ -1978,6 +1993,9 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 // Do move message to mailbox (RFC 6851)
 void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, bool use_saved)
 {
+	if (!mHasMove)
+		return;
+
 	// Get full name
 	cdstring wd_name = mbox_to->GetName();
 	if (mVersion == eIMAP4rev1)
@@ -3085,9 +3103,12 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 			{
 				while(*q && (*q == ' ')) q++;
 				if (::strncasecmp(q, "NIL", 3) == 0)
+				{
+					update->SetAppendLimit(UINT64_MAX);
 					q += 3;
+				}
 				else
-					update->SetAppendLimit(::strtoul(q, &q, 10));
+					update->SetAppendLimit(::strtoull(q, &q, 10));
 			}
 			// Got an unknown item - just step over it
 			else

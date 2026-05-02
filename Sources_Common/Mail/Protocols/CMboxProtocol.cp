@@ -69,7 +69,7 @@ CMboxProtocol::CMboxProtocol(CMailAccount* account)
 	mCloneOwner = NULL;
 	mCurrent_mbox = NULL;
 	mClient = NULL;
-	mAppendLimit = 0;
+	mAppendLimit = UINT64_MAX;
 
 	// Do the rest
 	mHierarchies.push_back(new CMboxList(this));								// Always have subscribed list

@@ -84,7 +84,7 @@ CMbox::CMboxStatus::CMboxStatus()
 	mUIDValidity = 0;
 	mUIDNext = 0;
 	mLastSync = 0;
-	mAppendLimit = 0;
+	mAppendLimit = UINT64_MAX;
 	mAllowedFlags = NMessage::eAllPermanent;
 	mACLs = NULL;
 	mQuotas = NULL;

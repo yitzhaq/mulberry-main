@@ -287,7 +287,7 @@ protected:
 	CMbox*				mCurrent_mbox;						// Currently selected mbox
 	CMboxClient*		mClient;							// The client
 	CQuotaRootList		mRoots;								// List of quota roots known about on this server
-	unsigned long		mAppendLimit;						// Global APPENDLIMIT from CAPABILITY (0 = none)
+	uint64_t			mAppendLimit;						// Global APPENDLIMIT (UINT64_MAX = unknown)
 	
 	CMailRecord*		mRecorder;							// Recorder for mail ops
 
@@ -468,9 +468,9 @@ protected:
 		{ return mFlags.IsSet(eQuotaDisabled); }
 
 	// APPENDLIMIT (RFC 7889)
-			void SetAppendLimit(unsigned long limit)
+			void SetAppendLimit(uint64_t limit)
 		{ mAppendLimit = limit; }
-			unsigned long GetAppendLimit() const
+			uint64_t GetAppendLimit() const
 		{ return mAppendLimit; }
 
 	// Quota commands
