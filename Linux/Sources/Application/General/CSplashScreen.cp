@@ -65,8 +65,8 @@ void CSplashScreen::OnCreate()
     assert( mSplash != NULL );
 
     CStaticText* obj1 =
-        new CStaticText("Version Number", mSplash,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 280,184, 95,17);
+        new CStaticText("Version", mSplash,
+                    JXWidget::kHElastic, JXWidget::kVElastic, 320,184, 55,17);
     assert( obj1 != NULL );
     obj1->SetFontSize(10);
 
@@ -78,7 +78,7 @@ void CSplashScreen::OnCreate()
 
     CStaticText* obj2 =
         new CStaticText("\xC2\xA9 Cyrus Daboo 2006-2014, Contributors 2011-2026", mSplash,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 5,184, 275,17);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 5,184, 315,17);
     assert( obj2 != NULL );
     obj2->SetFontSize(10);
 
