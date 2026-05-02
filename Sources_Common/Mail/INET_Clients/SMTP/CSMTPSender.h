@@ -109,6 +109,8 @@ private:
 	bool				mSTARTTLS;						// STARTTLS supported
 	bool				mAUTH;							// SMTP-AUTH available
 	cdstrvect			mAUTHTypes;						// Available AUTH types
+	bool				mPipelining;					// PIPELINING supported (RFC 2920)
+	bool				mEnhancedStatus;				// ENHANCEDSTATUSCODES (RFC 2034)
 	bool				mDSN;							// Does DSNs
 	CDSN				mMsgDSN;						// DSN requested for message
 	
@@ -182,6 +184,7 @@ private:
 	void SMTPReceiveCapability(char code = OK_RESPONSE);
 	bool SMTPCheckResponse(char code);
 	bool SMTPContinuation();
+	const char* GetEnhancedStatusText() const;
 
 	// S E N D  D A T A
 	void SMTPSendEHello()

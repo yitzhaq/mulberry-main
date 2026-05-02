@@ -82,6 +82,8 @@ CSMTPSender::CSMTPSender(CINETAccount* account)
 	mSizeLimit = -1;
 	mSTARTTLS = false;
 	mAUTH = false;
+	mPipelining = false;
+	mEnhancedStatus = false;
 	mDSN = false;
 
 	mUseQueue = false;
@@ -557,47 +559,85 @@ void CSMTPSender::SMTPSendMessage(CMessage* theMsg)
 			throw CSMTPException(FAIL_RESPONSE);
 		}
 
-// -- MAIL
-		// Send data
-		mMailState = cSMTPSendingMail;
-		SMTPSendMail();
-
-		// Get response
-		mMailState = cSMTPWaitingMailResponse;
-		SMTPReceiveData();
-
-// --RCPTs
-		for(mToCtr = 0; mToCtr < mMessage->GetEnvelope()->GetTo()->size(); mToCtr++)
+// -- MAIL + RCPTs (pipelined when supported)
+		if (mPipelining)
 		{
-			// Send data
-			mMailState = cSMTPSendingToRcpt;
-			SMTPSendToRcpt();
+			// Phase 1: Send MAIL FROM and all RCPT TO without waiting
+			mMailState = cSMTPSendingMail;
+			SMTPSendMail();
 
-			// Get response
-			mMailState = cSMTPWaitingRcptResponse;
+			unsigned long rcpt_count = 0;
+			for(mToCtr = 0; mToCtr < mMessage->GetEnvelope()->GetTo()->size(); mToCtr++)
+			{
+				mMailState = cSMTPSendingToRcpt;
+				SMTPSendToRcpt();
+				rcpt_count++;
+			}
+			for(mCcCtr = 0; mCcCtr < mMessage->GetEnvelope()->GetCC()->size(); mCcCtr++)
+			{
+				mMailState = cSMTPSendingCCRcpt;
+				SMTPSendCCRcpt();
+				rcpt_count++;
+			}
+			for(mBccCtr = 0; mBccCtr < mMessage->GetEnvelope()->GetBcc()->size(); mBccCtr++)
+			{
+				mMailState = cSMTPSendingBCCRcpt;
+				SMTPSendBCCRcpt();
+				rcpt_count++;
+			}
+			mStream << std::flush;
+
+			// Phase 2: Read MAIL FROM response
+			mMailState = cSMTPWaitingMailResponse;
 			SMTPReceiveData();
+
+			// Phase 3: Read all RCPT TO responses, track accepted
+			unsigned long accepted = 0;
+			mMailState = cSMTPWaitingRcptResponse;
+			for(unsigned long i = 0; i < rcpt_count; i++)
+			{
+				mStream.qgetline(mLineData, cSMTPBufferLen);
+				while (SMTPContinuation())
+					mStream.qgetline(mLineData, cSMTPBufferLen);
+				if (*mLineData == OK_RESPONSE)
+					accepted++;
+			}
+
+			if (accepted == 0)
+			{
+				CLOG_LOGTHROW(CSMTPException, FAIL_RESPONSE);
+				throw CSMTPException(FAIL_RESPONSE);
+			}
 		}
-
-		for(mCcCtr = 0; mCcCtr < mMessage->GetEnvelope()->GetCC()->size(); mCcCtr++)
+		else
 		{
-			// Send data
-			mMailState = cSMTPSendingCCRcpt;
-			SMTPSendCCRcpt();
-
-			// Get response
-			mMailState = cSMTPWaitingRcptResponse;
+			// Synchronous fallback
+			mMailState = cSMTPSendingMail;
+			SMTPSendMail();
+			mMailState = cSMTPWaitingMailResponse;
 			SMTPReceiveData();
-		}
 
-		for(mBccCtr = 0; mBccCtr < mMessage->GetEnvelope()->GetBcc()->size(); mBccCtr++)
-		{
-			// Send data
-			mMailState = cSMTPSendingBCCRcpt;
-			SMTPSendBCCRcpt();
-
-			// Get response
-			mMailState = cSMTPWaitingRcptResponse;
-			SMTPReceiveData();
+			for(mToCtr = 0; mToCtr < mMessage->GetEnvelope()->GetTo()->size(); mToCtr++)
+			{
+				mMailState = cSMTPSendingToRcpt;
+				SMTPSendToRcpt();
+				mMailState = cSMTPWaitingRcptResponse;
+				SMTPReceiveData();
+			}
+			for(mCcCtr = 0; mCcCtr < mMessage->GetEnvelope()->GetCC()->size(); mCcCtr++)
+			{
+				mMailState = cSMTPSendingCCRcpt;
+				SMTPSendCCRcpt();
+				mMailState = cSMTPWaitingRcptResponse;
+				SMTPReceiveData();
+			}
+			for(mBccCtr = 0; mBccCtr < mMessage->GetEnvelope()->GetBcc()->size(); mBccCtr++)
+			{
+				mMailState = cSMTPSendingBCCRcpt;
+				SMTPSendBCCRcpt();
+				mMailState = cSMTPWaitingRcptResponse;
+				SMTPReceiveData();
+			}
 		}
 
 // -- DATA
@@ -1136,6 +1176,8 @@ void CSMTPSender::SMTPInitCapability()
 {
 	mAUTH = false;
 	mAUTHTypes.clear();
+	mPipelining = false;
+	mEnhancedStatus = false;
 	mDSN = false;
 	mSTARTTLS = false;
 	mSize = false;
@@ -1182,6 +1224,10 @@ void CSMTPSender::SMTPReceiveCapability(char code)
 				mDSN = true;
 			else if (::strcmp(p, STARTTLS) == 0)
 				mSTARTTLS = true;
+			else if (::strcmp(p, ESMTP_PIPELINING) == 0)
+				mPipelining = true;
+			else if (::strcmp(p, ESMTP_ENHANCEDSTATUS) == 0)
+				mEnhancedStatus = true;
 			else if (::strncmp(p, ESMTP_SIZE, 4) == 0)
 			{
 				mSize = true;
@@ -1220,6 +1266,109 @@ bool CSMTPSender::SMTPContinuation()
 {
 	// Check for positive reply
 	return ((mLineData[3] == CONTINUATION) ? true : false);
+}
+
+// RFC 3463 enhanced status code descriptions
+struct SEnhancedCode { int subject; int detail; const char* text; };
+
+static const SEnhancedCode cEnhancedCodes[] = {
+	{ 0, 0, "Other" },
+	{ 1, 0, "Other address status" },
+	{ 1, 1, "Bad destination mailbox address" },
+	{ 1, 2, "Bad destination system address" },
+	{ 1, 3, "Bad destination mailbox address syntax" },
+	{ 1, 4, "Destination mailbox address ambiguous" },
+	{ 1, 5, "Destination address valid" },
+	{ 1, 6, "Destination mailbox has moved" },
+	{ 1, 7, "Bad sender's mailbox address syntax" },
+	{ 1, 8, "Bad sender's system address" },
+	{ 1, 9, "Message relayed to non-compliant mailer" },
+	{ 1, 10, "Recipient address has null MX" },
+	{ 2, 0, "Other mailbox status" },
+	{ 2, 1, "Mailbox disabled, not accepting messages" },
+	{ 2, 2, "Mailbox full" },
+	{ 2, 3, "Message length exceeds limit" },
+	{ 2, 4, "Mailing list expansion problem" },
+	{ 3, 0, "Other mail system status" },
+	{ 3, 1, "Mail system full" },
+	{ 3, 2, "System not accepting messages" },
+	{ 3, 3, "System not capable of selected features" },
+	{ 3, 4, "Message too big for system" },
+	{ 3, 5, "System incorrectly configured" },
+	{ 4, 0, "Other network/routing status" },
+	{ 4, 1, "No answer from host" },
+	{ 4, 2, "Bad connection" },
+	{ 4, 3, "Directory server failure" },
+	{ 4, 4, "Unable to route" },
+	{ 4, 5, "Mail system congestion" },
+	{ 4, 6, "Routing loop detected" },
+	{ 4, 7, "Delivery time expired" },
+	{ 5, 0, "Other protocol status" },
+	{ 5, 1, "Invalid command" },
+	{ 5, 2, "Syntax error" },
+	{ 5, 3, "Too many recipients" },
+	{ 5, 4, "Invalid command arguments" },
+	{ 5, 5, "Wrong protocol version" },
+	{ 6, 0, "Other media error" },
+	{ 6, 1, "Media not supported" },
+	{ 6, 2, "Conversion required and prohibited" },
+	{ 6, 3, "Conversion required but not supported" },
+	{ 6, 4, "Conversion with loss performed" },
+	{ 6, 5, "Conversion failed" },
+	{ 7, 0, "Other security status" },
+	{ 7, 1, "Delivery not authorized, message refused" },
+	{ 7, 2, "Mailing list expansion prohibited" },
+	{ 7, 3, "Security conversion required but not possible" },
+	{ 7, 4, "Security features not supported" },
+	{ 7, 5, "Cryptographic failure" },
+	{ 7, 6, "Cryptographic algorithm not supported" },
+	{ 7, 7, "Message integrity failure" },
+	{ 7, 8, "Authentication credentials invalid" },
+	{ 7, 9, "Authentication mechanism too weak" },
+	{ 7, 10, "Encryption needed" },
+	{ 7, 11, "Encryption required for requested authentication" },
+	{ 7, 12, "Password transition needed" },
+	{ 7, 13, "Account disabled" },
+	{ 7, 14, "Trust relationship required" },
+	{ 7, 15, "Priority level too low" },
+	{ 7, 16, "Message too big for specified priority" },
+	{ 7, 20, "No passing DKIM signature found" },
+	{ 7, 21, "No acceptable DKIM signature found" },
+	{ 7, 22, "No valid author-matched DKIM signature found" },
+	{ 7, 23, "SPF validation failed" },
+	{ 7, 24, "SPF validation error" },
+	{ 7, 25, "Reverse DNS validation failed" },
+	{ 7, 26, "Multiple authentication checks failed" },
+	{ 7, 27, "Sender address has null MX" },
+	{ -1, -1, NULL }
+};
+
+const char* CSMTPSender::GetEnhancedStatusText() const
+{
+	if (!mEnhancedStatus)
+		return NULL;
+
+	const char* p = mLineData + 4;
+	if (!*p || !::isdigit(*p))
+		return NULL;
+
+	int eclass = *p - '0';
+	if (*(p+1) != '.')
+		return NULL;
+
+	int esubject = ::atoi(p + 2);
+	const char* dot2 = ::strchr(p + 2, '.');
+	if (!dot2)
+		return NULL;
+	int edetail = ::atoi(dot2 + 1);
+
+	for (const SEnhancedCode* code = cEnhancedCodes; code->subject >= 0; code++)
+	{
+		if (code->subject == esubject && code->detail == edetail)
+			return code->text;
+	}
+
+	return NULL;
 }
 
 void CSMTPSender::SMTPMapErrorStr(const char*& syserr_id, const char*& protobad_id)
