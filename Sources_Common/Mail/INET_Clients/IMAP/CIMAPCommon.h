@@ -221,6 +221,9 @@ extern const char* cSEARCH_UNDRAFT;
 extern const char* cSEARCH_UNFLAGGED;
 extern const char* cSEARCH_UNKEYWORD;
 extern const char* cSEARCH_UNSEEN;
+extern const char* cSEARCH_OLDER;
+extern const char* cSEARCH_YOUNGER;
+extern const char* cIMAP_WITHIN;
 
 // E X T E N S I O N S
 

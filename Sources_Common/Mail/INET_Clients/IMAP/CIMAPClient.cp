@@ -127,6 +127,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
+	mHasWithin = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
 	mHasID = false;
@@ -170,6 +171,7 @@ void CIMAPClient::_InitCapability()
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
+	mHasWithin = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
 	mHasID = false;
@@ -225,6 +227,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasSort = mLastResponse.CheckUntagged(cIMAP_SORT, true);
 	mHasSortDisplay = mLastResponse.CheckUntagged(cIMAP_SORT_DISPLAY, false);
 	mHasESort = mLastResponse.CheckUntagged(cIMAP_ESORT, true);
+	mHasWithin = mLastResponse.CheckUntagged(cIMAP_WITHIN, true);
 	mHasThreadSubject = mLastResponse.CheckUntagged(cIMAP_THREAD_SUBJECT, true);
 	mHasThreadReferences = mLastResponse.CheckUntagged(cIMAP_THREAD_REFERENCES, true);
 	mHasID = mLastResponse.CheckUntagged(cIMAP_ID, true);

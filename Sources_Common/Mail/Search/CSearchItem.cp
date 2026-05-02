@@ -577,6 +577,18 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 		items.push_back(cdstrbool(cSEARCH_UNSEEN, true));
 		break;
 
+	case eOlder:		// long (seconds)
+		items.push_back(cdstrbool(cSEARCH_OLDER, true));
+		temp = static_cast<long>(reinterpret_cast<intptr_t>(GetData()));
+		items.push_back(cdstrbool(temp, true));
+		break;
+
+	case eYounger:		// long (seconds)
+		items.push_back(cdstrbool(cSEARCH_YOUNGER, true));
+		temp = static_cast<long>(reinterpret_cast<intptr_t>(GetData()));
+		items.push_back(cdstrbool(temp, true));
+		break;
+
 	case eRecipient:	// cdstring*
 		if (expand_me)
 		{

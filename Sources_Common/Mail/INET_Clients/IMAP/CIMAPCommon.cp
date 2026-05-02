@@ -225,6 +225,9 @@ const char* cSEARCH_UNDRAFT =			"UNDRAFT";
 const char* cSEARCH_UNFLAGGED =			"UNFLAGGED";
 const char* cSEARCH_UNKEYWORD =			"UNKEYWORD";
 const char* cSEARCH_UNSEEN =			"UNSEEN";
+const char* cSEARCH_OLDER =			"OLDER";
+const char* cSEARCH_YOUNGER =			"YOUNGER";
+const char* cIMAP_WITHIN =				"WITHIN";
 
 // E X T E N S I O N S
 

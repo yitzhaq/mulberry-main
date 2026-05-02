@@ -79,6 +79,8 @@ public:
 		eUnflagged,		// -
 		eUnkeyword,		// cdstring*
 		eUnseen,		// -
+		eOlder,			// long (seconds)
+		eYounger,		// long (seconds)
 
 		// These are local items that expand to something else on the server
 		eRecipient,		// cdstring*
