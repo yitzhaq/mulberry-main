@@ -704,7 +704,10 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 				INETSendString(cSpace);
 				INETSendString(wd_name, eQueueProcess);
 				INETSendString(cSpace);
-				INETSendString(cSTATUS_CHECK);
+				if (mHasStatusSize)
+					INETSendString("(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT SIZE)");
+				else
+					INETSendString(cSTATUS_CHECK);
 				INETFinishSend();
 			}
 			catch(CINETException& /*ex*/)
