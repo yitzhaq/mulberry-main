@@ -2561,6 +2561,7 @@ bool CIMAPClient::ShouldStartIdle()
 {
 	return mHasIdle &&
 		mIdleState == eIdleOff &&
+		mStream != NULL &&
 		GetCurrentMbox() != NULL &&
 		mVersion == eIMAP4rev1;
 }

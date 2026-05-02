@@ -14,6 +14,7 @@
     limitations under the License.
 */
 
+#include <csignal>
 #include "CMulberryApp.h"
 #include "CMulberryMDIServer.h"
 #include "CLog.h"
@@ -48,6 +49,9 @@ int main(int argc, char* argv[])
 	// Without this, strftime and other locale-aware functions use the "C"
 	// locale regardless of the user's environment variables.
 	std::setlocale(LC_ALL, "");
+
+	// Ignore SIGPIPE — network writes to closed sockets must not crash
+	::signal(SIGPIPE, SIG_IGN);
 
 	// Always turn off JX asserts here - command line option may turn it back on
 	JAssertBase::SetAction(JAssertBase::kIgnoreFailure);
