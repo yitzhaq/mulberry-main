@@ -60,7 +60,9 @@ X11 bitmap fonts).
   cannot render characters outside Latin-1.
 - Hide HTML elements with inline `display:none` style. Prevents
   preheader text, hidden tracking content, and soft-hyphen padding
-  from being rendered as visible text in HTML messages.
+  from being rendered as visible text in HTML messages. Handles
+  nested same-name tags, void elements (img, br, etc.), and
+  multi-line tags correctly.
 - Use `aria-label` and `title` attributes as fallback for image
   alt text in HTML messages, before falling back to the filename.
 - Replace custom XML parser with system libxml2 for CalDAV, CardDAV,
