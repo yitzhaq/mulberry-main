@@ -89,6 +89,8 @@ X11 bitmap fonts).
   keys for server-side display name sorting.
 - IMAP ESORT (RFC 5267). Compact ESEARCH-format responses for
   SORT commands via RETURN (ALL).
+- IMAP WITHIN (RFC 5032). OLDER and YOUNGER search keys for
+  date-relative searches (e.g., messages from the last N days).
 - Fix filter rules using COPY+DELETE instead of atomic MOVE (RFC
   6851) when moving messages. MOVE was implemented but the filter
   pipeline was never updated to use it.
