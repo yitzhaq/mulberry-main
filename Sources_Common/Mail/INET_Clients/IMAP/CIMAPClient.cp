@@ -124,7 +124,11 @@ void CIMAPClient::InitIMAPClient()
 	mHasNamespace = false;
 	mHasUIDPlus = false;
 	mHasUnselect = false;
+	mHasIdle = false;
 	mHasBinary = false;
+	mIdleState = eIdleOff;
+	mIdleStartTime = 0;
+	mIdleTag[0] = 0;
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
@@ -169,7 +173,11 @@ void CIMAPClient::_InitCapability()
 	mHasNamespace = false;
 	mHasUIDPlus = false;
 	mHasUnselect = false;
+	mHasIdle = false;
 	mHasBinary = false;
+	mIdleState = eIdleOff;
+	mIdleStartTime = 0;
+	mIdleTag[0] = 0;
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
@@ -226,6 +234,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasNamespace = mLastResponse.CheckUntagged(cIMAP_NAMESPACE, true);
 	mHasUIDPlus = mLastResponse.CheckUntagged(cIMAP_UIDPLUS, true);
 	mHasUnselect = mLastResponse.CheckUntagged(cIMAP_UNSELECT, true);
+	mHasIdle = mLastResponse.CheckUntagged(cIMAP_IDLE, true);
 	mHasBinary = mLastResponse.CheckUntagged(cIMAP_BINARY, true);
 	mHasSort = mLastResponse.CheckUntagged(cIMAP_SORT, true);
 	mHasSortDisplay = mLastResponse.CheckUntagged(cIMAP_SORT_DISPLAY, false);
@@ -570,6 +579,9 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 		// SEARCHRES variable resets on SELECT/EXAMINE (RFC 5182)
 		mSearchSaved = false;
 		mSavedSearchResults.clear();
+
+		// IDLE state resets on new SELECT/EXAMINE
+		mIdleState = eIdleOff;
 
 		// Can select - set flag
 		mbox->SetFlags(NMbox::eError, false);
@@ -2519,6 +2531,139 @@ bool CIMAPClient::MatchesSavedSearch(const ulvector& nums) const
 	if (nums.size() != mSavedSearchResults.size())
 		return false;
 	return nums == mSavedSearchResults;
+}
+
+#pragma mark ____________________________IDLE
+
+void CIMAPClient::_Tickle(bool force_tickle)
+{
+	if (mIdleState == eIdleActive)
+	{
+		_CheckIdleResponses();
+
+		if (ShouldReIdle())
+		{
+			_EndIdle();
+			_StartIdle();
+		}
+	}
+	else if (ShouldStartIdle())
+	{
+		_StartIdle();
+	}
+	else
+	{
+		CINETClient::_Tickle(force_tickle);
+	}
+}
+
+bool CIMAPClient::ShouldStartIdle()
+{
+	return mHasIdle &&
+		mIdleState == eIdleOff &&
+		GetCurrentMbox() != NULL &&
+		mVersion == eIMAP4rev1;
+}
+
+bool CIMAPClient::ShouldReIdle() const
+{
+	return mIdleState == eIdleActive &&
+		::difftime(::time(NULL), mIdleStartTime) >= 29 * 60;
+}
+
+void CIMAPClient::_StartIdle()
+{
+	if (!ShouldStartIdle())
+		return;
+
+	try
+	{
+		mIdleState = eIdleRequested;
+
+		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", GetCurrentMbox()->GetName());
+		::strcpy(mIdleTag, mTag);
+		INETSendString(cIDLE);
+		INETFinishSend();
+
+		mIdleState = eIdleActive;
+		mIdleStartTime = ::time(NULL);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		mIdleState = eIdleOff;
+	}
+}
+
+void CIMAPClient::_EndIdle()
+{
+	if (mIdleState != eIdleActive)
+		return;
+
+	try
+	{
+		mIdleState = eIdleEnding;
+
+		cdstring done_line = cDONE;
+		done_line += net_endl;
+		*mStream << done_line.c_str() << std::flush;
+		mStream->TimerReset();
+
+		if (mAllowLog && mLog.DoLog())
+			*mLog.GetLog() << done_line << std::flush;
+
+		// Restore the IDLE tag so INETProcess matches it
+		char saved_tag[16];
+		::strcpy(saved_tag, mTag);
+		::strcpy(mTag, mIdleTag);
+		INETProcess();
+		::strcpy(mTag, saved_tag);
+
+		mIdleState = eIdleOff;
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		mIdleState = eIdleOff;
+	}
+}
+
+void CIMAPClient::_CheckIdleResponses()
+{
+	if (mIdleState != eIdleActive)
+		return;
+
+	if (!mStream || !mStream->HasPendingData())
+		return;
+
+	try
+	{
+		char* line = INETGetLine();
+
+		if (line)
+		{
+			char* txt = line;
+			INETParseResponse(&txt, &mLastResponse);
+
+			if (TAG_TEST(mLastResponse.code))
+			{
+				mIdleState = eIdleOff;
+			}
+		}
+
+		_PostProcess();
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		mIdleState = eIdleOff;
+	}
+}
+
+void CIMAPClient::ExitIdleIfActive()
+{
+	if (mIdleState == eIdleActive)
+		_EndIdle();
 }
 
 #pragma mark ____________________________Parsing

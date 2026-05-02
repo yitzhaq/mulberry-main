@@ -550,6 +550,24 @@ void CTCPSocket::TCPClose()
 	}
 }
 
+bool CTCPSocket::HasPendingData() const
+{
+	if (mSocket < 0)
+		return false;
+
+	fd_set fds;
+	FD_ZERO(&fds);
+	FD_SET(mSocket, &fds);
+	timeval tv = {0, 0};
+
+#ifdef _winsock
+	int result = ::select(FD_SETSIZE, &fds, NULL, NULL, &tv);
+#else
+	int result = ::select(mSocket + 1, &fds, NULL, NULL, &tv);
+#endif
+	return result > 0;
+}
+
 void CTCPSocket::TCPHandleError(int err)
 {
 	switch(err)

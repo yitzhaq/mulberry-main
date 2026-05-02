@@ -1703,6 +1703,9 @@ void CINETClient::INETNextTag()
 // Start sending a new command
 void CINETClient::INETStartSend(const char* status_id, const char* err_id, const char* nobad_id, const cdstring& err_context, bool handle_throw)
 {
+	// Exit IDLE before sending any command (RFC 2177)
+	ExitIdleIfActive();
+
 	// Does action status
 	INETStartAction(status_id, err_id, nobad_id, err_context);
 

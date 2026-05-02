@@ -71,6 +71,7 @@ private:
 	bool			mHasNamespace;					// Supports NAMESPACE extension
 	bool			mHasUIDPlus;					// Supports UIDPLUS/LITERAL+ extension
 	bool			mHasUnselect;					// Supports UNSELECT
+	bool			mHasIdle;						// Supports IDLE (RFC 2177)
 	bool			mHasBinary;						// Supports BINARY (RFC 3516)
 	bool			mHasSort;						// Supports SORT
 	bool			mHasSortDisplay;				// Supports SORT=DISPLAY (RFC 5957)
@@ -88,6 +89,18 @@ private:
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
+
+	// IDLE state (RFC 2177)
+	enum EIdleState {
+		eIdleOff,
+		eIdleRequested,
+		eIdleActive,
+		eIdleEnding
+	};
+	EIdleState		mIdleState;
+	time_t			mIdleStartTime;
+	char			mIdleTag[16];
+
 	threadvector*	mThreadResults;					// Place to store thread results
 
 	// C O N S T R U C T I O N / D E S T R U C T I O N  M E T H O D S
@@ -131,6 +144,16 @@ protected:
 
 	virtual void	_CheckMbox(CMbox* mbox,				// Do check
 								bool fast = false);
+
+	// IDLE (RFC 2177)
+	virtual void	_Tickle(bool force_tickle);			// Override: IDLE-aware tickle
+			void	_StartIdle();
+			void	_EndIdle();
+			void	_CheckIdleResponses();
+			bool	IsIdleActive() const { return mIdleState == eIdleActive; }
+			bool	ShouldStartIdle();
+			bool	ShouldReIdle() const;
+	virtual void	ExitIdleIfActive();
 	virtual void	_MailboxSize(CMbox* mbox) {}		// Get mailbox size;
 	virtual bool	_DoesMailboxSize() const			// Does server handle mailbox size?
 		{ return mHasStatusSize; }

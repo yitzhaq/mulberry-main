@@ -302,6 +302,7 @@ protected:
 	virtual void	INETStopAction();								// Stopping an INET call
 
 	// S E N D  D A T A
+	virtual void	ExitIdleIfActive() {}							// Exit IDLE if active (override in CIMAPClient)
 	virtual void	INETNextTag();									// Update tag
 	virtual void	INETStartSend(const char* status_id, const char* err_id, const char* nobad_id,
 									const cdstring& err_context = cdstring::null_str, bool handle_throw = true);

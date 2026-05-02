@@ -63,6 +63,7 @@ extern const char* cIMAP_LIST_EXTENDED;
 extern const char* cIMAP_LIST_STATUS;
 extern const char* cIMAP_STATUS_SIZE;
 extern const char* cIMAP_SEARCHRES;
+extern const char* cIMAP_IDLE;
 extern const char* cIMAP_BINARY;
 extern const char* cIMAP_SORT_DISPLAY;
 extern const char* cIMAP_ESORT;
@@ -72,6 +73,8 @@ extern const char* cIMAP_AUTHPLAIN;
 extern const char* cIMAP_AUTHANON;
 
 // Commands
+extern const char* cIDLE;
+extern const char* cDONE;
 extern const char* cSELECT;
 extern const char* cEXAMINE;
 extern const char* cBBOARD;
