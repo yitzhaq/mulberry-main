@@ -1592,11 +1592,28 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 						if (::strstr(narrow.c_str(), "display:none") || ::strstr(narrow.c_str(), "display: none"))
 						{
 							char* pname = narrow.c_str_mod();
-							while(*pname && *pname != ' ')
+							while(*pname && *pname != ' ' && *pname != '/')
 								pname++;
 							*pname = 0;
 							const char* tagname = narrow.c_str();
 							size_t taglen = ::strlen(tagname);
+
+							// Void elements have no closing tag — just
+							// skip the tag itself (already consumed by
+							// the '<' handler above)
+							if (!::strcmp(tagname, "img") ||
+								!::strcmp(tagname, "br") ||
+								!::strcmp(tagname, "hr") ||
+								!::strcmp(tagname, "input") ||
+								!::strcmp(tagname, "meta") ||
+								!::strcmp(tagname, "link") ||
+								!::strcmp(tagname, "area") ||
+								!::strcmp(tagname, "base") ||
+								!::strcmp(tagname, "col") ||
+								!::strcmp(tagname, "embed") ||
+								!::strcmp(tagname, "source") ||
+								!::strcmp(tagname, "wbr"))
+								break;
 
 							// Nesting-aware skip: track depth so nested
 							// same-name tags don't cause early exit
