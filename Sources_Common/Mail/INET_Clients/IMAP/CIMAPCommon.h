@@ -63,6 +63,8 @@ extern const char* cIMAP_LIST_EXTENDED;
 extern const char* cIMAP_LIST_STATUS;
 extern const char* cIMAP_STATUS_SIZE;
 extern const char* cIMAP_SEARCHRES;
+extern const char* cIMAP_SORT_DISPLAY;
+extern const char* cIMAP_ESORT;
 extern const char* cRETURN_SAVE_ALL;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
@@ -240,6 +242,8 @@ extern const char* cSORT_FROM;
 extern const char* cSORT_SIZE;
 extern const char* cSORT_SUBJECT;
 extern const char* cSORT_TO;
+extern const char* cSORT_DISPLAYFROM;
+extern const char* cSORT_DISPLAYTO;
 
 extern const char* cTHREAD_SUBJECT;
 extern const char* cTHREAD_REFERENCES;

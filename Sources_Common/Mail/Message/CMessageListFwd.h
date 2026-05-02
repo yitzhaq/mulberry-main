@@ -42,7 +42,9 @@
 		cSortMessageParts,
 		cSortMessageMatching,
 		cSortMessageDisconnected,
-		cSortMessageMax = cSortMessageDisconnected
+		cSortMessageDisplayFrom,
+		cSortMessageDisplayTo,
+		cSortMessageMax = cSortMessageDisplayTo
 	};
 
 	enum EShowMessageBy

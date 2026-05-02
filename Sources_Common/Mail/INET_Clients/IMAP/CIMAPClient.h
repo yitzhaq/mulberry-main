@@ -72,6 +72,8 @@ private:
 	bool			mHasUIDPlus;					// Supports UIDPLUS/LITERAL+ extension
 	bool			mHasUnselect;					// Supports UNSELECT
 	bool			mHasSort;						// Supports SORT
+	bool			mHasSortDisplay;				// Supports SORT=DISPLAY (RFC 5957)
+	bool			mHasESort;						// Supports ESORT (RFC 5267)
 	bool			mHasThreadSubject;				// Supports THREAD=ORDEREDSUBJECT
 	bool			mHasThreadReferences;			// Supports THREAD=REFERENCES
 	bool			mHasID;							// Supports ID extension (RFC 2971)

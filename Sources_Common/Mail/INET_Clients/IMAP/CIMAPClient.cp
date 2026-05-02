@@ -125,6 +125,8 @@ void CIMAPClient::InitIMAPClient()
 	mHasUIDPlus = false;
 	mHasUnselect = false;
 	mHasSort = false;
+	mHasSortDisplay = false;
+	mHasESort = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
 	mHasID = false;
@@ -166,6 +168,8 @@ void CIMAPClient::_InitCapability()
 	mHasUIDPlus = false;
 	mHasUnselect = false;
 	mHasSort = false;
+	mHasSortDisplay = false;
+	mHasESort = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
 	mHasID = false;
@@ -219,6 +223,8 @@ void CIMAPClient::_ProcessCapability()
 	mHasUIDPlus = mLastResponse.CheckUntagged(cIMAP_UIDPLUS, true);
 	mHasUnselect = mLastResponse.CheckUntagged(cIMAP_UNSELECT, true);
 	mHasSort = mLastResponse.CheckUntagged(cIMAP_SORT, true);
+	mHasSortDisplay = mLastResponse.CheckUntagged(cIMAP_SORT_DISPLAY, false);
+	mHasESort = mLastResponse.CheckUntagged(cIMAP_ESORT, true);
 	mHasThreadSubject = mLastResponse.CheckUntagged(cIMAP_THREAD_SUBJECT, true);
 	mHasThreadReferences = mLastResponse.CheckUntagged(cIMAP_THREAD_REFERENCES, true);
 	mHasID = mLastResponse.CheckUntagged(cIMAP_ID, true);
@@ -2153,6 +2159,9 @@ bool CIMAPClient::_DoesSort(ESortMessageBy sortby) const
 		case cSortMessageDateReceived:
 		case cSortMessageSize:
 			return true;
+		case cSortMessageDisplayFrom:
+		case cSortMessageDisplayTo:
+			return mHasSortDisplay;
 		default:
 			return false;
 		}
@@ -2205,9 +2214,17 @@ void CIMAPClient::_Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CSe
 	case cSortMessageSize:
 		temp += cSORT_SIZE;
 		break;
+	case cSortMessageDisplayFrom:
+		temp += cSORT_DISPLAYFROM;
+		break;
+	case cSortMessageDisplayTo:
+		temp += cSORT_DISPLAYTO;
+		break;
 	}
 	temp += ")";
 	INETSendString(temp);
+	if (mHasESort)
+		INETSendString(cRETURN_ALL);
 	// Parse out search hierarchy with charset
 	AddSearchItem(search, true);
 	INETFinishSend();
