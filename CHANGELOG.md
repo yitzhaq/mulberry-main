@@ -85,6 +85,10 @@ X11 bitmap fonts).
   MOVE, STORE, FETCH, and EXPUNGE commands. Avoids retransmitting
   large result sets. Safety check ensures `$` only used when the
   command set matches the saved results exactly.
+- IMAP SORT=DISPLAY (RFC 5957). DISPLAYFROM and DISPLAYTO sort
+  keys for server-side display name sorting.
+- IMAP ESORT (RFC 5267). Compact ESEARCH-format responses for
+  SORT commands via RETURN (ALL).
 - Fix filter rules using COPY+DELETE instead of atomic MOVE (RFC
   6851) when moving messages. MOVE was implemented but the filter
   pipeline was never updated to use it.

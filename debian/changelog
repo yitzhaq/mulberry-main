@@ -57,7 +57,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
     IMAP MOVE (6851), ESEARCH (4731), SASL-IR (4959), ENABLE (5161),
     CHILDREN (3348), QUOTA update (9208), $Forwarded keyword (9051),
     APPENDLIMIT (7889), LIST-EXTENDED (5258), LIST-STATUS (5819),
-    STATUS=SIZE (8438), SEARCHRES (5182),
+    STATUS=SIZE (8438), SEARCHRES (5182), SORT=DISPLAY (5957),
+    ESORT (5267 partial),
     RFC 5322 line length compliance
   * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux
     and Win32, legacy options hidden
