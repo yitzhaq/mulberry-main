@@ -101,6 +101,15 @@ X11 bitmap fonts).
   eliminating client-side base64/QP decoding and reducing
   attachment bandwidth by ~25%. Includes literal8 (~{size})
   response parsing.
+- SMTP PIPELINING (RFC 2920). Send MAIL FROM and RCPT TO commands
+  in a single batch, reducing latency by (N-1) round-trips for N
+  recipients. Falls back to synchronous on servers without support.
+- SMTP Enhanced Status Codes (RFC 2034/3463). Parse x.y.z status
+  codes from SMTP responses for detailed error diagnostics with
+  full RFC 3463 status code registry.
+- Fix SMTP partial recipient failure: one rejected RCPT TO no
+  longer aborts the entire message. Valid recipients still receive
+  the message when others are rejected.
 - Fix filter rules using COPY+DELETE instead of atomic MOVE (RFC
   6851) when moving messages. MOVE was implemented but the filter
   pipeline was never updated to use it.
