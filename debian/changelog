@@ -59,7 +59,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
     APPENDLIMIT (7889), LIST-EXTENDED (5258), LIST-STATUS (5819),
     STATUS=SIZE (8438), SEARCHRES (5182), SORT=DISPLAY (5957),
     ESORT (5267 partial), SORT=DISPLAY (5957), WITHIN (5032),
-    BINARY (3516),
+    BINARY (3516), IDLE (2177),
     RFC 5322 line length compliance
   * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux
     and Win32, legacy options hidden

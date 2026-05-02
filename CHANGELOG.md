@@ -93,6 +93,10 @@ X11 bitmap fonts).
   SORT commands via RETURN (ALL).
 - IMAP WITHIN (RFC 5032). OLDER and YOUNGER search keys for
   date-relative searches (e.g., messages from the last N days).
+- IMAP IDLE (RFC 2177). Server-push notifications replacing NOOP
+  polling. Delivers new mail notifications in under one second.
+  Re-IDLEs every 29 minutes. Falls back to NOOP polling on
+  servers without IDLE support.
 - IMAP BINARY (RFC 3516). Server-side CTE decoding for FETCH,
   eliminating client-side base64/QP decoding and reducing
   attachment bandwidth by ~25%. Includes literal8 (~{size})
