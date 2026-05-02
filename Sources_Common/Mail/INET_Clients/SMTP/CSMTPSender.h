@@ -109,6 +109,7 @@ private:
 	bool				mSTARTTLS;						// STARTTLS supported
 	bool				mAUTH;							// SMTP-AUTH available
 	cdstrvect			mAUTHTypes;						// Available AUTH types
+	bool				m8BitMIME;						// 8BITMIME supported (RFC 6152)
 	bool				mPipelining;					// PIPELINING supported (RFC 2920)
 	bool				mEnhancedStatus;				// ENHANCEDSTATUSCODES (RFC 2034)
 	bool				mDSN;							// Does DSNs

@@ -82,6 +82,7 @@ CSMTPSender::CSMTPSender(CINETAccount* account)
 	mSizeLimit = -1;
 	mSTARTTLS = false;
 	mAUTH = false;
+	m8BitMIME = false;
 	mPipelining = false;
 	mEnhancedStatus = false;
 	mDSN = false;
@@ -1195,6 +1196,7 @@ void CSMTPSender::SMTPInitCapability()
 {
 	mAUTH = false;
 	mAUTHTypes.clear();
+	m8BitMIME = false;
 	mPipelining = false;
 	mEnhancedStatus = false;
 	mDSN = false;
@@ -1243,6 +1245,8 @@ void CSMTPSender::SMTPReceiveCapability(char code)
 				mDSN = true;
 			else if (::strcmp(p, STARTTLS) == 0)
 				mSTARTTLS = true;
+			else if (::strcmp(p, ESMTP_8BITMIME) == 0)
+				m8BitMIME = true;
 			else if (::strcmp(p, ESMTP_PIPELINING) == 0)
 				mPipelining = true;
 			else if (::strcmp(p, ESMTP_ENHANCEDSTATUS) == 0)
@@ -1853,6 +1857,15 @@ void CSMTPSender::SMTPSendMail()
 	// Write to log file
 	if (mLog.DoLog())
 		*mLog.GetLog() << MAILFROM << theTxt << '>';
+
+	// Declare 8BITMIME body type when server supports it (RFC 6152)
+	if (m8BitMIME)
+	{
+		mStream << " BODY=8BITMIME";
+
+		if (mLog.DoLog())
+			*mLog.GetLog() << " BODY=8BITMIME";
+	}
 
 	// Look for size
 	if (mSize && mMessage->GetSize())
