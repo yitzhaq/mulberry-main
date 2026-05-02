@@ -26,12 +26,17 @@ activity in over a decade.
 
 This version brings Mulberry to modern 64-bit Linux (x86_64) with
 GCC 13+, OpenSSL 1.1–3.x, and current Debian/Ubuntu packaging.
-It includes comprehensive bug fixes found through static analysis
-with six tools (cppcheck, clang-tidy, Facebook Infer, GCC extended
-warnings, CodeQL, and Coverity), improved RFC 3676 format=flowed
-compliance, Unicode clipboard support, automatic recovery from
-network connection drops, and recovery of sixteen patches from the
-original developer's SVN repository.
+It adds IMAP IDLE for instant push notifications, IMAP BINARY for
+server-side attachment decoding, LIST-EXTENDED, LIST-STATUS,
+SEARCHRES, ESEARCH/ESORT, APPENDLIMIT, STATUS=SIZE, SORT=DISPLAY,
+and WITHIN extensions — bringing IMAP4rev2 compliance to 14 of 15
+mandatory extensions. It includes comprehensive bug fixes found
+through static analysis with six tools (cppcheck, clang-tidy,
+Facebook Infer, GCC extended warnings, CodeQL, and Coverity),
+improved RFC 3676 format=flowed compliance, Unicode clipboard
+support, automatic recovery from network connection drops, and
+recovery of sixteen patches from the original developer's SVN
+repository.
 
 Since the JX toolkit cannot render characters outside Latin-1,
 non-ASCII Unicode in messages is now displayed as human-readable
