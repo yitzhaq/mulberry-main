@@ -273,6 +273,11 @@ CTCPStreamBuf::CTCPStreamBuf() : std::streambuf()
 	// Set buffers
 	setg(mBufIn, mBufIn, mBufIn);
 	setp(mBufOut, mBufOut + cTCPBufferSize);
+	mCompressOn = false;
+	mCompressBufInLen = 0;
+	mCompressBufInPos = 0;
+	::memset(&mInflateState, 0, sizeof(mInflateState));
+	::memset(&mDeflateState, 0, sizeof(mDeflateState));
 };
 
 // Copy constructor
@@ -283,6 +288,11 @@ CTCPStreamBuf::CTCPStreamBuf(const CTCPStreamBuf& copy)
 	// Set buffers
 	setg(mBufIn, mBufIn, mBufIn);
 	setp(mBufOut, mBufOut + cTCPBufferSize);
+	mCompressOn = false;
+	mCompressBufInLen = 0;
+	mCompressBufInPos = 0;
+	::memset(&mInflateState, 0, sizeof(mInflateState));
+	::memset(&mDeflateState, 0, sizeof(mDeflateState));
 };
 
 // Open TCP comms
@@ -301,11 +311,39 @@ void CTCPStreamBuf::TCPCloseConnection()
 	// Send any remaining data
 	sync();
 
+	// Clean up compression state
+	CompressStop();
+
 	// Close the socket
 	CTLSSocket::TCPCloseConnection();
 }
 
 // Sync buffer
+// Start DEFLATE compression (RFC 4978)
+void CTCPStreamBuf::CompressStart()
+{
+	::memset(&mDeflateState, 0, sizeof(mDeflateState));
+	::memset(&mInflateState, 0, sizeof(mInflateState));
+	deflateInit2(&mDeflateState, Z_DEFAULT_COMPRESSION, Z_DEFLATED, -15, 8, Z_DEFAULT_STRATEGY);
+	inflateInit2(&mInflateState, -15);
+	mCompressOn = true;
+	mCompressBufInLen = 0;
+	mCompressBufInPos = 0;
+}
+
+// Stop DEFLATE compression
+void CTCPStreamBuf::CompressStop()
+{
+	if (mCompressOn)
+	{
+		deflateEnd(&mDeflateState);
+		inflateEnd(&mInflateState);
+		mCompressOn = false;
+		mCompressBufInLen = 0;
+		mCompressBufInPos = 0;
+	}
+}
+
 int CTCPStreamBuf::sync()
 {
 	// flush buffers
@@ -347,8 +385,26 @@ int CTCPStreamBuf::flush_output()
 	// Check that there is something to send
 	if (len)
 	{
-		// Send data
-		TCPSendData(pbase(), len);
+		if (mCompressOn)
+		{
+			mDeflateState.next_in = (Bytef*)pbase();
+			mDeflateState.avail_in = len;
+
+			char deflated[cTCPBufferSize];
+			do
+			{
+				mDeflateState.next_out = (Bytef*)deflated;
+				mDeflateState.avail_out = cTCPBufferSize;
+				deflate(&mDeflateState, Z_SYNC_FLUSH);
+				long out_len = cTCPBufferSize - mDeflateState.avail_out;
+				if (out_len > 0)
+					TCPSendData(deflated, out_len);
+			} while (mDeflateState.avail_out == 0);
+		}
+		else
+		{
+			TCPSendData(pbase(), len);
+		}
 
 		// Reset buffer
 		setp(mBufOut, mBufOut + cTCPBufferSize);
@@ -363,14 +419,66 @@ int CTCPStreamBuf::underflow()
 	// Check for overrun
 	if (!(gptr() && (gptr() < egptr())))
 	{
-		// Try to read into buffer
-		long len = cTCPBufferSize;
+		if (mCompressOn)
+		{
+			// Check for leftover inflated data
+			if (mCompressBufInPos < mCompressBufInLen)
+			{
+				long copy = mCompressBufInLen - mCompressBufInPos;
+				if (copy > cTCPBufferSize)
+					copy = cTCPBufferSize;
+				::memcpy(mBufIn, mCompressBufIn + mCompressBufInPos, copy);
+				mCompressBufInPos += copy;
+				setg(mBufIn, mBufIn, mBufIn + copy);
+			}
+			else
+			{
+				// Read compressed data from socket
+				char compressed[cTCPBufferSize];
+				long clen = cTCPBufferSize;
+				TCPReceiveData(compressed, &clen);
 
-		// Get data
-		TCPReceiveData(eback(), &len);
+				// Inflate
+				mInflateState.next_in = (Bytef*)compressed;
+				mInflateState.avail_in = clen;
+				mInflateState.next_out = (Bytef*)mCompressBufIn;
+				mInflateState.avail_out = cTCPBufferSize;
+				int ret = inflate(&mInflateState, Z_SYNC_FLUSH);
+				if (ret != Z_OK && ret != Z_BUF_ERROR)
+				{
+					CLOG_LOGTHROW(CGeneralException, -1L);
+					throw CGeneralException(-1L);
+				}
+				mCompressBufInLen = cTCPBufferSize - mInflateState.avail_out;
+				mCompressBufInPos = 0;
 
-		// Reset buffer
-		setg(mBufIn, mBufIn, mBufIn + len);
+				// Decompression bomb check
+				if (mCompressBufInLen > 0 && clen > 0 &&
+					(mCompressBufInLen / clen) > 1000)
+				{
+					CLOG_LOGTHROW(CGeneralException, -1L);
+					throw CGeneralException(-1L);
+				}
+
+				long copy = mCompressBufInLen;
+				if (copy > cTCPBufferSize)
+					copy = cTCPBufferSize;
+				::memcpy(mBufIn, mCompressBufIn, copy);
+				mCompressBufInPos = copy;
+				setg(mBufIn, mBufIn, mBufIn + copy);
+			}
+		}
+		else
+		{
+			// Try to read into buffer
+			long len = cTCPBufferSize;
+
+			// Get data
+			TCPReceiveData(eback(), &len);
+
+			// Reset buffer
+			setg(mBufIn, mBufIn, mBufIn + len);
+		}
 	}
 
 	return CTCPStreamBuf::traits_type::to_int_type(*gptr());

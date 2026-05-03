@@ -89,6 +89,7 @@ private:
 	bool			mHasMultiAppend;				// Supports MULTIAPPEND (RFC 3502)
 	bool			mHasSpecialUse;					// Supports SPECIAL-USE (RFC 6154)
 	bool			mHasReplace;					// Supports REPLACE (RFC 8508)
+	bool			mHasCompress;					// Supports COMPRESS=DEFLATE (RFC 4978)
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
@@ -176,6 +177,7 @@ protected:
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names);	// Get namespace
 	virtual void	_SendID();					// Send RFC 2971 ID command
 	virtual void	_Enable();					// Send RFC 5161 ENABLE command
+			void	_Compress();				// Send RFC 4978 COMPRESS command
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes);		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes);			// Do find all mboxes
 			void	_FindSpecialUseMbox(CMboxList* mboxes);	// Find special-use mailboxes only (RFC 6154)

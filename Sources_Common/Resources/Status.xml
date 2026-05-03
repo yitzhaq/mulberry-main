@@ -51,6 +51,7 @@
 	<string id="Status::IMAP::CopyingProgress">Copying message %d of %d...</string>
 	<string id="Status::IMAP::Moving">Moving message...</string>
 	<string id="Status::IMAP::Progress">Processing %d of %d...</string>
+	<string id="Status::IMAP::Compressing">Enabling compression...</string>
 	<string id="Status::IMAP::ProgressCount">Processed %d items...</string>
 	<string id="Status::IMAP::Checking">Checking mailbox...</string>
 	<string id="Status::IMAP::MailboxFind">Found %d mailboxes...</string>

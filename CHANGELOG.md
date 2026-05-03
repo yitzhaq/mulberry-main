@@ -130,6 +130,10 @@ X11 bitmap fonts).
 - IMAP Response Codes (RFC 5530). Human-readable explanations for
   17 standard error response codes (AUTHENTICATIONFAILED, NOPERM,
   OVERQUOTA, NONEXISTENT, etc.) appended to server error messages.
+- IMAP COMPRESS=DEFLATE (RFC 4978). Reduces IMAP bandwidth by
+  60-75% using zlib compression. Activated automatically after
+  login when the server supports it. Includes decompression bomb
+  protection and graceful fallback on failure.
 - IMAP INPROGRESS (RFC 9585). Server progress notifications for
   long-running commands displayed in the status bar.
 - SMTP PIPELINING (RFC 2920). Send MAIL FROM and RCPT TO commands

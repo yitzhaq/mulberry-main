@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include "CTLSSocket.h"
+#include <zlib.h>
 
 class CProgress;
 class LStream;
@@ -41,9 +42,22 @@ protected :
 
 	virtual int 	underflow();
 
+public:
+	void			CompressStart();
+	void			CompressStop();
+	bool			IsCompressOn() const { return mCompressOn; }
+
 private:
 	char			mBufIn[cTCPBufferSize];
 	char			mBufOut[cTCPBufferSize];
+
+	// RFC 4978 COMPRESS=DEFLATE
+	z_stream		mInflateState;
+	z_stream		mDeflateState;
+	bool			mCompressOn;
+	char			mCompressBufIn[cTCPBufferSize];
+	long			mCompressBufInLen;
+	long			mCompressBufInPos;
 
 			int		flush_output();
 

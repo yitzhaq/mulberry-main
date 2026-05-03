@@ -666,6 +666,9 @@ void CMboxProtocol::Logon()
 	// Do inherited
 	CINETProtocol::Logon();
 
+	// Enable compression before any bulk data transfer (RFC 4978)
+	mClient->_Compress();
+
 	// Send RFC 2971 ID command (IMAP only, for bug reports and statistics)
 	mClient->_SendID();
 

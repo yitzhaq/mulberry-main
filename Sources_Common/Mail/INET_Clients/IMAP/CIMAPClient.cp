@@ -139,6 +139,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasMultiAppend = false;
 	mHasSpecialUse = false;
 	mHasReplace = false;
+	mHasCompress = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -200,6 +201,7 @@ void CIMAPClient::_InitCapability()
 	mHasMultiAppend = false;
 	mHasSpecialUse = false;
 	mHasReplace = false;
+	mHasCompress = false;
 	mSearchSaved = false;
 	mSavedSearchResults.clear();
 	mListStatusDone = false;
@@ -265,6 +267,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasMultiAppend = mLastResponse.CheckUntagged(cIMAP_MULTIAPPEND, true);
 	mHasSpecialUse = mLastResponse.CheckUntagged(cIMAP_SPECIAL_USE, true);
 	mHasReplace = mLastResponse.CheckUntagged(cIMAP_REPLACE, true);
+	mHasCompress = mLastResponse.CheckUntagged(cIMAP_COMPRESS, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -929,6 +932,26 @@ void CIMAPClient::_SendID()
 	{
 		CLOG_LOGCATCH(...);
 		// Don't rethrow - ID failure is non-fatal, just log it
+	}
+}
+
+// Send COMPRESS DEFLATE command (RFC 4978)
+void CIMAPClient::_Compress()
+{
+	if (!mHasCompress)
+		return;
+
+	try
+	{
+		INETStartSend("Status::IMAP::Compressing", "Error::IMAP::OSErrCompress", "Error::IMAP::NoBadCompress");
+		INETSendString(cCOMPRESS);
+		INETFinishSend();
+
+		mStream->CompressStart();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
 	}
 }
 

@@ -67,6 +67,7 @@ const char* cIMAP_ESORT =				"ESORT";
 const char* cIMAP_MULTIAPPEND =		"MULTIAPPEND";
 const char* cIMAP_SPECIAL_USE =		"SPECIAL-USE";
 const char* cIMAP_REPLACE =			"REPLACE";
+const char* cIMAP_COMPRESS =		"COMPRESS=DEFLATE";
 const char* cRETURN_SAVE_ALL =			" RETURN (SAVE ALL)";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
@@ -109,6 +110,7 @@ const char* cUIDSTORE					= "UID STORE";
 const char* cUIDSEARCH					= "UID SEARCH";
 const char* cUIDEXPUNGE					= "UID EXPUNGE";
 const char* cUIDREPLACE					= "UID REPLACE";
+const char* cCOMPRESS					= "COMPRESS DEFLATE";
 
 // Unsolicitied
 const char* cFLAGS =					"FLAGS";

@@ -84,6 +84,7 @@ public:
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names) = 0;	// Get namespace
 	virtual void	_SendID() {}					// Send RFC 2971 ID command (IMAP-specific, default no-op)
 	virtual void	_Enable() {}					// Send RFC 5161 ENABLE command (IMAP-specific, default no-op)
+	virtual void	_Compress() {}					// Send RFC 4978 COMPRESS command (IMAP-specific, default no-op)
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes) = 0;		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes) = 0;			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) = 0;			// Starting multiple append

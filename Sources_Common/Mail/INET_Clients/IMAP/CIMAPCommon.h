@@ -70,6 +70,7 @@ extern const char* cIMAP_ESORT;
 extern const char* cIMAP_MULTIAPPEND;
 extern const char* cIMAP_SPECIAL_USE;
 extern const char* cIMAP_REPLACE;
+extern const char* cIMAP_COMPRESS;
 extern const char* cRETURN_SAVE_ALL;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
@@ -112,6 +113,7 @@ extern const char* cUIDSTORE;
 extern const char* cUIDSEARCH;
 extern const char* cUIDEXPUNGE;
 extern const char* cUIDREPLACE;
+extern const char* cCOMPRESS;
 
 // Unsolicitied
 extern const char* cFLAGS;
