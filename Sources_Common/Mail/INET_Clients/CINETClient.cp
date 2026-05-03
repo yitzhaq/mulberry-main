@@ -2069,6 +2069,8 @@ static const char* GetResponseCodeExplanation(const cdstring& tag_msg)
 		{ "[OVERQUOTA]",            "Quota exceeded" },
 		{ "[ALREADYEXISTS]",        "Mailbox or resource already exists" },
 		{ "[NONEXISTENT]",          "Mailbox or resource does not exist" },
+		{ "[TOOBIG]",               "Message exceeds server size limit" },
+		{ "[UNKNOWN-CTE]",          "Server cannot decode content transfer encoding" },
 		{ NULL, NULL }
 	};
 

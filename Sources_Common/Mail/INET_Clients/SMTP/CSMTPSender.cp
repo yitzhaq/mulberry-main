@@ -931,6 +931,13 @@ void CSMTPSender::SMTPHandleSMTPException(CSMTPException& ex, bool do_quit)
 
 	// Handle error
 	cdstring errtxt = mLineData;
+	const char* enhanced = GetEnhancedStatusText();
+	if (enhanced)
+	{
+		errtxt += "\n(";
+		errtxt += enhanced;
+		errtxt += ")";
+	}
 	errtxt += err_context;
 	CStopAlertRsrcTxtTask* task = new CStopAlertRsrcTxtTask(nobad_id, errtxt);
 	task->Go();
@@ -1397,13 +1404,16 @@ const char* CSMTPSender::GetEnhancedStatusText() const
 		return NULL;
 	int edetail = ::atoi(dot2 + 1);
 
+	const char* subject_fallback = NULL;
 	for (const SEnhancedCode* code = cEnhancedCodes; code->subject >= 0; code++)
 	{
 		if (code->subject == esubject && code->detail == edetail)
 			return code->text;
+		if (code->subject == esubject && code->detail == 0)
+			subject_fallback = code->text;
 	}
 
-	return NULL;
+	return subject_fallback;
 }
 
 void CSMTPSender::SMTPMapErrorStr(const char*& syserr_id, const char*& protobad_id)
