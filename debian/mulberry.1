@@ -1,0 +1,205 @@
+.\" Man page for mulberry(1)
+.TH MULBERRY 1 "May 2026" "4.2a1" "Mulberry Email Client"
+.SH NAME
+mulberry \- Internet email and calendar client
+.SH SYNOPSIS
+.B mulberry
+.RB [ \-h | \-\-help ]
+.RB [ \-v | \-\-version ]
+.RB [ "\-D \fIdirectory\fR" ]
+.RB [ "\-p \fIfile\fR" ]
+.RB [ "\-u \fIurl\fR" ]
+.RB [ \-d | \-\-disconnect ]
+.RB [ \-\-plugins
+.IR directory ]
+.RB [ \-\-extras
+.IR directory ]
+.RI [ "mailto:" ... ]
+.RI [ "webcal:" ... ]
+.SH DESCRIPTION
+.B Mulberry
+is a standards-focused desktop email and calendaring client
+supporting IMAP4rev1, POP3, SMTP, CalDAV, CardDAV, LDAP, SIEVE,
+ManageSieve, S/MIME, and PGP. It emphasizes server-side operations
+\(em searching, sorting, filtering, and threading happen on the
+server rather than locally.
+.PP
+Mulberry supports multiple accounts and identities, IMAP ACLs for
+shared folders, a GUI for server-side Sieve filtering, offline
+mail caching, and calendar/address book synchronization via CalDAV
+and CardDAV.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Print a summary of command-line options and exit.
+.TP
+.BR \-v ", " \-\-version
+Print the version number and exit.
+.TP
+.BI \-D " directory"
+Set the location for the
+.I .mulberry
+directory, which stores default preferences and local mailbox data.
+The default is the user's home directory, resulting in
+.IR ~/.mulberry/ .
+.TP
+.BI \-p " file"
+Use the specified preferences file on startup instead of the default
+.IR ~/.mulberry/preferences.mbp .
+.TP
+.BI \-u " url"
+Open the specified mailto URL and create a draft message on startup.
+Equivalent to passing a bare
+.B mailto:
+URL as an argument.
+.TP
+.BR \-d ", " \-\-disconnect
+Prompt to start in disconnected (offline) mode, even if not
+already configured to do so.
+.TP
+.BI \-\-plugins " directory"
+Override the default location for Mulberry plugin shared libraries.
+The default is
+.IR /usr/lib/mulberry/Plug\-ins/ .
+.TP
+.BI \-\-extras " directory"
+Specify an alternate location for
+.IR mailcap ,
+.IR mime.types ,
+and
+.I url.helpers
+files.
+.SH URL ARGUMENTS
+If a bare
+.B mailto:
+or
+.B webcal:
+URL is passed as an argument (without the
+.B \-u
+flag), Mulberry opens it directly. This allows desktop environments
+to use Mulberry as the default handler for email and calendar URLs:
+.PP
+.RS
+.nf
+mulberry "mailto:user@example.com?subject=Hello"
+mulberry "webcal://example.com/calendar.ics"
+.fi
+.RE
+.SH ENVIRONMENT
+.TP
+.B PRINTCMD
+The default print command shown in the print dialog.
+.TP
+.B PAPERSIZE
+The default paper size for printing. Allowed values:
+.BR USLetter ", " USLegal ", " USExecutive ", " A4Letter ", " B5Letter .
+.SH FILES
+.TP
+.I ~/.mulberry/
+Default directory for preferences, local mailboxes, offline caches,
+address books, and calendar data.
+.TP
+.I ~/.mulberry/preferences.mbp
+Default preferences file.
+.TP
+.I ~/.mulberry/Recover_Drafts/
+Auto-saved draft messages for crash recovery.
+.TP
+.I /usr/lib/mulberry/Plug\-ins/
+Authentication, security, and address book import plugins.
+.TP
+.I /usr/lib/mulberry/Resources/
+Application resource files (icons, string tables, timezone data).
+.SH PROTOCOLS
+.TP
+.B IMAP4rev1
+Remote mailbox access with server-side searching, sorting,
+threading, and filtering. Supports IDLE, BINARY, COMPRESS=DEFLATE,
+SPECIAL-USE, MULTIAPPEND, REPLACE, NAMESPACE, UIDPLUS, ACL, QUOTA,
+SORT, THREAD, LIST-EXTENDED, LIST-STATUS, SEARCHRES, ESEARCH/ESORT,
+APPENDLIMIT, STATUS=SIZE, and many other extensions. All 15
+mandatory IMAP4rev2 extensions are supported.
+.TP
+.B POP3
+Mailbox download with optional leave-on-server, timed deletion,
+and size limits.
+.TP
+.B SMTP
+Message submission on port 587 with STARTTLS, AUTH (PLAIN, LOGIN,
+CRAM-MD5, DIGEST-MD5, GSSAPI, Kerberos), PIPELINING, 8BITMIME,
+ENHANCEDSTATUSCODES, DSN, and SIZE support. Asynchronous send queue
+with automatic retry on temporary failures.
+.TP
+.B CalDAV
+Calendar synchronization, event/task management, free/busy lookup,
+and scheduling (iTIP) via WebDAV.
+.TP
+.B CardDAV
+Contact synchronization and address book management via WebDAV.
+.TP
+.B LDAP
+Directory service lookups for address completion and searching.
+.TP
+.B IMSP / ACAP
+Remote preferences and address book storage.
+.TP
+.B ManageSieve
+Server-side mail filtering with GUI script editor supporting
+reject, fileinto, vacation, relational, and imap4flags extensions.
+.TP
+.B S/MIME
+Message signing and encryption using AES-128-CBC, with certificate
+management and verification.
+.TP
+.B PGP/GPG
+Message signing (SHA-256) and encryption via plugin architecture.
+.SH EXTERNAL EDITOR
+Mulberry supports using an external text editor for composing drafts.
+Configure the editor command in Preferences > Outgoing > Editor.
+Use
+.B %s
+as a placeholder for the temporary file path:
+.PP
+.RS
+.nf
+emacs %s
+gvim -f %s
+.fi
+.RE
+.PP
+Mulberry writes the draft text to a temporary file, spawns the editor
+process, and waits for it to exit. On exit, the temporary file is
+read back and replaces the draft text. The editor must run in the
+foreground (note the
+.B \-f
+flag for gvim).
+.SH DEBUGGING OPTIONS
+These options are primarily useful for developers:
+.TP
+.B \-\-gdb
+Enable verbose assertion output and X11 debugging. Equivalent to
+.B \-assert\-print
+combined with
+.BR \-xassert .
+.TP
+.B \-assert\-print
+Print assertion failures to stderr instead of showing a dialog.
+.TP
+.B \-assert\-ask
+Show an interactive dialog on assertion failures.
+.TP
+.B \-assert\-abort
+Call abort() on assertion failures (for core dumps).
+.TP
+.B \-xassert
+Enable X11/JX toolkit debugging output.
+.SH AUTHORS
+Mulberry was created by Cyrus Daboo and developed from 1995 to
+approximately 2016. Licensed under the Apache License 2.0.
+.PP
+Source code:
+.I https://github.com/yitzhaq/mulberry\-main
+.SH SEE ALSO
+.BR thunderbird (1),
+.BR mutt (1),
+.BR neomutt (1)
