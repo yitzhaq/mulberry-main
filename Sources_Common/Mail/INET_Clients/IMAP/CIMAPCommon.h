@@ -171,6 +171,7 @@ extern const char* cFLAGSEEN;
 extern const char* cFLAGDRAFT;
 extern const char* cFLAGMDNSENT;
 extern const char* cFLAGFORWARDED;
+extern const char* cFLAGIMPORTANT;
 extern const char* cFLAGLABELS[];
 extern const char* cFLAGKEYWORDS;
 extern const char* cSET_FLAG;
@@ -194,6 +195,7 @@ extern const char* cMBOXFLAGSPECIAL_FLAGGED;
 extern const char* cMBOXFLAGSPECIAL_JUNK;
 extern const char* cMBOXFLAGSPECIAL_SENT;
 extern const char* cMBOXFLAGSPECIAL_TRASH;
+extern const char* cMBOXFLAGSPECIAL_IMPORTANT;
 
 // STATUS bits
 extern const char* cSTATUS_MESSAGES;

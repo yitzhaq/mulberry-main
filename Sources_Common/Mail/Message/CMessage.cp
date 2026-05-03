@@ -702,6 +702,12 @@ bool CMessage::IsForwarded() const
 	return (GetOwner() ? GetOwner()->IsForwarded() : GetFlags().IsSet(eForwarded));
 }
 
+// Check Important flag (cannot be inline because of recursion)
+bool CMessage::IsImportant() const
+{
+	return (GetOwner() ? GetOwner()->IsImportant() : GetFlags().IsSet(eImportant));
+}
+
 // Check Partial flag (cannot be inline because of recursion)
 bool CMessage::IsPartial() const
 {

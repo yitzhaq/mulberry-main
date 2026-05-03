@@ -410,8 +410,11 @@ void CIMAPClient::_PostProcess()
 				else if (CheckStrAdv(&p,cFLAGFORWARDED))
 					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eForwarded);
 
+				else if (CheckStrAdv(&p,cFLAGIMPORTANT))
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eImportant);
+
 				else if (CheckStrAdv(&p,cFLAGKEYWORDS))
-					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent | NMessage::eForwarded);
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent | NMessage::eForwarded | NMessage::eImportant);
 
 				else
 				{
@@ -1233,6 +1236,12 @@ void CIMAPClient::BuildAppendFlags(CMessage* theMsg, cdstring& flags)
 	{
 		if (added) flags += SPACE;
 		flags += cFLAGFORWARDED;
+		added = true;
+	}
+	if (theMsg->IsImportant())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGIMPORTANT;
 		added = true;
 	}
 	for(unsigned long i = 0; i < NMessage::eMaxLabels; i++)
@@ -2161,6 +2170,17 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 		if (got_one)
 			flag += ' ';
 		flag += cFLAGFORWARDED;
+		got_one = true;
+
+		status_strid = "Status::IMAP::MarkingLabel";
+		oserr_strid = "Error::IMAP::OSErrLabelMsg";
+		nobad_strid = "Error::IMAP::NoBadLabelMsg";
+	}
+	if ((flags & NMessage::eImportant) && (mVersion != eIMAP2bis))	// Only IMAP4 and above
+	{
+		if (got_one)
+			flag += ' ';
+		flag += cFLAGIMPORTANT;
 		got_one = true;
 
 		status_strid = "Status::IMAP::MarkingLabel";
@@ -3187,6 +3207,8 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 			special_use |= CMbox::eSpecialSent;
 		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_TRASH))
 			special_use |= CMbox::eSpecialTrash;
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_IMPORTANT))
+			special_use |= CMbox::eSpecialImportant;
 
 		else
 		{
@@ -4480,6 +4502,9 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 
 		else if (CheckStrAdv(&p,cFLAGFORWARDED))
 			new_flags.Set(NMessage::eForwarded);
+
+		else if (CheckStrAdv(&p,cFLAGIMPORTANT))
+			new_flags.Set(NMessage::eImportant);
 
 		else
 		{

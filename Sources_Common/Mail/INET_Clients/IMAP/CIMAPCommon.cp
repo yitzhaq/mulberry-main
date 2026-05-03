@@ -168,6 +168,7 @@ const char* cFLAGSEEN =					"\\Seen";
 const char* cFLAGDRAFT =				"\\Draft";
 const char* cFLAGMDNSENT =				"$MDNSent";
 const char* cFLAGFORWARDED =			"$Forwarded";
+const char* cFLAGIMPORTANT =			"$Important";
 const char* cFLAGLABELS[] =				{"Cyrusoft.Mulberry.01",
 										 "Cyrusoft.Mulberry.02",
 										 "Cyrusoft.Mulberry.03",
@@ -198,6 +199,7 @@ const char* cMBOXFLAGSPECIAL_FLAGGED =			"\\Flagged";
 const char* cMBOXFLAGSPECIAL_JUNK =			"\\Junk";
 const char* cMBOXFLAGSPECIAL_SENT =			"\\Sent";
 const char* cMBOXFLAGSPECIAL_TRASH =			"\\Trash";
+const char* cMBOXFLAGSPECIAL_IMPORTANT =		"\\Important";
 
 // STATUS bits
 const char* cSTATUS_MESSAGES =			"MESSAGES";

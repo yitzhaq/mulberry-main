@@ -54,17 +54,18 @@ public:
 	typedef cdomutex<CMbox>::trylock_cdomutex mbox_trylock;	// Mailbox mutex try lock type
 	static mbox_mutex	_smutex;							// Used for multithreaded locks
 
-	// RFC 6154 Special-Use attributes
+	// RFC 6154 / RFC 8457 Special-Use attributes
 	enum ESpecialUse
 	{
-		eSpecialNone    = 0,
-		eSpecialAll     = 1 << 0,
-		eSpecialArchive = 1 << 1,
-		eSpecialDrafts  = 1 << 2,
-		eSpecialFlagged = 1 << 3,
-		eSpecialJunk    = 1 << 4,
-		eSpecialSent    = 1 << 5,
-		eSpecialTrash   = 1 << 6
+		eSpecialNone      = 0,
+		eSpecialAll       = 1 << 0,
+		eSpecialArchive   = 1 << 1,
+		eSpecialDrafts    = 1 << 2,
+		eSpecialFlagged   = 1 << 3,
+		eSpecialJunk      = 1 << 4,
+		eSpecialSent      = 1 << 5,
+		eSpecialTrash     = 1 << 6,
+		eSpecialImportant = 1 << 7
 	};
 
 protected:

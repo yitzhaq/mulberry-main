@@ -123,6 +123,10 @@ X11 bitmap fonts).
   periodic auto-save now saves to the server in addition to local
   disk. Uses REPLACE for atomic updates when available, APPEND +
   delete otherwise. Server draft automatically cleaned up on send.
+- IMAP $Important keyword and \Important special-use attribute
+  (RFC 8457). Recognizes server-assessed message importance
+  (distinct from user-set \Flagged). Keyword preserved across
+  COPY, MOVE, APPEND, and REPLACE operations.
 - SMTP PIPELINING (RFC 2920). Send MAIL FROM and RCPT TO commands
   in a single batch, reducing latency by (N-1) round-trips for N
   recipients. Falls back to synchronous on servers without support.
