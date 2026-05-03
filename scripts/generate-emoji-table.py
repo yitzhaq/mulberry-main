@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Generate CEmojiTable.h from CLDR annotations XML.
 
-Usage: generate-emoji-table.py <annotations.xml> <output.h>
+Usage: generate-emoji-table.py <output.h> <annotations.xml> [annotations2.xml ...]
 
-Parses the Unicode CLDR annotations/en.xml file and generates a
-sorted C lookup table mapping codepoint sequences to their CLDR
-short names (TTS annotations).
+Parses Unicode CLDR annotation files and generates a sorted C lookup
+table mapping codepoint sequences to their CLDR short names (TTS
+annotations). Accepts multiple input files — use both annotations/en.xml
+and annotationsDerived/en.xml to include country flags and other
+multi-codepoint sequences.
 """
 
 import sys
@@ -18,42 +20,50 @@ def codepoints_from_cp(cp_str):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print(f"Usage: {sys.argv[0]} <annotations.xml> <output.h>",
+    if len(sys.argv) < 3:
+        print(f"Usage: {sys.argv[0]} <output.h> <annotations.xml> [...]",
               file=sys.stderr)
         sys.exit(1)
 
-    xml_path = sys.argv[1]
-    output_path = sys.argv[2]
-
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
+    output_path = sys.argv[1]
+    xml_paths = sys.argv[2:]
 
     entries = []
-    for ann in root.iter("annotation"):
-        if ann.get("type") != "tts":
-            continue
-        cp_str = ann.get("cp", "")
-        name = ann.text.strip() if ann.text else ""
-        if not cp_str or not name:
-            continue
+    for xml_path in xml_paths:
+        tree = ET.parse(xml_path)
+        root = tree.getroot()
 
-        cps = codepoints_from_cp(cp_str)
-        if not cps:
-            continue
+        for ann in root.iter("annotation"):
+            if ann.get("type") != "tts":
+                continue
+            cp_str = ann.get("cp", "")
+            name = ann.text.strip() if ann.text else ""
+            if not cp_str or not name:
+                continue
 
-        # Skip pure Latin-1 single characters
-        if len(cps) == 1 and cps[0] < 0x100:
-            continue
+            cps = codepoints_from_cp(cp_str)
+            if not cps:
+                continue
 
-        entries.append((cps, name))
+            # Skip pure Latin-1 single characters
+            if len(cps) == 1 and cps[0] < 0x100:
+                continue
+
+            entries.append((cps, name))
+
+    # Deduplicate by codepoint sequence (later files win)
+    seen = {}
+    for cps, name in entries:
+        key = tuple(cps)
+        seen[key] = (cps, name)
+    entries = list(seen.values())
 
     # Sort by first codepoint, then by sequence length
     entries.sort(key=lambda e: (e[0][0], len(e[0]), e[0]))
 
     with open(output_path, "w") as f:
         f.write("// Auto-generated from CLDR annotations — do not edit\n")
-        f.write("// Source: unicode-cldr-core annotations/en.xml\n\n")
+        f.write("// Source: unicode-cldr-core annotations + annotationsDerived\n\n")
         f.write("#ifndef __CEMOJITABLE__MULBERRY__\n")
         f.write("#define __CEMOJITABLE__MULBERRY__\n\n")
         f.write("#include <stdint.h>\n")

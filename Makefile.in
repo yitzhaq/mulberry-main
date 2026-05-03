@@ -31,8 +31,9 @@ emoji-table:
 		if [ -f /usr/share/unicode/cldr/common/annotations/en.xml ]; then \
 			echo "Generating emoji text substitution table..."; \
 			python3 scripts/generate-emoji-table.py \
+				Sources_Common/i18n/Charsets/CEmojiTable.h \
 				/usr/share/unicode/cldr/common/annotations/en.xml \
-				Sources_Common/i18n/Charsets/CEmojiTable.h; \
+				/usr/share/unicode/cldr/common/annotationsDerived/en.xml; \
 		else \
 			echo "CLDR annotations not found, generating empty emoji table"; \
 			printf '#ifndef __CEMOJITABLE__MULBERRY__\n#define __CEMOJITABLE__MULBERRY__\n#include <stdint.h>\n#include <stddef.h>\nstruct SEmojiEntry { const uint32_t* codepoints; uint8_t length; const char* name; };\nstatic const SEmojiEntry cEmojiTable[] = { { NULL, 0, NULL } };\nstatic const size_t cEmojiTableSize = 0;\n#endif\n' \
