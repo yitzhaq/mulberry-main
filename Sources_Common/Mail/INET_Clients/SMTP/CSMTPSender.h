@@ -86,6 +86,8 @@ class CSMTPSender
 		enum { class_ID = 'smtp' };
 
 		CSMTPException(char err_code) : CNetworkException(err_code) { _class = class_ID; }
+		bool IsTemporary() const { return _err == '4'; }
+		bool IsPermanent() const { return _err == '5'; }
 	};
 
 	// I N S T A N C E  V A R I A B L E S

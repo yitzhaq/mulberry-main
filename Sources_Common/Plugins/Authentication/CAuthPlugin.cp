@@ -239,6 +239,8 @@ bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 		{
 		case CAuthPlugin::eAuthError:
 		case CAuthPlugin::eAuthServerError:
+			// Cancel AUTH exchange (RFC 4954)
+			stream << "*" << net_endl << std::flush;
 			result = false;
 			done = true;
 			break;

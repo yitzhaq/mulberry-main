@@ -106,6 +106,8 @@ public:
 	dotstuff_filterbuf(bool encode_it) : filterbuf(encode_it) { got_crlf = true; }
 	virtual ~dotstuff_filterbuf() {}
 
+	bool EndedWithCRLF() const { return got_crlf; }
+
 protected:
 	bool got_crlf;
 	virtual std::streamsize encode (const char_type* s, std::streamsize n);

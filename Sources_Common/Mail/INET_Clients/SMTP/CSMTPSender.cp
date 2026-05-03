@@ -95,7 +95,7 @@ CSMTPSender::~CSMTPSender()
 {
 	mAccount = NULL;
 	mMessage = NULL;
-	delete mLineData;
+	delete[] mLineData;
 	mLineData = NULL;
 	mQueueMbox = NULL;
 }
@@ -201,11 +201,19 @@ bool CSMTPSender::SMTPNextAsync(bool reset)
 					throw CGeneralException(-1L);
 				}
 			}
+			catch (CSMTPException& smtp_ex)
+			{
+				CLOG_LOGCATCH(CSMTPException&);
+
+				found->ChangeFlags(NMessage::eSendingNow, false);
+				found->ChangeFlags(NMessage::eSendError, true);
+				if (smtp_ex.IsPermanent())
+					found->ChangeFlags(NMessage::eHold, true);
+			}
 			catch (...)
 			{
 				CLOG_LOGCATCH(...);
 
-				// Always put into paused state and mark with error
 				found->ChangeFlags(NMessage::eHold, true);
 				found->ChangeFlags(NMessage::eSendError, true);
 				found->ChangeFlags(NMessage::eSendingNow, false);
@@ -442,6 +450,14 @@ void CSMTPSender::SMTPBegin()
 			mMailState = cSMTPSendingAuth;
 			auth_ok = SMTPDoAuthentication();
 
+			// Re-EHLO after successful AUTH (RFC 4954 Section 4)
+			if (auth_ok)
+			{
+				mMailState = cSMTPSendingEHello;
+				SMTPSendEHello();
+				SMTPReceiveCapability();
+			}
+
 			// Reset status
 			SMTPSetStatus("Status::SMTP::Begin");
 		}
@@ -542,7 +558,7 @@ void CSMTPSender::SMTPSendMessage(CMessage* theMsg)
 	try
 	{
 		// Check size limit first
-		if (mSize && mMessage->GetSize() && (mMessage->GetSize() >= mSizeLimit))
+		if (mSize && mMessage->GetSize() && (mMessage->GetSize() > mSizeLimit))
 		{
 			// Create fake error message
 			cdstring error = rsrc::GetString("Error::SMTP::OversizeMessage");
@@ -1743,6 +1759,8 @@ void CSMTPSender::SMTPAuthenticate()
 				if (mAllowLog && mLog.DoLog())
 					*mLog.GetLog() << AUTHLOGIN << os_endl << std::flush;
 
+				try
+				{
 				// Wait for data response
 				SMTPReceiveData(DATA_RESPONSE);
 
@@ -1755,10 +1773,10 @@ void CSMTPSender::SMTPAuthenticate()
 				// Write to log file
 				if (mAllowLog && mLog.DoLog())
 					*mLog.GetLog() << b64 << os_endl << std::flush;
-				
+
 				// Wait for data response
 				SMTPReceiveData(DATA_RESPONSE);
-				
+
 				// Send base64 encoded password
 				buffer = auth->GetPswd();
 				b64.steal(::base64_encode(reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length()));
@@ -1770,6 +1788,15 @@ void CSMTPSender::SMTPAuthenticate()
 				
 				// Wait for success response
 				SMTPReceiveData();
+				}
+				catch(...)
+				{
+					CLOG_LOGCATCH(...);
+					// Cancel AUTH exchange (RFC 4954)
+					mStream << "*" << CRLF << std::flush;
+					CLOG_LOGRETHROW;
+					throw;
+				}
 			}
 		}
 		break;
@@ -1778,22 +1805,15 @@ void CSMTPSender::SMTPAuthenticate()
 		{
 			//CAuthenticatorUserPswd* auth = static_cast<CAuthenticatorUserPswd*>(acct_auth);
 
-			// Form buffer of external SASL response (authrization id is empty for now)
-			cdstring buffer;
-
-			// Base64 encode it
-			cdstring b64;
-			b64.steal(::base64_encode(reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length()));
-
 			// Do not allow logging of auth details
 			StValueChanger<bool> value(mAllowLog, CLog::AllowAuthenticationLog());
 
-			// Use host machines canonical name/ip name for domain
-			mStream << AUTHEXTERNAL << b64 << CRLF << std::flush;
+			// RFC 4954: zero-length initial response MUST be sent as "="
+			mStream << AUTHEXTERNAL << "=" << CRLF << std::flush;
 
 			// Write to log file
 			if (mAllowLog && mLog.DoLog())
-				*mLog.GetLog() << AUTHEXTERNAL << b64 << os_endl << std::flush;
+				*mLog.GetLog() << AUTHEXTERNAL << "=" << os_endl << std::flush;
 
 			// Get response
 			mMailState = cSMTPWaitingAuthResponse;
@@ -2036,8 +2056,10 @@ void CSMTPSender::SMTPSendData()
 	//unsigned long part_offset = 0;
 
 	// Need to dot-stuff
+	bool body_ended_crlf = true;
 	{
-		CStreamFilter dot_stuff(new dotstuff_filterbuf(true), static_cast<std::ostream*>(&mStream));
+		dotstuff_filterbuf* ds_buf = new dotstuff_filterbuf(true);
+		CStreamFilter dot_stuff(ds_buf, static_cast<std::ostream*>(&mStream));
 
 		// Create stream type for output
 		costream stream_out(&dot_stuff, eEndl_CRLF);
@@ -2096,10 +2118,14 @@ void CSMTPSender::SMTPSendData()
 				}
 			}
 		}
+		body_ended_crlf = ds_buf->EndedWithCRLF();
 	}
 
-	// Send mail terminator
-	mStream << CRLF_DOT_CRLF << std::flush;
+	// Send mail terminator — only prepend CRLF if body didn't end with one
+	if (body_ended_crlf)
+		mStream << DOT_CRLF << std::flush;
+	else
+		mStream << CRLF_DOT_CRLF << std::flush;
 
 	// Write to log file
 	if (mLog.DoLog())

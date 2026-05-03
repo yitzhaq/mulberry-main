@@ -2289,6 +2289,10 @@ void CMboxProtocol::ExpungeMbox(CMbox* mbox, bool closing)
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
+	// Do not expunge read-only mailboxes (RFC 2683 Section 3.3.2)
+	if (mbox->IsReadOnly())
+		return;
+
 	// Reconnect dead per-mailbox connection
 	if (!IsLoggedOn())
 	{
