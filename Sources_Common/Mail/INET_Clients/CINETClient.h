@@ -168,6 +168,7 @@ protected:
 	cdstring			mServerAddr;					// Text of server address
 	cdstring			mGreeting;						// Greeting string
 	cdstring			mCapability;					// Capability string
+	cdstring			mServerID;						// RFC 2971 server identification
 	bool				mAsyncLiteral;					// Non-synchronising literals supported
 	bool				mLoginAllowed;					// Has 'LOGIN' command
 	bool				mAuthLoginAllowed;				// Has 'AUTH=LOGIN' command
@@ -276,6 +277,9 @@ public:
 
 	virtual const cdstring& GetCapability()
 		{ return mCapability; }
+
+	virtual const cdstring& GetServerID()
+		{ return mServerID; }
 
 	// P R O T O C O L
 	virtual void	_Tickle(bool force_tickle);				// Do tickle

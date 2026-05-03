@@ -72,50 +72,61 @@ void CPropMailboxServer::OnCreate()
     mName->SetBorderWidth(kJXDefaultBorderWidth);
 
     JXStaticText* obj3 =
-        new JXStaticText("Type:", this,
+        new JXStaticText("Server:", this,
                     JXWidget::kHElastic, JXWidget::kVElastic, 5,47, 60,20);
     assert( obj3 != NULL );
 
-    mType =
+    mServerID =
         new CStaticText("", this,
                     JXWidget::kHElastic, JXWidget::kVElastic, 90,45, 315,20);
+    assert( mServerID != NULL );
+    mServerID->SetBorderWidth(kJXDefaultBorderWidth);
+
+    JXStaticText* obj3b =
+        new JXStaticText("Type:", this,
+                    JXWidget::kHElastic, JXWidget::kVElastic, 5,72, 60,20);
+    assert( obj3b != NULL );
+
+    mType =
+        new CStaticText("", this,
+                    JXWidget::kHElastic, JXWidget::kVElastic, 90,70, 315,20);
     assert( mType != NULL );
     mType->SetBorderWidth(kJXDefaultBorderWidth);
 
     JXStaticText* obj4 =
         new JXStaticText("Greeting:", this,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 5,72, 65,20);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 5,97, 65,20);
     assert( obj4 != NULL );
 
     mGreeting =
         new CTextDisplay(this,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 90,70, 315,80);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 90,95, 315,80);
     assert( mGreeting != NULL );
 
     JXStaticText* obj5 =
         new JXStaticText("Capability:", this,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 5,157, 70,20);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 5,182, 70,20);
     assert( obj5 != NULL );
 
     mCapability =
         new CTextDisplay(this,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 90,155, 315,80);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 90,180, 315,80);
     assert( mCapability != NULL );
 
     JXStaticText* obj6 =
         new JXStaticText("Connection:", this,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 5,254, 75,20);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 5,279, 75,20);
     assert( obj6 != NULL );
 
     mConnection =
         new CStaticText("", this,
-                    JXWidget::kHElastic, JXWidget::kVElastic, 90,252, 205,20);
+                    JXWidget::kHElastic, JXWidget::kVElastic, 90,277, 205,20);
     assert( mConnection != NULL );
     mConnection->SetBorderWidth(kJXDefaultBorderWidth);
 
     mViewCert =
         new JXTextButton("View Certificate", this,
-                    JXWidget::kFixedLeft, JXWidget::kFixedTop, 300,250, 105,24);
+                    JXWidget::kFixedLeft, JXWidget::kFixedTop, 300,275, 105,24);
     assert( mViewCert != NULL );
     mViewCert->SetFontSize(10);
 
@@ -170,6 +181,8 @@ void CPropMailboxServer::SetProtocol(CMboxProtocol* server)
 
 	// Do server data
 	mName->SetText(server->GetDescriptor());
+
+	mServerID->SetText(server->GetServerID());
 
 	mType->SetText(server->GetType());
 

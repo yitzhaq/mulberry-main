@@ -47,6 +47,7 @@ void CPropMailboxServer::DoDataExchange(CDataExchange* pDX)
 	CHelpPropertyPage::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CPropMailboxServer)
 	DDX_UTF8Text(pDX, IDC_MAILBOXSERVER_NAME, mMailboxServerName);
+	DDX_UTF8Text(pDX, IDC_MAILBOXSERVER_SERVERID, mMailboxServerID);
 	DDX_UTF8Text(pDX, IDC_MAILBOXSERVER_TYPE, mMailboxServerType);
 	DDX_UTF8Text(pDX, IDC_MAILBOXSERVER_GREETING, mMailboxServerGreeting);
 	DDX_UTF8Text(pDX, IDC_MAILBOXSERVER_CAPABILITY, mMailboxServerCapability);
@@ -100,6 +101,7 @@ void CPropMailboxServer::SetProtocol(CMboxProtocol* server)
 	}
 
 	mMailboxServerName = server->GetDescriptor();
+	mMailboxServerID = server->GetServerID();
 	mMailboxServerType = server->GetType();
 	mMailboxServerGreeting = server->GetGreeting();
 	mMailboxServerCapability = server->GetCapability();

@@ -45,6 +45,7 @@ public:
 	int 		mIconState;
 	CIconWnd	mIconStateCtrl;
 	cdstring	mMailboxServerName;
+	cdstring	mMailboxServerID;
 	cdstring	mMailboxServerType;
 	cdstring	mMailboxServerGreeting;
 	cdstring	mMailboxServerCapability;

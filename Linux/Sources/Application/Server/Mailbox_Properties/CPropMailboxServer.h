@@ -47,6 +47,7 @@ protected:
 
     JXImageWidget* mIconState;
     CStaticText*   mName;
+    CStaticText*   mServerID;
     CStaticText*   mType;
     CTextDisplay*  mGreeting;
     CTextDisplay*  mCapability;

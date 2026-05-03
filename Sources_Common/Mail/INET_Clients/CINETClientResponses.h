@@ -49,6 +49,7 @@ enum EINETResponseCode
 	cStarQUOTA,
 	cStarQUOTAROOT,
 	cStarNAMESPACE,
+	cStarID,
 	cMsgEXISTS,
 	cMsgRECENT,
 	cMsgEXPUNGE,

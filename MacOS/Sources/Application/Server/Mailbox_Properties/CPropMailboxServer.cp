@@ -63,6 +63,7 @@ void CPropMailboxServer::FinishCreateSelf(void)
 
 	// Get items
 	mName = (CTextFieldX*) FindPaneByID(paneid_MailboxServerName);
+	mServerID = (CTextFieldX*) FindPaneByID(paneid_MailboxServerID);
 	mType = (CTextFieldX*) FindPaneByID(paneid_MailboxServerType);
 	mGreeting = (CTextDisplay*) FindPaneByID(paneid_MailboxServerGreeting);
 	mCapability = (CTextDisplay*) FindPaneByID(paneid_MailboxServerCapability);
@@ -118,6 +119,9 @@ void CPropMailboxServer::SetProtocol(CMboxProtocol* server)
 
 	// Do server data
 	mName->SetText(server->GetDescriptor());
+
+	if (mServerID)
+		mServerID->SetText(server->GetServerID());
 
 	mType->SetText(server->GetType());
 

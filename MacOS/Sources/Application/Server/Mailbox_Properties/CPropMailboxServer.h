@@ -29,6 +29,7 @@
 const	PaneIDT		paneid_PropMailboxServer = 4015;
 const	PaneIDT		paneid_MailboxServerState = 'ICON';
 const	PaneIDT		paneid_MailboxServerName = 'NAME';
+const	PaneIDT		paneid_MailboxServerID = 'SVID';
 const	PaneIDT		paneid_MailboxServerType = 'TYPE';
 const	PaneIDT		paneid_MailboxServerGreeting = 'GRET';
 const	PaneIDT		paneid_MailboxServerCapability = 'CAPS';
@@ -57,6 +58,7 @@ class CPropMailboxServer : public CMailboxPropPanel,
 private:
 	LIconControl*		mIconState;
 	CTextFieldX*		mName;
+	CTextFieldX*		mServerID;
 	CTextFieldX*		mType;
 	CTextDisplay*		mGreeting;
 	CTextDisplay*		mCapability;

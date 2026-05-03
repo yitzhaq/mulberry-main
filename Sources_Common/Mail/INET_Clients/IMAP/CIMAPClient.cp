@@ -932,6 +932,84 @@ void CIMAPClient::_SendID()
 	}
 }
 
+// Parse RFC 2971 ID response
+void CIMAPClient::IMAPParseID(char** txt)
+{
+	while(**txt == ' ') (*txt)++;
+
+	// Check for NIL
+	if (::strncmpnocase(*txt, "NIL", 3) == 0)
+	{
+		*txt += 3;
+		return;
+	}
+
+	// Must be parenthesized list of key-value pairs
+	char* p = ::strmatchbra(txt);
+	if (!p)
+		return;
+
+	cdstring name;
+	cdstring version;
+	cdstring extra;
+
+	while (p && *p)
+	{
+		while (*p == ' ') p++;
+		if (!*p) break;
+
+		// Get key
+		char* key = ::strgetquotestr(&p);
+		if (!key) break;
+
+		while (*p == ' ') p++;
+
+		// Get value (may be NIL)
+		char* value = NULL;
+		if (::strncmpnocase(p, "NIL", 3) == 0)
+		{
+			p += 3;
+		}
+		else
+		{
+			value = ::strgetquotestr(&p);
+		}
+
+		if (value)
+		{
+			if (::strcmpnocase(key, "name") == 0)
+				name = value;
+			else if (::strcmpnocase(key, "version") == 0)
+				version = value;
+			else
+			{
+				if (!extra.empty())
+					extra += ", ";
+				extra += key;
+				extra += ": ";
+				extra += value;
+			}
+		}
+	}
+
+	// Build display string
+	mServerID = name;
+	if (!version.empty())
+	{
+		if (!mServerID.empty())
+			mServerID += " ";
+		mServerID += version;
+	}
+	if (!extra.empty())
+	{
+		if (!mServerID.empty())
+			mServerID += " (";
+		mServerID += extra;
+		if (!name.empty() || !version.empty())
+			mServerID += ")";
+	}
+}
+
 // Send ENABLE command (RFC 5161)
 void CIMAPClient::_Enable()
 {
@@ -3024,6 +3102,13 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 	{
 		response->code = cStarNAMESPACE;
 		IMAPParseNamespace(txt);
+	}
+
+	// ID (RFC 2971)
+	else if (::stradvtokcmp(txt,cIMAP_ID)==0)
+	{
+		response->code = cStarID;
+		IMAPParseID(txt);
 	}
 
 	else

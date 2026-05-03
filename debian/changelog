@@ -25,7 +25,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * xdg-open fallback for attachments and URL links
   * Accept bare mailto: URLs on command line
   * setlocale(LC_ALL, "") at startup (fixes 12-hour clock)
-  * IMAP ID extension (RFC 2971)
+  * IMAP ID extension (RFC 2971) with server ID parsing and display
   * User-Agent header on HTTP requests
   * Subject prefix stripping for multilingual Re:/Fwd: chains
   * Timezone database: build-time generation from IANA tzdata via vzic

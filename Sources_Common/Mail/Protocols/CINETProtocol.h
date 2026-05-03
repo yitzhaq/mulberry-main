@@ -159,6 +159,7 @@ public:
 
 	const cdstring& GetGreeting() const;
 	const cdstring& GetCapability() const;
+	const cdstring& GetServerID() const;
 	const cdstring& GetCertText() const;
 
 	// L O G I N  &  L O G O U T

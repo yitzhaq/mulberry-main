@@ -377,7 +377,8 @@ protected:
 	void	IMAPParseNamespace(char** txt);						// Parse IMAP NAMESPACE reply
 	void	IMAPParseNamespaceItem(cdstrpairvect* names,		// Parse IMAP NAMESPACE item
 									char** txt);
-	
+	void	IMAPParseID(char** txt);							// Parse RFC 2971 ID reply
+
 };
 
 #endif

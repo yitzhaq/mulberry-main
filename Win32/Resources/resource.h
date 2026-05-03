@@ -913,6 +913,7 @@
 #define IDC_MAILBOXSERVER_CAPABILITY    2244
 #define IDC_MAILBOXSERVER_CONNECTION    2245
 #define IDC_MAILBOXSERVER_VIEWCERT      2246
+#define IDC_MAILBOXSERVER_SERVERID      2247
 #define IDI_ACL_LOOKUP                  2250
 #define IDC_ACL_LOOKUP                  2250
 #define IDI_ACL_READ                    2251

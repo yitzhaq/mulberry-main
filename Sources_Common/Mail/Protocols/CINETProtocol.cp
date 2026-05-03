@@ -232,6 +232,11 @@ const cdstring& CINETProtocol::GetCapability() const
 	return mClient->GetCapability();
 }
 
+const cdstring& CINETProtocol::GetServerID() const
+{
+	return mClient->GetServerID();
+}
+
 const cdstring& CINETProtocol::GetCertText() const
 {
 	return mClient->GetCertText();

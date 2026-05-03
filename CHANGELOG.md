@@ -222,7 +222,8 @@ X11 bitmap fonts).
   languages. The prefix list is configurable by editing the preferences
   file directly; a preferences UI has not yet been implemented.
 - IMAP ID extension (RFC 2971). Mulberry identifies itself to the
-  server, aiding server-side diagnostics and statistics.
+  server, and parses the server's ID response (name, version,
+  vendor) for display in server properties.
 - User-Agent header on all HTTP requests (CalDAV, CardDAV, WebDAV).
 - Compose key and dead key support on Linux. Accented character
   input (e.g., AltGr+e for é) now works throughout the application.
