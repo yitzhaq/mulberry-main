@@ -86,7 +86,7 @@ public:
 		{ return mUID; }
 	
 	virtual void	SetRights(const char* rights)
-		{ ParseRights(rights, mCurrent); }
+		{ mRawRights = rights; ParseRights(rights, mCurrent); }
 	virtual void	SetRights(SACLRight rights)
 		{ mCurrent = rights; }
 	virtual void	MergeRights(SACLRight merge)
@@ -116,6 +116,7 @@ public:
 	
 protected:
 	cdstring	mUID;
+	cdstring	mRawRights;
 	SACLRight	mCurrent;
 	SACLRight	mAllowed;
 

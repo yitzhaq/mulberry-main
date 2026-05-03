@@ -54,12 +54,12 @@ void CMboxACL::ParseRights(const char* txt, SACLRight& rights)
 	}
 }
 
-// Get text form of rights
+// Get text form of rights, preserving unrecognized RFC 4314 rights
 cdstring CMboxACL::GetTextRights() const
 {
 	cdstring rights;
 
-	// Look for specific rights
+	// Start with recognized rights from bit flags
 	long pos = 0;
 	const char* p = cMboxACLFlags;
 	while(*p)
@@ -69,6 +69,18 @@ cdstring CMboxACL::GetTextRights() const
 
 		p++;
 		pos++;
+	}
+
+	// Preserve any unrecognized rights from the raw server string
+	// (RFC 4314 Section 5.1.2: MUST preserve unrecognized rights)
+	if (!mRawRights.empty())
+	{
+		for (const char* r = mRawRights.c_str(); *r; r++)
+		{
+			if (::strchr(cMboxACLFlags, *r) == NULL &&
+				::strchr(rights.c_str(), *r) == NULL)
+				rights += *r;
+		}
 	}
 
 	// Must quote empty string
