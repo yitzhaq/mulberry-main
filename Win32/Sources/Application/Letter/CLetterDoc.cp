@@ -98,20 +98,21 @@ void CLetterDoc::SaveTemporary()
 				break;
 		}
 
-		// Create new file
+		// Auto-save to server first so mLastDraftUID is set
+		// before the local file captures it
+		mLtrWnd->AutoSaveToServer();
+
+		// Create new file (includes draft UID for crash recovery)
 		mLtrWnd->SafetySave(newTemporary);
 
 		// Delete the existing file here
 		DeleteTemporary();
-		
+
 		// Assign temporary file
 		mTemporary = newTemporary;
-		
+
 		// Reset timer
 		mLtrWnd->ResetAutoSaveTimer();
-
-		// Auto-save to server (RFC 8508 REPLACE)
-		mLtrWnd->AutoSaveToServer();
 	}
 	catch(...)
 	{

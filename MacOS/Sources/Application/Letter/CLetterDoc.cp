@@ -1044,6 +1044,10 @@ void CLetterDoc::SaveTemporary()
 		mFile->CreateNewFile(kApplID, kLetterDocType, 0);
 		newTemporary.Update();
 
+		// Auto-save to server first so mLastDraftUID is set
+		// before the local file captures it
+		static_cast<CLetterWindow*>(mWindow)->AutoSaveToServer();
+
 		DoFileSave(true);							// Write out data
 
 		delete temp;
@@ -1052,15 +1056,12 @@ void CLetterDoc::SaveTemporary()
 
 		// Delete the existing file here
 		DeleteTemporary();
-		
+
 		// Assign temporary file
 		mTemporary = newTemporary;
-		
+
 		// Reset timer
 		mAutoSaveTime = ::time(NULL);
-
-		// Auto-save to server (RFC 8508 REPLACE)
-		static_cast<CLetterWindow*>(mWindow)->AutoSaveToServer();
 	}
 	catch (const PP_PowerPlant::LException& ex)
 	{
