@@ -24,7 +24,9 @@
 
 #include "CActionManager.h"
 #include "CConnectionManager.h"
+#include "CIdentity.h"
 #include "CIMAPClient.h"
+#include "CMbox.h"
 #include "CINETCommon.h"
 #include "CLocalClient.h"
 #include "CLocalCommon.h"
@@ -940,7 +942,10 @@ void CMboxProtocol::LoadList(bool deep)
 		// an explicit list to get real flag state
 		if (GetINBOX() && GetINBOX()->NoSelect())
 			TestMbox(GetINBOX());
-		
+
+		// Auto-configure from SPECIAL-USE attributes (RFC 6154)
+		AutoConfigureSpecialUse();
+
 		// Inform listeners of possible global change to lists
 		Broadcast_Message(eBroadcast_EndListUpdate, NULL);
 	}
@@ -1673,6 +1678,57 @@ CMboxList* CMboxProtocol::FindMatchingList(const CMbox* mbox) const
 	}
 
 	return NULL;
+}
+
+// Find mailbox with specified special-use attribute (RFC 6154)
+CMbox* CMboxProtocol::FindSpecialUse(unsigned char special_use_attr) const
+{
+	// Check INBOX
+	if (mINBOX && (mINBOX->GetSpecialUse() & special_use_attr))
+		return mINBOX;
+
+	// Search all hierarchies
+	for(CHierarchies::const_iterator iter = mHierarchies.begin(); iter != mHierarchies.end(); iter++)
+	{
+		for(CTreeNodeList::const_iterator iter2 = (*iter)->begin(); iter2 != (*iter)->end(); iter2++)
+		{
+			CMbox* mbox = static_cast<CMbox*>(*iter2);
+			if (mbox->GetSpecialUse() & special_use_attr)
+				return mbox;
+		}
+	}
+
+	return NULL;
+}
+
+// Auto-configure preferences from SPECIAL-USE attributes (RFC 6154)
+void CMboxProtocol::AutoConfigureSpecialUse()
+{
+	if (IsCloned())
+		return;
+
+	// Auto-populate identity Copy-To from \Sent
+	CMbox* sent = FindSpecialUse(CMbox::eSpecialSent);
+	if (sent)
+	{
+		CIdentity& identity = GetMailAccount()->GetAccountIdentity();
+		if (!identity.UseCopyTo() && identity.GetCopyTo().empty())
+		{
+			identity.SetCopyTo(sent->GetAccountName(), true);
+			CPreferences::sPrefs->mIdentities.SetDirty();
+		}
+	}
+
+	// Auto-populate per-account Drafts from \Drafts
+	CMbox* drafts = FindSpecialUse(CMbox::eSpecialDrafts);
+	if (drafts)
+	{
+		if (GetMailAccount()->GetDraftsMailbox().empty())
+		{
+			GetMailAccount()->SetDraftsMailbox(drafts->GetAccountName());
+			CPreferences::sPrefs->mMailAccounts.SetDirty();
+		}
+	}
 }
 
 bool CMboxProtocol::FindRoot(const cdstring& mbox_name, CMboxList*& root_list, CMbox*& root_mbox)
@@ -2871,6 +2927,25 @@ bool CMboxProtocol::HasMove() const
 bool CMboxProtocol::HasBinary() const
 {
 	return mClient->_HasBinary();
+}
+
+bool CMboxProtocol::HasReplace() const
+{
+	return mClient->_HasReplace();
+}
+
+// Atomic message replacement (RFC 8508)
+void CMboxProtocol::ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* theMsg, unsigned long& new_uid, bool dummy_files)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	if ((mbox == mCurrent_mbox) && mbox->IsReadOnly())
+		SetCurrentMbox(mbox, false, mbox->IsExamine());
+
+	mClient->_ReplaceMessage(old_uid, mbox, theMsg, new_uid, dummy_files);
 }
 
 // Do message expunge

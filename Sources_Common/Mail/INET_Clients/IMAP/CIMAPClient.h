@@ -86,9 +86,18 @@ private:
 	bool			mHasListStatus;					// Supports LIST-STATUS (RFC 5819)
 	bool			mHasStatusSize;					// Supports STATUS=SIZE (RFC 8438)
 	bool			mHasSearchRes;					// Supports SEARCHRES (RFC 5182)
+	bool			mHasMultiAppend;				// Supports MULTIAPPEND (RFC 3502)
+	bool			mHasSpecialUse;					// Supports SPECIAL-USE (RFC 6154)
+	bool			mHasReplace;					// Supports REPLACE (RFC 8508)
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
+
+	// MULTIAPPEND state (RFC 3502)
+	bool			mMultiAppending;				// Currently in MULTIAPPEND command
+	unsigned long	mMultiAppendCount;				// Messages sent in current MULTIAPPEND
+	ulvector		mMultiAppendUIDs;				// UIDs from APPENDUID response
+	CMbox*			mMultiAppendMbox;				// Target mailbox for MULTIAPPEND
 
 	// IDLE state (RFC 2177)
 	enum EIdleState {
@@ -169,12 +178,23 @@ protected:
 	virtual void	_Enable();					// Send RFC 5161 ENABLE command
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes);		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes);			// Do find all mboxes
-	virtual void	_StartAppend(CMbox* mbox) {}		// Starting multiple append
-	virtual void	_StopAppend(CMbox* mbox) {}			// Stopping multiple append
+			void	_FindSpecialUseMbox(CMboxList* mboxes);	// Find special-use mailboxes only (RFC 6154)
+	virtual void	_StartAppend(CMbox* mbox);			// Starting multiple append
+	virtual void	_StopAppend(CMbox* mbox);			// Stopping multiple append
 	virtual void	_AppendMbox(CMbox* mbox,
 									CMessage* theMsg,
 									unsigned long& new_uid,
 									bool dummy_files = false);	// Do append message to mbox
+			void	BuildAppendFlags(CMessage* theMsg, cdstring& flags);
+			void	BuildAppendDate(CMessage* theMsg, cdstring& internaldate);
+			void	CheckAppendLimit(CMbox* mbox);
+			void	SendAppendMessage(CMessage* theMsg, const cdstring& flags, const cdstring& internaldate);
+
+	virtual void	_ReplaceMessage(unsigned long old_uid,
+									CMbox* mbox,
+									CMessage* theMsg,
+									unsigned long& new_uid,
+									bool dummy_files = false);	// Atomic message replacement (RFC 8508)
 
 	virtual void	_SearchMbox(const CSearchItem* spec,	// Search messages on the server
 								ulvector* results,
@@ -251,6 +271,8 @@ protected:
 		{ return mHasMove; }
 	virtual bool	_HasBinary() const							// Does server support BINARY?
 		{ return mHasBinary; }
+	virtual bool	_HasReplace() const							// Does server support REPLACE?
+		{ return mHasReplace; }
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
 									bool use_saved = false);	// Expunge uids
 			bool	MatchesSavedSearch(const ulvector& nums) const;
@@ -302,7 +324,8 @@ protected:
 	void	IMAPParseListLsub(char** txt, bool lsub);			// Parse IMAP LIST/LSUB reply
 	void	IMAPParseMailbox(char** txt,
 								char delim,
-								NMbox::EFlags mbox_flags);			// Parse IMAP MAILBOX reply
+								NMbox::EFlags mbox_flags,
+								unsigned char special_use = 0);		// Parse IMAP MAILBOX reply
 	void	IMAPParseSearch(char** txt);						// Parse IMAP SEARCH reply
 	void	IMAPParseESearch(char** txt);					// Parse IMAP ESEARCH reply (RFC 4731)
 	void	IMAPParseStatus(char** txt);						// Parse IMAP STATUS reply

@@ -67,6 +67,9 @@ extern const char* cIMAP_IDLE;
 extern const char* cIMAP_BINARY;
 extern const char* cIMAP_SORT_DISPLAY;
 extern const char* cIMAP_ESORT;
+extern const char* cIMAP_MULTIAPPEND;
+extern const char* cIMAP_SPECIAL_USE;
+extern const char* cIMAP_REPLACE;
 extern const char* cRETURN_SAVE_ALL;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
@@ -108,6 +111,7 @@ extern const char* cUIDFETCH;
 extern const char* cUIDSTORE;
 extern const char* cUIDSEARCH;
 extern const char* cUIDEXPUNGE;
+extern const char* cUIDREPLACE;
 
 // Unsolicitied
 extern const char* cFLAGS;
@@ -181,6 +185,15 @@ extern const char* cMBOXFLAGUNMARKEDHASCHILDREN;
 extern const char* cMBOXFLAGUNMARKEDHASNOCHILDREN;
 extern const char* cMBOXFLAGSUBSCRIBED;
 extern const char* cMBOXFLAGNONEXISTENT;
+
+// RFC 6154 Special-Use attributes
+extern const char* cMBOXFLAGSPECIAL_ALL;
+extern const char* cMBOXFLAGSPECIAL_ARCHIVE;
+extern const char* cMBOXFLAGSPECIAL_DRAFTS;
+extern const char* cMBOXFLAGSPECIAL_FLAGGED;
+extern const char* cMBOXFLAGSPECIAL_JUNK;
+extern const char* cMBOXFLAGSPECIAL_SENT;
+extern const char* cMBOXFLAGSPECIAL_TRASH;
 
 // STATUS bits
 extern const char* cSTATUS_MESSAGES;

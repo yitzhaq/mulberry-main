@@ -22,6 +22,7 @@
 #include "CCalendarAccount.h"
 #include "CIdentityPopup.h"
 #include "CMailAccount.h"
+#include "CMailboxPopup.h"
 #include "CPreferencesDialog.h"
 
 #include <JXDownRect.h>
@@ -65,7 +66,23 @@ void CPrefsAccountExtras::OnCreate()
     assert( mIdentityPopup != NULL );
 
 // end JXLayout1
-	
+
+	// Drafts mailbox
+	JXDownRect* obj4 =
+		new JXDownRect(this,
+					JXWidget::kHElastic, JXWidget::kVElastic, 10,102, 340,52);
+	assert( obj4 != NULL );
+
+	JXStaticText* obj5 =
+		new JXStaticText("Drafts Mailbox:", this,
+					JXWidget::kHElastic, JXWidget::kVElastic, 20,92, 100,20);
+	assert( obj5 != NULL );
+
+	mDraftsPopup =
+		new CMailboxPopup(false, obj4,
+					JXWidget::kHElastic, JXWidget::kVElastic, 15,15, 310,25);
+	assert( mDraftsPopup != NULL );
+
 	// Start listening
 	ListenTo(mTieIdentity);
 	ListenTo(mIdentityPopup);
@@ -148,6 +165,12 @@ void CPrefsAccountExtras::SetData(void* data)
 
 	// Disable if not in use
 	mIdentityPopup->SetActive(tie ? kTrue : kFalse);
+
+	// Set drafts mailbox
+	cdstring drafts;
+	if (maccount != NULL)
+		drafts = maccount->GetDraftsMailbox();
+	mDraftsPopup->SetSelectedMbox(drafts, drafts.empty(), false);
 }
 
 // Force update of prefs
@@ -163,6 +186,10 @@ bool CPrefsAccountExtras::UpdateData(void* data)
 	{
 		maccount->SetTieIdentity(mTieIdentity->IsChecked());
 		maccount->SetTiedIdentity(mIdentityPopup->GetIdentity(new_prefs).GetIdentity());
+
+		cdstring drafts;
+		mDraftsPopup->GetSelectedMboxName(drafts, true);
+		maccount->SetDraftsMailbox(drafts);
 	}
 	else if (caccount != NULL)
 	{

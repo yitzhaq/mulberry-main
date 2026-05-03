@@ -227,6 +227,7 @@ void CLetterWindow::InitLetterWindow(void)
 	mSendAgain = false;
 	mOriginalEncrypted = false;
 	mMarkSaved = false;
+	mLastDraftUID = 0;
 	mBounceHeader = NULL;
 
 	// Add to list
@@ -1275,6 +1276,20 @@ void CLetterWindow::SetEnvelope(Handle theText, long length)
 		mAppendList->Refresh();
 	}
 
+	// Get draft UID for REPLACE (RFC 8508)
+	if(!(data.AtEnd()))
+	{
+		data.ReadBlock(&mLastDraftUID, sizeof(unsigned long));
+		data.ReadBlock(&copy_length, sizeof(long));
+		if (copy_length)
+		{
+			std::auto_ptr<char> txt(new char[copy_length + 1]);
+			data.ReadBlock(txt.get(), copy_length);
+			txt.get()[copy_length] = '\0';
+			mLastDraftMbox = txt.get();
+		}
+	}
+
 	// Detach handle
 	data.DetachDataHandle();
 }
@@ -1329,6 +1344,12 @@ void CLetterWindow::GetEnvelope(Handle& theText, long& length)
 	copy_length = copy_to.length();
 	data.WriteBlock(&copy_length, sizeof(long));
 	data.WriteBlock(copy_to.c_str(), copy_length);
+
+	// Draft UID for REPLACE (RFC 8508)
+	data.WriteBlock(&mLastDraftUID, sizeof(unsigned long));
+	copy_length = mLastDraftMbox.length();
+	data.WriteBlock(&copy_length, sizeof(long));
+	data.WriteBlock(mLastDraftMbox.c_str(), copy_length);
 
 	// Detach handle
 	length = data.GetLength();

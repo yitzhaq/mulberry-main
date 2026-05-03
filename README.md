@@ -4,8 +4,9 @@ Mulberry is a standards-focused desktop email and calendaring client
 for Linux, macOS, and Windows. Built around IMAP from the ground up,
 it emphasizes server-side operations — searching, sorting, filtering,
 and threading happen on the server rather than locally, making it
-efficient with large mailboxes. It supports IMAP4rev1, POP3, SMTP,
-CalDAV, CardDAV, LDAP, SIEVE, ManageSieve, S/MIME, PGP, and more,
+efficient with large mailboxes. It supports IMAP4rev1 (with all
+15 mandatory IMAP4rev2 extensions), POP3, SMTP, CalDAV, CardDAV,
+LDAP, SIEVE, ManageSieve, S/MIME, PGP, and more,
 with features including multiple account and identity management,
 IMAP ACLs for shared folders, a GUI for server-side Sieve filtering,
 offline mail caching, and calendar/address book synchronization.
@@ -27,12 +28,13 @@ activity in over a decade.
 This version brings Mulberry to modern 64-bit Linux (x86_64) with
 GCC 13+, OpenSSL 1.1–3.x, and current Debian/Ubuntu packaging.
 It adds IMAP IDLE for instant push notifications, IMAP BINARY for
-server-side attachment decoding, LIST-EXTENDED, LIST-STATUS,
-SEARCHRES, ESEARCH/ESORT, APPENDLIMIT, STATUS=SIZE, SORT=DISPLAY,
-and WITHIN extensions — bringing IMAP4rev2 compliance to 14 of 15
-mandatory extensions. It includes comprehensive bug fixes found
-through static analysis with six tools (cppcheck, clang-tidy,
-Facebook Infer, GCC extended warnings, CodeQL, and Coverity),
+server-side attachment decoding, SPECIAL-USE, MULTIAPPEND,
+LIST-EXTENDED, LIST-STATUS, SEARCHRES, ESEARCH/ESORT, APPENDLIMIT,
+STATUS=SIZE, SORT=DISPLAY, and WITHIN extensions — completing all
+15 mandatory IMAP4rev2 extensions. It includes comprehensive
+bug fixes found through static analysis with six tools (cppcheck,
+clang-tidy, Facebook Infer, GCC extended warnings, CodeQL, and
+Coverity),
 improved RFC 3676 format=flowed compliance, Unicode clipboard
 support, automatic recovery from network connection drops, and
 recovery of sixteen patches from the original developer's SVN

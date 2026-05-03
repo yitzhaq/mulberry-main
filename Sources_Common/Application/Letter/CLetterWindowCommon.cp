@@ -39,6 +39,7 @@
 #if __dest_os != __linux_os
 #include "CLetterDoc.h"
 #endif
+#include "CMailAccountManager.h"
 #include "CMailboxPopup.h"
 #include "CMailboxWindow.h"
 #include "CMbox.h"
@@ -640,6 +641,17 @@ void CLetterWindow::SetSendAgainMessages(CMessageList* msgs)
 	// Set send again flag
 	mSendAgain = true;
 
+	// Seed draft UID for REPLACE (RFC 8508)
+	if (mMsgs && mMsgs->size() == 1)
+	{
+		CMessage* msg = mMsgs->front();
+		if (msg->IsDraft() && msg->GetMbox())
+		{
+			mLastDraftUID = msg->GetUID();
+			mLastDraftMbox = msg->GetMbox()->GetAccountName();
+		}
+	}
+
 	// Add whole message
 	GetPartsTable()->SendAgainMessages(mMsgs);
 	UpdatePartsCaption();
@@ -914,6 +926,28 @@ void CLetterWindow::OnDraftSendMail()
 
 		// Delete temporary
 		static_cast<CLetterDoc*>(GetDocument())->DeleteTemporary();
+
+		// Clean up server-side draft after send
+		if (mLastDraftUID != 0)
+		{
+			try
+			{
+				CMbox* drafts_mbox = CMailAccountManager::sMailAccountManager ?
+					CMailAccountManager::sMailAccountManager->FindMboxAccount(mLastDraftMbox) : NULL;
+				if (drafts_mbox)
+				{
+					ulvector uids;
+					uids.push_back(mLastDraftUID);
+					drafts_mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true);
+				}
+			}
+			catch (...)
+			{
+				CLOG_LOGCATCH(...);
+			}
+			mLastDraftUID = 0;
+			mLastDraftMbox = cdstring::null_str;
+		}
 
 		// Flag as successful send
 		sent_now = true;
@@ -1413,9 +1447,48 @@ void CLetterWindow::CopyNow(CMbox* mbox, bool option_key)
 				flags = static_cast<CRFC822::ECreateHeaderFlags>(flags | CRFC822::eRejectDSN);
 			CRFC822::CreateHeader(mail_msg, flags, GetIdentity(), &mDSN, mBounceHeader);
 
-			// Do append (does not acquire message)
+			// Do append or replace (does not acquire message)
 			unsigned long new_uid = 0;
-			mbox->AppendMessage(mail_msg, new_uid);
+			unsigned long old_uid = mLastDraftUID;
+
+			if (old_uid != 0 &&
+				mLastDraftMbox == mbox->GetAccountName())
+			{
+				if (mbox->GetProtocol()->HasReplace())
+				{
+					try
+					{
+						mbox->ReplaceMessage(old_uid, mail_msg, new_uid);
+					}
+					catch (...)
+					{
+						CLOG_LOGCATCH(...);
+						old_uid = 0;
+					}
+				}
+
+				if (!old_uid || !new_uid)
+				{
+					new_uid = 0;
+					mbox->AppendMessage(mail_msg, new_uid);
+					if (new_uid != 0 && mLastDraftUID != 0)
+					{
+						ulvector uids;
+						uids.push_back(mLastDraftUID);
+						mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true);
+					}
+				}
+			}
+			else
+			{
+				mbox->AppendMessage(mail_msg, new_uid);
+			}
+
+			if (new_uid != 0)
+			{
+				mLastDraftUID = new_uid;
+				mLastDraftMbox = mbox->GetAccountName();
+			}
 
 			// Update corresponding window if it exists
 			CMailboxView* aView = CMailboxView::FindView(mbox);
@@ -1465,6 +1538,116 @@ void CLetterWindow::DraftSaved()
 		
 		// Set flag
 		mMarkSaved = true;
+	}
+}
+
+// Auto-save draft to server via REPLACE or APPEND+delete
+void CLetterWindow::AutoSaveToServer()
+{
+	if (!CPreferences::sPrefs->mAutoSaveDrafts.GetValue())
+		return;
+
+	// Find drafts mailbox for the compose identity's account
+	const CIdentity* id = GetIdentity();
+	if (!id)
+		return;
+
+	// Find the mail account tied to this identity
+	CMailAccountManager* mgr = CMailAccountManager::sMailAccountManager;
+	if (!mgr)
+		return;
+
+	// Look through mail accounts for one tied to this identity
+	cdstring drafts_name;
+	for(CMailAccountList::const_iterator iter = CPreferences::sPrefs->mMailAccounts.GetValue().begin();
+		iter != CPreferences::sPrefs->mMailAccounts.GetValue().end(); iter++)
+	{
+		if ((*iter)->GetTieIdentity() &&
+			(*iter)->GetTiedIdentity() == id->GetIdentity() &&
+			!(*iter)->GetDraftsMailbox().empty())
+		{
+			drafts_name = (*iter)->GetDraftsMailbox();
+			break;
+		}
+	}
+
+	// If no tied account with drafts, try the first account with a drafts mailbox
+	if (drafts_name.empty())
+	{
+		for(CMailAccountList::const_iterator iter = CPreferences::sPrefs->mMailAccounts.GetValue().begin();
+			iter != CPreferences::sPrefs->mMailAccounts.GetValue().end(); iter++)
+		{
+			if (!(*iter)->GetDraftsMailbox().empty())
+			{
+				drafts_name = (*iter)->GetDraftsMailbox();
+				break;
+			}
+		}
+	}
+
+	if (drafts_name.empty())
+		return;
+
+	CMbox* drafts_mbox = mgr->FindMboxAccount(drafts_name);
+	if (!drafts_mbox)
+		return;
+
+	try
+	{
+		CMessage* mail_msg = CreateMessage(false);
+
+		SBitFlags draft_flags(NMessage::eSeen | NMessage::eDraft);
+		mail_msg->SetFlags(draft_flags);
+
+		CRFC822::CreateHeader(mail_msg, static_cast<CRFC822::ECreateHeaderFlags>(CRFC822::eAddBcc | CRFC822::eAddXIdentity), id, NULL, NULL);
+
+		unsigned long new_uid = 0;
+		unsigned long old_uid = mLastDraftUID;
+
+		if (old_uid != 0 &&
+			mLastDraftMbox == drafts_mbox->GetAccountName())
+		{
+			if (drafts_mbox->GetProtocol()->HasReplace())
+			{
+				try
+				{
+					drafts_mbox->ReplaceMessage(old_uid, mail_msg, new_uid);
+				}
+				catch (...)
+				{
+					CLOG_LOGCATCH(...);
+					old_uid = 0;
+				}
+			}
+
+			if (!old_uid || !new_uid)
+			{
+				new_uid = 0;
+				drafts_mbox->AppendMessage(mail_msg, new_uid);
+				if (new_uid != 0 && mLastDraftUID != 0)
+				{
+					ulvector uids;
+					uids.push_back(mLastDraftUID);
+					drafts_mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true);
+				}
+			}
+		}
+		else
+		{
+			drafts_mbox->AppendMessage(mail_msg, new_uid);
+		}
+
+		if (new_uid != 0)
+		{
+			mLastDraftUID = new_uid;
+			mLastDraftMbox = drafts_mbox->GetAccountName();
+		}
+
+		delete mail_msg;
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
 	}
 }
 

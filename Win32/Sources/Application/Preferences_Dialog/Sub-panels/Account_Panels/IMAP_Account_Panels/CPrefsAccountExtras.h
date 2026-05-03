@@ -24,6 +24,7 @@
 #include "CTabPanel.h"
 
 #include "CIdentityPopup.h"
+#include "CMailboxPopup.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CPrefsAccountExtras dialog
@@ -40,6 +41,7 @@ public:
 	BOOL			mTieIdentity;
 	CButton			mTieIdentityCtrl;
 	CIdentityPopup	mIdentityPopup;
+	CMailboxPopup	mDraftsPopup;
 	//}}AFX_DATA
 
 	virtual void	SetContent(void* data);			// Set data

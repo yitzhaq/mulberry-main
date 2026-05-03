@@ -140,6 +140,13 @@ void CPrefsAccountExtras::SetContent(void* data)
 	
 	// Disable if not in use
 	mIdentityPopup.EnableWindow(tie);
+
+	// Set drafts mailbox
+	if (maccount != NULL)
+	{
+		cdstring drafts = maccount->GetDraftsMailbox();
+		mDraftsPopup.SetSelectedMbox(drafts, drafts.empty(), false);
+	}
 }
 
 // Force update of data
@@ -156,12 +163,16 @@ bool CPrefsAccountExtras::UpdateContent(void* data)
 	{
 		maccount->SetTieIdentity(mTieIdentity);
 		maccount->SetTiedIdentity(mIdentityPopup.GetIdentity(new_prefs).GetIdentity());
+
+		cdstring drafts;
+		mDraftsPopup.GetSelectedMboxName(drafts, true);
+		maccount->SetDraftsMailbox(drafts);
 	}
 	else if (caccount != NULL)
 	{
 		caccount->SetTieIdentity(mTieIdentity);
 		caccount->SetTiedIdentity(mIdentityPopup.GetIdentity(new_prefs).GetIdentity());
 	}
-	
+
 	return true;
 }

@@ -228,6 +228,8 @@ private:
 	bool				mSendAgain;							// Message is being sent again
 	bool				mOriginalEncrypted;					// Original content was encrypted
 	bool				mMarkSaved;							// Has been saved at least once
+	unsigned long		mLastDraftUID;						// UID of last saved server draft
+	cdstring			mLastDraftMbox;						// Mailbox of last saved server draft
 	char*				mBounceHeader;						// Bouncing message's header
 	cdstring			mSavedAppendMbox;					// Name of append mailbox while server logged out
 	cdstring			mSignature;							// Last signature inserted
@@ -395,6 +397,7 @@ private:
 			void	CopyNow(CMbox* mbox, bool option_key);		// Copy it to mailbox now
 
 			void	DraftSaved();								// Draft was saved in some fashion
+		void	AutoSaveToServer();							// Auto-save draft to server (RFC 8508)
 			
 			bool	MissingAttachments();						// Check for missing attachments
 			bool	UnencryptedSend();							// Check for unencrypted send of originally encrypted content

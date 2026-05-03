@@ -136,6 +136,12 @@ void CIMAPClient::InitIMAPClient()
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
 	mHasID = false;
+	mHasMultiAppend = false;
+	mHasSpecialUse = false;
+	mHasReplace = false;
+	mMultiAppending = false;
+	mMultiAppendCount = 0;
+	mMultiAppendMbox = NULL;
 	mThreadResults = NULL;
 
 } // CIMAPClient::CIMAPClient
@@ -191,9 +197,16 @@ void CIMAPClient::_InitCapability()
 	mHasListStatus = false;
 	mHasStatusSize = false;
 	mHasSearchRes = false;
+	mHasMultiAppend = false;
+	mHasSpecialUse = false;
+	mHasReplace = false;
 	mSearchSaved = false;
 	mSavedSearchResults.clear();
 	mListStatusDone = false;
+	mMultiAppending = false;
+	mMultiAppendCount = 0;
+	mMultiAppendUIDs.clear();
+	mMultiAppendMbox = NULL;
 
 	mAuthLoginAllowed = false;
 	mAuthPlainAllowed = false;
@@ -249,6 +262,9 @@ void CIMAPClient::_ProcessCapability()
 	mHasListStatus = mLastResponse.CheckUntagged(cIMAP_LIST_STATUS, true);
 	mHasStatusSize = mLastResponse.CheckUntagged(cIMAP_STATUS_SIZE, false);
 	mHasSearchRes = mLastResponse.CheckUntagged(cIMAP_SEARCHRES, true);
+	mHasMultiAppend = mLastResponse.CheckUntagged(cIMAP_MULTIAPPEND, true);
+	mHasSpecialUse = mLastResponse.CheckUntagged(cIMAP_SPECIAL_USE, true);
+	mHasReplace = mLastResponse.CheckUntagged(cIMAP_REPLACE, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -961,6 +977,8 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 				return_opts += status_atts;
 				return_opts += ")";
 			}
+			if (mHasSpecialUse)
+				return_opts += " SPECIAL-USE";
 			INETSendString(" RETURN (");
 			INETSendString(return_opts);
 			INETSendString(")");
@@ -1037,8 +1055,8 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 			INETSendString(cSpace);
 			INETSendString(wd, eQueueProcess);
 
-			// Add RETURN options (RFC 5258 / RFC 5819)
-			if (mHasListExtended || mHasListStatus)
+			// Add RETURN options (RFC 5258 / RFC 5819 / RFC 6154)
+			if (mHasListExtended || mHasListStatus || mHasSpecialUse)
 			{
 				cdstring return_opts;
 				if (mHasListExtended)
@@ -1054,6 +1072,12 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 					return_opts += status_atts;
 					return_opts += ")";
 				}
+				if (mHasSpecialUse)
+				{
+					if (return_opts.length())
+						return_opts += " ";
+					return_opts += "SPECIAL-USE";
+				}
 				INETSendString(" RETURN (");
 				INETSendString(return_opts);
 				INETSendString(")");
@@ -1068,10 +1092,328 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 
 } // CIMAPClient::_FindAllMbox
 
+// Find only special-use mailboxes (RFC 6154)
+void CIMAPClient::_FindSpecialUseMbox(CMboxList* mboxes)
+{
+	if (!mHasSpecialUse || !mHasListExtended)
+		return;
+
+	mFindingSubs = false;
+	mCurrentWD = mboxes;
+	InitItemCtr();
+
+	INETStartSend("Status::IMAP::FindingAll", "Error::IMAP::OSErrFindAll", "Error::IMAP::NoBadFindAll");
+	INETSendString(cLIST);
+	INETSendString(" (SPECIAL-USE) \"\" \"");
+	INETSendString(cWILDCARD);
+	INETSendString("\"");
+	INETFinishSend();
+}
+
+// Start multiple append (RFC 3502)
+void CIMAPClient::_StartAppend(CMbox* mbox)
+{
+	if (!mHasMultiAppend)
+		return;
+
+	mMultiAppending = true;
+	mMultiAppendCount = 0;
+	mMultiAppendUIDs.clear();
+	mMultiAppendMbox = mbox;
+}
+
+// Stop multiple append (RFC 3502)
+void CIMAPClient::_StopAppend(CMbox* mbox)
+{
+	if (!mMultiAppending)
+		return;
+
+	// Reset state first so cleanup works even on exception
+	mMultiAppending = false;
+	CMbox* append_mbox = mMultiAppendMbox;
+	mMultiAppendMbox = NULL;
+
+	if (mMultiAppendCount == 0)
+		return;
+
+	mMultiAppendCount = 0;
+
+	// Read the final tagged response
+	INETFinishSend();
+
+	// Parse APPENDUID for multiple UIDs (RFC 4315 + RFC 3502)
+	if (mHasUIDPlus && mLastResponse.FindTagged(cAPPENDUID))
+	{
+		cdstring temp = mLastResponse.GetTagged();
+		char* p = ::strstrnocase(temp.c_str(), cAPPENDUID);
+		if (p)
+		{
+			p += ::strlen(cAPPENDUID);
+
+			unsigned long uidv = ::strtoul(p, &p, 10);
+
+			// Validate UIDValidity
+			if (append_mbox->HasStatus() &&
+				(append_mbox->GetUIDValidity() != uidv))
+			{
+				mMultiAppendUIDs.clear();
+			}
+			else
+			{
+				// Parse uid-set: comma-separated values or ranges
+				while (p && *p)
+				{
+					while (*p == ' ' || *p == ',')
+						p++;
+					if (!*p || !isdigit((unsigned char)*p))
+						break;
+
+					unsigned long uid1 = ::strtoul(p, &p, 10);
+					if (*p == ':')
+					{
+						p++;
+						unsigned long uid2 = ::strtoul(p, &p, 10);
+						for (unsigned long u = uid1; u <= uid2; u++)
+							mMultiAppendUIDs.push_back(u);
+					}
+					else
+					{
+						mMultiAppendUIDs.push_back(uid1);
+					}
+				}
+			}
+		}
+	}
+}
+
+// Build flags string for APPEND
+void CIMAPClient::BuildAppendFlags(CMessage* theMsg, cdstring& flags)
+{
+	if (mVersion < eIMAP4)
+		return;
+
+	flags += '(';
+	bool added = false;
+	if (theMsg->IsAnswered())
+	{
+		flags += cFLAGANSWERED;
+		added = true;
+	}
+	if (theMsg->IsFlagged())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGFLAGGED;
+		added = true;
+	}
+	if (theMsg->IsDeleted())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGDELETED;
+		added = true;
+	}
+	if (!theMsg->IsUnseen())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGSEEN;
+		added = true;
+	}
+	if (theMsg->IsDraft())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGDRAFT;
+		added = true;
+	}
+	if (theMsg->IsMDNSent())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGMDNSENT;
+		added = true;
+	}
+	if (theMsg->IsForwarded())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGFORWARDED;
+		added = true;
+	}
+	for(unsigned long i = 0; i < NMessage::eMaxLabels; i++)
+	{
+		if (theMsg->HasLabel(i))
+		{
+			if (added) flags += SPACE;
+			flags += CPreferences::sPrefs->mIMAPLabels.GetValue()[i];
+			added = true;
+		}
+	}
+
+	if (added)
+		flags += ")";
+	else
+		flags = cdstring::null_str;
+}
+
+// Build INTERNALDATE string for APPEND
+void CIMAPClient::BuildAppendDate(CMessage* theMsg, cdstring& internaldate)
+{
+	if (mVersion < eIMAP4)
+		return;
+
+	if (theMsg->GetInternalDate())
+	{
+		internaldate = "\"";
+		internaldate += CRFC822::GetIMAPDate(theMsg->GetInternalDate(), theMsg->GetInternalZone());
+		internaldate += "\"";
+	}
+}
+
+// Check APPENDLIMIT before sending (RFC 7889)
+void CIMAPClient::CheckAppendLimit(CMbox* mbox)
+{
+	uint64_t append_limit = mbox->GetAppendLimit();
+	if (append_limit == UINT64_MAX)
+		append_limit = GetMboxOwner()->GetAppendLimit();
+	if (append_limit != UINT64_MAX)
+	{
+		if (append_limit == 0)
+		{
+			cdstring error = rsrc::GetString("Error::IMAP::MessageTooBig");
+			error += "0 (server does not accept APPEND)";
+			::strcpy(mLineData, error.c_str());
+			CLOG_LOGTHROW(CINETException, CINETException::err_NoResponse);
+			throw CINETException(CINETException::err_NoResponse);
+		}
+		unsigned long msg_size = GetManualLiteralLength();
+		if ((uint64_t)msg_size > append_limit)
+		{
+			cdstring error = rsrc::GetString("Error::IMAP::MessageTooBig");
+			error += cdstring(msg_size);
+			::strcpy(mLineData, error.c_str());
+			CLOG_LOGTHROW(CINETException, CINETException::err_NoResponse);
+			throw CINETException(CINETException::err_NoResponse);
+		}
+	}
+}
+
+// Send flags, date, and literal for one message in an APPEND command
+void CIMAPClient::SendAppendMessage(CMessage* theMsg, const cdstring& flags, const cdstring& internaldate)
+{
+	INETSendString(cSpace, eQueueNoFlags);
+	if (flags.length())
+	{
+		INETSendString(flags, eQueueNoFlags);
+		INETSendString(cSpace, eQueueNoFlags);
+	}
+	if (internaldate.length())
+	{
+		INETSendString(internaldate, eQueueNoFlags);
+		INETSendString(cSpace, eQueueNoFlags);
+	}
+	mProcessMessage = theMsg;
+	INETSendString(NULL, eQueueManualLiteral);
+}
+
 // Append to mbox
 void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_uid, bool dummy_files)
 {
-	// Need to repeat this operation if it fails but connection is recovered
+	new_uid = 0;
+	mDummyFiles = dummy_files;
+
+	// Build flags and date strings
+	cdstring flags;
+	cdstring internaldate;
+	BuildAppendFlags(theMsg, flags);
+	BuildAppendDate(theMsg, internaldate);
+
+	// Check APPENDLIMIT (RFC 7889) before sending
+	mProcessMessage = theMsg;
+	CheckAppendLimit(mbox);
+
+	if (mMultiAppending)
+	{
+		// MULTIAPPEND mode (RFC 3502)
+		cdstring wd_name = mbox->GetName();
+		if (mVersion == eIMAP4rev1)
+			wd_name.ToModifiedUTF7(true);
+
+		if (mMultiAppendCount == 0)
+		{
+			// First message: send command prefix
+			INETStartSend("Status::IMAP::Appending", "Error::IMAP::OSErrAppend", "Error::IMAP::NoBadAppend", mbox->GetName());
+			INETSendString(cAPPEND, eQueueNoFlags);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(wd_name, eQueueProcess);
+		}
+
+		// Send this message's flags, date, and literal
+		SendAppendMessage(theMsg, flags, internaldate);
+		mMultiAppendCount++;
+		mProcessMessage = NULL;
+	}
+	else
+	{
+		// Single APPEND mode (original behavior)
+		unsigned long repeat = 2;
+		while(repeat--)
+		{
+			try
+			{
+				cdstring wd_name = mbox->GetName();
+				if (mVersion == eIMAP4rev1)
+					wd_name.ToModifiedUTF7(true);
+
+				// Send APPEND message to server
+				INETStartSend("Status::IMAP::Appending", "Error::IMAP::OSErrAppend", "Error::IMAP::NoBadAppend", mbox->GetName());
+				INETSendString(cAPPEND, eQueueNoFlags);
+				INETSendString(cSpace, eQueueNoFlags);
+				INETSendString(wd_name, eQueueProcess);
+				SendAppendMessage(theMsg, flags, internaldate);
+				INETFinishSend();
+
+				// Check APPENDUID status from OK response text
+				if (mHasUIDPlus && mLastResponse.FindTagged(cAPPENDUID))
+				{
+					cdstring temp = mLastResponse.GetTagged();
+					char* p = ::strstrnocase(temp.c_str(), cAPPENDUID);
+					if (p)
+					{
+						p += ::strlen(cAPPENDUID);
+
+						unsigned long uidv = ::strtoul(p, &p, 10);
+						unsigned long uid = ::strtoul(p, &p, 10);
+
+						// Must check UIDValidity
+						if (mbox->HasStatus() &&
+							(mbox->GetUIDValidity() != uidv))
+							new_uid = 0;
+						else
+							new_uid = uid;
+					}
+				}
+
+				mProcessMessage = NULL;
+
+				// Set count to zero to indicate success
+				repeat = 0;
+			}
+			catch(CNetworkException& ex)
+			{
+				CLOG_LOGCATCH(CNetworkException&);
+
+				// If it didn't recover the connection or no more loops throw out of here
+				// otherwise we will go through the loop one more time
+				if (!ex.reconnected() || !repeat)
+				{
+					CLOG_LOGRETHROW;
+					throw;
+				}
+			}
+		}
+	}
+
+} // CIMAPClient::_AppendMbox
+
+// Atomic message replacement (RFC 8508)
+void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* theMsg, unsigned long& new_uid, bool dummy_files)
+{
 	unsigned long repeat = 2;
 	while(repeat--)
 	{
@@ -1080,134 +1422,30 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 			new_uid = 0;
 			mDummyFiles = dummy_files;
 
-			// Get full name
+			cdstring flags;
+			cdstring internaldate;
+			BuildAppendFlags(theMsg, flags);
+			BuildAppendDate(theMsg, internaldate);
+
+			mProcessMessage = theMsg;
+			CheckAppendLimit(mbox);
+
 			cdstring wd_name = mbox->GetName();
 			if (mVersion == eIMAP4rev1)
 				wd_name.ToModifiedUTF7(true);
 
-			// If IMAP4 then set flags or internal date as well
-			cdstring flags;
-			cdstring internaldate;
-			if (mVersion >= eIMAP4)
-			{
-				flags += '(';
-				bool added = false;
-				if (theMsg->IsAnswered())
-				{
-					flags += cFLAGANSWERED;
-					added = true;
-				}
-				if (theMsg->IsFlagged())
-				{
-					if (added) flags += SPACE;
-					flags += cFLAGFLAGGED;
-					added = true;
-				}
-				if (theMsg->IsDeleted())
-				{
-					if (added) flags += SPACE;
-					flags += cFLAGDELETED;
-					added = true;
-				}
-				if (!theMsg->IsUnseen())
-				{
-					if (added) flags += SPACE;
-					flags += cFLAGSEEN;
-					added = true;
-				}
-				if (theMsg->IsDraft())
-				{
-					if (added) flags += SPACE;
-					flags += cFLAGDRAFT;
-					added = true;
-				}
-				if (theMsg->IsMDNSent())
-				{
-					if (added) flags += SPACE;
-					flags += cFLAGMDNSENT;
-					added = true;
-				}
-				if (theMsg->IsForwarded())
-				{
-					if (added) flags += SPACE;
-					flags += cFLAGFORWARDED;
-					added = true;
-				}
-				for(unsigned long i = 0; i < NMessage::eMaxLabels; i++)
-				{
-					if (theMsg->HasLabel(i))
-					{
-						if (added) flags += SPACE;
-						flags += CPreferences::sPrefs->mIMAPLabels.GetValue()[i];
-						added = true;
-					}
-				}
-
-				// Only add if flags specified
-				if (added)
-					flags += ")";
-				else
-					flags = cdstring::null_str;
-				
-				// Must have non-zero internal date
-				if (theMsg->GetInternalDate())
-				{
-					internaldate = "\"";
-					internaldate += CRFC822::GetIMAPDate(theMsg->GetInternalDate(), theMsg->GetInternalZone());
-					internaldate += "\"";
-				}
-			}
-
-			// Check APPENDLIMIT (RFC 7889) before sending
-			{
-				mProcessMessage = theMsg;
-				uint64_t append_limit = mbox->GetAppendLimit();
-				if (append_limit == UINT64_MAX)
-					append_limit = GetMboxOwner()->GetAppendLimit();
-				if (append_limit != UINT64_MAX)
-				{
-					if (append_limit == 0)
-					{
-						cdstring error = rsrc::GetString("Error::IMAP::MessageTooBig");
-						error += "0 (server does not accept APPEND)";
-						::strcpy(mLineData, error.c_str());
-						CLOG_LOGTHROW(CINETException, CINETException::err_NoResponse);
-						throw CINETException(CINETException::err_NoResponse);
-					}
-					unsigned long msg_size = GetManualLiteralLength();
-					if ((uint64_t)msg_size > append_limit)
-					{
-						cdstring error = rsrc::GetString("Error::IMAP::MessageTooBig");
-						error += cdstring(msg_size);
-						::strcpy(mLineData, error.c_str());
-						CLOG_LOGTHROW(CINETException, CINETException::err_NoResponse);
-						throw CINETException(CINETException::err_NoResponse);
-					}
-				}
-			}
-
-			// Send APPEND message to server
+			// Send UID REPLACE <uid> <mailbox> [flags] [date] {literal}
 			INETStartSend("Status::IMAP::Appending", "Error::IMAP::OSErrAppend", "Error::IMAP::NoBadAppend", mbox->GetName());
-			INETSendString(cAPPEND, eQueueNoFlags);
+			INETSendString(cUIDREPLACE, eQueueNoFlags);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(cdstring(old_uid), eQueueNoFlags);
 			INETSendString(cSpace, eQueueNoFlags);
 			INETSendString(wd_name, eQueueProcess);
-			INETSendString(cSpace, eQueueNoFlags);
-			if (flags.length())
-			{
-				INETSendString(flags, eQueueNoFlags);
-				INETSendString(cSpace, eQueueNoFlags);
-			}
-			if (internaldate.length())
-			{
-				INETSendString(internaldate, eQueueNoFlags);
-				INETSendString(cSpace, eQueueNoFlags);
-			}
-			mProcessMessage = theMsg;
-			INETSendString(NULL, eQueueManualLiteral);
+			SendAppendMessage(theMsg, flags, internaldate);
 			INETFinishSend();
 
-			// Check APPENDUID status from OK response text
-			if (mLastResponse.FindTagged(cAPPENDUID))
+			// Parse APPENDUID from OK response (same as APPEND)
+			if (mHasUIDPlus && mLastResponse.FindTagged(cAPPENDUID))
 			{
 				cdstring temp = mLastResponse.GetTagged();
 				char* p = ::strstrnocase(temp.c_str(), cAPPENDUID);
@@ -1218,7 +1456,6 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 					unsigned long uidv = ::strtoul(p, &p, 10);
 					unsigned long uid = ::strtoul(p, &p, 10);
 
-					// Must check UIDValidity
 					if (mbox->HasStatus() &&
 						(mbox->GetUIDValidity() != uidv))
 						new_uid = 0;
@@ -1228,16 +1465,12 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 			}
 
 			mProcessMessage = NULL;
-			
-			// Set count to zero to indicate success
 			repeat = 0;
 		}
 		catch(CNetworkException& ex)
 		{
 			CLOG_LOGCATCH(CNetworkException&);
 
-			// If it didn't recover the connection or no more loops throw out of here
-			// otherwise we wll go through the loop one more time
 			if (!ex.reconnected() || !repeat)
 			{
 				CLOG_LOGRETHROW;
@@ -1245,8 +1478,7 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 			}
 		}
 	}
-
-} // CIMAPClient::_AppendMbox
+}
 
 // Search messages on the server
 void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool uids)
@@ -2899,6 +3131,7 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 {
 	char* p;
 	NMbox::EFlags new_flags = NMbox::eNone;
+	unsigned char special_use = CMbox::eSpecialNone;
 
 	// Look for bracket
 	p = ::strmatchbra(txt);
@@ -2939,6 +3172,22 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		else if (CheckStrAdv(&p, cMBOXFLAGNONEXISTENT))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eNoSelect);
 
+		// RFC 6154 Special-Use attributes
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_ALL))
+			special_use |= CMbox::eSpecialAll;
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_ARCHIVE))
+			special_use |= CMbox::eSpecialArchive;
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_DRAFTS))
+			special_use |= CMbox::eSpecialDrafts;
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_FLAGGED))
+			special_use |= CMbox::eSpecialFlagged;
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_JUNK))
+			special_use |= CMbox::eSpecialJunk;
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_SENT))
+			special_use |= CMbox::eSpecialSent;
+		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_TRASH))
+			special_use |= CMbox::eSpecialTrash;
+
 		else
 		{
 			// Unknown flag - ignore
@@ -2963,7 +3212,7 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 	// only fall back to the lsub parameter if \Subscribed was not seen.
 	if (!(new_flags & NMbox::eSubscribed))
 		mFindingSubs = lsub;
-	IMAPParseMailbox(txt, *delim, new_flags);
+	IMAPParseMailbox(txt, *delim, new_flags, special_use);
 
 	// Skip any extended data items after mailbox name (RFC 5258)
 	if (txt && *txt)
@@ -2986,7 +3235,7 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 } // CIMAPClient::IMAPParseList
 
 // Parse mailbox message
-void CIMAPClient::IMAPParseMailbox(char** txt, char delim, NMbox::EFlags mbox_flags)
+void CIMAPClient::IMAPParseMailbox(char** txt, char delim, NMbox::EFlags mbox_flags, unsigned char special_use)
 {
 	CMbox* mbox = NULL;
 	bool isWDMbox = false;
@@ -3050,6 +3299,8 @@ void CIMAPClient::IMAPParseMailbox(char** txt, char delim, NMbox::EFlags mbox_fl
 				// Always reset dir delim and flags
 				inbox->SetDirDelim(delim);
 				inbox->SetListFlags(mbox_flags);
+				if (special_use)
+					inbox->SetSpecialUse(special_use);
 
 				return;
 			}
@@ -3080,6 +3331,8 @@ void CIMAPClient::IMAPParseMailbox(char** txt, char delim, NMbox::EFlags mbox_fl
 		// Always create
 		mbox = new CMbox(GetMboxOwner(), mbox_name, delim, mCurrentWD, mFindingSubs);
 		mbox->SetFlags(mbox_flags);
+		if (special_use)
+			mbox->SetSpecialUse(special_use);
 
 		// Add to its list - maybe deleted if duplicate
 		mbox = mbox->AddMbox();

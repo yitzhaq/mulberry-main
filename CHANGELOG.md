@@ -101,6 +101,28 @@ X11 bitmap fonts).
   eliminating client-side base64/QP decoding and reducing
   attachment bandwidth by ~25%. Includes literal8 (~{size})
   response parsing.
+- IMAP MULTIAPPEND (RFC 3502). Upload multiple messages in a
+  single APPEND command with server-guaranteed atomicity. Reduces
+  round-trips when copying messages between servers. Falls back to
+  individual APPENDs on servers without MULTIAPPEND support.
+- IMAP SPECIAL-USE (RFC 6154). Parse server-advertised special-use
+  mailbox attributes (\Drafts, \Sent, \Trash, \Junk, \Archive,
+  \All, \Flagged) from LIST responses. Auto-configures identity
+  Copy-To from \Sent and per-account Drafts mailbox from \Drafts
+  when not already configured. Adds per-account Drafts mailbox
+  preference. Supports both RETURN (SPECIAL-USE) and selection
+  option. This completes all 15 mandatory IMAP4rev2 extensions.
+  Win32/MacOS Drafts preference UI requires dialog resource updates.
+- IMAP REPLACE (RFC 8508). Atomic draft message replacement,
+  eliminating duplicate drafts when saving repeatedly. Falls back
+  to APPEND + delete on servers without REPLACE support. Draft UID
+  persisted across sessions in local safety-save files on all
+  platforms. Opened drafts seed the UID for seamless re-save.
+- Server-side draft auto-save. When a per-account Drafts mailbox
+  is configured (manually or auto-detected via SPECIAL-USE),
+  periodic auto-save now saves to the server in addition to local
+  disk. Uses REPLACE for atomic updates when available, APPEND +
+  delete otherwise. Server draft automatically cleaned up on send.
 - SMTP PIPELINING (RFC 2920). Send MAIL FROM and RCPT TO commands
   in a single batch, reducing latency by (N-1) round-trips for N
   recipients. Falls back to synchronous on servers without support.

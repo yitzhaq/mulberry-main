@@ -304,6 +304,7 @@ CLetterWindow::CLetterWindow()
 	mSendAgain = false;
 	mOriginalEncrypted = false;
 	mMarkSaved = false;
+	mLastDraftUID = 0;
 	mBounceHeader = NULL;
 	mPartsTableAlign = NULL;
 	
@@ -2000,6 +2001,18 @@ void CLetterWindow::Serialize(CArchive& ar)
 			field = temp;
 		}
 
+		// Read draft UID for REPLACE (RFC 8508)
+		if (field.compare_start(cHDR_XMULBERRY_DRAFTUID))
+		{
+			mLastDraftUID = ::strtoul(&field[sizeof(cHDR_XMULBERRY_DRAFTUID) - 1], NULL, 10);
+			ar.ReadString(temp);
+			field = temp;
+			if (field.compare_start(cHDR_XMULBERRY_DRAFTMBOX))
+				mLastDraftMbox = &field[sizeof(cHDR_XMULBERRY_DRAFTMBOX) - 1];
+			ar.ReadString(temp);
+			field = temp;
+		}
+
 		if (field.compare_start(cHDR_MIME_TYPE))
 		{
 			mBody->GetContent().SetContent(&field[sizeof(cHDR_MIME_TYPE) - 1]);
@@ -2113,6 +2126,17 @@ void CLetterWindow::Serialize(CArchive& ar)
 			ar.WriteString(cdstring(cHDR_COPYTO).win_str());
 			ar.WriteString(copy_to.win_str());
 			ar.WriteString(_T("\r\n"));
+
+			// Get draft UID for REPLACE (RFC 8508)
+			if (mLastDraftUID != 0)
+			{
+				ar.WriteString(cdstring(cHDR_XMULBERRY_DRAFTUID).win_str());
+				ar.WriteString(cdstring(mLastDraftUID).win_str());
+				ar.WriteString(_T("\r\n"));
+				ar.WriteString(cdstring(cHDR_XMULBERRY_DRAFTMBOX).win_str());
+				ar.WriteString(mLastDraftMbox.win_str());
+				ar.WriteString(_T("\r\n"));
+			}
 
 			// Get content type/subtype
 			ar.WriteString(cdstring(cHDR_MIME_TYPE).win_str());

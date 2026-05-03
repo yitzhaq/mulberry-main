@@ -92,6 +92,11 @@ public:
 								CMessage* theMsg,
 								unsigned long& new_uid,
 								bool dummy_files = false) = 0;		// Do append message to mbox
+	virtual void	_ReplaceMessage(unsigned long old_uid,
+								CMbox* mbox,
+								CMessage* theMsg,
+								unsigned long& new_uid,
+								bool dummy_files = false) {}		// Atomic message replacement (RFC 8508)
 	virtual void	_SetUIDValidity(unsigned long uidv) = 0;	// Set the UIDValidity
 	virtual void	_SetUIDNext(unsigned long uidn) = 0;	// Set the UIDNext
 	virtual void	_SetLastSync(unsigned long sync) = 0;	// Set the time of the last sync operation
@@ -148,6 +153,7 @@ public:
 									bool use_saved = false) {}		// Move message (default: no-op)
 	virtual bool	_HasMove() const { return false; }				// Does server support MOVE?
 	virtual bool	_HasBinary() const { return false; }			// Does server support BINARY?
+	virtual bool	_HasReplace() const { return false; }		// Does server support REPLACE?
 
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
 									bool use_saved = false) = 0;	// Expunge uids

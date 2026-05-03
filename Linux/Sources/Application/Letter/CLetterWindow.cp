@@ -173,6 +173,7 @@ CLetterWindow::CLetterWindow(JXDirector* owner) :
 	mSendAgain = false;
 	mOriginalEncrypted = false;
 	mMarkSaved = false;
+	mLastDraftUID = 0;
 	mExternalEdit = false;
 	mExternalEditProcess = NULL;
 	mBounceHeader = NULL;
@@ -526,6 +527,9 @@ void CLetterWindow::SaveTemporary()
 		
 		// Reset timer
 		ResetAutoSaveTimer();
+
+		// Auto-save to server (RFC 8508 REPLACE)
+		AutoSaveToServer();
 	}
 	catch(...)
 	{
@@ -2082,6 +2086,16 @@ void CLetterWindow::ReadTextFile(std::istream& input)
 		::getline(input, txt);
 	}
 
+	// Read draft UID for REPLACE (RFC 8508)
+	if (::strncmp(txt, cHDR_XMULBERRY_DRAFTUID, sizeof(cHDR_XMULBERRY_DRAFTUID) - 1) == 0)
+	{
+		mLastDraftUID = ::strtoul(txt.c_str() + sizeof(cHDR_XMULBERRY_DRAFTUID) - 1, NULL, 10);
+		::getline(input, txt);
+		if (::strncmp(txt, cHDR_XMULBERRY_DRAFTMBOX, sizeof(cHDR_XMULBERRY_DRAFTMBOX) - 1) == 0)
+			mLastDraftMbox = txt.c_str() + sizeof(cHDR_XMULBERRY_DRAFTMBOX) - 1;
+		::getline(input, txt);
+	}
+
 	if (::strncmp(txt, cHDR_MIME_TYPE, sizeof(cHDR_MIME_TYPE) - 1) == 0)
 	{
 		mBody->GetContent().SetContent(txt.c_str() + sizeof(cHDR_MIME_TYPE) - 1);
@@ -2193,6 +2207,17 @@ void CLetterWindow::WriteTextFile(std::ostream& output, const JBoolean safetySav
 		output << cHDR_COPYTO;
 		output << copy_to;
 		output << os_endl;
+
+		// Get draft UID for REPLACE (RFC 8508)
+		if (mLastDraftUID != 0)
+		{
+			output << cHDR_XMULBERRY_DRAFTUID;
+			output << mLastDraftUID;
+			output << os_endl;
+			output << cHDR_XMULBERRY_DRAFTMBOX;
+			output << mLastDraftMbox;
+			output << os_endl;
+		}
 
 		// Get content type/subtype
 		output << cHDR_MIME_TYPE;

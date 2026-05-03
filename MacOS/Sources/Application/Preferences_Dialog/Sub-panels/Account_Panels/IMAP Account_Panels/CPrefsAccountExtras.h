@@ -29,6 +29,7 @@
 const	PaneIDT		paneid_PrefsAccountExtras = 5029;
 const	PaneIDT		paneid_AccountExtrasTieIdentity = 'FIRS';
 const	PaneIDT		paneid_AccountExtrasIdentityPopup = 'IDEN';
+const	PaneIDT		paneid_AccountExtrasDraftsPopup = 'DRFT';
 
 // Mesages
 const	MessageT	msg_AccountExtrasTieIdentity = 'FIRS';
@@ -39,6 +40,7 @@ const	ResIDT		RidL_CPrefsAccountExtrasBtns = 5029;
 
 // Classes
 class CIdentityPopup;
+class CMailboxPopup;
 class LCheckBox;
 
 class	CPrefsAccountExtras : public CPrefsTabSubPanel, public LListener
@@ -46,6 +48,7 @@ class	CPrefsAccountExtras : public CPrefsTabSubPanel, public LListener
 private:
 	LCheckBox*			mTieIdentity;
 	CIdentityPopup*		mIdentityPopup;
+	CMailboxPopup*		mDraftsPopup;
 
 public:
 	enum { class_ID = 'Axtr' };

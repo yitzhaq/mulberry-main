@@ -190,6 +190,7 @@ void CMbox::InitMbox()
 	//mFlags = eNoInferiors;	// <-- this is difficult because it excludes creation of sub-hierarchies
 								// on servers that accept it.
 	mFlags = eNone;				// Changed so that creation is allowed, but my fail on some servers
+	mSpecialUse = eSpecialNone;
 	mDirDelim = 0;
 
 	mStatusInfo = NULL;
@@ -2970,6 +2971,53 @@ void CMbox::AppendMessage(CMessage* msg, unsigned long& new_uid, bool dummy_file
 #endif
 
 } // CMbox::AppendMessage
+
+// Replace message atomically (RFC 8508)
+void CMbox::ReplaceMessage(unsigned long old_uid, CMessage* msg, unsigned long& new_uid, bool dummy_files)
+{
+	bool did_open = OpenIfOpen();
+
+	bool use_open = did_open && (mMailer->IsOffline() || !msg->GetBody()->TestOwnership(this));
+
+	try
+	{
+		if (use_open)
+		{
+			mOpenInfo->mMsgMailer->ReplaceMessage(old_uid, this, msg, new_uid, dummy_files);
+
+			if (!IsSynchronising())
+				Check(true);
+		}
+		else
+		{
+			if (!mMailer->IsLoggedOn())
+			{
+				CMailAccountManager::sMailAccountManager->StartProtocol(mMailer);
+
+				if (!mMailer->IsLoggedOn())
+				{
+					CLOG_LOGTHROW(CGeneralException, -1L);
+					throw CGeneralException(-1L);
+				}
+			}
+
+			mMailer->ReplaceMessage(old_uid, this, msg, new_uid, dummy_files);
+		}
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+
+		if (did_open)
+			Close();
+
+		CLOG_LOGRETHROW;
+		throw;
+	}
+
+	if (did_open)
+		Close();
+}
 
 // Get the requested message
 CMessage* CMbox::GetMessage(unsigned long msg_num, bool sorted)

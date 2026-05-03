@@ -54,6 +54,19 @@ public:
 	typedef cdomutex<CMbox>::trylock_cdomutex mbox_trylock;	// Mailbox mutex try lock type
 	static mbox_mutex	_smutex;							// Used for multithreaded locks
 
+	// RFC 6154 Special-Use attributes
+	enum ESpecialUse
+	{
+		eSpecialNone    = 0,
+		eSpecialAll     = 1 << 0,
+		eSpecialArchive = 1 << 1,
+		eSpecialDrafts  = 1 << 2,
+		eSpecialFlagged = 1 << 3,
+		eSpecialJunk    = 1 << 4,
+		eSpecialSent    = 1 << 5,
+		eSpecialTrash   = 1 << 6
+	};
+
 protected:
 
 	class CMboxOpen
@@ -117,6 +130,7 @@ protected:
 	// Used when in list
 	CMboxList*			mMboxList;					// Owning list
 	SBitFlags			mFlags;						// Mailbox flags
+	unsigned char		mSpecialUse;				// RFC 6154 special-use attributes
 
 	// Used for properties
 	CMboxStatus*		mStatusInfo;
@@ -178,6 +192,16 @@ public:
 	void	SetListFlags(EFlags new_flags);						// Set list flags only
 	EFlags	GetFlags() const								// Get flags
 				{ return (EFlags) mFlags.Get(); }
+
+	// RFC 6154 special-use
+	void	SetSpecialUse(unsigned char attrs)
+				{ mSpecialUse = attrs; }
+	void	AddSpecialUse(ESpecialUse attr)
+				{ mSpecialUse |= attr; }
+	unsigned char	GetSpecialUse() const
+				{ return mSpecialUse; }
+	bool	IsSpecialUse(ESpecialUse attr) const
+				{ return (mSpecialUse & attr) != 0; }
 
 	void	SetAllowedFlags(NMessage::EFlags new_flags)			// Set flags
 				{ if (mStatusInfo) mStatusInfo->mAllowedFlags = new_flags; }
@@ -507,6 +531,10 @@ public:
 							unsigned long& new_uid,
 							bool dummy_files = false,
 							bool doMRU = true);				// Append the specified message
+	void	ReplaceMessage(unsigned long old_uid,
+							CMessage* msg,
+							unsigned long& new_uid,
+							bool dummy_files = false);		// Replace message atomically (RFC 8508)
 
 	CMessage*	GetMessage(unsigned long msg_num,
 							bool sorted = false);			// Get the specified message

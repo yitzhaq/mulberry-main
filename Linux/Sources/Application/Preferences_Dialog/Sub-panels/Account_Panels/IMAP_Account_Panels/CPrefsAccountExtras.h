@@ -24,6 +24,7 @@
 
 // Classes
 class CIdentityPopup;
+class CMailboxPopup;
 class JXTextCheckbox;
 
 class CPrefsAccountExtras : public CTabPanel
@@ -48,6 +49,8 @@ protected:
     CIdentityPopup* mIdentityPopup;
 
 // end JXLayout1
+
+	CMailboxPopup*  mDraftsPopup;
 
 	virtual void Receive(JBroadcaster* sender, const Message& message);
 };

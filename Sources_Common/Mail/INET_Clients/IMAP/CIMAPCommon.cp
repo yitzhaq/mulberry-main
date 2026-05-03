@@ -64,6 +64,9 @@ const char* cIMAP_IDLE =				"IDLE";
 const char* cIMAP_BINARY =				"BINARY";
 const char* cIMAP_SORT_DISPLAY =		"SORT=DISPLAY";
 const char* cIMAP_ESORT =				"ESORT";
+const char* cIMAP_MULTIAPPEND =		"MULTIAPPEND";
+const char* cIMAP_SPECIAL_USE =		"SPECIAL-USE";
+const char* cIMAP_REPLACE =			"REPLACE";
 const char* cRETURN_SAVE_ALL =			" RETURN (SAVE ALL)";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
@@ -105,6 +108,7 @@ const char* cUIDFETCH					= "UID FETCH";
 const char* cUIDSTORE					= "UID STORE";
 const char* cUIDSEARCH					= "UID SEARCH";
 const char* cUIDEXPUNGE					= "UID EXPUNGE";
+const char* cUIDREPLACE					= "UID REPLACE";
 
 // Unsolicitied
 const char* cFLAGS =					"FLAGS";
@@ -185,6 +189,15 @@ const char* cMBOXFLAGUNMARKEDHASCHILDREN =		"\\HasChildren";
 const char* cMBOXFLAGUNMARKEDHASNOCHILDREN =	"\\HasNoChildren";
 const char* cMBOXFLAGSUBSCRIBED =				"\\Subscribed";
 const char* cMBOXFLAGNONEXISTENT =				"\\NonExistent";
+
+// RFC 6154 Special-Use attributes
+const char* cMBOXFLAGSPECIAL_ALL =				"\\All";
+const char* cMBOXFLAGSPECIAL_ARCHIVE =			"\\Archive";
+const char* cMBOXFLAGSPECIAL_DRAFTS =			"\\Drafts";
+const char* cMBOXFLAGSPECIAL_FLAGGED =			"\\Flagged";
+const char* cMBOXFLAGSPECIAL_JUNK =			"\\Junk";
+const char* cMBOXFLAGSPECIAL_SENT =			"\\Sent";
+const char* cMBOXFLAGSPECIAL_TRASH =			"\\Trash";
 
 // STATUS bits
 const char* cSTATUS_MESSAGES =			"MESSAGES";

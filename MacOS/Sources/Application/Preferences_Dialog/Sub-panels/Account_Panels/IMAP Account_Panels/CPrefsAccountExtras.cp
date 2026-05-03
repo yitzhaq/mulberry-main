@@ -22,6 +22,7 @@
 #include "CCalendarAccount.h"
 #include "CIdentityPopup.h"
 #include "CMailAccount.h"
+#include "CMailboxPopup.h"
 #include "CPreferencesDialog.h"
 
 #include <LCheckBox.h>
@@ -55,6 +56,7 @@ void CPrefsAccountExtras::FinishCreateSelf(void)
 	// Get controls
 	mTieIdentity = (LCheckBox*) FindPaneByID(paneid_AccountExtrasTieIdentity);
 	mIdentityPopup = (CIdentityPopup*) FindPaneByID(paneid_AccountExtrasIdentityPopup);
+	mDraftsPopup = (CMailboxPopup*) FindPaneByID(paneid_AccountExtrasDraftsPopup);
 
 	// Link controls to this window
 	UReanimator::LinkListenerToBroadcasters(this, this, RidL_CPrefsAccountExtrasBtns);
@@ -141,6 +143,13 @@ void CPrefsAccountExtras::SetData(void* data)
 	// Disable if not in use
 	if (!tie)
 		mIdentityPopup->Disable();
+
+	// Set drafts mailbox
+	if (maccount != NULL && mDraftsPopup)
+	{
+		cdstring drafts = maccount->GetDraftsMailbox();
+		mDraftsPopup->SetSelectedMbox(drafts, drafts.empty(), false);
+	}
 }
 
 // Force update of prefs
@@ -159,6 +168,13 @@ void CPrefsAccountExtras::UpdateData(void* data)
 	{
 		maccount->SetTieIdentity(mTieIdentity->GetValue());
 		maccount->SetTiedIdentity(mIdentityPopup->GetIdentity(new_prefs).GetIdentity());
+
+		if (mDraftsPopup)
+		{
+			cdstring drafts;
+			mDraftsPopup->GetSelectedMboxName(drafts, true);
+			maccount->SetDraftsMailbox(drafts);
+		}
 	}
 	else if (caccount != NULL)
 	{

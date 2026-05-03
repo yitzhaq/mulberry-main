@@ -109,6 +109,9 @@ void CLetterDoc::SaveTemporary()
 		
 		// Reset timer
 		mLtrWnd->ResetAutoSaveTimer();
+
+		// Auto-save to server (RFC 8508 REPLACE)
+		mLtrWnd->AutoSaveToServer();
 	}
 	catch(...)
 	{

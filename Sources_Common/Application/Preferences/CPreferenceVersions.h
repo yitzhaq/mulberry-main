@@ -43,5 +43,6 @@
 #define VERS_3_1_0_B_3	0x03106003
 #define VERS_3_1_0_B_5	0x03106005
 #define VERS_4_1_0_A_1	0x04104001
+#define VERS_4_2_0_A_1	0x04204001
 
 #endif

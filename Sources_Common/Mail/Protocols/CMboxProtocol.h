@@ -182,6 +182,9 @@ public:
 		{ return mHierarchies; }
 			long GetHierarchyIndex(const CMboxList* list) const;
 
+			CMbox*	FindSpecialUse(unsigned char special_use_attr) const;
+			void	AutoConfigureSpecialUse();
+
 			bool	ShowSubscribed() const
 		{ return mFlags.IsSet(eShowSubscribed); }
 			void	SetShowSubscribed(bool show, bool clear = true);
@@ -280,6 +283,13 @@ public:
 								bool subscribe);
 
 			bool	HasBinary() const;						// Does server support BINARY?
+			bool	HasReplace() const;						// Does server support REPLACE?
+
+			void	ReplaceMessage(unsigned long old_uid,
+								CMbox* mbox,
+								CMessage* theMsg,
+								unsigned long& new_uid,
+								bool dummy_files = false);	// Atomic message replacement (RFC 8508)
 
 protected:
 	CMbox*				mINBOX;								// INBOX

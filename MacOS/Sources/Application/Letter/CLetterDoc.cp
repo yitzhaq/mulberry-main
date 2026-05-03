@@ -1058,6 +1058,9 @@ void CLetterDoc::SaveTemporary()
 		
 		// Reset timer
 		mAutoSaveTime = ::time(NULL);
+
+		// Auto-save to server (RFC 8508 REPLACE)
+		static_cast<CLetterWindow*>(mWindow)->AutoSaveToServer();
 	}
 	catch (const PP_PowerPlant::LException& ex)
 	{

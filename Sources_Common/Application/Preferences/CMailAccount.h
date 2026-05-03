@@ -219,7 +219,12 @@ public:
 		{ return mTiedIdentity; }
 	void SetTiedIdentity(const cdstring& id)
 		{ mTiedIdentity = id; }
-	
+
+	const cdstring& GetDraftsMailbox() const
+		{ return mDraftsMailbox; }
+	void SetDraftsMailbox(const cdstring& mbox)
+		{ mDraftsMailbox = mbox; }
+
 	CIdentity& GetAccountIdentity() const;
 
 	virtual cdstring GetInfo() const;
@@ -232,6 +237,7 @@ protected:
 	bool				mSubsExpanded;
 	bool				mTieIdentity;
 	cdstring			mTiedIdentity;
+	cdstring			mDraftsMailbox;
 	CFutureItems		mFuture;
 
 private:

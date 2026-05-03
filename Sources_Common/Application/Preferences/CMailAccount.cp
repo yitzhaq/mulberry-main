@@ -197,6 +197,7 @@ void CMailAccount::_copy(const CMailAccount& copy)
 	mSubsExpanded = copy.mSubsExpanded;
 	mTieIdentity = copy.mTieIdentity;
 	mTiedIdentity = copy.mTiedIdentity;
+	mDraftsMailbox = copy.mDraftsMailbox;
 	mFuture = copy.mFuture;
 }
 
@@ -209,7 +210,8 @@ int CMailAccount::operator==(const CMailAccount& comp) const
 			(mSubsHierarchic == comp.mSubsHierarchic) &&
 			(mSubsExpanded == comp.mSubsExpanded) &&
 			(mTieIdentity == comp.mTieIdentity) &&
-			(mTiedIdentity == comp.mTiedIdentity);
+			(mTiedIdentity == comp.mTiedIdentity) &&
+			(mDraftsMailbox == comp.mDraftsMailbox);
 }
 
 // New account being created
@@ -371,6 +373,12 @@ cdstring CMailAccount::GetInfo() const
 	temp.quote();
 	temp.ConvertFromOS();
 	info += temp;
+	info += cSpace;
+
+	temp = mDraftsMailbox;
+	temp.quote();
+	temp.ConvertFromOS();
+	info += temp;
 
 	info += mFuture.GetInfo();
 
@@ -476,6 +484,10 @@ bool CMailAccount::SetInfo(char_stream& txt, NumVersion vers_prefs)
 		txt.get(mSubsExpanded);
 		txt.get(mTieIdentity);
 		txt.get(mTiedIdentity, true);
+
+		// >= v4.2a1
+		if (VersionTest(vers_prefs, VERS_4_2_0_A_1) >= 0)
+			txt.get(mDraftsMailbox, true);
 
 		mFuture.SetInfo(txt, vers_prefs);
 
