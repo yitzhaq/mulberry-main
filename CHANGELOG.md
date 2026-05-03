@@ -130,6 +130,8 @@ X11 bitmap fonts).
 - IMAP Response Codes (RFC 5530). Human-readable explanations for
   17 standard error response codes (AUTHENTICATIONFAILED, NOPERM,
   OVERQUOTA, NONEXISTENT, etc.) appended to server error messages.
+- IMAP INPROGRESS (RFC 9585). Server progress notifications for
+  long-running commands displayed in the status bar.
 - SMTP PIPELINING (RFC 2920). Send MAIL FROM and RCPT TO commands
   in a single batch, reducing latency by (N-1) round-trips for N
   recipients. Falls back to synchronous on servers without support.

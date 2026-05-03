@@ -1836,6 +1836,53 @@ void CINETClient::INETParseResponse(char** txt, CINETClientResponse* response)
 		{
 			response->code = cStarOK;
 			response->AddUntagged(*txt);
+
+			// RFC 9585 INPROGRESS: update status bar with progress
+			const char* ip = ::strstrnocase(*txt, "[INPROGRESS");
+			if (ip)
+			{
+				ip += 11; // skip "[INPROGRESS"
+				while (*ip == ' ') ip++;
+				if (*ip == '(')
+				{
+					ip++;
+					// Skip tag (quoted string or NIL)
+					if (*ip == '"')
+					{
+						ip++;
+						while (*ip && *ip != '"') ip++;
+						if (*ip == '"') ip++;
+					}
+					else if (::strncmpnocase(ip, "NIL", 3) == 0)
+						ip += 3;
+					while (*ip == ' ') ip++;
+
+					// Parse progress and goal
+					unsigned long progress = 0;
+					unsigned long goal = 0;
+					bool has_progress = false;
+					bool has_goal = false;
+
+					if (::strncmpnocase(ip, "NIL", 3) != 0)
+					{
+						progress = ::strtoul(ip, const_cast<char**>(&ip), 10);
+						has_progress = true;
+					}
+					else
+						ip += 3;
+					while (*ip == ' ') ip++;
+					if (::strncmpnocase(ip, "NIL", 3) != 0)
+					{
+						goal = ::strtoul(ip, const_cast<char**>(&ip), 10);
+						has_goal = true;
+					}
+
+					if (has_progress && has_goal && goal > 0)
+						CStatusWindow::SetIMAPStatus2("Status::IMAP::Progress", progress, goal);
+					else if (has_progress)
+						CStatusWindow::SetIMAPStatus1("Status::IMAP::ProgressCount", progress);
+				}
+			}
 		}
 		else if (::stradvtokcmp(txt,cNO) == 0)
 		{
