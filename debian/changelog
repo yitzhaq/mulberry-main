@@ -60,7 +60,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
     STATUS=SIZE (8438), SEARCHRES (5182), SORT=DISPLAY (5957),
     ESORT (5267 partial), SORT=DISPLAY (5957), WITHIN (5032),
     BINARY (3516), MULTIAPPEND (3502), SPECIAL-USE (6154),
-    REPLACE (8508), $Important (8457), IDLE (2177),
+    REPLACE (8508), $Important (8457), Response Codes (5530),
+    IDLE (2177),
     SMTP PIPELINING (2920),
     SMTP ENHANCEDSTATUSCODES (2034/3463),
     RFC 5322 line length compliance

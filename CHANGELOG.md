@@ -127,6 +127,9 @@ X11 bitmap fonts).
   (RFC 8457). Recognizes server-assessed message importance
   (distinct from user-set \Flagged). Keyword preserved across
   COPY, MOVE, APPEND, and REPLACE operations.
+- IMAP Response Codes (RFC 5530). Human-readable explanations for
+  17 standard error response codes (AUTHENTICATIONFAILED, NOPERM,
+  OVERQUOTA, NONEXISTENT, etc.) appended to server error messages.
 - SMTP PIPELINING (RFC 2920). Send MAIL FROM and RCPT TO commands
   in a single batch, reducing latency by (N-1) round-trips for N
   recipients. Falls back to synchronous on servers without support.

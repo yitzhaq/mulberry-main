@@ -1994,6 +1994,46 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 		nex->sethandled();
 }
 
+// RFC 5530 response code explanations
+static const char* GetResponseCodeExplanation(const cdstring& tag_msg)
+{
+	struct SResponseCode
+	{
+		const char* code;
+		const char* explanation;
+	};
+
+	static const SResponseCode cResponseCodes[] =
+	{
+		{ "[UNAVAILABLE]",          "Server temporarily unavailable" },
+		{ "[AUTHENTICATIONFAILED]", "Authentication failed (invalid credentials)" },
+		{ "[AUTHORIZATIONFAILED]",  "Authorization failed (access denied)" },
+		{ "[EXPIRED]",              "Password has expired" },
+		{ "[PRIVACYREQUIRED]",      "Encryption (TLS) required for this operation" },
+		{ "[CONTACTADMIN]",         "Contact your system administrator" },
+		{ "[NOPERM]",               "Insufficient permissions" },
+		{ "[INUSE]",                "Resource is in use by another session" },
+		{ "[EXPUNGEISSUED]",        "Another client has expunged messages" },
+		{ "[CORRUPTION]",           "Server detected data corruption" },
+		{ "[SERVERBUG]",            "Server internal error" },
+		{ "[CLIENTBUG]",            "Server reports client protocol error" },
+		{ "[CANNOT]",               "Operation not permitted by server policy" },
+		{ "[LIMIT]",                "Server implementation limit reached" },
+		{ "[OVERQUOTA]",            "Quota exceeded" },
+		{ "[ALREADYEXISTS]",        "Mailbox or resource already exists" },
+		{ "[NONEXISTENT]",          "Mailbox or resource does not exist" },
+		{ NULL, NULL }
+	};
+
+	for (const SResponseCode* rc = cResponseCodes; rc->code; rc++)
+	{
+		if (::strstrnocase(tag_msg, rc->code) != NULL)
+			return rc->explanation;
+	}
+
+	return NULL;
+}
+
 // Handle an error condition
 void CINETClient::INETDisplayError(std::exception& ex, const char* err_id, const char* nobad_id)
 {
@@ -2047,6 +2087,13 @@ void CINETClient::INETDisplayError(CINETException& ex, const char* err_id, const
 	default:
 		{
 			cdstring err = mLastResponse.tag_msg;
+			const char* explanation = GetResponseCodeExplanation(err);
+			if (explanation)
+			{
+				err += "\n(";
+				err += explanation;
+				err += ")";
+			}
 			err += err_context;
 			CStopAlertRsrcTxtTask* task = new CStopAlertRsrcTxtTask(nobad_id, err);
 			task->Go();
