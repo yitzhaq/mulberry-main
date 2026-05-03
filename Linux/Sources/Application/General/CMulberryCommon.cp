@@ -121,7 +121,7 @@ cdstring FilterUTF8ForDisplay(const char* txt)
 				continue;
 			}
 
-			// CLDR lookup (single codepoint only for UTF-8 path)
+			// CLDR lookup (multi-codepoint sequences supported)
 			lo = 0; hi = cEmojiTableSize;
 			while (lo < hi)
 			{
@@ -132,8 +132,55 @@ cdstring FilterUTF8ForDisplay(const char* txt)
 					hi = mid;
 				else
 				{
-					if (cEmojiTable[mid].length == 1)
-						sub = cEmojiTable[mid].name;
+					// Found first codepoint match — scan range
+					size_t rstart = mid;
+					while (rstart > 0 && cEmojiTable[rstart - 1].codepoints[0] == (uint32_t)wc)
+						rstart--;
+					size_t rend = mid + 1;
+					while (rend < cEmojiTableSize && cEmojiTable[rend].codepoints[0] == (uint32_t)wc)
+						rend++;
+
+					// Try multi-codepoint sequences first
+					for (size_t ri = rstart; ri < rend; ri++)
+					{
+						if (cEmojiTable[ri].length <= 1)
+							continue;
+						const unsigned char* save_p = p;
+						bool match = true;
+						for (uint8_t j = 1; j < cEmojiTable[ri].length; j++)
+						{
+							if (save_p >= q)
+							{
+								match = false;
+								break;
+							}
+							wchar_t next = utf8.c_2_w(save_p);
+							if ((uint32_t)next != cEmojiTable[ri].codepoints[j])
+							{
+								match = false;
+								break;
+							}
+						}
+						if (match)
+						{
+							sub = cEmojiTable[ri].name;
+							p = save_p;
+							break;
+						}
+					}
+
+					// Fall back to single-codepoint
+					if (!sub)
+					{
+						for (size_t ri = rstart; ri < rend; ri++)
+						{
+							if (cEmojiTable[ri].length == 1)
+							{
+								sub = cEmojiTable[ri].name;
+								break;
+							}
+						}
+					}
 					break;
 				}
 			}

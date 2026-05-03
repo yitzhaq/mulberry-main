@@ -84,11 +84,16 @@ static const char* LookupEmoji(wchar_t wc, const unsigned char*& p,
 			while (end < cEmojiTableSize && cEmojiTable[end].codepoints[0] == first)
 				end++;
 
-			// Try longest sequences first
+			// Try multi-codepoint sequences first (longest match wins)
+			const char* single_match = NULL;
 			for (size_t i = start; i < end; i++)
 			{
 				if (cEmojiTable[i].length == 1)
-					return cEmojiTable[i].name;
+				{
+					if (!single_match)
+						single_match = cEmojiTable[i].name;
+					continue;
+				}
 
 				// Try multi-codepoint match
 				const unsigned char* save_p = p;
@@ -107,7 +112,7 @@ static const char* LookupEmoji(wchar_t wc, const unsigned char*& p,
 						break;
 					}
 				}
-				if (match && cEmojiTable[i].length > 1)
+				if (match)
 				{
 					p = save_p;
 					return cEmojiTable[i].name;
@@ -115,11 +120,8 @@ static const char* LookupEmoji(wchar_t wc, const unsigned char*& p,
 			}
 
 			// Fall back to single-codepoint match
-			for (size_t i = start; i < end; i++)
-			{
-				if (cEmojiTable[i].length == 1)
-					return cEmojiTable[i].name;
-			}
+			if (single_match)
+				return single_match;
 			return NULL;
 		}
 	}
