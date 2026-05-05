@@ -176,7 +176,7 @@ cdstring::cdstring(const Rect& rc)
 {
 	_init();
 	char buf[256];
-	::snprintf(buf, 256, "%d, %d, %d, %d", rc.left, rc.top, rc.right, rc.bottom);
+	::snprintf(buf, 256, "%ld, %ld, %ld, %ld", rc.left, rc.top, rc.right, rc.bottom);
 	_allocate(buf);
 }
 
@@ -306,7 +306,7 @@ cdstring& cdstring::operator=(const uint32_t num)
 cdstring& cdstring::operator=(const Rect& rc)
 {
 	char buf[256];
-	::snprintf(buf, 256, "%d, %d, %d, %d", rc.left, rc.top, rc.right, rc.bottom);
+	::snprintf(buf, 256, "%ld, %ld, %ld, %ld", rc.left, rc.top, rc.right, rc.bottom);
 	_allocate(buf);
 	return *this;
 }
@@ -365,7 +365,7 @@ int cdstring::operator<(const cdstring& comp) const
 void cdstring::trim()
 {
 	if (length())
-		steal(::strdup(_str));
+		steal(strdup_new(_str));
 }
 
 // Trim off leading or trailing space
@@ -956,7 +956,7 @@ void cdstring::FilterOutEscapeChars()
 
 	// Duplicate and reassign if changed
 	if (!ctr)
-		steal(::strdup(_str));
+		steal(strdup_new(_str));
 }
 
 // Filter in C-style escape chars '\'
@@ -1100,7 +1100,7 @@ void cdstring::DecodeURL()
 
 	// Duplicate and reassign if changed
 	if (!ctr)
-		steal(::strdup(_str));
+		steal(strdup_new(_str));
 }
 
 // Load from resource
@@ -1545,7 +1545,7 @@ const char** cdstring::ToArray(const cdstrvect& list, bool copy)
 	// Duplicate strings and add to list
 	const char** p = result;
 	for(cdstrvect::const_iterator iter = list.begin(); iter != list.end(); iter++, p++)
-		*p = (copy ? ::strdup((*iter).c_str()) : (*iter).c_str());
+		*p = (copy ? strdup_new((*iter).c_str()) : (*iter).c_str());
 		
 	// NULL terminate
 	*p = NULL;
@@ -1596,6 +1596,7 @@ void cdstring::Encrypt(EStringEncrypt method, const char* key)
 		break;
 	case eEncryptSimplemUTF7:	// Do cipher encrypt with fixed key
 		key = "Modified-UTF7";
+		[[fallthrough]];
 	case eEncryptCipher:
 		{
 			char* encrypted = ::encrypt_cipher(_str, key);
@@ -1620,6 +1621,7 @@ void cdstring::Decrypt(EStringEncrypt method, const char* key)
 		break;
 	case eEncryptSimplemUTF7:	// Do cipher decrypt with fixed key
 		key = "Modified-UTF7";
+		[[fallthrough]];
 	case eEncryptCipher:
 		{
 			char* decrypted = ::decrypt_cipher(_str, key);
@@ -1873,7 +1875,7 @@ char* cdstring::ToModifiedUTF7(const char* str, bool charset)
 
 	// Just duplicate
 	else
-		q = ::strdup(str);
+		q = strdup_new(str);
 
 	return q;
 }

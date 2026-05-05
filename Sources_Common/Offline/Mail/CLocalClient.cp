@@ -1800,7 +1800,7 @@ void CLocalClient::_ReadHeaders(const ulvector& nums, bool uids, const cdstring&
 				// NB Result of OnlyHeaders may be NULL str but we have to have some
 				// pointer in the header variable to prevent another header load
 				char* p = temp_hdr.grab_c_str();
-				lmsg->SetHeader(p ? p : ::strdup(os_endl));
+				lmsg->SetHeader(p ? p : strdup_new(os_endl));
 			}
 		}
 	}

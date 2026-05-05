@@ -1399,6 +1399,7 @@ CAddressList* CRFC822Parser::ParseAddressList(char* string)
 					default:
 						// This is an error state
 						mAddrList->push_back(new CAddress("INVALID_ADDRESS", NULL));
+						[[fallthrough]];
 					case 0:
 						string = NULL;
 						break;

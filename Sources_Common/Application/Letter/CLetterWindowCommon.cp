@@ -1261,7 +1261,7 @@ CMessage* CLetterWindow::CreateMessage(bool send, bool bcc_only)
 			else
 			{
 				// We need to create a special part to use
-				first = new CDataAttachment(::strdup(CPreferences::sPrefs->mBCCCaption.GetValue()));
+				first = new CDataAttachment(strdup_new(CPreferences::sPrefs->mBCCCaption.GetValue()));
 				
 				// Now add to body
 				if (!mBody)

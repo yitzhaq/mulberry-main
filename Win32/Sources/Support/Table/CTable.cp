@@ -1095,24 +1095,28 @@ bool CTable::HandleKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			NudgeSelection(-1, ::GetKeyState(VK_SHIFT) < 0);
 			return true;
 		}
+		break;
 	case VK_RIGHT:
 		if (!mRowSelect)
 		{
 			NudgeSelection(1, ::GetKeyState(VK_SHIFT) < 0);
 			return true;
 		}
+		break;
 	case VK_UP:
 		if (!mColSelect)
 		{
 			NudgeSelection(-1, ::GetKeyState(VK_SHIFT) < 0, mRowSelect);
 			return true;
 		}
+		break;
 	case VK_DOWN:
 		if (!mColSelect)
 		{
 			NudgeSelection(1, ::GetKeyState(VK_SHIFT) < 0, mRowSelect);
 			return true;
 		}
+		break;
 	case VK_END:
 		// Special case row/column table
 		if (mRowSelect)

@@ -1486,7 +1486,7 @@ bool CActionManager::BounceMessages(CMessageList& msgs, NMessage::SAddressing ad
 	}
 
 	// Copy bounce message header
-	std::unique_ptr<char> bounce(::strdup(msgs.front()->GetHeader()));
+	std::unique_ptr<char> bounce(strdup_new(msgs.front()->GetHeader()));
 
 	{
 		// Create the message (it takes possesion of address lists)

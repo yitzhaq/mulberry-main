@@ -254,6 +254,7 @@ void CRulesTarget::SetFilterTarget(const CFilterTarget* spec)
 			CMailAccountManager::EFavourite favtype = CMailAccountManager::sMailAccountManager->GetFavouriteFromID(spec->GetStringData()->GetData());
 			popup2 = favtype + 1;
 		}
+			[[fallthrough]];
 		case CFilterTarget::eAccount:
 		{
 			CMboxProtocol* proto = CMailAccountManager::sMailAccountManager->GetProtocol(spec->GetStringData()->GetData());

@@ -1023,7 +1023,7 @@ void CAddressBook::MakeUniqueEntry(CAdbkAddress* addr) const
 	{
 		// Generate time stamp
 		char time_str[256];
-		::snprintf(time_str, 256, "Mulberry_%04x", ::time(NULL) + (time_t) ::clock());
+		::snprintf(time_str, 256, "Mulberry_%04lx", ::time(NULL) + (time_t) ::clock());
 
 		// Look for match
 		done = true;

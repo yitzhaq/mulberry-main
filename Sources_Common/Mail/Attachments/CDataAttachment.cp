@@ -41,7 +41,7 @@ CDataAttachment::CDataAttachment(const CDataAttachment& copy)
 {
 	// Copy data as well
 	if (copy.mData)
-		mData = ::strdup(copy.mData);
+		mData = strdup_new(copy.mData);
 }
 
 // Destructor

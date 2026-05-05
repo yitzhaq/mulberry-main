@@ -99,7 +99,7 @@ void CQuotaRoot::ParseList(const char* txt)
 		return;
 
 	// Duplicate for parsing
-	std::unique_ptr<char> dup(::strdup(txt));
+	std::unique_ptr<char> dup(strdup_new(txt));
 	char* p = dup.get();
 
 	while(p && *p)

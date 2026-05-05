@@ -23,18 +23,22 @@
 
 // S T R I N G  F U N C T I O N S
 
+// Duplicate string using new[] (compatible with delete[])
+// Use instead of ::strdup when result will be owned by cdstring
+// (cdstring::_tidy frees with delete[], not free())
+char* strdup_new(const char* s1)
+{
+	if (!s1) return NULL;
+	size_t len = ::strlen(s1) + 1;
+	char* s2 = new char[len];
+	::memcpy(s2, s1, len);
+	return s2;
+}
+
 #if !defined(__GNUC__) && !defined(__VCPP__)
-// Duplicate string
 char* strdup(const char* s1)
 {
-	if (s1 && *s1)
-	{
-		char* s2 = new char[::strlen(s1) + 1];
-		::strcpy(s2, s1);
-		return s2;
-	}
-	else
-		return NULL;
+	return strdup_new(s1);
 }
 #endif
 
@@ -556,7 +560,7 @@ char* strduptokenstr(char** s1, const char* tokens)
 		*s1 = end;
 
 		// Start past first quote
-		return ::strdup(start);
+		return strdup_new(start);
 	}
 
 	// Handle unquoted atom
@@ -574,12 +578,12 @@ char* strduptokenstr(char** s1, const char* tokens)
 			*end = 0;
 
 			// Duplicate then restore original
-			dup = (*start ? ::strdup(start) : NULL);
+			dup = (*start ? strdup_new(start) : NULL);
 			*end = save;
 		}
 		else
 		{
-			dup = (*start ? ::strdup(start) : NULL);
+			dup = (*start ? strdup_new(start) : NULL);
 			end = start + ::strlen(start);
 		}
 		*s1 = end;

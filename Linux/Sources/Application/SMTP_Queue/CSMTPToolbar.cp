@@ -72,6 +72,7 @@ void CSMTPToolbar::ListenTo_Message(long msg, void* param)
 			else
 				popup->GetSecureIndicator()->Hide();
 		}
+		break;
 	}
 
 	default:

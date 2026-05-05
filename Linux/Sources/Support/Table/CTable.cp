@@ -172,24 +172,28 @@ bool CTable::HandleChar(const int key, const JXKeyModifiers& modifiers)
 			NudgeSelection(-1, modifiers.shift());
 			return true;
 		}
+		break;
 	case kJRightArrow:
 		if (!mRowSelect)
 		{
 			NudgeSelection(1, modifiers.shift());
 			return true;
 		}
+		break;
 	case kJUpArrow:
 		if (!mColSelect)
 		{
 			NudgeSelection(-1, modifiers.shift(), mRowSelect);
 			return true;
 		}
+		break;
 	case kJDownArrow:
 		if (!mColSelect)
 		{
 			NudgeSelection(1, modifiers.shift(), mRowSelect);
 			return true;
 		}
+		break;
 
 	case XK_End:
 	case XK_KP_End:
