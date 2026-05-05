@@ -50,7 +50,6 @@ cdthread::~cdthread()
 	}
 	catch(...)
 	{
-		CLOG_LOGCATCH(...);
 	}
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x

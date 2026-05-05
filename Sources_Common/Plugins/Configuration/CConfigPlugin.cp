@@ -42,6 +42,12 @@
 CConfigPlugin::CConfigPlugin(fspec file_spec) :
 		CPlugin(file_spec)
 {
+	mConfigInfo.mPromptStartup = false;
+	mConfigInfo.mPromptUserID = false;
+	mConfigInfo.mPromptPassword = false;
+	mConfigInfo.mPromptRealName = false;
+	mConfigInfo.mPromptServers = false;
+	mConfigInfo.mServers = NULL;
 }
 
 void CConfigPlugin::DoConfiguration(const char* uid, const char* pswd, const char* real_name, const char* server)

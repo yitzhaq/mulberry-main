@@ -90,6 +90,7 @@ void CIdentity::_copy(const CIdentity& copy)
 	mHeader = copy.mHeader;
 	mSignature = copy.mSignature;
 	mSignatureFile = copy.mSignatureFile;
+	mSignatureApp = copy.mSignatureApp;
 
 	mAddTo = copy.mAddTo;
 	mAddCC = copy.mAddCC;

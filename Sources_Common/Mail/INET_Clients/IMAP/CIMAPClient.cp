@@ -136,6 +136,14 @@ void CIMAPClient::InitIMAPClient()
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
 	mHasID = false;
+	mHasMove = false;
+	mHasESearch = false;
+	mHasListExtended = false;
+	mHasListStatus = false;
+	mHasStatusSize = false;
+	mHasSearchRes = false;
+	mSearchSaved = false;
+	mListStatusDone = false;
 	mHasMultiAppend = false;
 	mHasSpecialUse = false;
 	mHasReplace = false;

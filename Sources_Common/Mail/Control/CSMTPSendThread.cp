@@ -30,6 +30,7 @@ CSMTPSendThread::CSMTPSendThread(CSMTPSender* sender)
 	mRunning = false;
 	mPause = false;
 	mExit = false;
+	mThread = 0;
 
 	// Create and allow to run immediately
 	// Thread will suspend itself
