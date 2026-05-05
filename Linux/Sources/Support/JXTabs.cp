@@ -259,7 +259,9 @@ void JXTabs::Receive(JBroadcaster* sender, const Message& message)
 	if (message.Is(JXRadioGroup::kSelectionChanged) && (sender == this))
 	{
 		// Change the card
-		JIndex index = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message)->GetID();
+		const JXRadioGroup::SelectionChanged* radio_sel = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message);
+		if (!radio_sel) return;
+		JIndex index = radio_sel->GetID();
 		ShowCard(index);
 
 		// Do this to force refresh of buttons so that

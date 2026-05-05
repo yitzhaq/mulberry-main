@@ -510,7 +510,9 @@ void CEditFormattedTextDisplay::Receive(JBroadcaster* sender, const Message& mes
 	}
 	else if (message.Is(JXMenu::kItemSelected))
 	{
-		JIndex index = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+		const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+		if (!menu_sel) return;
+		JIndex index = menu_sel->GetIndex();
 		if (sender == mEnriched->mColor)
 		{
 			DoColorItem(index);

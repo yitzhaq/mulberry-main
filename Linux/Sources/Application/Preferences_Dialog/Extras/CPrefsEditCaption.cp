@@ -310,7 +310,9 @@ void CPrefsEditCaption::Receive(JBroadcaster*	sender, const Message&	message)
 {
 	if (message.Is(JXRadioGroup::kSelectionChanged))
 	{
-		JIndex index = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message)->GetID();
+		const JXRadioGroup::SelectionChanged* radio_sel = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message);
+		if (!radio_sel) return;
+		JIndex index = radio_sel->GetID();
 		if (sender == mMessageDraft1)
 		{
 			switch(index)

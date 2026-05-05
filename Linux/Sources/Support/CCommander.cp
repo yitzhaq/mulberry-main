@@ -217,7 +217,9 @@ bool CCommander::ReceiveMenu(JBroadcaster* sender, const JBroadcaster::Message& 
 	{
 		SMenuCommandChoice menuchoice;
 		menuchoice.mMenu = dynamic_cast<JXTextMenu*>(sender);
-		menuchoice.mIndex = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+		const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+		if (!menu_sel) return;
+		menuchoice.mIndex = menu_sel->GetIndex();
 
 		const JString* cmd = NULL;
 		if (menuchoice.mMenu->GetItemID(menuchoice.mIndex, &cmd))

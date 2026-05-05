@@ -317,7 +317,9 @@ void CDisconnectDialog::Receive(JBroadcaster* sender, const Message& message)
 	}
 	else if(message.Is(JXMenu::kItemSelected) && (sender == mMailboxListPanel->mCabinets))
 	{
-		JIndex item = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+		const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+		if (!menu_sel) return;
+		JIndex item = menu_sel->GetIndex();
 		mMailboxListPanel->OnCabinet(item);
 	}
 	else if (message.Is(JXRadioGroup::kSelectionChanged))

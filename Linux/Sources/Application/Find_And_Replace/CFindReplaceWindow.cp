@@ -278,7 +278,9 @@ void CFindReplaceWindow::Receive(JBroadcaster* sender, const Message& message)
 	}
 	else if(message.Is(JXMenu::kItemSelected))
 	{
-    	JIndex index = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+    	const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+    	if (!menu_sel) return;
+    	JIndex index = menu_sel->GetIndex();
 		if (sender == mFindPopup)
 		{
 			// Selected history item

@@ -180,7 +180,9 @@ void CNewComponentAttendees::Receive(JBroadcaster* sender, const Message& messag
 	{
 		if (sender == mIdentity)
 		{
-			JIndex item = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel) return;
+			JIndex item = menu_sel->GetIndex();
 			switch(item)
 			{
 			// New identity wanted

@@ -122,7 +122,9 @@ void CAdbkPropDialog::Receive(JBroadcaster* sender, const Message& message)
 {
 	if (message.Is(JXRadioGroup::kSelectionChanged))
 	{
-		JIndex item = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message)->GetID();
+		const JXRadioGroup::SelectionChanged* radio_sel = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message);
+		if (!radio_sel) return;
+		JIndex item = radio_sel->GetID();
 		SetPanel(item);
 	}
 

@@ -321,14 +321,18 @@ void CPropMailboxACL::Receive(JBroadcaster* sender, const Message& message)
 	{
 		if (sender == mMailboxPopup)
 		{
-			JIndex index = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel2 = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel2) return;
+			JIndex index = menu_sel2->GetIndex();
 			CMbox* mbox = static_cast<CMbox*>(mMboxList->at(index - 1));
 			SetMbox(mbox);
 			return;
 		}
 		else if (sender == mACLStylePopup)
 		{
-			JIndex index = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel) return;
+			JIndex index = menu_sel->GetIndex();
 			DoStylePopup(index);
 			return;
 		}

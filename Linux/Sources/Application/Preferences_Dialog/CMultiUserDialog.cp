@@ -315,7 +315,9 @@ void CMultiUserDialog::Receive(JBroadcaster* sender, const Message& message)
 	}
 	else if ((sender == mServerPopup) && message.Is(JXMenu::kItemSelected))
 	{
-		JIndex index = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+		const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+		if (!menu_sel) return;
+		JIndex index = menu_sel->GetIndex();
 		OnServerPopup(index);
 	}
 

@@ -160,7 +160,9 @@ void CBounceActionDialog::Receive(JBroadcaster* sender, const Message& message)
 	{
 		if (sender == mIdentityGroup)
 		{
-			JIndex index = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message)->GetID();
+			const JXRadioGroup::SelectionChanged* radio_sel = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message);
+			if (!radio_sel) return;
+			JIndex index = radio_sel->GetID();
 			if (index == 1)
 				mIdentityPopup->Deactivate();
 			else
@@ -172,7 +174,9 @@ void CBounceActionDialog::Receive(JBroadcaster* sender, const Message& message)
 	{
 		if (sender == mIdentityPopup)
 		{
-			JIndex item = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel) return;
+			JIndex item = menu_sel->GetIndex();
 			switch(item)
 			{
 			// New identity wanted

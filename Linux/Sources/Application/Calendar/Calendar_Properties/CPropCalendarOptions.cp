@@ -146,7 +146,9 @@ void CPropCalendarOptions::Receive(JBroadcaster* sender, const Message& message)
 	{
 		if (sender == mIdentityPopup)
 		{
-			JIndex item = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel) return;
+			JIndex item = menu_sel->GetIndex();
 			switch(item)
 			{
 			// New identity wanted

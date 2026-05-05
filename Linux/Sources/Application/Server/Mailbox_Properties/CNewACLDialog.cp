@@ -231,7 +231,9 @@ void CNewACLDialog::Receive(JBroadcaster* sender, const Message& message)
 	{
 		if (sender == mStylePopup)
 		{
-			JIndex index = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel) return;
+			JIndex index = menu_sel->GetIndex();
 			DoStylePopup(index);
 			return;
 		}

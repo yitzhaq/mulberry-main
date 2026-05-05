@@ -225,7 +225,9 @@ void CPropMailboxOptions::Receive(JBroadcaster* sender, const Message& message)
 		if (sender == mAlertStylePopup)
 		{
 			// Get new type from popup setting
-			JIndex item = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel2 = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel2) return;
+			JIndex item = menu_sel2->GetIndex();
 			CMailAccountManager::EFavourite new_type = GetStyleType(item - 1);
 
 			// Iterate over all mailboxes
@@ -247,7 +249,9 @@ void CPropMailboxOptions::Receive(JBroadcaster* sender, const Message& message)
 		}
 		else if (sender == mIdentityPopup)
 		{
-			JIndex item = dynamic_cast<const JXMenu::ItemSelected*>(&message)->GetIndex();
+			const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
+			if (!menu_sel) return;
+			JIndex item = menu_sel->GetIndex();
 			switch(item)
 			{
 			// New identity wanted
