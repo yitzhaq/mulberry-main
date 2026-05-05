@@ -242,6 +242,14 @@ AC_CHECK_LIB(rt, main, LDFLAGS="$LDFLAGS -lrt")
 AC_CHECK_LIB(gen, main, LDFLAGS="$LDFLAGS -lgen")
 AC_CHECK_LIB(fontconfig, main, LDFLAGS="$LDFLAGS -lfontconfig")
 AC_CHECK_LIB(z, deflate, LDFLAGS="$LDFLAGS -lz", AC_MSG_ERROR([zlib required for IMAP COMPRESS support]))
+AC_CHECK_LIB(brotlidec, BrotliDecoderCreateInstance,
+    [LDFLAGS="$LDFLAGS -lbrotlidec"
+     AC_DEFINE(HAVE_BROTLI, 1, [Define if brotli is available])],
+    [AC_MSG_WARN([libbrotli not found, HTTP br encoding disabled])])
+AC_CHECK_LIB(zstd, ZSTD_createDStream,
+    [LDFLAGS="$LDFLAGS -lzstd"
+     AC_DEFINE(HAVE_ZSTD, 1, [Define if zstd is available])],
+    [AC_MSG_WARN([libzstd not found, HTTP zstd encoding disabled])])
 case $host_os in
   *solaris*)
      LDFLAGS="$LDFLAGS -nodefaultlibs -lc -lm -lgcc"

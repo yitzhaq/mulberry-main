@@ -59,6 +59,20 @@ void CHTTPSession::WriteHeaderToStream(std::ostream& os, const CHTTPRequestRespo
 	// Write User-Agent header matching X-Mailer email header
 	os << cHeaderUserAgent << cHeaderDelimiter << CPreferences::sPrefs->GetMailerDetails(false) << net_endl;
 
+	// Write Accept-Encoding for methods that return response bodies
+	if (request->MethodHasResponseBody())
+	{
+		cdstring ae;
+#ifdef HAVE_BROTLI
+		ae += "br;q=1.0, ";
+#endif
+#ifdef HAVE_ZSTD
+		ae += "zstd;q=0.9, ";
+#endif
+		ae += "gzip;q=0.8, deflate;q=0.7, identity;q=0.1";
+		os << cHeaderAcceptEncoding << cHeaderDelimiter << ae << net_endl;
+	}
+
 	// Write Authorization if present
 	if (HasAuthorization())
 		GetAuthorization()->GenerateAuthorization(os, request);

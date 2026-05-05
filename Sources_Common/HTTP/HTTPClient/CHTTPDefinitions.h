@@ -69,7 +69,9 @@ extern const char* cHeaderWWWAuthenticate;
 
 // RFC2616 �7.1 - Entity Header fields (only the ones we need)
 
+extern const char* cHeaderAcceptEncoding;
 extern const char* cHeaderAllow;
+extern const char* cHeaderContentEncoding;
 extern const char* cHeaderContentLength;
 extern const char* cHeaderContentType;
 

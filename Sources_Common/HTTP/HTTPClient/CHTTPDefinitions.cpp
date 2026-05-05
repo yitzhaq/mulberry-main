@@ -69,7 +69,9 @@ const char* cHeaderWWWAuthenticate = "WWW-Authenticate";
 
 // RFC2616 �7.1 - Entity Header fields (only the ones we need)
 
+const char* cHeaderAcceptEncoding = "Accept-Encoding";
 const char* cHeaderAllow = "Allow";
+const char* cHeaderContentEncoding = "Content-Encoding";
 const char* cHeaderContentLength = "Content-Length";
 const char* cHeaderContentType = "Content-Type";
 

@@ -24,6 +24,7 @@
 #include "CWebDAVCalendarClient.h"
 
 #include "CCalendarAccount.h"
+#include "CHTTPDecompress.h"
 #include "CCalendarProtocol.h"
 #include "CCalendarStoreNode.h"
 //#include "CDisplayItem.h"
@@ -2053,7 +2054,18 @@ void CWebDAVCalendarClient::ReadResponseDataLength(CHTTPRequestResponse* request
 
 	long length = read_length;
 	if (request->GetResponseDataStream() != NULL)
-		mStream->gettostream(*request->GetResponseDataStream(), filter.get(), &length, &progress);
+	{
+		http::CHTTPRequestResponse::EContentEncoding enc = request->GetContentEncoding();
+		if (enc != http::CHTTPRequestResponse::eEncodingNone)
+		{
+			http::inflate_streambuf decompressor(*request->GetResponseDataStream(),
+				static_cast<http::inflate_streambuf::EEncoding>(enc));
+			std::ostream decompress_stream(&decompressor);
+			mStream->gettostream(decompress_stream, filter.get(), &length, &progress);
+		}
+		else
+			mStream->gettostream(*request->GetResponseDataStream(), filter.get(), &length, &progress);
+	}
 	else
 	{
 		// Create counting stream which allows us to simply discard the data read in

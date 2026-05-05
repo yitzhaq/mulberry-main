@@ -24,6 +24,7 @@
 #include "CWebDAVPrefsClient.h"
 
 #include "CGeneralException.h"
+#include "CHTTPDecompress.h"
 #include "CINETCommon.h"
 #include "CPasswordManager.h"
 #include "CStatusWindow.h"
@@ -860,7 +861,18 @@ void CWebDAVPrefsClient::ReadResponseDataLength(CHTTPRequestResponse* request, u
 
 	long length = read_length;
 	if (request->GetResponseDataStream() != NULL)
-		mStream->gettostream(*request->GetResponseDataStream(), filter.get(), &length, &progress);
+	{
+		http::CHTTPRequestResponse::EContentEncoding enc = request->GetContentEncoding();
+		if (enc != http::CHTTPRequestResponse::eEncodingNone)
+		{
+			http::inflate_streambuf decompressor(*request->GetResponseDataStream(),
+				static_cast<http::inflate_streambuf::EEncoding>(enc));
+			std::ostream decompress_stream(&decompressor);
+			mStream->gettostream(decompress_stream, filter.get(), &length, &progress);
+		}
+		else
+			mStream->gettostream(*request->GetResponseDataStream(), filter.get(), &length, &progress);
+	}
 	else
 	{
 		// Create counting stream which allows us to simply discard the data read in

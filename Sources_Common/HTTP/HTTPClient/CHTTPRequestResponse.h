@@ -189,6 +189,22 @@ public:
 		return mChunked;
 	}
 
+	enum EContentEncoding
+	{
+		eEncodingNone = 0,
+		eEncodingGzip,
+		eEncodingDeflate,
+		eEncodingBrotli,
+		eEncodingZstd
+	};
+
+	EContentEncoding GetContentEncoding() const
+	{
+		return mContentEncoding;
+	}
+
+	bool MethodHasResponseBody() const;
+
 	void SetComplete()
 	{
 		mCompleted = true;
@@ -229,6 +245,7 @@ protected:
 	bool					mConnectionClose;
 	uint32_t				mContentLength;
 	bool					mChunked;
+	EContentEncoding		mContentEncoding;
 	
 	bool 					mCompleted;
 	

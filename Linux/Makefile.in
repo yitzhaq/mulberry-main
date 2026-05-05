@@ -808,6 +808,7 @@ OBJS = \
 	../Libraries/vCard/Source/CVCardValue$O \
 	../Libraries/vCard/Source/CVCardVCard$O \
 	../Sources_Common/HTTP/HTTPClient/CHTTPSession$O \
+	../Sources_Common/HTTP/HTTPClient/CHTTPDecompress$O \
 	../Sources_Common/HTTP/HTTPClient/CHTTPDefinitions$O \
 	../Sources_Common/HTTP/HTTPClient/CHTTPUtils$O \
 	../Sources_Common/HTTP/HTTPClient/CHTTPRequestResponse$O \

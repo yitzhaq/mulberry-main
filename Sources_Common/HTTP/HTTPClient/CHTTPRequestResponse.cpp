@@ -23,9 +23,11 @@
 
 #include "CHTTPRequestResponse.h"
 
+#include "CGeneralException.h"
 #include "CHTTPAuthorization.h"
 #include "CHTTPDefinitions.h"
 #include "CHTTPSession.h"
+#include "CLog.h"
 
 #include <cstdlib>
 #include <strstream>
@@ -76,12 +78,30 @@ void CHTTPRequestResponse::InitResponse()
 	mConnectionClose = false;
 	mContentLength = 0;
 	mChunked = false;
+	mContentEncoding = eEncodingNone;
 	mCompleted = false;
 }
 
 const char* CHTTPRequestResponse::GetMethod() const
 {
 	return cMethodMap[mMethod];
+}
+
+bool CHTTPRequestResponse::MethodHasResponseBody() const
+{
+	switch(mMethod)
+	{
+	case eRequest_GET:
+	case eRequest_POST:
+	case eRequest_PROPFIND:
+	case eRequest_REPORT:
+	case eRequest_MKCOL:
+	case eRequest_MKCALENDAR:
+	case eRequest_MKADBK:
+		return true;
+	default:
+		return false;
+	}
 }
 
 bool CHTTPRequestResponse::HasRequestData() const
@@ -317,6 +337,29 @@ void CHTTPRequestResponse::CacheHeaders()
 	{
 		cdstring value = (*mHeaders.find(cHeaderTransferEncoding)).second;
 		mChunked = (value == cHeaderTransferEncodingChunked);
+	}
+
+	// Content-Encoding
+	if (mHeaders.count(cHeaderContentEncoding))
+	{
+		cdstring value = (*mHeaders.find(cHeaderContentEncoding)).second;
+		if (value.compare("gzip", true) == 0 || value.compare("x-gzip", true) == 0)
+			mContentEncoding = eEncodingGzip;
+		else if (value.compare("deflate", true) == 0 || value.compare("x-deflate", true) == 0)
+			mContentEncoding = eEncodingDeflate;
+#ifdef HAVE_BROTLI
+		else if (value.compare("br", true) == 0)
+			mContentEncoding = eEncodingBrotli;
+#endif
+#ifdef HAVE_ZSTD
+		else if (value.compare("zstd", true) == 0)
+			mContentEncoding = eEncodingZstd;
+#endif
+		else if (!value.empty())
+		{
+			CLOG_LOGTHROW(CGeneralException, -1L);
+			throw CGeneralException(-1L);
+		}
 	}
 }
 
