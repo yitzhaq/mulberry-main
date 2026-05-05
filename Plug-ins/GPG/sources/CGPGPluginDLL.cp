@@ -263,7 +263,7 @@ bool CGPGPluginDLL::CanRun(void)
 	{
 		// Make full path
 		cdstring npath(p);
-		if (npath.c_str()[npath.length() - 1] != '/')
+		if (npath.empty() || npath.c_str()[npath.length() - 1] != '/')
 			npath += "/";
 		npath += cGPG;
 

@@ -1285,7 +1285,7 @@ cdstring CCardDAVVCardClient::GetRURL(const cdstring& name, bool directory, bool
 	rurl += temp;
 
 	// CardDAV address books are collections with no special extensions and should be treated as directories
-	if (rurl[rurl.length() - 1] != '/')
+	if (rurl.empty() || rurl[rurl.length() - 1] != '/')
 		rurl += "/";
 	
 	return rurl;

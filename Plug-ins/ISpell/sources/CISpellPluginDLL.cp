@@ -148,7 +148,7 @@ bool CISpellPluginDLL::CanRun(void)
 	{
 		// Make full path
 		cdstring nstrpath(p);
-		if (nstrpath.c_str()[nstrpath.length() - 1] != '/')
+		if (nstrpath.empty() || nstrpath.c_str()[nstrpath.length() - 1] != '/')
 			nstrpath += "/";
 		nstrpath += cISPELL;
 

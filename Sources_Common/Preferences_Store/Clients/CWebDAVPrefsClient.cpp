@@ -910,7 +910,7 @@ cdstring CWebDAVPrefsClient::GetRURL(const cdstring& name, bool directory, bool 
 	rurl += temp;
 	if (directory)
 	{
-		if (rurl[rurl.length() - 1] != '/')
+		if (rurl.empty() || rurl[rurl.length() - 1] != '/')
 			rurl += "/";
 	}
 	else

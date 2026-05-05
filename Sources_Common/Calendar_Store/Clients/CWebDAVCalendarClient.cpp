@@ -2114,7 +2114,7 @@ cdstring CWebDAVCalendarClient::GetRURL(const cdstring& name, bool directory, bo
 	rurl += temp;
 	if (directory)
 	{
-		if (rurl[(cdstring::size_type)(rurl.length() - 1)] != '/')
+		if (rurl.empty() || rurl[(cdstring::size_type)(rurl.length() - 1)] != '/')
 			rurl += "/";
 	}
 	else

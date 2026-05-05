@@ -179,7 +179,11 @@ bool CPrefsMessageOptions::UpdateData(void* data)
 	if (CAdminLock::sAdminLock.mLockMDN)
 		copyPrefs->mMDNOptions.SetValue(eMDNAlwaysSend);
 	else
-		copyPrefs->mMDNOptions.SetValue(static_cast<EMDNOptions>(mMDNGroup->GetSelectedItem() - 1));
+	{
+		JIndex sel = mMDNGroup->GetSelectedItem();
+		if (sel > 0)
+			copyPrefs->mMDNOptions.SetValue(static_cast<EMDNOptions>(sel - 1));
+	}
 	
 	return true;
 }

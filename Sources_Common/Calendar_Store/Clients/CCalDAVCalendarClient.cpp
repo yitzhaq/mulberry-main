@@ -1223,7 +1223,7 @@ cdstring CCalDAVCalendarClient::GetRURL(const cdstring& name, bool directory, bo
 	rurl += temp;
 
 	// CalDAV calendars are collections with no special extensions and should be treated as directories
-	if (rurl[(cdstring::size_type)(rurl.length() - 1)] != '/')
+	if (rurl.empty() || rurl[(cdstring::size_type)(rurl.length() - 1)] != '/')
 		rurl += "/";
 	
 #ifdef ORACLE_FIX_2
