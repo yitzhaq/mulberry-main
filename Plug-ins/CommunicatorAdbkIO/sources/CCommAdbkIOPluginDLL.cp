@@ -574,12 +574,14 @@ long CCommAdbkIOPluginDLL::ExportGroup(SAdbkIOPluginGroup* grp)
 
 void CCommAdbkIOPluginDLL::WriteTypeValue(const char* type, const char* value, bool process_lines)
 {
+	if (!value || !*value)
+		return;
 #if LDAP_VERSION == LDAP_VERSION2
 	ber_len_t vlen = ::strlen(value);
 #else
 	size_t vlen = ::strlen(value);
 #endif
-	if (value && vlen)
+	if (vlen)
 	{
 		// May need to precess line ends
 		if (process_lines)

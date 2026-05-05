@@ -1393,12 +1393,11 @@ void CTCPSocket::TCPSpecifyRemoteName(const cdstring& remote_name, tcp_port remo
 	cdstring rname = remote_name;
 	cdstring cname;
 	tcp_port rport = remote_port;
-	if (::strchr(rname.c_str(), ':'))
+	const char* colon = ::strchr(remote_name, ':');
+	if (colon)
 	{
-		rname = cdstring(remote_name, 0, ::strcspn(remote_name, ":"));
-		const char* num = ::strchr(remote_name, ':');
-		num++;
-		rport = ::atoi(num);
+		rname = cdstring(remote_name, 0, colon - remote_name);
+		rport = ::atoi(colon + 1);
 	}
 
 	// Lookup name

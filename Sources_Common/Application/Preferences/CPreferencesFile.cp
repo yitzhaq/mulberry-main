@@ -396,7 +396,7 @@ void CPreferencesFile::SavePrefs(bool verify, bool force_dirty)
 			mItsPrefs->ReadFromMap(mMap, vers_app, vers_prefs);
 		}
 #endif
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 
@@ -412,7 +412,7 @@ void CPreferencesFile::SavePrefs(bool verify, bool force_dirty)
 		// Close file if open
 		if (!mRemoteFile)
 			CloseDataFork();
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -423,7 +423,7 @@ void CPreferencesFile::SavePrefs(bool verify, bool force_dirty)
 		// Close file if open
 		if (!mRemoteFile)
 			CloseDataFork();
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -441,7 +441,7 @@ void CPreferencesFile::SavePrefs(bool verify, bool force_dirty)
 			delete ar;
 			Close();
 		}
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -458,7 +458,7 @@ void CPreferencesFile::SavePrefs(bool verify, bool force_dirty)
 			delete ar;
 			Close();
 		}
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -725,7 +725,7 @@ bool CPreferencesFile::ReadPrefs(NumVersion vers_app, NumVersion& vers_prefs)
 		// Close file if open
 		if (!mRemoteFile)
 			CloseDataFork();
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -739,7 +739,7 @@ bool CPreferencesFile::ReadPrefs(NumVersion vers_app, NumVersion& vers_prefs)
 		// Close file if open
 		if (!mRemoteFile)
 			CloseDataFork();
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -757,7 +757,7 @@ bool CPreferencesFile::ReadPrefs(NumVersion vers_app, NumVersion& vers_prefs)
 			delete ar;
 			Close();
 		}
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -774,7 +774,7 @@ bool CPreferencesFile::ReadPrefs(NumVersion vers_app, NumVersion& vers_prefs)
 			delete ar;
 			Close();
 		}
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}
@@ -791,7 +791,7 @@ bool CPreferencesFile::ReadPrefs(NumVersion vers_app, NumVersion& vers_prefs)
 		{
 			Close();
 		}
-		else if (!was_logged_in)
+		else if (!was_logged_in && CMulberryApp::sOptionsProtocol)
 			// Do logoff to kill connection
 			CMulberryApp::sOptionsProtocol->Logoff();
 	}

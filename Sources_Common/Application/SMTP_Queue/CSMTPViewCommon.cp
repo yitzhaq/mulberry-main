@@ -108,7 +108,8 @@ void CSMTPView::SetMbox(CMbox* anMbox, bool is_search)
 #endif
 
 	// Listen in to changes to mailbox protocol
-	anMbox->GetProtocol()->Add_Listener(this);
+	if (anMbox)
+		anMbox->GetProtocol()->Add_Listener(this);
 
 	// Reset window state only for first time
 	if (reset_state)

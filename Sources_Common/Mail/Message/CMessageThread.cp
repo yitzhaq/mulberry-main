@@ -496,8 +496,8 @@ void CMessageThread::GroupSubjects(CMessageThread* root, unsigned long nroot)
 		CThreadMap::iterator found = subj_map.find(xsubj);
 		old = (found != subj_map.end()) ? (*found).second : NULL;
 
-		// if we found ourselves, skip it
-		if (old == cur) continue;
+		// if not found or we found ourselves, skip it
+		if (!old || old == cur) continue;
 
 		// ok, we already have a container which contains our current subject,
 		// so pull this container out of the root set, because we are going to

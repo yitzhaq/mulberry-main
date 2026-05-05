@@ -3089,7 +3089,7 @@ CMessage* CMbox::GetCacheMessage(unsigned long msg_num, bool sorted)
 		theMsg = mOpenInfo->mMessages->at(msg_num - 1);
 
 	// Try caching (use actual message num)
-	if (!theMsg->GetEnvelope())
+	if (theMsg && !theMsg->GetEnvelope())
 		CacheMessage(theMsg->GetMessageNumber());
 
 	return theMsg;

@@ -2171,12 +2171,15 @@ unsigned long CRFC822::ParseDate(char* txt)
 		long year = 0;
 
 		char* p = ::strtok(txt, "-");
+		if (!p) return 0;
 		day = ::atol(p);
 
 		p = ::strtok(NULL, "-");
+		if (!p) return 0;
 		month = GetMonth(p);
 
 		p = ::strtok(NULL, "-");
+		if (!p) return 0;
 		year = ::atol(p);
 
 		struct tm tms;

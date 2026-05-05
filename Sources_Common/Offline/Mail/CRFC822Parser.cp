@@ -809,7 +809,11 @@ void CRFC822Parser::ParseHeader(CLocalMessage* msg, char* str)
 
 				// 'Content-xxx:'
 				else if (!::strncmpnocase(line, cRFC822_Content, cRFC822_Content_Length))
-					ParseContentHeader(dynamic_cast<CLocalAttachment*>(msg->GetBody()), line + 8, q);
+				{
+					CLocalAttachment* body = dynamic_cast<CLocalAttachment*>(msg->GetBody());
+					if (body)
+						ParseContentHeader(body, line + 8, q);
+				}
 				break;
 			case 'D':
 				// 'Date:'

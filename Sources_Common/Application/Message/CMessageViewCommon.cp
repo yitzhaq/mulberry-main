@@ -557,7 +557,7 @@ void CMessageView::DoRollover(CMbox* current_mbox)
 
 			// If new exists
 			bool switched = false;
-			if (nextView)
+			if (nextView && currentView)
 			{
 				// Try to close this one
 				if (currentView->TestClose())

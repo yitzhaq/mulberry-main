@@ -1919,11 +1919,17 @@ long CGPGPluginDLL::ProcessFileStatusOutput(cdstring& output)
 		{
 			// Look for keyid
 			char* q = ::strstr(line.c_str_mod(), "keyid ");
-			q += 6;
-			char* r = ::strtok(q, " ");
-			if (::strlen(r) == 16)
-				r += 8;
-			mData->mEncryptionKeys.push_back(r);
+			if (q)
+			{
+				q += 6;
+				char* r = ::strtok(q, " ");
+				if (r)
+				{
+					if (::strlen(r) == 16)
+						r += 8;
+					mData->mEncryptionKeys.push_back(r);
+				}
+			}
 		}
 		else if (line.compare_start(":symkey enc packet:"))
 			;

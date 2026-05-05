@@ -435,7 +435,7 @@ ldif_sput(
 		&& isgraph( (unsigned char) val[0] ) && val[0] != ':' && val[0] != '<'
 		&& isgraph( (unsigned char) val[vlen-1] )
 #ifndef LDAP_BINARY_DEBUG
-		&& strstr( name, ";binary" ) == NULL
+		&& (name == NULL || strstr( name, ";binary" ) == NULL)
 #endif
 #ifndef LDAP_PASSWD_DEBUG
 		&& (namelen != (sizeof("userPassword")-1)

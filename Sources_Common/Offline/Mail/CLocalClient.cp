@@ -1836,6 +1836,8 @@ void CLocalClient::_ReadHeader(CMessage* msg)
 	try
 	{
 		CLocalMessage* lmsg = dynamic_cast<CLocalMessage*>(msg);
+		if (!lmsg)
+			return;
 
 		std::ostrstream hdr;
 		unsigned long start = lmsg->GetIndexHeaderStart() + lmsg->GetIndexStart();
@@ -1896,6 +1898,8 @@ void CLocalClient::_ReadAttachment(unsigned long msg_num, CAttachment* attach,
 	{
 		CLocalMessage* lmsg = dynamic_cast<CLocalMessage*>(GetCurrentMbox()->GetMessage(msg_num));
 		CLocalAttachment* lattach = dynamic_cast<CLocalAttachment*>(attach);
+		if (!lmsg || !lattach)
+			return;
 
 		// Get actual length to read
 		unsigned long length = count ? count : (lattach->GetIndexBodyLength() - start);
@@ -1954,11 +1958,15 @@ void CLocalClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 	try
 	{
 		CLocalMessage* lmsg = dynamic_cast<CLocalMessage*>(GetCurrentMbox()->GetMessage(msg_num));
+		if (!lmsg)
+			return;
 
 		// If no attach read in the entire message body
 		if (attach)
 		{
 			CLocalAttachment* lattach = dynamic_cast<CLocalAttachment*>(attach);
+			if (!lattach)
+				return;
 
 			// Get actual length to read
 			length = count ? count : (lattach->GetIndexBodyLength() - start);
@@ -2397,7 +2405,9 @@ void CLocalClient::_CopyMessage(unsigned long msg_num, bool uids, costream* aStr
 		}
 
 		CLocalMessage* lmsg = dynamic_cast<CLocalMessage*>(GetCurrentMbox()->GetMessage(msg_num));
-		
+		if (!lmsg)
+			return;
+
 		// Do local message copy via stream copy
 		CopyMessage(lmsg, aStream, count, start);
 	}
@@ -3952,8 +3962,15 @@ unsigned long CLocalClient::AppendMessage(CMbox* mbox, CMessage* msg, bool add,
 			// (indicate we want a copy of the original message)
 			msg->WriteToStream(stream_out, dummy_files, NULL, true);
 		else
-			// Must be local message being copied locally
-			copier->CopyMessage(dynamic_cast<CLocalMessage*>(msg), &stream_out, 0, 0);
+		{
+			CLocalMessage* lmsg = dynamic_cast<CLocalMessage*>(msg);
+			if (!lmsg)
+			{
+				CLOG_LOGTHROW(CGeneralException, -1L);
+				throw CGeneralException(-1L);
+			}
+			copier->CopyMessage(lmsg, &stream_out, 0, 0);
+		}
 		from_stuff.flush();
 		mAppendMailbox->flush();
 	}

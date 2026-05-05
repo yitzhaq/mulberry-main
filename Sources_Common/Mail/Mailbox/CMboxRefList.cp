@@ -173,8 +173,11 @@ void CMboxRefList::RemoveMbox(CMboxNode* node, bool delete_it, bool resolve)
 		iterator found;
 		for(found = begin(); found != end(); found++)
 		{
-			if ((mbox && (*dynamic_cast<CMboxRef*>(*found) == *mbox)) ||
-				(ref && (*dynamic_cast<CMboxRef*>(*found) == *ref))) break;
+			CMboxRef* found_ref = dynamic_cast<CMboxRef*>(*found);
+			if (!found_ref)
+				continue;
+			if ((mbox && (*found_ref == *mbox)) ||
+				(ref && (*found_ref == *ref))) break;
 		}
 
 		// Remove it if found
@@ -196,7 +199,8 @@ unsigned long CMboxRefList::ResolveIndexOf(const CMbox* mbox) const
 	for(const_iterator iter = begin(); iter != end(); iter++)
 	{
 		pos++;
-		if (*dynamic_cast<CMboxRef*>(*iter) == *mbox)
+		CMboxRef* iter_ref = dynamic_cast<CMboxRef*>(*iter);
+		if (iter_ref && (*iter_ref == *mbox))
 			return pos;
 	}
 
@@ -250,8 +254,12 @@ bool CMboxRefList::CompareMboxRef(const CTreeNode* node1, const CTreeNode* node2
 		return false;
 
 	// Compare accounts first
-	const char* acct1 = dynamic_cast<const CMboxRef*>(node1)->GetAccountOnlyName().c_str();
-	const char* acct2 = dynamic_cast<const CMboxRef*>(node2)->GetAccountOnlyName().c_str();
+	const CMboxRef* ref1 = dynamic_cast<const CMboxRef*>(node1);
+	const CMboxRef* ref2 = dynamic_cast<const CMboxRef*>(node2);
+	if (!ref1 || !ref2)
+		return node1 < node2;
+	const char* acct1 = ref1->GetAccountOnlyName().c_str();
+	const char* acct2 = ref2->GetAccountOnlyName().c_str();
 
 	// If not same account do account ordering based on order in prefs
 	if (::strcmp(acct1, acct2))
@@ -271,8 +279,8 @@ bool CMboxRefList::CompareMboxRef(const CTreeNode* node1, const CTreeNode* node2
 	}
 
 	// Look for wildcards
-	bool wild1 = dynamic_cast<const CMboxRef*>(node1)->IsWildcard();
-	bool wild2 = dynamic_cast<const CMboxRef*>(node2)->IsWildcard();
+	bool wild1 = ref1->IsWildcard();
+	bool wild2 = ref2->IsWildcard();
 
 	// Float wildcards to top
 	if (wild1 ^ wild2)

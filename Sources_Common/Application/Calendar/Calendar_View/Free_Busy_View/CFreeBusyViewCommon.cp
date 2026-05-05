@@ -15,7 +15,7 @@
 */
 
 // ===========================================================================
-//	PPxStaticText.cp			PowerPlantX 1.0			©2003 Metrowerks Corp.
+//	PPxStaticText.cp			PowerPlantX 1.0			ï¿½2003 Metrowerks Corp.
 // ===========================================================================
 
 #include "CFreeBusyView.h"
@@ -79,7 +79,10 @@ void CFreeBusyView::ResetDate()
 	// Adjust date based on type
 	int32_t num_days = 1;
 
-	static_cast<CFreeBusyTable*>(GetTable())->ResetTable(mDate, mFreeBusyRange);
+	CFreeBusyTable* table = dynamic_cast<CFreeBusyTable*>(GetTable());
+	if (!table)
+		return;
+	table->ResetTable(mDate, mFreeBusyRange);
 
 	// Get date range for event lookup
 	iCal::CICalendarDateTime dtstart(mDate);
@@ -111,7 +114,7 @@ void CFreeBusyView::ResetDate()
 		mDetails = selected;
 	}
 
-	dynamic_cast<CFreeBusyTable*>(GetTable())->AddItems(mDetails);
+	table->AddItems(mDetails);
 	FRAMEWORK_REFRESH_WINDOW(GetTable())
 
 	// Broadcast change to listeners

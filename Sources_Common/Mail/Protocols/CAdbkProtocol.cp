@@ -1629,7 +1629,7 @@ void CAdbkProtocol::CloseAdbk(CAddressBook* adbk)
 void CAdbkProtocol::ReadFullAddressBook(CAddressBook* adbk)
 {
 	// Don't do on server if cache is primary
-	if (mCacheIsPrimary)
+	if (mCacheIsPrimary && mCacheClient)
 		mCacheClient->_ReadFullAddressBook(adbk);
 	else
 		mClient->_ReadFullAddressBook(adbk);
@@ -1638,7 +1638,7 @@ void CAdbkProtocol::ReadFullAddressBook(CAddressBook* adbk)
 void CAdbkProtocol::WriteFullAddressBook(CAddressBook* adbk)
 {
 	// Don't do on server if cache is primary
-	if (mCacheIsPrimary)
+	if (mCacheIsPrimary && mCacheClient)
 		mCacheClient->_WriteFullAddressBook(adbk);
 	else
 	{

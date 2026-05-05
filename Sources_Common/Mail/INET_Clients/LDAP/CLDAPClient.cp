@@ -162,12 +162,11 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 	// Look for port # appended to server
 	cdstring rname = GetAccount()->GetServerIP();
 	tcp_port rport = ((GetAccount()->GetTLSType() == CINETAccount::eSSL) || (GetAccount()->GetTLSType() == CINETAccount::eSSLv3)) ? LDAPS_PORT : LDAP_PORT;
-	if (::strchr(rname.c_str(), ':'))
+	const char* colon = ::strchr(GetAccount()->GetServerIP(), ':');
+	if (colon)
 	{
-		rname = cdstring(GetAccount()->GetServerIP(), 0, ::strcspn(GetAccount()->GetServerIP(), ":"));
-		const char* num = ::strchr(GetAccount()->GetServerIP(), ':');
-		num++;
-		rport = ::atoi(num);
+		rname = cdstring(GetAccount()->GetServerIP(), 0, colon - GetAccount()->GetServerIP());
+		rport = ::atoi(colon + 1);
 	}
 
 	// Parameterise root

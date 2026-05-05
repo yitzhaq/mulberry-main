@@ -76,17 +76,22 @@ void CToDoItem::OnDeleteToDo()
 	if (mType != eToDo)
 		return;
 
-	iCal::CICalendar* calendar = iCal::CICalendar::GetICalendar(mVToDo->GetTrueMaster<iCal::CICalendarVToDo>()->GetCalendar());
+	iCal::CICalendarVToDo* master = mVToDo->GetTrueMaster<iCal::CICalendarVToDo>();
+	if (!master)
+		return;
+	iCal::CICalendar* calendar = iCal::CICalendar::GetICalendar(master->GetCalendar());
 
 	// Add to calendar and release auto-ptr
 	if (calendar)
 	{
-		calendar->RemoveVToDo(mVToDo->GetTrueMaster<iCal::CICalendarVToDo>());
+		calendar->RemoveVToDo(master);
 		mVToDo.reset();
 	}
 
 	// Do direct call to ListenTo_Message as we cannot broadcast when this object could be deleted
-	dynamic_cast<CListener*>(mTable->GetCalendarView())->ListenTo_Message(eBroadcast_EditToDo, NULL);
+	CListener* listener = dynamic_cast<CListener*>(mTable->GetCalendarView());
+	if (listener)
+		listener->ListenTo_Message(eBroadcast_EditToDo, NULL);
 }
 
 void CToDoItem::SetupTagText()

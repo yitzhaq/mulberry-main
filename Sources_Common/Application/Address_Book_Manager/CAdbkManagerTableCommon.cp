@@ -528,7 +528,7 @@ void CAdbkManagerTable::OnNewAddressBook(void)
 		node = GetCellNode(row);
 
 		// If logged in then use current selection as reference point
-		if (server && server->IsLoggedOn())
+		if (server && server->IsLoggedOn() && node)
 		{
 			proto = server;
 			create.account = proto->GetAccountName();
