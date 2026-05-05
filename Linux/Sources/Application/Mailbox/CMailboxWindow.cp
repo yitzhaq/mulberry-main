@@ -62,14 +62,21 @@ CMailboxWindow::CMailboxWindow(JXDirector* owner)
 // Default destructor
 CMailboxWindow::~CMailboxWindow()
 {
-	// Remove from list
+	try
 	{
-		cdmutexprotect<CMailboxWindowList>::lock _lock(sMboxWindows);
-		CMailboxWindowList::iterator found = std::find(sMboxWindows->begin(), sMboxWindows->end(), this);
-		if (found != sMboxWindows->end())
-			sMboxWindows->erase(found);
+		// Remove from list
+		{
+			cdmutexprotect<CMailboxWindowList>::lock _lock(sMboxWindows);
+			CMailboxWindowList::iterator found = std::find(sMboxWindows->begin(), sMboxWindows->end(), this);
+			if (found != sMboxWindows->end())
+				sMboxWindows->erase(found);
+		}
+		CWindowsMenu::RemoveWindow(this);
 	}
-	CWindowsMenu::RemoveWindow(this);
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

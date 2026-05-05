@@ -63,13 +63,20 @@ C3PaneItems::C3PaneItems(JXContainer* enclosure,
 // Default destructor
 C3PaneItems::~C3PaneItems()
 {
-	// Turn previews off as we delete
-	if (GetMailboxView())
-		GetMailboxView()->SetUsePreview(false);
-	if (GetAddressBookView())
-		GetAddressBookView()->SetUsePreview(false);
-	if (GetCalendarView())
-		GetCalendarView()->SetUsePreview(false);
+	try
+	{
+		// Turn previews off as we delete
+		if (GetMailboxView())
+			GetMailboxView()->SetUsePreview(false);
+		if (GetAddressBookView())
+			GetAddressBookView()->SetUsePreview(false);
+		if (GetCalendarView())
+			GetCalendarView()->SetUsePreview(false);
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

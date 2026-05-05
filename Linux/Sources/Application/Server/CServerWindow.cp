@@ -55,18 +55,25 @@ CServerWindow::CServerWindow(JXDirector* owner)
 
 CServerWindow::~CServerWindow()
 {
-	// Remove from list
+	try
 	{
-		cdmutexprotect<CServerWindowList>::lock _lock(sServerWindows);
-		CServerWindowList::iterator found = std::find(sServerWindows->begin(), sServerWindows->end(), this);
-		if (found != sServerWindows->end())
-			sServerWindows->erase(found);
+		// Remove from list
+		{
+			cdmutexprotect<CServerWindowList>::lock _lock(sServerWindows);
+			CServerWindowList::iterator found = std::find(sServerWindows->begin(), sServerWindows->end(), this);
+			if (found != sServerWindows->end())
+				sServerWindows->erase(found);
+		}
+
+		CWindowsMenu::RemoveWindow(this);
+
+		if (mDoQuit)
+			CMulberryApp::sApp->Quit();
 	}
-
-	CWindowsMenu::RemoveWindow(this);
-
-	if (mDoQuit)
-		CMulberryApp::sApp->Quit();
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // Manually create document

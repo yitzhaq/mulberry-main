@@ -183,32 +183,39 @@ CLetterWindow::CLetterWindow(JXDirector* owner) :
 // Default destructor
 CLetterWindow::~CLetterWindow()
 {
-	// Set status
-	SetClosing();
-
-	// Delete all parts
-	delete mBody;
-
-	// Delete any stored bounce header
-	delete[] mBounceHeader;
-
-	// Delete any message lists
-	delete mMsgs;
-	mMsgs = NULL;
-
-	// Remove from list
+	try
 	{
-		cdmutexprotect<CLetterWindowList>::lock _lock(sLetterWindows);
-		CLetterWindowList::iterator found = std::find(sLetterWindows->begin(), sLetterWindows->end(), this);
-		if (found != sLetterWindows->end())
-			sLetterWindows->erase(found);
+		// Set status
+		SetClosing();
+
+		// Delete all parts
+		delete mBody;
+
+		// Delete any stored bounce header
+		delete[] mBounceHeader;
+
+		// Delete any message lists
+		delete mMsgs;
+		mMsgs = NULL;
+
+		// Remove from list
+		{
+			cdmutexprotect<CLetterWindowList>::lock _lock(sLetterWindows);
+			CLetterWindowList::iterator found = std::find(sLetterWindows->begin(), sLetterWindows->end(), this);
+			if (found != sLetterWindows->end())
+				sLetterWindows->erase(found);
+		}
+		CWindowsMenu::RemoveWindow(this);
+
+		DeleteTemporary();
+
+		// Set status
+		SetClosed();
 	}
-	CWindowsMenu::RemoveWindow(this);
-
-	DeleteTemporary();
-
-	// Set status
-	SetClosed();
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // Manually create document

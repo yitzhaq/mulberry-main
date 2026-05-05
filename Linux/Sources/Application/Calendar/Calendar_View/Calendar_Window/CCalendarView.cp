@@ -89,9 +89,16 @@ CCalendarView::CCalendarView(JXContainer* enclosure,
 
 CCalendarView::~CCalendarView()
 {
-	// Remove from list
-	cdmutexprotect<CCalendarViewList>::lock _lock(sCalendarViews);
-	sCalendarViews->erase(this);
+	try
+	{
+		// Remove from list
+		cdmutexprotect<CCalendarViewList>::lock _lock(sCalendarViews);
+		sCalendarViews->erase(this);
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 #pragma mark -

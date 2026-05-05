@@ -69,9 +69,16 @@ CCalendarStoreView::CCalendarStoreView(JXContainer* enclosure,
 
 CCalendarStoreView::~CCalendarStoreView()
 {
-	// Remove from list
-	cdmutexprotect<CCalendarStoreViewList>::lock _lock(sCalendarStoreViews);
-	sCalendarStoreViews->erase(std::remove(sCalendarStoreViews->begin(), sCalendarStoreViews->end(), this), sCalendarStoreViews->end());
+	try
+	{
+		// Remove from list
+		cdmutexprotect<CCalendarStoreViewList>::lock _lock(sCalendarStoreViews);
+		sCalendarStoreViews->erase(std::remove(sCalendarStoreViews->begin(), sCalendarStoreViews->end(), this), sCalendarStoreViews->end());
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 #pragma mark -

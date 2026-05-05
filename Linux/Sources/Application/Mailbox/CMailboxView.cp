@@ -67,11 +67,18 @@ CMailboxView::CMailboxView(JXContainer* enclosure,
 // Default destructor
 CMailboxView::~CMailboxView()
 {
-	// Remove from list
-	cdmutexprotect<CMailboxViewList>::lock _lock(sMailboxViews);
-	CMailboxViewList::iterator found = std::find(sMailboxViews->begin(), sMailboxViews->end(), this);
-	if (found != sMailboxViews->end())
-		sMailboxViews->erase(found);
+	try
+	{
+		// Remove from list
+		cdmutexprotect<CMailboxViewList>::lock _lock(sMailboxViews);
+		CMailboxViewList::iterator found = std::find(sMailboxViews->begin(), sMailboxViews->end(), this);
+		if (found != sMailboxViews->end())
+			sMailboxViews->erase(found);
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

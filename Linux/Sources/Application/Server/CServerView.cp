@@ -67,11 +67,18 @@ CServerView::CServerView(JXContainer* enclosure,
 // Default destructor
 CServerView::~CServerView()
 {
-	// Remove from list
-	cdmutexprotect<CServerViewList>::lock _lock(sServerViews);
-	CServerViewList::iterator found = std::find(sServerViews->begin(), sServerViews->end(), this);
-	if (found != sServerViews->end())
-		sServerViews->erase(found);
+	try
+	{
+		// Remove from list
+		cdmutexprotect<CServerViewList>::lock _lock(sServerViews);
+		CServerViewList::iterator found = std::find(sServerViews->begin(), sServerViews->end(), this);
+		if (found != sServerViews->end())
+			sServerViews->erase(found);
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

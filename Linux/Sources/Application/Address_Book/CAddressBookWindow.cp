@@ -68,16 +68,23 @@ CAddressBookWindow::CAddressBookWindow(JXDirector* owner)
 // Default destructor
 CAddressBookWindow::~CAddressBookWindow()
 {
-	// Remove from list
+	try
 	{
-		cdmutexprotect<CAddressBookWindowList>::lock _lock(sAddressBookWindows);
-		CAddressBookWindowList::iterator found = std::find(sAddressBookWindows->begin(), sAddressBookWindows->end(), this);
-		if (found != sAddressBookWindows->end())
-			sAddressBookWindows->erase(found);
-	}
+		// Remove from list
+		{
+			cdmutexprotect<CAddressBookWindowList>::lock _lock(sAddressBookWindows);
+			CAddressBookWindowList::iterator found = std::find(sAddressBookWindows->begin(), sAddressBookWindows->end(), this);
+			if (found != sAddressBookWindows->end())
+				sAddressBookWindows->erase(found);
+		}
 
-	// Remove from list
-	CWindowsMenu::RemoveWindow(this);
+		// Remove from list
+		CWindowsMenu::RemoveWindow(this);
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // Manually create document

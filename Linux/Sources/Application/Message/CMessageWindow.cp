@@ -176,22 +176,29 @@ CMessageWindow::CMessageWindow(JXDirector* supervisor)
 // Default destructor
 CMessageWindow::~CMessageWindow()
 {
-	// Set status
-	SetClosing();
-
-	// Remove from list
+	try
 	{
-		cdmutexprotect<CMessageWindowList>::lock _lock(sMsgWindows);
-		CMessageWindowList::iterator found = std::find(sMsgWindows->begin(), sMsgWindows->end(), this);
-		if (found != sMsgWindows->end())
-			sMsgWindows->erase(found);
-	}
-	CWindowsMenu::RemoveWindow(this);
+		// Set status
+		SetClosing();
 
-	// Set status
-	SetClosed();
+		// Remove from list
+		{
+			cdmutexprotect<CMessageWindowList>::lock _lock(sMsgWindows);
+			CMessageWindowList::iterator found = std::find(sMsgWindows->begin(), sMsgWindows->end(), this);
+			if (found != sMsgWindows->end())
+				sMsgWindows->erase(found);
+		}
+		CWindowsMenu::RemoveWindow(this);
+
+		// Set status
+		SetClosed();
 	
-	delete mColorList;
+		delete mColorList;
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // Manually create document

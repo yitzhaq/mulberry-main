@@ -92,11 +92,18 @@ CAddressBookView::CAddressBookView(JXContainer* enclosure,
 // Default destructor
 CAddressBookView::~CAddressBookView()
 {
-	// Remove from list
-	cdmutexprotect<CAddressBookViewList>::lock _lock(sAddressBookViews);
-	CAddressBookViewList::iterator found = std::find(sAddressBookViews->begin(), sAddressBookViews->end(), this);
-	if (found != sAddressBookViews->end())
-		sAddressBookViews->erase(found);
+	try
+	{
+		// Remove from list
+		cdmutexprotect<CAddressBookViewList>::lock _lock(sAddressBookViews);
+		CAddressBookViewList::iterator found = std::find(sAddressBookViews->begin(), sAddressBookViews->end(), this);
+		if (found != sAddressBookViews->end())
+			sAddressBookViews->erase(found);
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

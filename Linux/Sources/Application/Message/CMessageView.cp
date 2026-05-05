@@ -118,19 +118,26 @@ CMessageView::CMessageView(JXContainer* enclosure,
 // Default destructor
 CMessageView::~CMessageView()
 {
-	// Set status
-	SetClosing();
-
-	// Remove from list
+	try
 	{
-		cdmutexprotect<CMessageViewList>::lock _lock(sMsgViews);
-		CMessageViewList::iterator found = std::find(sMsgViews->begin(), sMsgViews->end(), this);
-		if (found != sMsgViews->end())
-			sMsgViews->erase(found);
-	}
+		// Set status
+		SetClosing();
 
-	// Set status
-	SetClosed();
+		// Remove from list
+		{
+			cdmutexprotect<CMessageViewList>::lock _lock(sMsgViews);
+			CMessageViewList::iterator found = std::find(sMsgViews->begin(), sMsgViews->end(), this);
+			if (found != sMsgViews->end())
+				sMsgViews->erase(found);
+		}
+
+		// Set status
+		SetClosed();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

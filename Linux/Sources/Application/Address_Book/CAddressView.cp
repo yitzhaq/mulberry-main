@@ -50,11 +50,18 @@ CAddressView::CAddressView(JXContainer* enclosure,
 // Default destructor
 CAddressView::~CAddressView()
 {
-	// Remove from list
-	cdmutexprotect<CAddressViewList>::lock _lock(sAddressViews);
-	CAddressViewList::iterator found = std::find(sAddressViews->begin(), sAddressViews->end(), this);
-	if (found != sAddressViews->end())
-		sAddressViews->erase(found);
+	try
+	{
+		// Remove from list
+		cdmutexprotect<CAddressViewList>::lock _lock(sAddressViews);
+		CAddressViewList::iterator found = std::find(sAddressViews->begin(), sAddressViews->end(), this);
+		if (found != sAddressViews->end())
+			sAddressViews->erase(found);
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

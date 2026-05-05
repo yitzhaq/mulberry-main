@@ -67,21 +67,28 @@ CCalendarWindow::CCalendarWindow(JXDirector* owner) :
 // Default destructor
 CCalendarWindow::~CCalendarWindow()
 {
-	// Save window state
-	SaveState();
-
-	// Deactivate the node (will close calendar if no more references to it)
-	if (mNode != NULL)
-		calstore::CCalendarStoreManager::sCalendarStoreManager->DeactivateNode(mNode);
-	
-	// Remove from list
+	try
 	{
-		cdmutexprotect<CCalendarWindowList>::lock _lock(sCalendarWindows);
-		CCalendarWindowList::iterator found = std::find(sCalendarWindows->begin(), sCalendarWindows->end(), this);
-		if (found != sCalendarWindows->end())
-			sCalendarWindows->erase(found);
+		// Save window state
+		SaveState();
+
+		// Deactivate the node (will close calendar if no more references to it)
+		if (mNode != NULL)
+			calstore::CCalendarStoreManager::sCalendarStoreManager->DeactivateNode(mNode);
+	
+		// Remove from list
+		{
+			cdmutexprotect<CCalendarWindowList>::lock _lock(sCalendarWindows);
+			CCalendarWindowList::iterator found = std::find(sCalendarWindows->begin(), sCalendarWindows->end(), this);
+			if (found != sCalendarWindows->end())
+				sCalendarWindows->erase(found);
+		}
+		CWindowsMenu::RemoveWindow(this);
 	}
-	CWindowsMenu::RemoveWindow(this);
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________
