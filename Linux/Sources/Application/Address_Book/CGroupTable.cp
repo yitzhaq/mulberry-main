@@ -304,11 +304,12 @@ void CGroupTable::DeleteGroup(TableIndexT pos)
 
 	// Find position of group
 	TableIndexT woRow;
+	long spos = pos;
 	for(woRow = 0; woRow < mCollapsableTree->CountNodes(); woRow++)
 	{
 		if (GetNestingLevel(woRow) == 0)
-			pos--;
-		if (pos < 0) break;
+			spos--;
+		if (spos < 0) break;
 	}
 
 	RemoveRows(1, woRow, false);

@@ -1028,7 +1028,7 @@ void CRFC822Parser::ParseMultipart(CLocalAttachment* body, std::istream& in)
 				if (mBoundaries.size())
 				{
 					// Look for matching boundary
-					boundary_at_from = ParseToBoundary(in, mBoundaries.back(), true);
+					ParseToBoundary(in, mBoundaries.back(), true);
 				}
 				else
 				{

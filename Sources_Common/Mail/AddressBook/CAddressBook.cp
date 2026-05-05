@@ -1102,7 +1102,7 @@ void CAddressBook::ImportAddress(char* txt, bool add, CAdbkAddress** raddr, CGro
 		if (adl == NEW_GROUP_HEADER)
 		{
 			// Nick-name is next
-			q = SkipTerm(&p, adl);
+			SkipTerm(&p, adl);
 			adl.ConvertToOS();
 
 			// Do not allow anonymous

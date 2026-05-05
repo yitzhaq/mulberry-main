@@ -700,7 +700,7 @@ JXImage* CBodyTable::GetAttachIcon(CAttachment* attach)
 	unsigned int nID = 0;
 	if (attach->IsNotCached())
 		nID = IDI_MISSINGPART;
-	if (attach->IsApplefile())
+	else if (attach->IsApplefile())
 		nID = IDI_APPLEFILEPART;
 	else if (attach->IsMultipart())
 		nID = IDI_MULTIPART;

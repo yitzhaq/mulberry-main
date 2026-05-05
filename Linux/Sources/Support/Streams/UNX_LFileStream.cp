@@ -128,11 +128,12 @@ UInt32
 LFileStream::GetLength() const
 {
 	//return CFile::GetLength();
-	UInt32 length, currentPos;
-	currentPos = lseek(theFilePointer, 0, SEEK_CUR);
-	length = lseek(theFilePointer, 0, SEEK_END);
+	off_t currentPos = lseek(theFilePointer, 0, SEEK_CUR);
+	if (currentPos < 0)
+		return 0;
+	off_t length = lseek(theFilePointer, 0, SEEK_END);
 	lseek(theFilePointer, currentPos, SEEK_SET);
-	return length;
+	return (length >= 0) ? length : 0;
 }
 
 

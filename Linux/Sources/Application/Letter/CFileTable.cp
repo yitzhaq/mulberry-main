@@ -1074,7 +1074,6 @@ TableIndexT CFileTable::AddPart(CAttachment* attach, CAttachment* parent, TableI
 			parent = mBody;
 			parent_row = 1;
 			pos = -1;
-			new_woRow = -1;
 		}
 
 		// Get default parent
@@ -1112,7 +1111,6 @@ TableIndexT CFileTable::AddPart(CAttachment* attach, CAttachment* parent, TableI
 		mWindow->SetBody(mBody);
 		parent_row = 0;
 		pos = 0;
-		new_woRow = 1;
 		force_reset = true;
 	}
 

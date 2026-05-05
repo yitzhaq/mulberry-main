@@ -57,7 +57,7 @@ CCalendarStoreNode::CCalendarStoreNode()
 	SetFlags(eIsDirectory, true);
 	SetFlags(eHasExpanded, true);
 	mCalendarRef = iCal::cCalendarRef_Invalid;
-	mSize = ULONG_MAX;
+	mSize = UINT32_MAX;
 	mLastSync = 0;
 	mACLs = NULL;
 }
@@ -77,7 +77,7 @@ CCalendarStoreNode::CCalendarStoreNode(CCalendarProtocol* proto)
 	mName = proto->GetCalendarAccount()->GetBaseRURL();
 	mShortName = mName;
 	mDisplayName = proto->GetAccountName();
-	mSize = ULONG_MAX;
+	mSize = UINT32_MAX;
 	mLastSync = 0;
 	mACLs = NULL;
 }
@@ -95,7 +95,7 @@ CCalendarStoreNode::CCalendarStoreNode(CCalendarProtocol* proto, CCalendarStoreN
 	SetFlags(eIsOutbox, is_outbox);
 	mCalendarRef = iCal::cCalendarRef_Invalid;
 	mName = name;
-	mSize = ULONG_MAX;
+	mSize = UINT32_MAX;
 	mLastSync = 0;
 	mACLs = NULL;
 

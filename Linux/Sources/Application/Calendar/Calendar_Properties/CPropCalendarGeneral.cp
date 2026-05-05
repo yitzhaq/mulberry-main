@@ -296,7 +296,7 @@ void CPropCalendarGeneral::CheckSize()
 
 	{
 		uint32_t size = mCalList->front()->GetSize();
-		if (size != ULONG_MAX)
+		if (size != UINT32_MAX)
 		{
 			mSize->SetText(::GetNumericFormat(size));
 		}

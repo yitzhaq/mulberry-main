@@ -163,14 +163,17 @@ long CVCardAdbkIOPluginDLL::DoImport(const char* fname)
 		// Read in all data
 		::fseek(file, 0, SEEK_END);
 		long fileLength = ::ftell(file);
+		if (fileLength < 0)
+			throw 1L;
 
 		data = (unsigned char*) ::malloc(fileLength + 1);
 		if (!data)
 			throw 1L;
-		
+
 		::rewind(file);
-		
-		::fread(data, 1, fileLength, file);
+
+		size_t nread = ::fread(data, 1, fileLength, file);
+		fileLength = nread;
 
 		// Close file
 		::fclose(file);
