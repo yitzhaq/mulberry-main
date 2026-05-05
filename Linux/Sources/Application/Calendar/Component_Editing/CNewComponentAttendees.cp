@@ -266,7 +266,10 @@ void CNewComponentAttendees::SetComponent(const iCal::CICalendarComponentRecur& 
 	// Check whether organiser is us
 	if (mHasOrganizer)
 	{
-		mOrganizer = vcomp.GetProperties().find(iCal::cICalProperty_ORGANIZER)->second;
+		iCal::CICalendarPropertyMap::const_iterator org_iter = vcomp.GetProperties().find(iCal::cICalProperty_ORGANIZER);
+		if (org_iter == vcomp.GetProperties().end())
+			return;
+		mOrganizer = (*org_iter).second;
 		const CIdentity* id = iCal::CITIPProcessor::OrganiserIdentity(vcomp);
 
 		if (id != NULL)

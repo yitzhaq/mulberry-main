@@ -647,10 +647,10 @@ void CMIMEContent::RemoveContentParameter(const char* param)
 	{
 		if (!::strcmpnocase(iter->first, param))
 		{
-			mContentParams.erase(iter);
+			iter = mContentParams.erase(iter);
 			continue;
 		}
-		
+
 		iter++;
 	}
 }

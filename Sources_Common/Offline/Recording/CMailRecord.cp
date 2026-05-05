@@ -1129,7 +1129,13 @@ void CMailRecord::Playback_CopyTo(CMailAction& action)
 void CMailRecord::Playback_CopyToFull(CMailAction& action, ulvector& uids, const ulmap& suids)
 {
 	// Get mailbox object
-	CMbox* rsource = (*mConns.find(action.GetID())).second.first;
+	CConnectionList::const_iterator conn = mConns.find(action.GetID());
+	if (conn == mConns.end())
+	{
+		CLOG_LOGTHROW(CGeneralException, eException_FailedSafe);
+		throw CGeneralException(eException_FailedSafe);
+	}
+	CMbox* rsource = (*conn).second.first;
 
 	// Get remote destination
 	char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();

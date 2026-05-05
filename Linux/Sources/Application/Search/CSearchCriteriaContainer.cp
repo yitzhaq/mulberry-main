@@ -425,15 +425,15 @@ CSearchItem* CSearchCriteriaContainer::ConstructSearch() const
 					CSearchItemList* and_list = const_cast<CSearchItemList*>(static_cast<const CSearchItemList*>((*iter)->GetData()));
 					and_list->push_back(new CSearchItem(**prev));
 					and_list->push_back(new CSearchItem(**next));
-					
+
 					// Delete the next item
 					flat_list.erase(next, next + 1);
-					
-					// Delete the prev item
-					flat_list.erase(prev, prev + 1);
-					
-					// Adjust iter to previous item so it will point to the new item after cycling through the loop
-					iter = prev;
+
+					// Delete the prev item — returns iterator to the AND item
+					iter = flat_list.erase(prev, prev + 1);
+
+					// Back up so the loop increment lands on the AND item
+					iter--;
 				}
 			}
 		}
@@ -463,19 +463,19 @@ CSearchItem* CSearchCriteriaContainer::ConstructSearch() const
 				}
 				else
 				{
-					// Add previous and next to the AND list
+					// Add previous and next to the OR list
 					CSearchItemList* and_list = const_cast<CSearchItemList*>(static_cast<const CSearchItemList*>((*iter)->GetData()));
 					and_list->push_back(new CSearchItem(**prev));
 					and_list->push_back(new CSearchItem(**next));
-					
+
 					// Delete the next item
 					flat_list.erase(next, next + 1);
-					
-					// Delete the prev item
-					flat_list.erase(prev, prev + 1);
-					
-					// Adjust iter to previous item so it will point to the new item after cycling through the loop
-					iter = prev;
+
+					// Delete the prev item — returns iterator to the OR item
+					iter = flat_list.erase(prev, prev + 1);
+
+					// Back up so the loop increment lands on the OR item
+					iter--;
 				}
 			}
 		}

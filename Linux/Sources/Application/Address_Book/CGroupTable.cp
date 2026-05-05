@@ -325,7 +325,7 @@ void CGroupTable::ReplaceGroup(CGroup* old_grp, CGroup* new_grp)
 	// Do replace
 	CGroupList::iterator replace = find(mAdbk->GetGroupList()->begin(), mAdbk->GetGroupList()->end(), old_grp);
 	
-	if (replace < mAdbk->GetGroupList()->end())
+	if (replace != mAdbk->GetGroupList()->end())
 	{
 		*replace = new_grp;
 

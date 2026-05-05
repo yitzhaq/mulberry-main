@@ -119,10 +119,10 @@ void CLetterWindow::ServerState(CMboxProtocol* proto, bool logon)
 				if (((*iter)->GetMbox()->GetProtocol() == proto) ||
 					((*iter)->GetMbox()->GetMsgProtocol() == proto))
 				{
-					mMsgs->erase(iter);
+					iter = mMsgs->erase(iter);
 					continue;
 				}
-				
+
 				iter++;
 			}
 
@@ -152,10 +152,10 @@ void CLetterWindow::MailboxState(const CMbox* mbox)
 		{
 			if ((*iter)->GetMbox() == mbox)
 			{
-				mMsgs->erase(iter);
+				iter = mMsgs->erase(iter);
 				continue;
 			}
-			
+
 			iter++;
 		}
 

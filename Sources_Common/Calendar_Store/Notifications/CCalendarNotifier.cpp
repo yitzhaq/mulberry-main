@@ -224,6 +224,7 @@ void CCalendarNotifier::UpdateNotification(CCalendarNotification_ptr& notificati
 	{
 		// Remove notification from alarm-notification map
 		CCalendarNotificationMap::iterator found = mAlarms.find(notification->GetAlarm());
-		(*found).second.reset(NULL);
+		if (found != mAlarms.end())
+			(*found).second.reset(NULL);
 	}
 };
