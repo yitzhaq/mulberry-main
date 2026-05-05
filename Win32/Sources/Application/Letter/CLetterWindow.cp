@@ -305,6 +305,7 @@ CLetterWindow::CLetterWindow()
 	mOriginalEncrypted = false;
 	mMarkSaved = false;
 	mLastDraftUID = 0;
+	mLastServerSaveTime = 0;
 	mBounceHeader = NULL;
 	mPartsTableAlign = NULL;
 	
@@ -2001,6 +2002,35 @@ void CLetterWindow::Serialize(CArchive& ar)
 			field = temp;
 		}
 
+		// Read identity
+		if (field.compare_start(cHDR_XMULBERRY_IDENTITY))
+		{
+			cdstring id_name = &field[sizeof(cHDR_XMULBERRY_IDENTITY) - 1];
+			const CIdentity* id = CPreferences::sPrefs->mIdentities.GetValue().GetIdentity(id_name);
+			if (id)
+			{
+				SetIdentity(id, false, false);
+				size_t index = id - &CPreferences::sPrefs->mIdentities.GetValue().front();
+				SetIdentityPopup(index);
+			}
+			ar.ReadString(temp);
+			field = temp;
+		}
+
+		// Read crypto state
+		if (field.compare_start(cHDR_XMULBERRY_SIGN))
+		{
+			mDoSign = (field[sizeof(cHDR_XMULBERRY_SIGN) - 1] == '1');
+			ar.ReadString(temp);
+			field = temp;
+		}
+		if (field.compare_start(cHDR_XMULBERRY_ENCRYPT))
+		{
+			mDoEncrypt = (field[sizeof(cHDR_XMULBERRY_ENCRYPT) - 1] == '1');
+			ar.ReadString(temp);
+			field = temp;
+		}
+
 		// Read draft UID for REPLACE (RFC 8508)
 		if (field.compare_start(cHDR_XMULBERRY_DRAFTUID))
 		{
@@ -2126,6 +2156,26 @@ void CLetterWindow::Serialize(CArchive& ar)
 			ar.WriteString(cdstring(cHDR_COPYTO).win_str());
 			ar.WriteString(copy_to.win_str());
 			ar.WriteString(_T("\r\n"));
+
+			// Get identity
+			if (!mIdentity.empty())
+			{
+				ar.WriteString(cdstring(cHDR_XMULBERRY_IDENTITY).win_str());
+				ar.WriteString(mIdentity.win_str());
+				ar.WriteString(_T("\r\n"));
+			}
+
+			// Get crypto state
+			if (mDoSign)
+			{
+				ar.WriteString(cdstring(cHDR_XMULBERRY_SIGN).win_str());
+				ar.WriteString(_T("1\r\n"));
+			}
+			if (mDoEncrypt)
+			{
+				ar.WriteString(cdstring(cHDR_XMULBERRY_ENCRYPT).win_str());
+				ar.WriteString(_T("1\r\n"));
+			}
 
 			// Get draft UID for REPLACE (RFC 8508)
 			if (mLastDraftUID != 0)

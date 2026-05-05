@@ -1547,6 +1547,14 @@ void CLetterWindow::AutoSaveToServer()
 	if (!CPreferences::sPrefs->mAutoSaveDrafts.GetValue())
 		return;
 
+	// Throttle server saves — minimum 5 minutes between saves
+	// Local disk saves are frequent (crash protection), but
+	// server saves are expensive (network round-trip, blocks UI)
+	time_t now = ::time(NULL);
+	if (mLastServerSaveTime != 0 &&
+		::difftime(now, mLastServerSaveTime) < 300)
+		return;
+
 	// Find drafts mailbox for the compose identity's account
 	const CIdentity* id = GetIdentity();
 	if (!id)
@@ -1629,6 +1637,7 @@ void CLetterWindow::AutoSaveToServer()
 					ulvector uids;
 					uids.push_back(mLastDraftUID);
 					drafts_mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true);
+					drafts_mbox->ExpungeMessage(uids, true);
 				}
 			}
 		}
@@ -1641,6 +1650,7 @@ void CLetterWindow::AutoSaveToServer()
 		{
 			mLastDraftUID = new_uid;
 			mLastDraftMbox = drafts_mbox->GetAccountName();
+			mLastServerSaveTime = ::time(NULL);
 		}
 
 		delete mail_msg;

@@ -228,6 +228,7 @@ void CLetterWindow::InitLetterWindow(void)
 	mOriginalEncrypted = false;
 	mMarkSaved = false;
 	mLastDraftUID = 0;
+	mLastServerSaveTime = 0;
 	mBounceHeader = NULL;
 
 	// Add to list
@@ -1276,6 +1277,34 @@ void CLetterWindow::SetEnvelope(Handle theText, long length)
 		mAppendList->Refresh();
 	}
 
+	// Get identity
+	if(!(data.AtEnd()))
+	{
+		data.ReadBlock(&copy_length, sizeof(long));
+		if (copy_length)
+		{
+			std::auto_ptr<char> txt(new char[copy_length + 1]);
+			data.ReadBlock(txt.get(), copy_length);
+			txt.get()[copy_length] = '\0';
+			cdstring id_name = txt.get();
+			const CIdentity* id = CPreferences::sPrefs->mIdentities.GetValue().GetIdentity(id_name);
+			if (id)
+			{
+				SetIdentity(id, false, false);
+			}
+		}
+	}
+
+	// Get crypto state
+	if(!(data.AtEnd()))
+	{
+		bool sign = false, encrypt = false;
+		data.ReadBlock(&sign, sizeof(bool));
+		data.ReadBlock(&encrypt, sizeof(bool));
+		mDoSign = sign;
+		mDoEncrypt = encrypt;
+	}
+
 	// Get draft UID for REPLACE (RFC 8508)
 	if(!(data.AtEnd()))
 	{
@@ -1344,6 +1373,17 @@ void CLetterWindow::GetEnvelope(Handle& theText, long& length)
 	copy_length = copy_to.length();
 	data.WriteBlock(&copy_length, sizeof(long));
 	data.WriteBlock(copy_to.c_str(), copy_length);
+
+	// Identity
+	copy_length = mIdentity.length();
+	data.WriteBlock(&copy_length, sizeof(long));
+	data.WriteBlock(mIdentity.c_str(), copy_length);
+
+	// Crypto state
+	bool sign = mDoSign;
+	bool encrypt = mDoEncrypt;
+	data.WriteBlock(&sign, sizeof(bool));
+	data.WriteBlock(&encrypt, sizeof(bool));
 
 	// Draft UID for REPLACE (RFC 8508)
 	data.WriteBlock(&mLastDraftUID, sizeof(unsigned long));

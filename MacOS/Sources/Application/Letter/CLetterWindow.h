@@ -230,6 +230,7 @@ private:
 	bool				mMarkSaved;							// Has been saved at least once
 	unsigned long		mLastDraftUID;						// UID of last saved server draft
 	cdstring			mLastDraftMbox;						// Mailbox of last saved server draft
+	time_t				mLastServerSaveTime;				// Time of last server draft save
 	char*				mBounceHeader;						// Bouncing message's header
 	cdstring			mSavedAppendMbox;					// Name of append mailbox while server logged out
 	cdstring			mSignature;							// Last signature inserted

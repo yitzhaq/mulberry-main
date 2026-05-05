@@ -83,6 +83,8 @@ const char cHDR_XMULBERRY_RCPT_BCC[] = "X-Mulberry-Rcpt-Bcc: ";
 
 const char cHDR_FILES[] = "Files: ";
 const char cHDR_COPYTO[] = "CopyTo: ";
+const char cHDR_XMULBERRY_SIGN[] = "X-Mulberry-Sign: ";
+const char cHDR_XMULBERRY_ENCRYPT[] = "X-Mulberry-Encrypt: ";
 const char cHDR_XMULBERRY_DRAFTUID[] = "X-Mulberry-Draft-UID: ";
 const char cHDR_XMULBERRY_DRAFTMBOX[] = "X-Mulberry-Draft-Mailbox: ";
 

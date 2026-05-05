@@ -174,6 +174,7 @@ CLetterWindow::CLetterWindow(JXDirector* owner) :
 	mOriginalEncrypted = false;
 	mMarkSaved = false;
 	mLastDraftUID = 0;
+	mLastServerSaveTime = 0;
 	mExternalEdit = false;
 	mExternalEditProcess = NULL;
 	mBounceHeader = NULL;
@@ -2087,6 +2088,32 @@ void CLetterWindow::ReadTextFile(std::istream& input)
 		::getline(input, txt);
 	}
 
+	// Read identity
+	if (::strncmp(txt, cHDR_XMULBERRY_IDENTITY, sizeof(cHDR_XMULBERRY_IDENTITY) - 1) == 0)
+	{
+		cdstring id_name = txt.c_str() + sizeof(cHDR_XMULBERRY_IDENTITY) - 1;
+		const CIdentity* id = CPreferences::sPrefs->mIdentities.GetValue().GetIdentity(id_name);
+		if (id)
+		{
+			SetIdentity(id, false, false);
+			size_t index = id - &CPreferences::sPrefs->mIdentities.GetValue().front();
+			SetIdentityPopup(index);
+		}
+		::getline(input, txt);
+	}
+
+	// Read crypto state
+	if (::strncmp(txt, cHDR_XMULBERRY_SIGN, sizeof(cHDR_XMULBERRY_SIGN) - 1) == 0)
+	{
+		mDoSign = (*(txt.c_str() + sizeof(cHDR_XMULBERRY_SIGN) - 1) == '1');
+		::getline(input, txt);
+	}
+	if (::strncmp(txt, cHDR_XMULBERRY_ENCRYPT, sizeof(cHDR_XMULBERRY_ENCRYPT) - 1) == 0)
+	{
+		mDoEncrypt = (*(txt.c_str() + sizeof(cHDR_XMULBERRY_ENCRYPT) - 1) == '1');
+		::getline(input, txt);
+	}
+
 	// Read draft UID for REPLACE (RFC 8508)
 	if (::strncmp(txt, cHDR_XMULBERRY_DRAFTUID, sizeof(cHDR_XMULBERRY_DRAFTUID) - 1) == 0)
 	{
@@ -2208,6 +2235,28 @@ void CLetterWindow::WriteTextFile(std::ostream& output, const JBoolean safetySav
 		output << cHDR_COPYTO;
 		output << copy_to;
 		output << os_endl;
+
+		// Get identity
+		if (!mIdentity.empty())
+		{
+			output << cHDR_XMULBERRY_IDENTITY;
+			output << mIdentity;
+			output << os_endl;
+		}
+
+		// Get crypto state
+		if (mDoSign)
+		{
+			output << cHDR_XMULBERRY_SIGN;
+			output << "1";
+			output << os_endl;
+		}
+		if (mDoEncrypt)
+		{
+			output << cHDR_XMULBERRY_ENCRYPT;
+			output << "1";
+			output << os_endl;
+		}
 
 		// Get draft UID for REPLACE (RFC 8508)
 		if (mLastDraftUID != 0)

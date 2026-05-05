@@ -398,6 +398,7 @@ private:
 	bool					mMarkSaved;							// Has been saved at least once
 	unsigned long			mLastDraftUID;						// UID of last saved server draft
 	cdstring				mLastDraftMbox;						// Mailbox of last saved server draft
+	time_t					mLastServerSaveTime;				// Time of last server draft save
 	bool					mExternalEdit;						// In external edit mode
 	char*					mBounceHeader;						// Bouncing message's header
 	static cdstring			sLastAppendTo;						// Cache last selected append to
