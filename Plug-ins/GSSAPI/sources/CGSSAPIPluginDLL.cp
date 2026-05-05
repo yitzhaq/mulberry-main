@@ -259,7 +259,10 @@ long CGSSAPIPluginDLL::InitContext(SAuthPluginData* info)
 	char actual_principal[cMaxAuthStringLength];
 	if (*mServer && ::strchr(mServer, '@'))
 		// Principal is that specified by user
-		::strcpy(actual_principal, mServer);
+	{
+		::strncpy(actual_principal, mServer, cMaxAuthStringLength - 1);
+		actual_principal[cMaxAuthStringLength - 1] = 0;
+	}
 	else
 	{
 		*actual_principal = 0;

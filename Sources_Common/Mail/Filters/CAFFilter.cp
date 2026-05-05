@@ -855,7 +855,7 @@ void CAFFilter::CreateHeader()
 	char* p = mHeaderBuffer;
 
 	// Add header
-	::memcpy(p, &mIndex.header, (mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize));
+	::memcpy(p, &mIndex, (mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize));
 	p += mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize;
 
 	// Add real name
@@ -948,7 +948,7 @@ void CAFFilter::CreateHeader()
 	char* p = mHeaderBuffer;
 
 	// Add header
-	::memcpy(p, &mIndex.header, (mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize));
+	::memcpy(p, &mIndex, (mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize));
 	p += mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize;
 
 	// Add real name
@@ -1051,7 +1051,7 @@ void CAFFilter::CreateHeader()
 	char* p = mHeaderBuffer;
 
 	// Add header
-	::memcpy(p, &mIndex.header, (mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize));
+	::memcpy(p, &mIndex, (mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize));
 	p += mSingle ? cAppleFile_ASIndexSize : cAppleFile_ADIndexSize;
 
 	// Add real name

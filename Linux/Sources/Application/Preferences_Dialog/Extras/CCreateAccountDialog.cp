@@ -45,6 +45,7 @@ CCreateAccountDialog::CCreateAccountDialog(JXDirector* supervisor)
 	mOkBtn = NULL;
 	mCancelBtn = NULL;
 	mText = NULL;
+	mType = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

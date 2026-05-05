@@ -89,6 +89,7 @@ void CIdentity::_copy(const CIdentity& copy)
 	mCopyReplied = copy.mCopyReplied;
 	mHeader = copy.mHeader;
 	mSignature = copy.mSignature;
+	mSignatureFile = copy.mSignatureFile;
 
 	mAddTo = copy.mAddTo;
 	mAddCC = copy.mAddCC;
