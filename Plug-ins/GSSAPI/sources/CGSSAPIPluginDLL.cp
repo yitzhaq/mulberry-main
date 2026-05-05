@@ -353,7 +353,7 @@ void CGSSAPIPluginDLL::DisplayError(SAuthPluginData* info, OM_uint32 maj_status,
 	else
 		::snprintf(err_txt, err_len + 256, "GSSAPI Plugin Error: %s %d", file, line);
 	LogEntry(err_txt);
-	delete err_txt;
+	delete[] err_txt;
 	if (string_token.value)
 		::strcpy(info->data, (char*) string_token.value);
 	else
@@ -375,7 +375,7 @@ void CGSSAPIPluginDLL::DisplayKLError(KLStatus inErr, const char* file, int line
 	char* err_txt = new char[err_len + 256];
     ::snprintf(err_txt, err_len + 256, "GSSAPI Plugin Error: %s, %s %d", (char*) outString, file, line); 
 	LogEntry(err_txt);
-	delete err_txt;
+	delete[] err_txt;
 }
 #endif
 

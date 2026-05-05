@@ -1734,7 +1734,7 @@ void CSMTPSender::SMTPAuthenticate()
 				// Base64 encode it
 				cdstring b64;
 				b64.steal(::base64_encode(reinterpret_cast<unsigned char*>(buffer), buflen));
-				delete buffer;
+				delete[] buffer;
 
 				// Do not allow logging of auth details
 				StValueChanger<bool> value(mAllowLog, CLog::AllowAuthenticationLog());

@@ -2305,7 +2305,7 @@ void  CAttachment::WriteDataToStream(costream& stream, bool dummy_files, CProgre
 				aFilter->GetBytes(buffer, read);
 				stream.Stream().write(buffer, read);
 			}
-			delete buffer;
+			delete[] buffer;
 		}
 		delete aFilter;
 	}

@@ -592,7 +592,7 @@ void CFileAttachment::WriteDataToStream(costream& stream, bool dummy_files, CPro
 				aFilter->GetBytes(buffer, read);
 				stream.Stream().write(buffer, read);
 			}
-			delete buffer;
+			delete[] buffer;
 		}
 		delete aFilter;
 		delete aAFFilter;

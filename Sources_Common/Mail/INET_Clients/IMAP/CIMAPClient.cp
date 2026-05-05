@@ -1852,7 +1852,7 @@ void CIMAPClient::_ReadHeader(CMessage* msg)
 		if (msg->GetBody()->GetParts())
 			// Append header spec if multiple parts
 			section += ".0";
-		else
+		else if (!section.empty())
 			// Replace first part spec if single part
 			section[section.length() - 1] = '0';
 
@@ -1961,7 +1961,7 @@ void CIMAPClient::_ReadAttachment(unsigned long msg_num, const char* attach_spec
 	{
 		if (::strcmp(modified_spec, "0") == 0)
 			modified_spec = cBODYHEADER;
-		else if (::strcmp(modified_spec.c_str() + modified_spec.length() - 2, ".0") == 0)
+		else if ((modified_spec.length() >= 2) && ::strcmp(modified_spec.c_str() + modified_spec.length() - 2, ".0") == 0)
 		{
 			((char*) modified_spec.c_str())[modified_spec.length() - 1] = 0;
 			modified_spec += cBODYHEADER;
@@ -2071,7 +2071,7 @@ void CIMAPClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 		attach->GetPartNumber(attach_spec);
 
 		// Use IMAP4rev1 command syntax
-		if ((mVersion == eIMAP4rev1) &&
+		if ((mVersion == eIMAP4rev1) && (attach_spec.length() >= 2) &&
 			(::strcmp(attach_spec.c_str() + attach_spec.length() - 2, ".0") == 0))
 		{
 			((char*) attach_spec.c_str())[attach_spec.length() - 1] = 0;

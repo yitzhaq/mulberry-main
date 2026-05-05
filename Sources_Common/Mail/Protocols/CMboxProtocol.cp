@@ -3872,7 +3872,7 @@ void CMboxProtocol::SyncRemote(CMbox* remote, CMbox* local, bool fast, bool part
 						if (remote_msg->IsDeleted() ^ local_msg->IsDeleted())
 							(remote_msg->IsDeleted() ? set_deleted : unset_deleted).push_back(remote_msg->GetUID());
 						if (remote_msg->IsDraft() ^ local_msg->IsDraft())
-							(remote_msg->IsAnswered() ? set_draft : unset_draft).push_back(remote_msg->GetUID());
+							(remote_msg->IsDraft() ? set_draft : unset_draft).push_back(remote_msg->GetUID());
 						if (remote_msg->IsMDNSent() ^ local_msg->IsMDNSent())
 							(remote_msg->IsMDNSent() ? set_mdn : unset_mdn).push_back(remote_msg->GetUID());
 						if (remote_msg->IsForwarded() ^ local_msg->IsForwarded())

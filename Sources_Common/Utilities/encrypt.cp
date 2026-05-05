@@ -115,8 +115,8 @@ char* encrypt_cipher(const char* value, const char* key)
 	char* resultb64 = ::base64_encode(result, vlen + 4);
 
 	// Clean up
-	delete temp_key;
-	delete result;
+	delete[] temp_key;
+	delete[] result;
 
 	return resultb64;
 }
@@ -132,7 +132,7 @@ char* decrypt_cipher(const char* value, const char* key)
 	// Do validity check
 	if (rlen <= 4)
 	{
-		delete unbase64;
+		delete[] unbase64;
 		return 0L;
 	}
 
@@ -154,8 +154,8 @@ char* decrypt_cipher(const char* value, const char* key)
 	result[rlen - 4] = 0;
 
 	// Clean up
-	delete temp_key;
-	delete unbase64;
+	delete[] temp_key;
+	delete[] unbase64;
 
 	return result;
 }

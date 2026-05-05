@@ -103,7 +103,7 @@ bool CFileOptionsMap::ReadMap(void)
 		CLOG_LOGCATCH(...);
 	}
 
-	delete txt;
+	delete[] txt;
 #elif __dest_os == __win32_os
 	try
 	{

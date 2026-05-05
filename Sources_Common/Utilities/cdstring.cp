@@ -1560,10 +1560,10 @@ void cdstring::FreeArray(const char** txt)
 	const char** p = txt;
 	while(*p)
 	{
-		delete *p;
+		delete[] *p;
 		p++;
 	}
-	delete txt;
+	delete[] txt;
 }
 
 #pragma mark ____________________________Searching

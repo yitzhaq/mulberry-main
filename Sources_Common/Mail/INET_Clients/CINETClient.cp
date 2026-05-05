@@ -1609,7 +1609,7 @@ char* CINETClient::INETGetLine()
 			mStream->qgetline(next + current_len - 1, cINETBufferLen + 1);
 
 			if (so_far != mLineData)
-				delete so_far;
+				delete[] so_far;
 			so_far = next;
 
 		} while (mStream->fail());

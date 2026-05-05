@@ -185,6 +185,6 @@ void CPluginDLL::ErrorReport(long err_no, const char* errtxt, const char* func, 
 		::strcat(txt, os_endl);
 		LogEntry(txt);
 		
-		delete txt;
+		delete[] txt;
 	}
 }

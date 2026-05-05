@@ -372,7 +372,7 @@ void CMonthIndicator::ResetTable(const iCal::CICalendarDateTime date, uint32_t w
 	// Adjust frame to total row height
 	if (width == 0)
 		SetSize(GetColWidth(1) * mCols, GetRowHeight(1) * mRows);
-	else
+	else if (mCols > 0)
 	{
 		// Resize to make total width less than the one requested, and keep cells square
 		SetColWidth(width / mCols, 1, mCols);

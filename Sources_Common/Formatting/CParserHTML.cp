@@ -2130,7 +2130,7 @@ void CParserHTML::RawParse(int offset)
 			unichar_t* format = ::unistrndup(start, stop - start);
 
 			bool valid_amp = HandleAmpChar(format, NULL, NULL);
-			delete format;
+			delete[] format;
 			if (valid_amp)
 			{
 				int startPos;
