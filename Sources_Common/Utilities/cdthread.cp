@@ -39,12 +39,19 @@ cdthread::cdthread()
 
 cdthread::~cdthread()
 {
-	// Set flag to force thread loop to terminate
-	SetExit();
+	try
+	{
+		// Set flag to force thread loop to terminate
+		SetExit();
 
-	// Try to acquire exit lock which is released only when thread exits
-	// Use of mutex to allow messages to be pumped while waiting for exit
-	GetExitLock().acquire();
+		// Try to acquire exit lock which is released only when thread exits
+		// Use of mutex to allow messages to be pumped while waiting for exit
+		GetExitLock().acquire();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 	// No need to delete: thread deletes itself on exit from thread proc

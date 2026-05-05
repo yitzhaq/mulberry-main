@@ -81,38 +81,44 @@ CMailAccountManager::CMailAccountManager()
 
 CMailAccountManager::~CMailAccountManager()
 {
-	// Must stop any mail checks in progress
-	CMailCheckThread::Pause(true);
-	mHaltCheck = true;
-
-	// End checking thread
-	CMailCheckThread::EndMailCheck();
-
-	// Remove all server views now to prevent illegal updates to 'stale' windows
+	try
 	{
-		cdmutexprotect<CServerView::CServerViewList>::lock _lock(CServerView::sServerViews);
-		for(CServerView::CServerViewList::reverse_iterator riter = CServerView::sServerViews->rbegin();
-				riter != CServerView::sServerViews->rend(); riter++)
-			(*riter)->DoClose();
-	}
-	mMainView = NULL;
+		// Must stop any mail checks in progress
+		CMailCheckThread::Pause(true);
+		mHaltCheck = true;
 
-	// Logoff each protocol and remove it
-	for(CMboxProtocolList::iterator iter = mProtos.begin(); iter != mProtos.end(); )
+		// End checking thread
+		CMailCheckThread::EndMailCheck();
+
+		// Remove all server views now to prevent illegal updates to 'stale' windows
+		{
+			cdmutexprotect<CServerView::CServerViewList>::lock _lock(CServerView::sServerViews);
+			for(CServerView::CServerViewList::reverse_iterator riter = CServerView::sServerViews->rbegin();
+					riter != CServerView::sServerViews->rend(); riter++)
+				(*riter)->DoClose();
+		}
+		mMainView = NULL;
+
+		// Logoff each protocol and remove it
+		for(CMboxProtocolList::iterator iter = mProtos.begin(); iter != mProtos.end(); )
+		{
+			StopProtocol(*iter);
+			RemoveProtocol(*iter);
+
+			// Must remove from list here as subsequent protos need mProtos to be consistent
+			// when they logout
+			iter = mProtos.erase(iter);
+			mProtoCount--;
+		}
+
+		// Remove each favourite
+		for(CFavourites::iterator iter = mFavourites.begin(); iter != mFavourites.end(); iter++)
+			delete *iter;
+	}
+	catch(...)
 	{
-		StopProtocol(*iter);
-		RemoveProtocol(*iter);
-
-		// Must remove from list here as subsequent protos need mProtos to be consistent
-		// when they logout
-		iter = mProtos.erase(iter);
-		mProtoCount--;
+		CLOG_LOGCATCH(...);
 	}
-
-	// Remove each favourite
-	for(CFavourites::iterator iter = mFavourites.begin(); iter != mFavourites.end(); iter++)
-		delete *iter;
-
 	sMailAccountManager = NULL;
 }
 

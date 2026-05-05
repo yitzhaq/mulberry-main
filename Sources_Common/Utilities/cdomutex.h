@@ -34,7 +34,7 @@ public:
 			: mLockIt(lock_it)
 			{ mLockIt.acquire(obj); mObj = obj; }
 		~lock_cdomutex()
-			{ mLockIt.release(mObj); }
+			{ try { mLockIt.release(mObj); } catch(...) {} }
 	private:
 		cdomutex& 		mLockIt;
 		const T*		mObj;
@@ -47,7 +47,7 @@ public:
 			: mLockIt(lock_it)
 			{ mLocked = mLockIt.try_lock(obj); mObj = obj; }
 		~trylock_cdomutex()
-			{ if (mLocked) mLockIt.release(mObj); }
+			{ try { if (mLocked) mLockIt.release(mObj); } catch(...) {} }
 		
 		bool is_locked() const
 			{ return mLocked; }

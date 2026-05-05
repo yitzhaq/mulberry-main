@@ -73,28 +73,32 @@ CAddressBookManager::CAddressBookManager()
 
 CAddressBookManager::~CAddressBookManager()
 {
-	// Remove all windows
-	//CAddressBookWindow::CloseAllWindows();
-
-	// Remove all server views now to prevent illegal updates to 'stale' windows
+	try
 	{
-		cdmutexprotect<CAdbkManagerView::CAdbkManagerViewList>::lock _lock(CAdbkManagerView::sAdbkManagerViews);
-		for(CAdbkManagerView::CAdbkManagerViewList::iterator iter = CAdbkManagerView::sAdbkManagerViews->begin(); iter != CAdbkManagerView::sAdbkManagerViews->end(); iter++)
-			(*iter)->DoClose();
-	}
+		// Remove all server views now to prevent illegal updates to 'stale' windows
+		{
+			cdmutexprotect<CAdbkManagerView::CAdbkManagerViewList>::lock _lock(CAdbkManagerView::sAdbkManagerViews);
+			for(CAdbkManagerView::CAdbkManagerViewList::iterator iter = CAdbkManagerView::sAdbkManagerViews->begin(); iter != CAdbkManagerView::sAdbkManagerViews->end(); iter++)
+				(*iter)->DoClose();
+		}
 
-	// Logoff each protocol (includes the local one)
-	for(CAdbkProtocolList::iterator iter = mProtos.begin(); iter != mProtos.end(); iter++)
+		// Logoff each protocol (includes the local one)
+		for(CAdbkProtocolList::iterator iter = mProtos.begin(); iter != mProtos.end(); iter++)
+		{
+			StopProtocol(*iter);
+			RemoveProtocol(*iter);
+		}
+
+		// Remove existing
+		mLookups.clear();
+
+		// Clear out any persistent search results
+		ClearSearch();
+	}
+	catch(...)
 	{
-		StopProtocol(*iter);
-		RemoveProtocol(*iter);
+		CLOG_LOGCATCH(...);
 	}
-
-	// Remove existing
-	mLookups.clear();
-
-	// Clear out any persistent search results
-	ClearSearch();
 	CAddressBookManager::sAddressBookManager = NULL;
 }
 

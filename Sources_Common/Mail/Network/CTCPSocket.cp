@@ -202,15 +202,22 @@ CTCPSocket::CTCPSocket(const CTCPSocket& copy)
 
 CTCPSocket::~CTCPSocket()
 {
-	// Must be closed
-	TCPClose();
-
-	// Remove from global list of sockets
+	try
 	{
-		cdmutex::lock_cdmutex _lock(sLock);
-		CTCPSocketList::iterator found = std::find(sSockets.begin(), sSockets.end(), this);
-		if (found != sSockets.end())
-			sSockets.erase(found);
+		// Must be closed
+		TCPClose();
+
+		// Remove from global list of sockets
+		{
+			cdmutex::lock_cdmutex _lock(sLock);
+			CTCPSocketList::iterator found = std::find(sSockets.begin(), sSockets.end(), this);
+			if (found != sSockets.end())
+				sSockets.erase(found);
+		}
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
 	}
 }
 

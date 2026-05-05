@@ -81,14 +81,21 @@ CINETProtocol::CINETProtocol(const CINETProtocol& copy)
 // Default destructor
 CINETProtocol::~CINETProtocol()
 {
-	// Always remove this just in case!
-	CMailControl::RegisterPeriodic(this, false);
-	
-	mAccount = NULL;
-	mClient = NULL;
-	
-	// Clean any free connections in cache - just in case
-	CleanConnections();
+	try
+	{
+		// Always remove this just in case!
+		CMailControl::RegisterPeriodic(this, false);
+
+		mAccount = NULL;
+		mClient = NULL;
+
+		// Clean any free connections in cache - just in case
+		CleanConnections();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 void CINETProtocol::SetAccount(CINETAccount* account)

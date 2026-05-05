@@ -155,31 +155,38 @@ CMbox::CMbox(CMboxProtocol* mailer, const char* itsFullName, char itsDirDelim, C
 // Default destructor
 CMbox::~CMbox()
 {
-	// Kill any open connection
-	if (mOpenInfo)
+	try
 	{
-		mMailer->EndConnection(mOpenInfo->mMsgMailer);
+		// Kill any open connection
+		if (mOpenInfo)
+		{
+			mMailer->EndConnection(mOpenInfo->mMsgMailer);
 
-		// Make sure protocols really know we are no longer current
-		if (mMailer->GetCurrentMbox() == this)
-			mMailer->ClearCurrentMbox();
-		if (mOpenInfo->mMsgMailer->GetCurrentMbox() == this)
-			mOpenInfo->mMsgMailer->ClearCurrentMbox();
-	 
-	 	// Clean-up items
-		if (IsFullOpen())
-			mOpenInfo->mSortedMessages->DeleteFakes();
-		delete mOpenInfo->mSortedMessages;
-		delete mOpenInfo->mMessages;
-		delete mOpenInfo;
+			// Make sure protocols really know we are no longer current
+			if (mMailer->GetCurrentMbox() == this)
+				mMailer->ClearCurrentMbox();
+			if (mOpenInfo->mMsgMailer->GetCurrentMbox() == this)
+				mOpenInfo->mMsgMailer->ClearCurrentMbox();
+
+			// Clean-up items
+			if (IsFullOpen())
+				mOpenInfo->mSortedMessages->DeleteFakes();
+			delete mOpenInfo->mSortedMessages;
+			delete mOpenInfo->mMessages;
+			delete mOpenInfo;
+		}
+
+		delete mStatusInfo;
+
+		mMailer = NULL;
+		mMboxList = NULL;
+		mOpenInfo = NULL;
+		mStatusInfo = NULL;
 	}
-
-	delete mStatusInfo;
-	
-	mMailer = NULL;
-	mMboxList = NULL;
-	mOpenInfo = NULL;
-	mStatusInfo = NULL;
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 void CMbox::InitMbox()

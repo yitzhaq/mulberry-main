@@ -55,12 +55,19 @@ CSSLPlugin::CSSLPlugin(fspec files) :
 
 CSSLPlugin::~CSSLPlugin()
 {
-	if (mInit)
+	try
 	{
-		delete CCertificateManager::sCertificateManager;
-		
-		// Always loaded in this state
-		UnloadPlugin();
+		if (mInit)
+		{
+			delete CCertificateManager::sCertificateManager;
+
+			// Always loaded in this state
+			UnloadPlugin();
+		}
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
 	}
 }
 

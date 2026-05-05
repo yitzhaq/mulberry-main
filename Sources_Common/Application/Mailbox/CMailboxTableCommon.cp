@@ -64,14 +64,21 @@ StMailboxTableSelection::StMailboxTableSelection(CMailboxTable* aTable, bool scr
 
 StMailboxTableSelection::~StMailboxTableSelection()
 {
-	// Check that temp mailbox object is still open
-	if (mTemp && mTemp->IsOpen())
+	try
 	{
-		// Reset the selection
-		if ((mTable != NULL) && mPreserved)
+		// Check that temp mailbox object is still open
+		if (mTemp && mTemp->IsOpen())
 		{
-			static_cast<CMailboxTable*>(mTable)->ResetSelection(mScroll);
+			// Reset the selection
+			if ((mTable != NULL) && mPreserved)
+			{
+				static_cast<CMailboxTable*>(mTable)->ResetSelection(mScroll);
+			}
 		}
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
 	}
 }
 

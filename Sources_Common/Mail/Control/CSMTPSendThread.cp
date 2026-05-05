@@ -52,15 +52,22 @@ CSMTPSendThread::CSMTPSendThread(CSMTPSender* sender)
 
 CSMTPSendThread::~CSMTPSendThread()
 {
-	// Set flag to force check loop to terminate
-	mExit = true;
+	try
+	{
+		// Set flag to force check loop to terminate
+		mExit = true;
 
-	// Must resume to allow it to exit
-	Resume();
+		// Must resume to allow it to exit
+		Resume();
 
-	// Try to acquire exit lock which is released only when mail check exits
-	// Use of mutex to allow messages to be pumped while waiting for mail check to exit
-	_can_exit.acquire();
+		// Try to acquire exit lock which is released only when mail check exits
+		// Use of mutex to allow messages to be pumped while waiting for mail check to exit
+		_can_exit.acquire();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 	// No need to delete: thread deletes itself on exit from thread proc

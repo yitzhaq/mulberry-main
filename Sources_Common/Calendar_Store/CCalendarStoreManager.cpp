@@ -75,27 +75,33 @@ CCalendarStoreManager::CCalendarStoreManager()
 
 CCalendarStoreManager::~CCalendarStoreManager()
 {
-	// Must stop any calendar checks in progress
-	CCalendarCheckThread::Pause(true);
-	mHaltCheck = true;
-    
-	// End checking thread
-	CCalendarCheckThread::EndCalendarCheck();
-
-	// Remove all server views now to prevent illegal updates to 'stale' windows
+	try
 	{
-		cdmutexprotect<CCalendarStoreView::CCalendarStoreViewList>::lock _lock(CCalendarStoreView::sCalendarStoreViews);
-		for(CCalendarStoreView::CCalendarStoreViewList::iterator iter = CCalendarStoreView::sCalendarStoreViews->begin(); iter != CCalendarStoreView::sCalendarStoreViews->end(); iter++)
-			(*iter)->DoClose();
-	}
+		// Must stop any calendar checks in progress
+		CCalendarCheckThread::Pause(true);
+		mHaltCheck = true;
 
-	// Logoff each protocol (includes the local one)
-	for(CCalendarProtocolList::iterator iter = mProtos.begin(); iter != mProtos.end(); iter++)
+		// End checking thread
+		CCalendarCheckThread::EndCalendarCheck();
+
+		// Remove all server views now to prevent illegal updates to 'stale' windows
+		{
+			cdmutexprotect<CCalendarStoreView::CCalendarStoreViewList>::lock _lock(CCalendarStoreView::sCalendarStoreViews);
+			for(CCalendarStoreView::CCalendarStoreViewList::iterator iter = CCalendarStoreView::sCalendarStoreViews->begin(); iter != CCalendarStoreView::sCalendarStoreViews->end(); iter++)
+				(*iter)->DoClose();
+		}
+
+		// Logoff each protocol (includes the local one)
+		for(CCalendarProtocolList::iterator iter = mProtos.begin(); iter != mProtos.end(); iter++)
+		{
+			StopProtocol(*iter);
+			RemoveProtocol(*iter);
+		}
+	}
+	catch(...)
 	{
-		StopProtocol(*iter);
-		RemoveProtocol(*iter);
+		CLOG_LOGCATCH(...);
 	}
-
 	sCalendarStoreManager = NULL;
 }
 
