@@ -324,8 +324,19 @@ void CTCPStreamBuf::CompressStart()
 {
 	::memset(&mDeflateState, 0, sizeof(mDeflateState));
 	::memset(&mInflateState, 0, sizeof(mInflateState));
-	deflateInit2(&mDeflateState, Z_DEFAULT_COMPRESSION, Z_DEFLATED, -15, 8, Z_DEFAULT_STRATEGY);
-	inflateInit2(&mInflateState, -15);
+	int ret = deflateInit2(&mDeflateState, Z_DEFAULT_COMPRESSION, Z_DEFLATED, -15, 8, Z_DEFAULT_STRATEGY);
+	if (ret != Z_OK)
+	{
+		CLOG_LOGTHROW(CGeneralException, -1L);
+		throw CGeneralException(-1L);
+	}
+	ret = inflateInit2(&mInflateState, -15);
+	if (ret != Z_OK)
+	{
+		deflateEnd(&mDeflateState);
+		CLOG_LOGTHROW(CGeneralException, -1L);
+		throw CGeneralException(-1L);
+	}
 	mCompressOn = true;
 	mCompressBufInLen = 0;
 	mCompressBufInPos = 0;
@@ -395,7 +406,12 @@ int CTCPStreamBuf::flush_output()
 			{
 				mDeflateState.next_out = (Bytef*)deflated;
 				mDeflateState.avail_out = cTCPBufferSize;
-				deflate(&mDeflateState, Z_SYNC_FLUSH);
+				int zret = deflate(&mDeflateState, Z_SYNC_FLUSH);
+				if (zret != Z_OK && zret != Z_BUF_ERROR)
+				{
+					CLOG_LOGTHROW(CGeneralException, -1L);
+					throw CGeneralException(-1L);
+				}
 				long out_len = cTCPBufferSize - mDeflateState.avail_out;
 				if (out_len > 0)
 					TCPSendData(deflated, out_len);

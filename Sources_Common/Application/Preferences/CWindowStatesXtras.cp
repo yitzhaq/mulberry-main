@@ -558,6 +558,8 @@ const char* cSortByDescriptors[] = {"To",
 									"Parts",
 									"Match",
 									"Disconnected",
+									"Display From",
+									"Display To",
 									NULL};
 
 const char* cShowByDescriptors[] = {"Ascending",

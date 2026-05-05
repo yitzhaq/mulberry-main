@@ -2177,7 +2177,7 @@ void CLocalClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fl
 				CLocalMessage* msg = dynamic_cast<CLocalMessage*>(GetCurrentMbox()->GetMessage(*iter));
 
 				// Set the new flags - only force update if different
-				if (msg->SetFlags(new_flags))
+				if (msg && msg->SetFlags(new_flags))
 				{
 					// Do vsiual update
 					CMailControl::MessageChanged(msg);
