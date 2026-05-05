@@ -177,7 +177,7 @@ void JXTabs::RenameCard(JIndex index, const char* title, JIndex icon)
 	// Change its width
 	if (newwidth != oldwidth)
 	{
-		JSize move_by = newwidth - oldwidth;
+		long move_by = (long)newwidth - (long)oldwidth;
 
 		// Move others right before increasing width
 		if (move_by > 0)

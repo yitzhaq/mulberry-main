@@ -1270,8 +1270,8 @@ bool CCalendarStoreTable::DropDataAtCell(Atom theFlavor, unsigned char* drag_dat
 
 			long old_index = calstore::CCalendarStoreManager::sCalendarStoreManager->GetProtocolIndex(drag);
 
-			// Only if different
-			if (old_index != new_index)
+			// Only if found and different
+			if (old_index >= 0 && old_index != new_index)
 				calstore::CCalendarStoreManager::sCalendarStoreManager->MoveProtocol(old_index, new_index);
 
 			// Must adjust if dragging above

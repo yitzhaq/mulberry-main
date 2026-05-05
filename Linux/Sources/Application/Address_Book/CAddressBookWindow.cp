@@ -273,9 +273,9 @@ bool CAddressBookWindow::IsDirty(void)
 	return false;
 }
 
-CAddressBook* CAddressBookWindow::GetAddressBook()
+CAddressBook* CAddressBookWindow::GetAddressBook() const
 {
-	return GetAddressBookView()->GetAddressBook();
+	return const_cast<CAddressBookWindow*>(this)->GetAddressBookView()->GetAddressBook();
 }
 
 // Set address and group lists

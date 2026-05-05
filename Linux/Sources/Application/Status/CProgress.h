@@ -38,7 +38,7 @@ public:
 	CProgress();
 	virtual ~CProgress() {}
 
-	virtual void SetDescriptor(cdstring& inDescriptor)
+	virtual void SetDescriptor(const cdstring& inDescriptor)
 		{ mTitle = inDescriptor; }
 
 	virtual void Reset(void)
@@ -57,7 +57,7 @@ public:
 		{ return mTotal; }
 
 	virtual void	SetPercentage(unsigned long percentage) 
-		{ mPercentage = (percentage < 0) ? 0 : ((percentage > 100) ? 100 : percentage); }
+		{ mPercentage = (percentage > 100) ? 100 : percentage; }
 	virtual unsigned long	GetPercentage(void) const
 		{ return mPercentage; }
 

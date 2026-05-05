@@ -1189,13 +1189,6 @@ JSize CTextDisplay::GetWordAt(JIndex pos, cdustring& word, JIndex* startPos, boo
 			 (_buf[i - 1] == FANCY_APOSTROPHE)))
 		i--;
 		
-	// May not be a word
-	if (i < 0)
-	{
-		*startPos = ULONG_MAX;
-		return 0;
-	}
-	
 	// Advance past any periods and apostrophes at the beginning of the word
 	while((_buf[i] != 0) && !IS_WORD_CHAR(_buf[i]))
 		i++;
@@ -1265,8 +1258,6 @@ unichar_t CTextDisplay::GetTextChar(JIndex pos) const
 JSize CTextDisplay::GetSpellTextRange(JIndex start, JIndex end, cdustring& text) const
 {
 	JIndex rstart = start;
-	if (rstart < 0)
-		rstart = 0;
 	JIndex rend = end;
 	if (rend > GetTextLength())
 		rend = GetTextLength();
@@ -1624,7 +1615,6 @@ void CTextDisplay::SpellTextChange()
 
 	// Update the current state.
 	wordLen = GetWordAt(newCursorPos, word, &mRTSpell.wordStartPos, false);
-	if (wordLen >= 0)
 	{
 		mRTSpell.state = RTSpell::eInUnmarkedWord;
 
@@ -1645,8 +1635,6 @@ void CTextDisplay::SpellTextChange()
 				mRTSpell.state = RTSpell::eInMarkedWord;
 		}
 	}
-	else
-		mRTSpell.state = RTSpell::eNotInWord;
 	mRTSpell.cursorPos = newCursorPos;
 	mRTSpell.charCount = newCharCount;
 }

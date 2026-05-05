@@ -274,11 +274,12 @@ TableIndexT CGroupTable::InsertGroup(TableIndexT pos, CGroup* grp)
 
 	// Find position of previous group
 	TableIndexT woRow;
+	long spos = pos;
 	for(woRow = 0; woRow < mCollapsableTree->CountNodes(); woRow++)
 	{
 		if (GetNestingLevel(woRow) == 0)
-			pos--;
-		if (pos < 0) break;
+			spos--;
+		if (spos < 0) break;
 	}
 
 	SGroupTableItem item(true, grp);

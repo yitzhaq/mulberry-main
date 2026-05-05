@@ -1946,7 +1946,7 @@ void CMboxProtocol::OpenMbox(CMbox* mbox, bool update, bool examine)
 		return;
 
 	// See whether requested box is already in list
-	unsigned long index = 0;
+	long index = 0;
 	if (IsCloned())
 		index = 1;
 	else if (!mINBOX || (mbox != mINBOX))

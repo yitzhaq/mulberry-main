@@ -62,7 +62,7 @@ public:
 	virtual void		SetDirty(bool dirty);			// Set dirty state
 	virtual bool		IsDirty();						// Get dirty state
 
-	virtual CAddressBook* GetAddressBook();
+	virtual CAddressBook* GetAddressBook() const;
 	virtual void	SetAddressBook(CAddressBook* adbk);		// Set the address book
 
 	// Common updaters

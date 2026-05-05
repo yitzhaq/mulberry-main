@@ -1127,8 +1127,11 @@ void CPrefsAccount::SetPanel(const CINETAccount* account)
 		}
 	}
 
-	mPanels->ShowCard(panel);
-	static_cast<CPrefsAccountPanel*>(mPanels->GetCurrentCard())->SetPrefs(mCopyPrefs);
-	static_cast<CPrefsAccountPanel*>(mPanels->GetCurrentCard())->SetData((void*) account);
+	if (panel >= 0)
+	{
+		mPanels->ShowCard(panel);
+		static_cast<CPrefsAccountPanel*>(mPanels->GetCurrentCard())->SetPrefs(mCopyPrefs);
+		static_cast<CPrefsAccountPanel*>(mPanels->GetCurrentCard())->SetData((void*) account);
+	}
 }
 

@@ -183,11 +183,13 @@ void CWindowsIcon::ParseData(const unsigned long* ico, unsigned long size, unsig
 
 	// allocate space for image data
 
-	unsigned short* data;
-	unsigned short** cols;
+	unsigned short* data = NULL;
+	unsigned short** cols = NULL;
 	const JError allocErr = AllocateImageData(size, size, &data, &cols);
 	if (!allocErr.OK())
 	{
+		delete [] data;
+		delete [] cols;
 		delete [] colorTable;
 		return;
 	}
