@@ -1246,7 +1246,7 @@ void CIMAPClient::_StopAppend(CMbox* mbox)
 	INETFinishSend();
 
 	// Parse APPENDUID for multiple UIDs (RFC 4315 + RFC 3502)
-	if (mHasUIDPlus && mLastResponse.FindTagged(cAPPENDUID))
+	if (mLastResponse.FindTagged(cAPPENDUID))
 	{
 		cdstring temp = mLastResponse.GetTagged();
 		char* p = ::strstrnocase(temp.c_str(), cAPPENDUID);
@@ -1479,7 +1479,7 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 				INETFinishSend();
 
 				// Check APPENDUID status from OK response text
-				if (mHasUIDPlus && mLastResponse.FindTagged(cAPPENDUID))
+				if (mLastResponse.FindTagged(cAPPENDUID))
 				{
 					cdstring temp = mLastResponse.GetTagged();
 					char* p = ::strstrnocase(temp.c_str(), cAPPENDUID);
@@ -1555,7 +1555,7 @@ void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* 
 			INETFinishSend();
 
 			// Parse APPENDUID from OK response (same as APPEND)
-			if (mHasUIDPlus && mLastResponse.FindTagged(cAPPENDUID))
+			if (mLastResponse.FindTagged(cAPPENDUID))
 			{
 				cdstring temp = mLastResponse.GetTagged();
 				char* p = ::strstrnocase(temp.c_str(), cAPPENDUID);
@@ -3345,7 +3345,7 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 	IMAPParseMailbox(txt, *delim, new_flags, special_use);
 
 	// Skip any extended data items after mailbox name (RFC 5258)
-	if (txt && *txt)
+	if (*txt)
 	{
 		while(**txt == ' ') (*txt)++;
 		if (**txt == '(')
