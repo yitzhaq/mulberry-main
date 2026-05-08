@@ -47,7 +47,9 @@ X11 bitmap fonts).
   toolkit cannot render (anything outside Latin-1). Common emoji
   show ASCII emoticons (e.g., `[:)]` for 😊, `[<3]` for ❤️);
   other emoji and symbols show CLDR short names (e.g.,
-  `[:waving hand:]` for 👋); Unicode mathematical styled letters
+  `[:waving hand:]` for 👋); multi-codepoint sequences like country
+  flags and skin-tone variants are matched correctly (longest match
+  first); Unicode mathematical styled letters
   (bold, italic, script, etc.) render as their plain ASCII
   equivalents; typographic characters like curly quotes, en/em
   dashes, and ellipsis render transparently as their ASCII
@@ -123,6 +125,10 @@ X11 bitmap fonts).
   periodic auto-save now saves to the server in addition to local
   disk. Uses REPLACE for atomic updates when available, APPEND +
   delete otherwise. Server draft automatically cleaned up on send.
+  5-minute throttle prevents excessive server saves. Old drafts
+  cleaned up via UID EXPUNGE. Identity, signature, signing, and
+  encryption settings persist in local safety-save files for crash
+  recovery (all platforms).
 - IMAP $Important keyword and \Important special-use attribute
   (RFC 8457). Recognizes server-assessed message importance
   (distinct from user-set \Flagged). Keyword preserved across
@@ -130,6 +136,12 @@ X11 bitmap fonts).
 - IMAP Response Codes (RFC 5530). Human-readable explanations for
   17 standard error response codes (AUTHENTICATIONFAILED, NOPERM,
   OVERQUOTA, NONEXISTENT, etc.) appended to server error messages.
+- HTTP Content-Encoding support (RFC 9110 §8.4/§12.5.3). All
+  CalDAV, CardDAV, and WebDAV preferences traffic now requests
+  compressed responses. Supports gzip/deflate (always available
+  via zlib), Brotli (RFC 7932, optional), and Zstandard (RFC 8878/
+  9659, optional). Reduces HTTP bandwidth by 60-80%. Legacy
+  x-gzip/x-deflate aliases accepted per RFC 9110.
 - IMAP COMPRESS=DEFLATE (RFC 4978). Reduces IMAP bandwidth by
   60-75% using zlib compression. Activated automatically after
   login when the server supports it. Includes decompression bomb
@@ -176,8 +188,15 @@ X11 bitmap fonts).
   upgrade (RFC 8314). Previously, Mulberry issued the STARTTLS command
   without checking whether the server advertised the capability in IMAP,
   ACAP, and SIEVE. SMTP already checked correctly.
+- Preserve unrecognized ACL rights on edit roundtrip (RFC 4314).
+  Servers using RFC 4314 rights (t, e, x, k) instead of RFC 2086
+  (d, c) had these rights silently stripped when editing mailbox
+  permissions. Now preserved and merged back.
 - Modernize Debian packaging with desktop entry, AppStream metadata,
   updated dependencies, and lintian compliance.
+- Add `mulberry(1)` man page covering all command-line options,
+  supported protocols, external editor integration, and environment
+  variables.
 
 ### Added
 
@@ -298,13 +317,25 @@ X11 bitmap fonts).
   the popup to use a garbage index value on cancel. Also fix
   the "Other..." dialog not appearing immediately in the event
   editor (was deferred until form read).
-- Fix 36 issues found by Infer static analysis (biabduction + Pulse):
-  32 null dereferences across mail core, UI, calendar, and plugin
-  code (unchecked GetEnvelope, GetAttachment, GetNode, GetCellMbox,
-  dynamic_cast, and malloc results), 4 uninitialized POD members in
-  preference structs (SColumnInfo, SFontInfo, SStyleTraits,
-  SStyleTraits2), and an operator precedence bug in TPopupMenu::Draw
-  on Linux.
+- Fix SMTP AUTH EXTERNAL sending empty base64 instead of "=" for
+  zero-length initial response. Fix missing re-EHLO after successful
+  AUTH (server capabilities may change). Differentiate 4xx temporary
+  failures from 5xx permanent failures in SMTP queue handling.
+- Fix offline flag sync using wrong flag for draft messages (IsDraft
+  check used IsAnswered value — copy-paste error in SyncRemote).
+- Fix mailbox hierarchy search silently broken: unsigned loop variable
+  made the search condition always false, so new mailboxes were never
+  found in existing hierarchies (OpenMbox).
+- Fix ~300 issues found by static analysis tools (Coverity, Infer,
+  CodeQL, cppcheck, clang-tidy). Notable categories: allocation/
+  deallocation mismatches (strdup/malloc freed with delete[]),
+  invalid iterator use after vector erase, null pointer dereferences
+  (unchecked dynamic_cast, find, return values), uncaught exceptions
+  in destructors (std::terminate risk), uninitialized members,
+  unsigned integer underflow, printf format mismatches, missing
+  break in switch, non-array delete, copy-paste errors, use-after-free
+  in stack operations, double-scaled pointer arithmetic in UTF-16,
+  and resource leaks.
 - Fix recurrence frequency not saving in calendar event repeat dialog.
   The frequency popup (Daily/Weekly/Monthly/Yearly) was read from the
   wrong control (the end-condition radio group instead of the frequency
@@ -366,17 +397,9 @@ X11 bitmap fonts).
   attributes to be consumed as part of the value.
 - Fix use-after-free in JX string insert and replace operations
   when the source data pointed into the string being modified.
-- Fix numerous latent bugs discovered through comprehensive static
-  analysis with cppcheck, clang-tidy, Facebook Infer, CodeQL,
-  Coverity, and extended GCC warnings. Notable finds include:
-  use-after-free in stack operations, null pointer dereferences in
-  message display and drag operations, double-scaled pointer
-  arithmetic in UTF-16 string operations, missing comma concatenating
-  adjacent string literals in match descriptors, array delete/delete
-  mismatch in DIGEST-MD5 plugin, memory leaks on realloc failure,
-  uninitialized variables in HTTP content handling and window setup,
-  and 23 allocation/deallocation mismatches (strdup freed with delete,
-  new[] freed with delete).
+- Fix missing comma concatenating adjacent string literals in match
+  descriptors, memory leaks on realloc failure, and uninitialized
+  variables in HTTP content handling and window setup.
 
 ### Removed
 
