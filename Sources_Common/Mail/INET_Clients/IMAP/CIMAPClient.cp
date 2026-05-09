@@ -4650,14 +4650,18 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 	// Change flags on cached message - only update if changed
 	if (mCurrent_msg && mCurrent_msg->SetFlags(new_flags))
 	{
-		// Must prevent visual hierarchy throwing an exception
-		try
+		// Skip per-message UI notification during bulk fetch.
+		// A full table refresh happens after the bulk operation completes.
+		if (!mItemTotal)
 		{
-			CMailControl::MessageChanged(mCurrent_msg);
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
+			try
+			{
+				CMailControl::MessageChanged(mCurrent_msg);
+			}
+			catch (...)
+			{
+				CLOG_LOGCATCH(...);
+			}
 		}
 		mMboxUpdate = true;
 	}

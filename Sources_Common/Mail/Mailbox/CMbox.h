@@ -318,9 +318,7 @@ public:
 	void	SetNumberUnseen(const unsigned long num)					// Set number of unseen messages in mailbox on server
 				{ if (mStatusInfo) mStatusInfo->mNumberUnseen = num; }
 	unsigned long	GetNumberUnseen()	const							// Get number of unseen messages
-				{ return (IsFullOpen() ?
-							CountFlags(NMessage::eNone, NMessage::eSeen) :
-							(mStatusInfo ? mStatusInfo->mNumberUnseen : 0)); }
+				{ return mStatusInfo ? mStatusInfo->mNumberUnseen : 0; }
 	bool	AnySeen() const												// Are there any seen but not deleted messages?
 				{ return AnyFlags(NMessage::eSeen, NMessage::eDeleted); }
 

@@ -282,6 +282,14 @@ X11 bitmap fonts).
   not recognized as network errors, bypassing all recovery. Also
   fixed dead connections returned from the connection pool and an
   O(N²) loop during mailbox recovery.
+- Fix O(N²) performance during bulk FETCH on large mailboxes.
+  GetNumberUnseen() called CountFlags() which scanned the entire
+  message list on every flag change, and MessageChanged() queued
+  per-message UI tasks whose processing blocked the IMAP thread.
+  On mailboxes with 100k+ messages, recovery could take 20+ minutes
+  instead of seconds. Fixed by using the maintained unseen counter
+  directly and suppressing per-message UI notifications during
+  bulk fetch operations.
 - Fix background mailbox tabs closing instead of reconnecting.
   When switching back to a mailbox tab after idle time, the IMAP
   connection may have died (server timeout). Previously, the tab
