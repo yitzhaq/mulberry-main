@@ -208,10 +208,11 @@ void inflate_streambuf::FlushBrotli()
 	size_t avail_in = mInBufLen;
 
 	uint8_t outbuf[cBufSize];
+	size_t avail_out;
 	do
 	{
 		uint8_t* next_out = outbuf;
-		size_t avail_out = cBufSize;
+		avail_out = cBufSize;
 
 		BrotliDecoderResult result = BrotliDecoderDecompressStream(
 			mBrotliState, &avail_in, &next_in, &avail_out, &next_out, NULL);
