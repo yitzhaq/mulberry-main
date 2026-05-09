@@ -117,10 +117,7 @@ void CMailboxView::ListenTo_Message(long msg, void* param)
 	switch (msg)
 	{
 	case CMboxProtocol::eBroadcast_MailLogoff:
-		// Handle close of protocol
-		// For some reason we don't do this with 3-pane items
-		if (!Is3Pane())
-			DoProtocolLogoff(reinterpret_cast<CMboxProtocol*>(param));
+		DoProtocolLogoff(reinterpret_cast<CMboxProtocol*>(param));
 		break;
 	case CMboxProtocol::eBroadcast_RemoveList:
 		// Handle removal of WD

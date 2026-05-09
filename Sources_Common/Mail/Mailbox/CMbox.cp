@@ -894,17 +894,12 @@ void CMbox::Reopen()
 // Recover from closed connection
 void CMbox::Recover()
 {
-	// Force mailbox cache to be cleared for now
-	// Ultimately we should do a UID sync on cached data
-	UncacheMessages();
-
 	// Recover clone state - we must still have an open cache, otherwise throw
 	if (!mOpenInfo || !mOpenInfo->mMsgMailer)
 	{
 		CLOG_LOGTHROW(CGeneralException, -1);
 		throw CGeneralException(-1);
 	}
-
 
 	// Reset some state info
 	SetCheckRecent(0);
@@ -918,6 +913,12 @@ void CMbox::Recover()
 
 		// Clear external references before deleting messages
 		CMailControl::CleanUpMboxRecover(this);
+
+		// Force mailbox cache to be cleared for now
+		// Ultimately we should do a UID sync on cached data
+		// Note: skip UncacheMessages here — its per-message notifications
+		// cause O(N²) resolution against the message list being cleared.
+		// CleanUpMboxRecover already handles external reference cleanup.
 
 		// Clear out the cached data to force a proper cache reload and take into account
 		// changes to the size of the mailbox whilst it was disconnected
@@ -981,7 +982,7 @@ void CMbox::Close(bool grab_proto, bool no_check, bool force, bool allow_punt, C
 		return;
 
 	// Only close if open in a single thread
-	if (mOpenInfo->mRefCount)
+	if (mOpenInfo->mRefCount && !force)
 	{
 		// Decrease ref count
 		mOpenInfo->mRefCount--;
@@ -2146,10 +2147,10 @@ long CMbox::Check(bool fast, bool silent)
 		// Can now clear local lock as we have an open lock
 		if (IsLocalMbox())
 			CMbox::_smutex.release(this);
-		
+
 		// Have now grabbed a ref count on open state
 		long result = 0;
-		
+
 		try
 		{
 			if (silent)

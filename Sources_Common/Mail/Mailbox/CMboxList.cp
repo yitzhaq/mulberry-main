@@ -199,12 +199,12 @@ long CMboxList::FetchIndexOf(const CMbox* mbox) const
 }
 
 // Close all mailboxes in the list (silently)
-void CMboxList::CloseAll()
+void CMboxList::CloseAll(bool force)
 {
 	// WARNING: if its the singleton list the items will be removed when closed
 	// Need to protect against erase during this process by reverse iterating
 	for(reverse_iterator riter = rbegin(); riter != rend(); riter++)
-		static_cast<CMbox*>(*riter)->CloseSilent();
+		static_cast<CMbox*>(*riter)->CloseSilent(force);
 }
 
 // Remove duplicate items

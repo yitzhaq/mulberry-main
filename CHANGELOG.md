@@ -276,6 +276,12 @@ X11 bitmap fonts).
 
 ### Fixed
 
+- Fix IMAP connection recovery after server restart or network
+  interruption. Dead connections left open folders in a non-functional
+  zombie state with no way to recover. Root cause: iostream exceptions
+  not recognized as network errors, bypassing all recovery. Also
+  fixed dead connections returned from the connection pool and an
+  O(N²) loop during mailbox recovery.
 - Fix background mailbox tabs closing instead of reconnecting.
   When switching back to a mailbox tab after idle time, the IMAP
   connection may have died (server timeout). Previously, the tab

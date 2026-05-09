@@ -63,7 +63,7 @@ public:
 
 	long			FetchIndexOf(const CMbox* mbox) const;				// Get position of mbox in the list
 
-	void		CloseAll();											// Close all items
+	void		CloseAll(bool force = false);						// Close all items
 
 	void		RemoveDuplicates();									// Remove duplicate items
 

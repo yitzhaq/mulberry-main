@@ -937,11 +937,19 @@ CINETProtocol* CINETProtocol::NewConnection()
 	CINETProtocol* proto = NULL;
 	for(CConnections::iterator iter = mCachedConnections.begin(); iter != mCachedConnections.end(); iter++)
 	{
-		// Look for one not being used
+		// Look for one not being used and still alive
 		if (!(*iter).mInUse)
 		{
-			// Should check whether its free from errors here
-			
+			if (!(*iter).mConnection->IsLoggedOn())
+			{
+				(*iter).mConnection->Forceoff();
+				delete (*iter).mConnection;
+				iter = mCachedConnections.erase(iter);
+				if (iter == mCachedConnections.end())
+					break;
+				continue;
+			}
+
 			// Now mark it as being used prior to returning it
 			proto = (*iter).mConnection;
 			(*iter).mInUse = true;

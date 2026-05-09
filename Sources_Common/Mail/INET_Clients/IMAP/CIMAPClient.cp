@@ -2924,7 +2924,8 @@ bool CIMAPClient::ShouldStartIdle()
 		mIdleState == eIdleOff &&
 		mStream != NULL &&
 		GetCurrentMbox() != NULL &&
-		mVersion == eIMAP4rev1;
+		mVersion == eIMAP4rev1 &&
+		(mIdleStartTime == 0 || ::difftime(::time(NULL), mIdleStartTime) >= 30);
 }
 
 bool CIMAPClient::ShouldReIdle() const
@@ -2942,10 +2943,10 @@ void CIMAPClient::_StartIdle()
 	{
 		mIdleState = eIdleRequested;
 
-		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", GetCurrentMbox()->GetName());
+		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", GetCurrentMbox()->GetName(), false);
 		::strcpy(mIdleTag, mTag);
-		INETSendString(cIDLE);
-		INETFinishSend();
+		INETSendString(cIDLE, eQueueNoFlags, false);
+		INETFinishSend(false);
 
 		mIdleState = eIdleActive;
 		mIdleStartTime = ::time(NULL);
@@ -2954,6 +2955,7 @@ void CIMAPClient::_StartIdle()
 	{
 		CLOG_LOGCATCH(...);
 		mIdleState = eIdleOff;
+		mIdleStartTime = ::time(NULL);
 	}
 }
 

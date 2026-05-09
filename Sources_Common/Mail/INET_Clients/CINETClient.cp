@@ -67,6 +67,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <ios>
 #include <strstream>
 #include <typeinfo>
 
@@ -1979,7 +1980,11 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 
 	// Check for network or general exception
 	CNetworkException* nex = dynamic_cast<CNetworkException*>(&ex);
-	//CGeneralException* gex = dynamic_cast<CGeneralException*>(&ex);
+
+	// iostream failure from dead socket is effectively a network error
+	CTCPException synth_ex(CTCPException::err_TCPAbort);
+	if (!nex && dynamic_cast<std::ios_base::failure*>(&ex))
+		nex = &synth_ex;
 
 	// Handle network exception
 	if (nex)
@@ -1988,7 +1993,7 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 		{
 			// See if recovery is possible before presenting an alert to the user
 			INETTryRecoverError(*nex, err_id, nobad_id);
-			
+
 			recovered = true;
 		}
 		catch(...)
@@ -1996,7 +2001,7 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 			CLOG_LOGCATCH(...);
 
 			// Catch any recovery error
-			
+
 			// use this to force the recover disconnect
 			failed_recovery = true;
 		}
