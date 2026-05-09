@@ -307,10 +307,13 @@ CAttachment* CAttachment::CloneAttachment(CMessage* owner, const CAttachment* or
 
 		// Copy data to new part
 		const char* orig = original->GetData();
-		size_t len = ::strlen(orig) + 1;
-		char* copy = new char[len];
-		::memcpy(copy, orig, len);
-		new_attach->SetData(copy);
+		if (orig)
+		{
+			size_t len = ::strlen(orig) + 1;
+			char* copy = new char[len];
+			::memcpy(copy, orig, len);
+			new_attach->SetData(copy);
+		}
 
 		// Clear data if not required
 		if (delete_after)
