@@ -99,14 +99,14 @@ void CCalendarEventBase::Select(bool select)
 	}
 }
 
-const char cTickMarkU2713_UTF8[] = 
+const char cTickMarkU2713_UTF8[] =
 {
-	(char)0xE2, (char)0x9C, (char)0x93, 0x00
+	(char)0xE2, (char)0x9C, (char)0x93, ' ', 0x00
 };
 
 const char cCrossMarkU2717_UTF8[] =
 {
-	(char)0xE2, (char)0x9C, (char)0x97, 0x00
+	(char)0xE2, (char)0x9C, (char)0x97, ' ', 0x00
 };
 
 void CCalendarEventBase::SetDetails(iCal::CICalendarComponentExpandedShared& event, CCalendarTableBase* table, const char* title, bool all_day, bool start_col, bool end_col, bool horiz)
