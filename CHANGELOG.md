@@ -90,7 +90,14 @@ X11 bitmap fonts).
   large result sets. Safety check ensures `$` only used when the
   command set matches the saved results exactly.
 - IMAP SORT=DISPLAY (RFC 5957). DISPLAYFROM and DISPLAYTO sort
-  keys for server-side display name sorting.
+  keys for server-side display name sorting. When supported by
+  the server, the "From / To" smart address column now uses
+  server-side sorting, choosing DISPLAYTO for Sent/Copy-To
+  mailboxes and DISPLAYFROM for all others. Note: this works
+  per-folder rather than per-message — the original client-side
+  smart sort examined each message's From address to decide
+  individually, which required downloading all envelopes and
+  is less efficient.
 - IMAP ESORT (RFC 5267). Compact ESEARCH-format responses for
   SORT commands via RETURN (ALL).
 - IMAP WITHIN (RFC 5032). OLDER and YOUNGER search keys for

@@ -2539,6 +2539,7 @@ bool CIMAPClient::_DoesSort(ESortMessageBy sortby) const
 		{
 		case cSortMessageTo:
 		case cSortMessageFrom:
+		case cSortMessageSmart:
 		case cSortMessageCc:
 		case cSortMessageSubject:
 		case cSortMessageDateSent:
@@ -2587,6 +2588,17 @@ void CIMAPClient::_Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CSe
 	case cSortMessageFrom:
 		temp += mHasSortDisplay ? cSORT_DISPLAYFROM : cSORT_FROM;
 		break;
+	case cSortMessageSmart:
+	{
+		bool sent = GetCurrentMbox() &&
+			(GetCurrentMbox()->IsSpecialUse(CMbox::eSpecialSent) ||
+			 GetCurrentMbox()->IsCopyTo());
+		if (sent)
+			temp += mHasSortDisplay ? cSORT_DISPLAYTO : cSORT_TO;
+		else
+			temp += mHasSortDisplay ? cSORT_DISPLAYFROM : cSORT_FROM;
+		break;
+	}
 	case cSortMessageCc:
 		temp += cSORT_CC;
 		break;
