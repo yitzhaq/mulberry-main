@@ -58,6 +58,9 @@ private:
 	char			mCompressBufIn[cTCPBufferSize];
 	long			mCompressBufInLen;
 	long			mCompressBufInPos;
+	char			mCompressRawIn[cTCPBufferSize];
+	long			mCompressRawInLen;
+	long			mCompressRawInPos;
 
 			int		flush_output();
 

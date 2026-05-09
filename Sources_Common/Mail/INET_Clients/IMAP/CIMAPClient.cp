@@ -946,11 +946,6 @@ void CIMAPClient::_SendID()
 // Send COMPRESS DEFLATE command (RFC 4978)
 void CIMAPClient::_Compress()
 {
-	// TODO: disabled pending investigation of data corruption on long
-	// responses (ESEARCH sequence sets >4KB). The zlib streaming inflate
-	// mixes old buffer contents with new data. See COMPRESS_DEFLATE_BUG.
-	return;
-
 	if (!mHasCompress)
 		return;
 

@@ -276,6 +276,8 @@ CTCPStreamBuf::CTCPStreamBuf() : std::streambuf()
 	mCompressOn = false;
 	mCompressBufInLen = 0;
 	mCompressBufInPos = 0;
+	mCompressRawInLen = 0;
+	mCompressRawInPos = 0;
 	::memset(&mInflateState, 0, sizeof(mInflateState));
 	::memset(&mDeflateState, 0, sizeof(mDeflateState));
 };
@@ -291,6 +293,8 @@ CTCPStreamBuf::CTCPStreamBuf(const CTCPStreamBuf& copy)
 	mCompressOn = false;
 	mCompressBufInLen = 0;
 	mCompressBufInPos = 0;
+	mCompressRawInLen = 0;
+	mCompressRawInPos = 0;
 	::memset(&mInflateState, 0, sizeof(mInflateState));
 	::memset(&mDeflateState, 0, sizeof(mDeflateState));
 };
@@ -340,6 +344,22 @@ void CTCPStreamBuf::CompressStart()
 	mCompressOn = true;
 	mCompressBufInLen = 0;
 	mCompressBufInPos = 0;
+	mCompressRawInLen = 0;
+	mCompressRawInPos = 0;
+
+	// Save any bytes remaining in the get area after the OK response.
+	// These are the start of the compressed stream if the TCP segment
+	// contained data past the OK line.
+	long leftover = egptr() - gptr();
+	if (leftover > 0)
+	{
+		if (leftover > cTCPBufferSize)
+			leftover = cTCPBufferSize;
+		::memcpy(mCompressRawIn, gptr(), leftover);
+		mCompressRawInLen = leftover;
+		mCompressRawInPos = 0;
+		setg(mBufIn, mBufIn, mBufIn);
+	}
 }
 
 // Stop DEFLATE compression
@@ -352,6 +372,8 @@ void CTCPStreamBuf::CompressStop()
 		mCompressOn = false;
 		mCompressBufInLen = 0;
 		mCompressBufInPos = 0;
+		mCompressRawInLen = 0;
+		mCompressRawInPos = 0;
 	}
 }
 
@@ -449,14 +471,19 @@ int CTCPStreamBuf::underflow()
 			}
 			else
 			{
-				// Read compressed data from socket
-				char compressed[cTCPBufferSize];
-				long clen = cTCPBufferSize;
-				TCPReceiveData(compressed, &clen);
+				// Get compressed input: use leftover from previous
+				// inflate, or read new data from socket
+				if (mCompressRawInPos >= mCompressRawInLen)
+				{
+					mCompressRawInLen = cTCPBufferSize;
+					TCPReceiveData(mCompressRawIn, &mCompressRawInLen);
+					mCompressRawInPos = 0;
+				}
 
-				// Inflate
-				mInflateState.next_in = (Bytef*)compressed;
-				mInflateState.avail_in = clen;
+				long raw_avail = mCompressRawInLen - mCompressRawInPos;
+
+				mInflateState.next_in = (Bytef*)(mCompressRawIn + mCompressRawInPos);
+				mInflateState.avail_in = raw_avail;
 				mInflateState.next_out = (Bytef*)mCompressBufIn;
 				mInflateState.avail_out = cTCPBufferSize;
 				int ret = inflate(&mInflateState, Z_SYNC_FLUSH);
@@ -465,12 +492,16 @@ int CTCPStreamBuf::underflow()
 					CLOG_LOGTHROW(CGeneralException, -1L);
 					throw CGeneralException(-1L);
 				}
+
+				long consumed = raw_avail - mInflateState.avail_in;
+				mCompressRawInPos += consumed;
+
 				mCompressBufInLen = cTCPBufferSize - mInflateState.avail_out;
 				mCompressBufInPos = 0;
 
 				// Decompression bomb check
-				if (mCompressBufInLen > 0 && clen > 0 &&
-					(mCompressBufInLen / clen) > 1000)
+				if (mCompressBufInLen > 0 && consumed > 0 &&
+					(mCompressBufInLen / consumed) > 1000)
 				{
 					CLOG_LOGTHROW(CGeneralException, -1L);
 					throw CGeneralException(-1L);
