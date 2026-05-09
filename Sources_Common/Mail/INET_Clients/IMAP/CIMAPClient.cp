@@ -946,6 +946,11 @@ void CIMAPClient::_SendID()
 // Send COMPRESS DEFLATE command (RFC 4978)
 void CIMAPClient::_Compress()
 {
+	// TODO: disabled pending investigation of data corruption on long
+	// responses (ESEARCH sequence sets >4KB). The zlib streaming inflate
+	// mixes old buffer contents with new data. See COMPRESS_DEFLATE_BUG.
+	return;
+
 	if (!mHasCompress)
 		return;
 
@@ -2563,6 +2568,9 @@ void CIMAPClient::_Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CSe
 	
 	INETStartSend("Status::IMAP::Sort", "Error::IMAP::OSErrSort", "Error::IMAP::NoBadSort", GetCurrentMbox()->GetName());
 	INETSendString(uids ? cUIDSORT : cSORT);
+	// ESORT RETURN option goes before sort criteria (RFC 5267 §3)
+	if (mHasESort)
+		INETSendString(cRETURN_ALL);
 	INETSendString(cSpace);
 	cdstring temp = "(";
 	switch(show_by)
@@ -2609,8 +2617,6 @@ void CIMAPClient::_Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CSe
 	}
 	temp += ")";
 	INETSendString(temp);
-	if (mHasESort)
-		INETSendString(cRETURN_ALL);
 	// Parse out search hierarchy with charset
 	AddSearchItem(search, true);
 	INETFinishSend();

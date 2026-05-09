@@ -758,6 +758,12 @@ void CINETClient::Logon()
 			auth_done = DoAuthentication();
 		else
 			auth_done = true;
+
+		// Refresh capabilities after authentication (RFC 3501 §6.1.1).
+		// Post-login capabilities differ from pre-login and may include
+		// extensions like SORT, COMPRESS, MOVE, etc.
+		if (auth_done)
+			_Capability();
 	}
 	catch(unsigned long /*num*/)
 	{

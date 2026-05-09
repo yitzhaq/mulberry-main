@@ -773,16 +773,23 @@ void CMbox::Open(CMboxProtocol* proto, bool update, bool examine, bool full)
 			// Open via server
 			mOpenInfo->mMsgMailer->OpenMbox(this, update || full, examine);
 
+			// OpenMbox may trigger error recovery that closes the mailbox
+			if (!mOpenInfo)
+			{
+				CLOG_LOGTHROW(CGeneralException, -1);
+				throw CGeneralException(-1);
+			}
+
 			// Now find all unseen/deleted/recent messages if updating
 			if (update)
 				DoInitialSearch();
 
 			// Determine allowed flags if full open
-			if (full)
+			if (full && mOpenInfo)
 				DetermineAllowedFlags();
 
 			// Always process new messages
-			if (!IsSynchronising() && update)
+			if (!IsSynchronising() && update && mOpenInfo)
 				mOpenInfo->mMsgMailer->ProcessCheckMbox(this);
 
 			// No longer in Open command
@@ -1483,7 +1490,7 @@ void CMbox::DoInitialSearch()
 
 	// Now look in any disconnected cache for full or partial messages,
 	// but only if not being synchronised
-	if (GetMsgProtocol()->CanDisconnect() && !GetMsgProtocol()->IsDisconnected() && !IsSynchronising())
+	if (GetMsgProtocol() && GetMsgProtocol()->CanDisconnect() && !GetMsgProtocol()->IsDisconnected() && !IsSynchronising())
 		GetMsgProtocol()->GetDisconnectedMessageState(this, mOpenInfo->mFullLocal, mOpenInfo->mPartialLocal);
 }
 
