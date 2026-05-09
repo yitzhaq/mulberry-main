@@ -2582,10 +2582,10 @@ void CIMAPClient::_Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CSe
 	switch(sortby)
 	{
 	case cSortMessageTo:
-		temp += cSORT_TO;
+		temp += mHasSortDisplay ? cSORT_DISPLAYTO : cSORT_TO;
 		break;
 	case cSortMessageFrom:
-		temp += cSORT_FROM;
+		temp += mHasSortDisplay ? cSORT_DISPLAYFROM : cSORT_FROM;
 		break;
 	case cSortMessageCc:
 		temp += cSORT_CC;

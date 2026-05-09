@@ -1013,6 +1013,17 @@ void CLetterWindow::OnDraftSendMail()
 				}
 			}
 
+			// Mark any forwarded message as $Forwarded (RFC 9051)
+			if (mMsgs && mMsgs->size() && mForward)
+			{
+				size_t old_size = mMsgs->size();
+				for(CMessageList::iterator iter = mMsgs->begin(); mMsgs && (mMsgs->size() == old_size) && (iter != mMsgs->end()); iter++)
+				{
+					if ((*iter)->GetMbox()->HasAllowedFlag(NMessage::eForwarded))
+						(*iter)->ChangeFlags(NMessage::eForwarded, true);
+				}
+			}
+
 			// Mark any rejects message as deleted (these will have a logged on protocol)
 			if (mMsgs && mMsgs->size() && mReject)
 			{
