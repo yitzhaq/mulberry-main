@@ -570,7 +570,7 @@ void CMessageView::DoRollover(CMbox* current_mbox)
 				switched = true;
 			}
 			// Try recycle
-			else
+			else if (currentView)
 			{
 				try
 				{
