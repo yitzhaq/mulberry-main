@@ -1326,9 +1326,10 @@ CMessage* CLetterWindow::CreateMessage(bool send, bool bcc_only)
 		SBitFlags new_flags(NMessage::eSeen);
 		mail_msg->SetFlags(new_flags);
 
-		// Check whether security required - not for rejects
-		bool sign = IsSigned() && !mReject;
-		bool encrypt = IsEncrypted() && !mReject;
+		// Check whether security required - only on send, not for
+		// draft saves or rejects
+		bool sign = send && IsSigned() && !mReject;
+		bool encrypt = send && IsEncrypted() && !mReject;
 		if (CPluginManager::sPluginManager.HasSecurity() && (sign || encrypt))
 		{
 			CSecurityPlugin* plugin = CSecurityPlugin::GetDefaultPlugin();
