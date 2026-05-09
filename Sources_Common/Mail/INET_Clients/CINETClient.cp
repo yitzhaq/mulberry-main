@@ -2385,6 +2385,7 @@ char* CINETClient::INETParseString(char** txt, bool nullify)
 	}
 
 	// Is it a literal (ie {###} or ~{###} for literal8)
+	*txt = p;
 	if (*p == '~' && *(p+1) == '{')
 	{
 		p++;
@@ -2477,6 +2478,7 @@ void CINETClient::INETParseStringStream(char** txt)
 	}
 
 	// Is it a literal (ie {###} or ~{###} for literal8)
+	*txt = p;
 	if (*p == '~' && *(p+1) == '{')
 	{
 		p++;
