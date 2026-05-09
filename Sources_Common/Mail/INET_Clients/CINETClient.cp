@@ -1643,6 +1643,17 @@ void CINETClient::INETProcess()
 		// Now get a line of text
 		char* txt = INETGetLine();
 
+		// WORKAROUND: COMPRESS inflate occasionally produces a single
+		// stray byte before '*' or '+' in responses. Root cause in
+		// CTCPStreamBuf::underflow inflate path is unknown. Strip the
+		// byte to prevent protocol desync. Remove when root cause found.
+		if (mStream && mStream->IsCompressOn() && txt[0] && txt[1] &&
+			txt[0] != '*' && txt[0] != '+' &&
+			(txt[1] == '*' || txt[1] == '+'))
+		{
+			::memmove(txt, txt + 1, ::strlen(txt));
+		}
+
 		// Write to log file
 		if (mAllowLog)
 			mLog.AddEntry(txt);

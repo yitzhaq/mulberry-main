@@ -2155,6 +2155,15 @@ void CLetterWindow::ReadTextFile(std::istream& input)
 			txt_total += os_endl;
 		}
 
+		// Strip trailing newlines to prevent accumulation
+		// across multiple save/recover cycles
+		long len = txt_total.length();
+		while (len > 0 && (txt_total[(unsigned long)(len - 1)] == '\n' ||
+			txt_total[(unsigned long)(len - 1)] == '\r'))
+			len--;
+		if ((unsigned long)len < txt_total.length())
+			txt_total.erase(len);
+
 		SetText(txt_total);
 	}
 
@@ -2297,7 +2306,6 @@ void CLetterWindow::WriteTextFile(std::ostream& output, const JBoolean safetySav
 			mailText =  mCurrentPart->GetData();
 			output << mailText;
 		}
-		output << os_endl;
 
 		delete to_list;
 		delete cc_list;

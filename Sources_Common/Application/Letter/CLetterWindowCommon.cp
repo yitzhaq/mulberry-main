@@ -939,6 +939,7 @@ void CLetterWindow::OnDraftSendMail()
 					ulvector uids;
 					uids.push_back(mLastDraftUID);
 					drafts_mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true);
+					drafts_mbox->ExpungeMessage(uids, true);
 				}
 			}
 			catch (...)
@@ -1487,6 +1488,7 @@ void CLetterWindow::CopyNow(CMbox* mbox, bool option_key)
 						ulvector uids;
 						uids.push_back(mLastDraftUID);
 						mbox->SetFlagMessage(uids, true, NMessage::eDeleted, true);
+						mbox->ExpungeMessage(uids, true);
 					}
 				}
 			}

@@ -1264,9 +1264,10 @@ void CIMAPClient::_StopAppend(CMbox* mbox)
 
 			unsigned long uidv = ::strtoul(p, &p, 10);
 
-			// Validate UIDValidity
+			// Validate UIDValidity (0 = unknown, don't reject)
 			if (append_mbox->HasStatus() &&
-				(append_mbox->GetUIDValidity() != uidv))
+				append_mbox->GetUIDValidity() != 0 &&
+				append_mbox->GetUIDValidity() != uidv)
 			{
 				mMultiAppendUIDs.clear();
 			}
@@ -1498,9 +1499,11 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 						unsigned long uidv = ::strtoul(p, &p, 10);
 						unsigned long uid = ::strtoul(p, &p, 10);
 
-						// Must check UIDValidity
+						// Accept UID unless cached UIDValidity
+						// positively contradicts the response
 						if (mbox->HasStatus() &&
-							(mbox->GetUIDValidity() != uidv))
+							mbox->GetUIDValidity() != 0 &&
+							mbox->GetUIDValidity() != uidv)
 							new_uid = 0;
 						else
 							new_uid = uid;
@@ -1575,7 +1578,8 @@ void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* 
 					unsigned long uid = ::strtoul(p, &p, 10);
 
 					if (mbox->HasStatus() &&
-						(mbox->GetUIDValidity() != uidv))
+						mbox->GetUIDValidity() != 0 &&
+						mbox->GetUIDValidity() != uidv)
 						new_uid = 0;
 					else
 						new_uid = uid;
