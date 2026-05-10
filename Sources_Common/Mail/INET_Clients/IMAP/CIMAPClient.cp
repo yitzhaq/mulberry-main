@@ -646,6 +646,7 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 			mbox->GetHighestModSeq() > 0 &&
 			mbox->GetUIDValidity() > 0)
 		{
+			// QRESYNC parameter implicitly activates CONDSTORE
 			cdstring qresync = " (QRESYNC (";
 			qresync += cdstring(mbox->GetUIDValidity());
 			qresync += " ";
@@ -659,11 +660,17 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 			if (mbox->IsFullOpen() && mbox->GetNumberCached() > 0)
 			{
 				CSequence known_uids;
+				CSequence seq_set;
+				CSequence uid_set;
 				for(unsigned long i = 1; i <= mbox->GetNumberCached(); i++)
 				{
 					CMessage* msg = mbox->GetMessage(i);
 					if (msg && msg->GetUID() > 0)
+					{
 						known_uids.push_back(msg->GetUID());
+						seq_set.push_back(i);
+						uid_set.push_back(msg->GetUID());
+					}
 				}
 				if (!known_uids.empty())
 				{
@@ -671,11 +678,27 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 					std::sort(known_uids.begin(), known_uids.end());
 					qresync += " ";
 					qresync += known_uids.GetSequenceText();
+
+					// Message sequence match data (§3.2.5.2)
+					if (!seq_set.empty())
+					{
+						qresync += " (";
+						qresync += seq_set.GetSequenceText();
+						qresync += " ";
+						std::sort(uid_set.begin(), uid_set.end());
+						qresync += uid_set.GetSequenceText();
+						qresync += ")";
+					}
 				}
 			}
 
 			qresync += "))";
 			INETSendString(qresync, eQueueNoFlags, false);
+		}
+		else if (mHasCondstore)
+		{
+			// CONDSTORE parameter (RFC 7162 §3.1.8)
+			INETSendString(" (CONDSTORE)", eQueueNoFlags, false);
 		}
 
 		INETFinishSend();

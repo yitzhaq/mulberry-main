@@ -81,6 +81,7 @@ public:
 		eUnseen,		// -
 		eOlder,			// long (seconds)
 		eYounger,		// long (seconds)
+		eModSeq,		// long (mod-sequence value, RFC 7162)
 
 		// These are local items that expand to something else on the server
 		eRecipient,		// cdstring*

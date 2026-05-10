@@ -589,6 +589,12 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 		items.push_back(cdstrbool(temp, true));
 		break;
 
+	case eModSeq:		// long (mod-sequence value, RFC 7162 §3.1.5)
+		items.push_back(cdstrbool(cMODSEQ, true));
+		temp = static_cast<long>(reinterpret_cast<intptr_t>(GetData()));
+		items.push_back(cdstrbool(temp, true));
+		break;
+
 	case eRecipient:	// cdstring*
 		if (expand_me)
 		{
