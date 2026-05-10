@@ -1701,16 +1701,13 @@ void CAttachment::ReadAttachment(CMessage* msg, bool peek, bool filter)
 #endif
 
 		// Get appropriate filter — skip CTE decoding when server
-		// supports BINARY (RFC 3516) as data arrives already decoded.
-		// For non-text parts, skip ALL filtering to preserve binary data.
+		// supports BINARY (RFC 3516) as data arrives already decoded
 		bool use_binary = msg->GetMbox() &&
 			msg->GetMbox()->GetProtocol() &&
 			msg->GetMbox()->GetProtocol()->HasBinary();
 		CFilter* aFilter;
-		if (use_binary && GetContent().GetContentType() != eContentText)
-			aFilter = new CFilter();
-		else if (use_binary || !filter)
-			aFilter = new CFilterEndls();
+		if (use_binary || !filter)
+			aFilter = CMIMESupport::GetFilter(this, true, use_binary);
 		else
 			aFilter = CMIMESupport::GetFilter(this, true);
 		aFilter->SetStream(&data);
@@ -1845,7 +1842,7 @@ void CAttachment::Extract(CMessage* owner, bool view)
 				// Do application/applefile part first
 
 				// Get appropriate filter for decoding
-				aFilter = CMIMESupport::GetFilter(applefile, true);
+				aFilter = CMIMESupport::GetFilter(applefile, true, use_binary);
 
 				// Get filter for applefile
 				aAFFilter = new CAFFilter;
@@ -1867,8 +1864,8 @@ void CAttachment::Extract(CMessage* owner, bool view)
 
 				// Do data next
 
-				// Get appropriate filter for encoding
-				aFilter = CMIMESupport::GetFilter(datafile, true);
+				// Get appropriate filter for decoding
+				aFilter = CMIMESupport::GetFilter(datafile, true, use_binary);
 
 				// Set filters
 				aFilter->SetStream(aFile);
@@ -1962,8 +1959,11 @@ void CAttachment::Extract(CMessage* owner, bool view)
 					aAFFilter = new CAFFilter;
 				}
 
-				// Get appropriate filter
-				aFilter = CMIMESupport::GetFilter(this, true);
+				// Get appropriate filter — BINARY skips CTE decoding
+				bool use_binary = owner && owner->GetMbox() &&
+					owner->GetMbox()->GetProtocol() &&
+					owner->GetMbox()->GetProtocol()->HasBinary();
+				aFilter = CMIMESupport::GetFilter(this, true, use_binary);
 
 				// Set filter chain
 				if (IsApplefile())

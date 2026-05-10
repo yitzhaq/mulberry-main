@@ -689,8 +689,19 @@ EContentTransferEncoding CMIMESupport::DetermineTextEncoding(const char* text)
 }
 
 // Get a filter for an encoding type
-CFilter* CMIMESupport::GetFilter(const CAttachment* attach, bool decoding)
+CFilter* CMIMESupport::GetFilter(const CAttachment* attach, bool decoding, bool binary)
 {
+	// When BINARY FETCH is active, the server already decoded the CTE.
+	// Non-text parts need no filtering at all. Text parts still need
+	// end-of-line normalization via CFilterEndls.
+	if (binary && decoding)
+	{
+		if (!attach->IsText())
+			return new CFilter();
+		else
+			return new CFilterEndls();
+	}
+
 	// When encoding we always use the binhex/uu filters
 	// For decoding, we might have binhex/uu re-encoded as base64 so we let the caller
 	// handle that case by adding a secondary filter on top of the cte filter

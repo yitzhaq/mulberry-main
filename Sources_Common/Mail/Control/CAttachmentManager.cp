@@ -23,6 +23,8 @@
 #include "CAttachmentManager.h"
 
 #include "CAdminLock.h"
+#include "CMbox.h"
+#include "CMboxProtocol.h"
 #include "CAFFilter.h"
 #include "CAttachment.h"
 #include "CAttachmentList.h"
@@ -267,9 +269,12 @@ bool CAttachmentManager::ExtractADAttachment(CMessage* owner, CAttachment* attac
 		if (aFile)
 		{
 			// Do application/applefile part first
+			bool use_binary = owner && owner->GetMbox() &&
+				owner->GetMbox()->GetProtocol() &&
+				owner->GetMbox()->GetProtocol()->HasBinary();
 
 			// Get appropriate filter for decoding
-			aFilter = CMIMESupport::GetFilter(applefile, true);
+			aFilter = CMIMESupport::GetFilter(applefile, true, use_binary);
 
 			// Get filter for applefile
 			aAFFilter = new CAFFilter;
@@ -294,8 +299,8 @@ bool CAttachmentManager::ExtractADAttachment(CMessage* owner, CAttachment* attac
 
 			// Do data next
 
-			// Get appropriate filter for encoding
-			aFilter = CMIMESupport::GetFilter(datafile, true);
+			// Get appropriate filter for decoding
+			aFilter = CMIMESupport::GetFilter(datafile, true, use_binary);
 
 			// Set filters
 			aFilter->SetStream(aFile);
@@ -395,8 +400,11 @@ bool CAttachmentManager::ExtractSingleAttachment(CMessage* owner, CAttachment* a
 		// Might have been cancelled
 		if (aFile)
 		{
-			// Get appropriate filter
-			aFilter = CMIMESupport::GetFilter(attach, true);
+			// Get appropriate filter — BINARY skips CTE decoding
+			bool use_binary = owner && owner->GetMbox() &&
+				owner->GetMbox()->GetProtocol() &&
+				owner->GetMbox()->GetProtocol()->HasBinary();
+			aFilter = CMIMESupport::GetFilter(attach, true, use_binary);
 
 			// Set filter chain for more content decoding
 			

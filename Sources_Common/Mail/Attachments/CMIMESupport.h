@@ -70,7 +70,8 @@ public:
 									EContentDisposition disposition);
 	static EContentTransferEncoding DetermineTextEncoding(const char* text);	// Determine best encoding type for text
 
-	static CFilter*	GetFilter(const CAttachment* attach, bool decoding);		// Get a filter for some content
+	static CFilter*	GetFilter(const CAttachment* attach, bool decoding,
+							 bool binary = false);								// Get a filter for some content
 
 	static LStream*	GetFileStream(CAttachment& attach);							// Get a file stream for some content
 
