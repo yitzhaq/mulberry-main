@@ -1835,33 +1835,46 @@ bool CMbox::ReSort()
 		// May need to use view results as search criteria to maintain semi-dynamic view
 		CSearchItem input_window;
 		bool do_sort = (GetNumberFound() > 0);
+		bool skip_server_sort = false;
 		if (do_sort && (GetViewMode() == eViewMode_ShowMatch))
 		{
-			// Add search results as search item
-			CSearchItem temp(CSearchItem::eNumber, mOpenInfo->mViewSearchResults);
-			input_window = temp;
-			
+			// Use original search criteria if available, otherwise
+			// use message number list for small result sets. For large
+			// result sets without criteria, fall back to client-side sort.
+			if (mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
+				input_window = mOpenInfo->mViewCurrent;
+			else if (mOpenInfo->mViewSearchResults.size() <= 1000)
+			{
+				CSearchItem temp(CSearchItem::eNumber, mOpenInfo->mViewSearchResults);
+				input_window = temp;
+			}
+			else
+				skip_server_sort = true;
+
 			// Don't do sort command if results are empty
-			do_sort = mOpenInfo->mViewSearchResults.size();
+			do_sort = mOpenInfo->mViewSearchResults.size() > 0;
 		}
 
 		// Don't let server reverse because it does not do implicit sequence reversal
 		ulvector results;
-		if (do_sort)
+		if (do_sort && !skip_server_sort)
 			mOpenInfo->mMsgMailer->Sort(mOpenInfo->mSortBy, cShowMessageAscending,
 										(GetViewMode() != eViewMode_ShowMatch) ? NULL : &input_window,
 										&results, false);
 		
-		// Do global reverse
-		if (mOpenInfo->mShowBy == cShowMessageDescending)
-			std::reverse(results.begin(), results.end());
+		if (!skip_server_sort)
+		{
+			// Do global reverse
+			if (mOpenInfo->mShowBy == cShowMessageDescending)
+				std::reverse(results.begin(), results.end());
 
-		// Manually re-order messages
-		mOpenInfo->mSortedMessages->DeleteFakes();
-		for(ulvector::const_iterator iter = results.begin(); iter != results.end(); iter++)
-			mOpenInfo->mSortedMessages->push_back(mOpenInfo->mMessages->at(*iter - 1));
-		mOpenInfo->mSortedMessages->SortDirty();
-		external = true;
+			// Manually re-order messages
+			mOpenInfo->mSortedMessages->DeleteFakes();
+			for(ulvector::const_iterator iter = results.begin(); iter != results.end(); iter++)
+				mOpenInfo->mSortedMessages->push_back(mOpenInfo->mMessages->at(*iter - 1));
+			mOpenInfo->mSortedMessages->SortDirty();
+			external = true;
+		}
 	}
 	else if ((mOpenInfo->mSortBy == cSortMessageThread) && mOpenInfo->mMsgMailer->DoesThreading(cThreadMessageAny))
 	{
