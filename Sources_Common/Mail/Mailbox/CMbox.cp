@@ -931,89 +931,112 @@ void CMbox::Recover()
 		// Clear external references before deleting messages
 		CMailControl::CleanUpMboxRecover(this);
 
+		bool selectDone = false;
+
 		if (canIncremental)
 		{
 			// Incremental recovery: keep cached messages, use CHANGEDSINCE
-			// for flag updates after SELECT confirms same UIDVALIDITY
+			// for flag updates after SELECT confirms same UIDVALIDITY.
+			// If SELECT fails, fall back to full re-fetch.
 			mStatusInfo->mNumberExists = 0;
 			mOpenInfo->mSortedMessages->DeleteFakes();
 
-			// Re-SELECT the mailbox
-			mOpenInfo->mMsgMailer->RecoverClone();
-
-			// OpenMbox may have freed mOpenInfo via error recovery
-			if (!mOpenInfo)
+			try
 			{
-				CLOG_LOGTHROW(CGeneralException, -1);
-				throw CGeneralException(-1);
+				// Re-SELECT the mailbox
+				mOpenInfo->mMsgMailer->RecoverClone();
+				selectDone = true;
+
+				// OpenMbox may have freed mOpenInfo via error recovery
+				if (!mOpenInfo)
+				{
+					CLOG_LOGTHROW(CGeneralException, -1);
+					throw CGeneralException(-1);
+				}
+
+				// Verify UIDVALIDITY is still the same
+				if (GetUIDValidity() != savedUIDValidity)
+					canIncremental = false;
 			}
-
-			// Verify UIDVALIDITY is still the same
-			if (GetUIDValidity() != savedUIDValidity)
+			catch(...)
 			{
-				// UIDVALIDITY changed — fall back to full re-fetch
+				CLOG_LOGCATCH(...);
 				canIncremental = false;
 			}
 		}
 
 		if (canIncremental)
 		{
-			// Reconcile message count: handle additions and removals
-			unsigned long newExists = GetNumberFound();
-			unsigned long oldCount = mOpenInfo->mMessages->size();
-
-			if (newExists > oldCount)
+			if (mOpenInfo->mMsgMailer->HasQResync())
 			{
-				// New messages arrived — add placeholders
-				for(unsigned long i = oldCount + 1; i <= newExists; i++)
+				// QRESYNC: server already sent VANISHED (EARLIER) and
+				// flag-change FETCHes during SELECT. VANISHED parser
+				// removed expunged UIDs via RemoveMessageUID.
+				// Just add placeholders for any new messages.
+				unsigned long newExists = GetNumberFound();
+				unsigned long oldCount = mOpenInfo->mMessages->size();
+
+				if (newExists > oldCount)
 				{
-					CMessage* aMsg = CreateMessage();
-					aMsg->SetMessageNumber(i);
-					mOpenInfo->mMessages->push_back(aMsg);
-					mOpenInfo->mSortedMessages->push_back(aMsg);
+					for(unsigned long i = oldCount + 1; i <= newExists; i++)
+					{
+						CMessage* aMsg = CreateMessage();
+						aMsg->SetMessageNumber(i);
+						mOpenInfo->mMessages->push_back(aMsg);
+						mOpenInfo->mSortedMessages->push_back(aMsg);
+					}
 				}
 			}
-			else if (newExists < oldCount)
+			else
 			{
-				// Messages were expunged — remove excess from end
-				// (without QRESYNC we don't know WHICH were expunged,
-				// but reducing to match EXISTS prevents index errors)
-				while (mOpenInfo->mMessages->size() > newExists)
+				// CONDSTORE-only: server didn't send VANISHED or flag
+				// changes during SELECT — do it explicitly.
+				unsigned long newExists = GetNumberFound();
+				unsigned long oldCount = mOpenInfo->mMessages->size();
+
+				if (newExists < oldCount)
 				{
-					CMessage* last = mOpenInfo->mMessages->back();
-					mOpenInfo->mMessages->pop_back();
-					// Also remove from sorted list
-					CMessageList::iterator found = std::find(
-						mOpenInfo->mSortedMessages->begin(),
-						mOpenInfo->mSortedMessages->end(), last);
-					if (found != mOpenInfo->mSortedMessages->end())
-						mOpenInfo->mSortedMessages->erase(found);
-					delete last;
+					// Messages were expunged but without QRESYNC we
+					// don't know WHICH ones — fall back to full re-sync
+					canIncremental = false;
 				}
-				SetNumberCached(std::min(GetNumberCached(), newExists));
+				else
+				{
+					if (newExists > oldCount)
+					{
+						// New messages arrived — add placeholders
+						for(unsigned long i = oldCount + 1; i <= newExists; i++)
+						{
+							CMessage* aMsg = CreateMessage();
+							aMsg->SetMessageNumber(i);
+							mOpenInfo->mMessages->push_back(aMsg);
+							mOpenInfo->mSortedMessages->push_back(aMsg);
+						}
+					}
+
+					// Renumber messages to match current sequence
+					unsigned long num = 1;
+					for(CMessageList::iterator iter = mOpenInfo->mMessages->begin();
+						iter != mOpenInfo->mMessages->end(); iter++, num++)
+						(*iter)->SetMessageNumber(num);
+
+					// Use CHANGEDSINCE FETCH for incremental flag sync
+					mOpenInfo->mMsgMailer->FetchChangedFlags(savedHighestModSeq);
+				}
 			}
-
-			// Renumber messages to match current sequence
-			unsigned long num = 1;
-			for(CMessageList::iterator iter = mOpenInfo->mMessages->begin();
-				iter != mOpenInfo->mMessages->end(); iter++, num++)
-				(*iter)->SetMessageNumber(num);
-
-			// Use CHANGEDSINCE FETCH for incremental flag sync
-			mOpenInfo->mMsgMailer->FetchChangedFlags(savedHighestModSeq);
 		}
 		else
 		{
 			// Full recovery: clear all cached data and re-fetch
 			mStatusInfo->mNumberExists = 0;
-			if (mOpenInfo->mSortedMessages)
+			if (mOpenInfo && mOpenInfo->mSortedMessages)
 				mOpenInfo->mSortedMessages->DeleteFakes();
-			if (mOpenInfo->mMessages)
+			if (mOpenInfo && mOpenInfo->mMessages)
 				mOpenInfo->mMessages->DeleteAll();
 			SetNumberCached(0);
 
 			// Re-open the mailbox fully
-			if (!canIncremental)
+			if (!selectDone)
 				mOpenInfo->mMsgMailer->RecoverClone();
 
 			// OpenMbox may have freed mOpenInfo via error recovery
@@ -3603,21 +3626,23 @@ void CMbox::RemoveMessage(unsigned long msg_num)
 // Remove the specified message from mailbox
 void CMbox::RemoveMessageUID(unsigned long uid)
 {
-	// Adjust flag counters
+	// Look up by UID — may be NULL if server reports a UID we never cached
+	// (e.g. VANISHED EARLIER for messages expunged before we synced)
 	CMessage* theMsg = GetMessageUID(uid);
-	if (theMsg)
-	{
-		if (IsFullOpen() && theMsg->IsMboxRecent())
-			mOpenInfo->mMboxRecent--;
-		if (IsFullOpen() && theMsg->IsCheckRecent())
-			mOpenInfo->mCheckRecent--;
+	if (!theMsg)
+		return;
+
+	// Adjust flag counters
+	if (IsFullOpen() && theMsg->IsMboxRecent())
+		mOpenInfo->mMboxRecent--;
+	if (IsFullOpen() && theMsg->IsCheckRecent())
+		mOpenInfo->mCheckRecent--;
 #if 0	// NO! Recent count is controlled solely by server responses - do NOT adjust elsewhere
-		if (theMsg->IsRecent())
-			mStatusInfo->mNumberRecent--;
+	if (theMsg->IsRecent())
+		mStatusInfo->mNumberRecent--;
 #endif
-		if (theMsg->IsUnseen())
-			mStatusInfo->mNumberUnseen--;
-	}
+	if (theMsg->IsUnseen())
+		mStatusInfo->mNumberUnseen--;
 	mStatusInfo->mNumberExists--;
 
 	// Remove any GUI message
@@ -3626,8 +3651,7 @@ void CMbox::RemoveMessageUID(unsigned long uid)
 	// Remove from sorted list BEFORE server list to ensure correct number
 	if (IsFullOpen())
 	{
-		if (theMsg)
-			mOpenInfo->mSortedMessages->RemoveMessage(theMsg);
+		mOpenInfo->mSortedMessages->RemoveMessage(theMsg);
 		mOpenInfo->mMessages->RemoveMessage(theMsg);
 	}
 

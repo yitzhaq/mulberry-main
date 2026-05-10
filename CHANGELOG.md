@@ -149,11 +149,23 @@ X11 bitmap fonts).
   via zlib), Brotli (RFC 7932, optional), and Zstandard (RFC 8878/
   9659, optional). Reduces HTTP bandwidth by 60-80%. Legacy
   x-gzip/x-deflate aliases accepted per RFC 9110.
-- IMAP CONDSTORE (RFC 7162). Per-message modification sequence
-  tracking. ENABLE CONDSTORE/QRESYNC sent after login. MODSEQ
-  requested in FETCH, HIGHESTMODSEQ tracked per mailbox from
-  SELECT and STATUS responses. Lays groundwork for incremental
-  flag sync (CHANGEDSINCE FETCH) and QRESYNC.
+- IMAP CONDSTORE + QRESYNC (RFC 7162). Per-message modification
+  sequence tracking and quick mailbox resynchronization. ENABLE
+  CONDSTORE/QRESYNC sent after login. MODSEQ tracked per message,
+  HIGHESTMODSEQ tracked per mailbox from SELECT, STATUS, and
+  FETCH responses. Incremental flag sync via CHANGEDSINCE FETCH
+  on reconnection, with automatic fallback to full re-fetch if
+  UIDVALIDITY changes or the server reports NOMODSEQ. QRESYNC
+  SELECT parameter sends last-known UIDVALIDITY, HIGHESTMODSEQ,
+  and cached UIDs so the server returns only VANISHED UIDs and
+  changed flags in one round-trip. VANISHED response parsing
+  handles both historical (EARLIER) and real-time expunges.
+  UNCHANGEDSINCE STORE modifier for conditional flag updates.
+  CLOSED response code for mailbox switching under QRESYNC.
+  MODSEQ and HIGHESTMODSEQ persisted in offline cache (format
+  version 0x0C). Turns multi-second reconnection resyncs into
+  sub-second operations on servers that support it (Dovecot 1.2+,
+  Cyrus 2.4+, Exchange 2013+).
 - IMAP COMPRESS=DEFLATE (RFC 4978). Reduces IMAP bandwidth by
   60-75% using zlib compression. Activated automatically after
   login when the server supports it. Includes decompression bomb

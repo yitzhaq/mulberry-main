@@ -50,60 +50,70 @@ class CLocalClient: public CMboxClient
 protected:
 	struct SIndexHeader
 	{
-		unsigned long	mVersion;
-		unsigned long	mMboxModified;
-		unsigned long	mCacheModified;
-		unsigned long	mLastSync;
-		unsigned long	mIndexSize;
-		unsigned long	mUIDValidity;
-		unsigned long	mUIDNext;
-		unsigned long	mLastUID;
-		unsigned long	mLocalUIDNext;
+		// All members must be uint32_t for correct serialization on 64-bit
+		// (sizeof(unsigned long) = 8 on LP64, but file format is 4 bytes per field)
+		uint32_t	mVersion;
+		uint32_t	mMboxModified;
+		uint32_t	mCacheModified;
+		uint32_t	mLastSync;
+		uint32_t	mIndexSize;
+		uint32_t	mUIDValidity;
+		uint32_t	mUIDNext;
+		uint32_t	mLastUID;
+		uint32_t	mLocalUIDNext;
+		uint32_t	mHighestModSeqHi;	// RFC 7162 CONDSTORE (version >= 0x0C)
+		uint32_t	mHighestModSeqLo;
 
-		unsigned long& Version()
+		uint32_t& Version()
 			{ return mVersion; }
-		const unsigned long& Version() const
+		const uint32_t& Version() const
 			{ return mVersion; }
 
-		unsigned long& MboxModified()
+		uint32_t& MboxModified()
 			{ return mMboxModified; }
-		const unsigned long& MboxModified() const
+		const uint32_t& MboxModified() const
 			{ return mMboxModified; }
 
-		unsigned long& CacheModified()
+		uint32_t& CacheModified()
 			{ return mCacheModified; }
-		const unsigned long& CacheModified() const
+		const uint32_t& CacheModified() const
 			{ return mCacheModified; }
 
-		unsigned long& LastSync()
+		uint32_t& LastSync()
 			{ return mLastSync; }
-		const unsigned long& LastSync() const
+		const uint32_t& LastSync() const
 			{ return mLastSync; }
 
-		unsigned long& IndexSize()
+		uint32_t& IndexSize()
 			{ return mIndexSize; }
-		const unsigned long& IndexSize() const
+		const uint32_t& IndexSize() const
 			{ return mIndexSize; }
 
-		unsigned long& UIDValidity()
+		uint32_t& UIDValidity()
 			{ return mUIDValidity; }
-		const unsigned long& UIDValidity() const
+		const uint32_t& UIDValidity() const
 			{ return mUIDValidity; }
 
-		unsigned long& UIDNext()
+		uint32_t& UIDNext()
 			{ return mUIDNext; }
-		const unsigned long& UIDNext() const
+		const uint32_t& UIDNext() const
 			{ return mUIDNext; }
 
-		unsigned long& LastUID()
+		uint32_t& LastUID()
 			{ return mLastUID; }
-		const unsigned long& LastUID() const
+		const uint32_t& LastUID() const
 			{ return mLastUID; }
 
-		unsigned long& LocalUIDNext()
+		uint32_t& LocalUIDNext()
 			{ return mLocalUIDNext; }
-		const unsigned long& LocalUIDNext() const
+		const uint32_t& LocalUIDNext() const
 			{ return mLocalUIDNext; }
+
+		uint64_t GetHighestModSeq() const
+			{ return (static_cast<uint64_t>(mHighestModSeqHi) << 32) | mHighestModSeqLo; }
+		void SetHighestModSeq(uint64_t v)
+			{ mHighestModSeqHi = static_cast<uint32_t>(v >> 32);
+			  mHighestModSeqLo = static_cast<uint32_t>(v & 0xFFFFFFFF); }
 
 		void write(std::ostream& out) const;
 		void write_LastSync(std::ostream& out) const;
@@ -112,6 +122,7 @@ protected:
 		void write_UIDNext(std::ostream& out) const;
 		void write_LastUID(std::ostream& out) const;
 		void write_LocalUIDNext(std::ostream& out) const;
+		void write_HighestModSeq(std::ostream& out) const;
 		void read(std::istream& in);
 	};
 
@@ -125,6 +136,8 @@ protected:
 		uint32_t mUID;
 		uint32_t mLocalUID;
 		uint32_t mMessageStart;
+		uint32_t mModSeqHi;	// RFC 7162 CONDSTORE (version >= 0x0C)
+		uint32_t mModSeqLo;
 
 		uint32_t mSequence;		// Not part of cache but calculated on load
 
@@ -135,6 +148,8 @@ protected:
 			  mUID = 0;
 			  mLocalUID = 0;
 			  mMessageStart = 0;
+			  mModSeqHi = 0;
+			  mModSeqLo = 0;
 			  mSequence = 0; }
 
 		uint32_t& Cache()
@@ -166,11 +181,17 @@ protected:
 			{ return mSequence; }
 		const uint32_t& Sequence() const
 			{ return mSequence; }
-		
+
+		uint64_t GetModSeq() const
+			{ return (static_cast<uint64_t>(mModSeqHi) << 32) | mModSeqLo; }
+		void SetModSeq(uint64_t v)
+			{ mModSeqHi = static_cast<uint32_t>(v >> 32);
+			  mModSeqLo = static_cast<uint32_t>(v & 0xFFFFFFFF); }
+
 		void write(std::ostream& out) const;
 		void write_Flags(std::ostream& out) const;
 		void write_UID(std::ostream& out) const;
-		void read(std::istream& in);
+		void read(std::istream& in, unsigned long version);
 	};
 
 	typedef std::vector<SIndexRecord>	SIndexList;
@@ -190,6 +211,8 @@ protected:
 	cdfstream		mIndex;
 	SIndexList		mIndexList;
 	ulvector		mIndexMapping;					// Mapping from message number to file index
+	unsigned long	mDiskHeaderSize;				// On-disk header size (version-dependent)
+	unsigned long	mDiskRecordSize;				// On-disk record size (version-dependent)
 	unsigned long	mMboxNew;						// Counter to indicate new messages in mbox
 	bool			mInPostProcess;					// Flag to indicate post-processing already happening
 	bool			mMboxUpdate;					// Flag to indicate update of mbox

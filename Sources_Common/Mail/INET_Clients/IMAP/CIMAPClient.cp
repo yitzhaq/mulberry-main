@@ -382,6 +382,11 @@ void CIMAPClient::_PostProcess()
 			GetCurrentMbox()->SetHighestModSeq(0);
 	}
 
+	// [CLOSED] — previously selected mailbox was implicitly closed
+	// by this SELECT/EXAMINE (RFC 7162 §3.2.11). Mulberry handles
+	// this via SetCurrentMbox clearing mCurrent_mbox before SELECT.
+	mLastResponse.CheckUntagged(cCLOSED);
+
 	if (mLastResponse.CheckUntagged(cUNSEEN))
 	{
 		// Don't do this - now do a SEARCH on mailbox open to get the same info
@@ -635,6 +640,44 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 		INETSendString(examine ? cEXAMINE : cSELECT, eQueueNoFlags, false);
 		INETSendString(cSpace, eQueueNoFlags, false);
 		INETSendString(wd_name, eQueueProcess, false);
+
+		// QRESYNC SELECT parameter (RFC 7162 §3.2.5)
+		if (mHasQResync &&
+			mbox->GetHighestModSeq() > 0 &&
+			mbox->GetUIDValidity() > 0)
+		{
+			cdstring qresync = " (QRESYNC (";
+			qresync += cdstring(mbox->GetUIDValidity());
+			qresync += " ";
+
+			char modseq_buf[32];
+			::snprintf(modseq_buf, sizeof(modseq_buf), "%llu",
+				(unsigned long long)mbox->GetHighestModSeq());
+			qresync += modseq_buf;
+
+			// Include known UIDs so server only reports relevant changes
+			if (mbox->IsFullOpen() && mbox->GetNumberCached() > 0)
+			{
+				CSequence known_uids;
+				for(unsigned long i = 1; i <= mbox->GetNumberCached(); i++)
+				{
+					CMessage* msg = mbox->GetMessage(i);
+					if (msg && msg->GetUID() > 0)
+						known_uids.push_back(msg->GetUID());
+				}
+				if (!known_uids.empty())
+				{
+					// UIDs must be in ascending order (RFC 7162 §3.2.5.2)
+					std::sort(known_uids.begin(), known_uids.end());
+					qresync += " ";
+					qresync += known_uids.GetSequenceText();
+				}
+			}
+
+			qresync += "))";
+			INETSendString(qresync, eQueueNoFlags, false);
+		}
+
 		INETFinishSend();
 
 		// SEARCHRES variable resets on SELECT/EXAMINE (RFC 5182)
@@ -832,6 +875,20 @@ bool CIMAPClient::_ExpungeMbox(bool closing)
 	else
 		INETSendString(cEXPUNGE);
 	INETFinishSend();
+
+	// QRESYNC: EXPUNGE/UID EXPUNGE tagged OK includes [HIGHESTMODSEQ]
+	// (RFC 7162 §3.2.7/§3.2.9). CLOSE MUST NOT include it (§3.2.8).
+	if (mHasQResync && !did_close && GetCurrentMbox())
+	{
+		const char* p = ::strstrnocase(
+			mLastResponse.GetTagged(), cSTATUS_HIGHESTMODSEQ);
+		if (p)
+		{
+			p += ::strlen(cSTATUS_HIGHESTMODSEQ);
+			uint64_t hm = ::strtoull(p, NULL, 10);
+			GetCurrentMbox()->SetHighestModSeq(hm);
+		}
+	}
 
 	return did_close;
 
@@ -1640,6 +1697,20 @@ void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* 
 				}
 			}
 
+			// REPLACE implies UID EXPUNGE of old message — update
+			// HIGHESTMODSEQ from tagged OK (RFC 8508 + RFC 7162)
+			if (mHasQResync && GetCurrentMbox())
+			{
+				const char* p = ::strstrnocase(
+					mLastResponse.GetTagged(), cSTATUS_HIGHESTMODSEQ);
+				if (p)
+				{
+					p += ::strlen(cSTATUS_HIGHESTMODSEQ);
+					uint64_t hm = ::strtoull(p, NULL, 10);
+					GetCurrentMbox()->SetHighestModSeq(hm);
+				}
+			}
+
 			mProcessMessage = NULL;
 			repeat = 0;
 		}
@@ -2433,12 +2504,108 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 	flag += cFLAG_END;
 
 	INETStartSend(status_strid, oserr_strid, nobad_strid, GetCurrentMbox()->GetName());
-	INETSendString(uids ? cUIDSTORE : cSTORE);
-	INETSendString(cSpace);
-	INETSendString(msgnum_txt);
-	INETSendString(cSpace);
-	INETSendString(flag);
+	INETSendString(uids ? cUIDSTORE : cSTORE, eQueueNoFlags, false);
+	INETSendString(cSpace, eQueueNoFlags, false);
+	INETSendString(msgnum_txt, eQueueNoFlags, false);
+
+	// UNCHANGEDSINCE modifier goes between seqset and flags (RFC 7162 §3.1.3)
+	uint64_t minModSeq = 0;
+	if (mHasCondstore && uids && GetCurrentMbox() && GetCurrentMbox()->IsFullOpen())
+	{
+		minModSeq = UINT64_MAX;
+		for(ulvector::const_iterator iter = nums.begin(); iter != nums.end(); iter++)
+		{
+			CMessage* msg = NULL;
+			try { msg = GetCurrentMbox()->GetMessageUID(*iter); }
+			catch (...) { CLOG_LOGCATCH(...); }
+
+			if (msg && msg->GetModSeq() > 0)
+			{
+				if (msg->GetModSeq() < minModSeq)
+					minModSeq = msg->GetModSeq();
+			}
+			else
+			{
+				minModSeq = 0;
+				break;
+			}
+		}
+		if (minModSeq > 0 && minModSeq != UINT64_MAX)
+		{
+			char buf[64];
+			::snprintf(buf, sizeof(buf), " (UNCHANGEDSINCE %llu)",
+				(unsigned long long)minModSeq);
+			INETSendString(buf, eQueueNoFlags, false);
+		}
+		else
+			minModSeq = 0;
+	}
+
+	INETSendString(cSpace, eQueueNoFlags, false);
+	INETSendString(flag, eQueueNoFlags, false);
 	INETFinishSend();
+
+	// MODIFIED: conditional STORE failed for some UIDs (RFC 7162 §3.1.3).
+	// Server sends updated flags via unsolicited FETCH. Re-read the new
+	// MODSEQ values and retry once for the failed UIDs.
+	if (minModSeq > 0 && mLastResponse.FindTagged(cMODIFIED))
+	{
+		// Parse failed uid-set from [MODIFIED <uid-set>]
+		const char* mod_p = ::strstrnocase(mLastResponse.GetTagged(), cMODIFIED);
+		if (mod_p)
+		{
+			mod_p += ::strlen(cMODIFIED);
+			while (*mod_p == ' ') mod_p++;
+
+			CSequence failed_uids;
+			failed_uids.ParseSequence(&mod_p);
+
+			if (!failed_uids.empty())
+			{
+				// Retry once with updated MODSEQ values
+				ulvector retry_nums(failed_uids.begin(), failed_uids.end());
+				CSequence retry_seq(retry_nums);
+				const char* retry_txt = retry_seq.GetSequenceText();
+
+				INETStartSend(status_strid, oserr_strid, nobad_strid, GetCurrentMbox()->GetName());
+				INETSendString(uids ? cUIDSTORE : cSTORE, eQueueNoFlags, false);
+				INETSendString(cSpace, eQueueNoFlags, false);
+				INETSendString(retry_txt, eQueueNoFlags, false);
+
+				// Get updated minimum MODSEQ for retry
+				uint64_t retryModSeq = UINT64_MAX;
+				for(ulvector::const_iterator iter = retry_nums.begin(); iter != retry_nums.end(); iter++)
+				{
+					CMessage* msg = NULL;
+					try { msg = GetCurrentMbox()->GetMessageUID(*iter); }
+					catch (...) { CLOG_LOGCATCH(...); }
+
+					if (msg && msg->GetModSeq() > 0)
+					{
+						if (msg->GetModSeq() < retryModSeq)
+							retryModSeq = msg->GetModSeq();
+					}
+					else
+					{
+						retryModSeq = 0;
+						break;
+					}
+				}
+
+				if (retryModSeq > 0 && retryModSeq != UINT64_MAX)
+				{
+					char buf[64];
+					::snprintf(buf, sizeof(buf), " (UNCHANGEDSINCE %llu)",
+						(unsigned long long)retryModSeq);
+					INETSendString(buf, eQueueNoFlags, false);
+				}
+
+				INETSendString(cSpace, eQueueNoFlags, false);
+				INETSendString(flag, eQueueNoFlags, false);
+				INETFinishSend();
+			}
+		}
+	}
 
 } // CIMAPClient::_SetFlag
 
@@ -3277,11 +3444,20 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 	else if (::stradvtokcmp(txt, "ENABLED") == 0)
 	{
 		while (**txt == ' ') (*txt)++;
-		if (!::strstrnocase(*txt, "CONDSTORE") && !::strstrnocase(*txt, "QRESYNC"))
-		{
-			mHasCondstore = false;
+		bool gotQResync = (::strstrnocase(*txt, "QRESYNC") != NULL);
+		bool gotCondstore = (::strstrnocase(*txt, "CONDSTORE") != NULL);
+		// ENABLE QRESYNC implicitly enables CONDSTORE
+		if (!gotQResync)
 			mHasQResync = false;
-		}
+		if (!gotCondstore && !gotQResync)
+			mHasCondstore = false;
+	}
+
+	// VANISHED (RFC 7162 §3.2.10)
+	else if (::stradvtokcmp(txt, cVANISHED) == 0)
+	{
+		response->code = cStarVANISHED;
+		IMAPParseVanished(txt);
 	}
 
 	else
@@ -3692,7 +3868,7 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 			p += 6;
 			while(*p == ' ') p++;
 			uint64_t modseq = ::strtoull(p, &p, 10);
-			if (GetCurrentMbox())
+			if (GetCurrentMbox() && modseq > GetCurrentMbox()->GetHighestModSeq())
 				GetCurrentMbox()->SetHighestModSeq(modseq);
 		}
 		else
@@ -3856,6 +4032,56 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 	}
 
 } // CIMAPClient::IMAPParseStatus
+
+// Parse VANISHED response (RFC 7162 §3.2.10)
+// Format: * VANISHED (EARLIER) <uid-set>
+//     or: * VANISHED <uid-set>
+void CIMAPClient::IMAPParseVanished(char** txt)
+{
+	char* p = *txt;
+	while (*p == ' ') p++;
+
+	// Check for (EARLIER) tag — historical expunges from QRESYNC SELECT
+	bool earlier = false;
+	if (*p == '(')
+	{
+		p++;
+		if (::stradvtokcmp(&p, cEARLIER) == 0)
+		{
+			earlier = true;
+			while (*p == ' ' || *p == ')') p++;
+		}
+	}
+
+	if (!GetCurrentMbox())
+		return;
+
+	// Parse uid-set
+	const char* cp = p;
+	CSequence vanished;
+	vanished.ParseSequence(&cp);
+
+	// Remove each vanished message by UID
+	for(CSequence::const_iterator iter = vanished.begin();
+		iter != vanished.end(); iter++)
+	{
+		GetCurrentMbox()->RemoveMessageUID(*iter);
+	}
+
+	if (!earlier)
+	{
+		// Real-time expunge: force window reset and update
+		mMboxReset = GetCurrentMbox()->IsFullOpen();
+		mMboxUpdate = true;
+	}
+	else
+	{
+		// Historical: just refresh UI, no sequence number adjustment
+		mMboxUpdate = true;
+	}
+
+	*txt = const_cast<char*>(cp);
+}
 
 // Parse IMAP reply
 void CIMAPClient::IMAPParseFetch(char** txt)

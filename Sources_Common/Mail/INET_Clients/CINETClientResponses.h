@@ -53,6 +53,7 @@ enum EINETResponseCode
 	cMsgEXISTS,
 	cMsgRECENT,
 	cMsgEXPUNGE,
+	cStarVANISHED,
 	cMsgSTORE,
 	cMsgFETCH,
 	cMsgCOPY,

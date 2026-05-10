@@ -156,6 +156,7 @@ public:
 	virtual bool	_HasBinary() const { return false; }			// Does server support BINARY?
 	virtual bool	_HasReplace() const { return false; }		// Does server support REPLACE?
 	virtual bool	_HasCondstore() const { return false; }		// Does server support CONDSTORE?
+	virtual bool	_HasQResync() const { return false; }		// Does server support QRESYNC?
 	virtual void	_FetchChangedFlags(uint64_t) {}				// Fetch flags changed since modseq
 
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,

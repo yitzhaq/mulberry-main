@@ -77,10 +77,17 @@
 #define CHECK_STREAM(x) \
 	{ if ((x).fail()) { int err_no = os_errno; CLOG_LOGTHROW(CGeneralException, err_no); throw CGeneralException(err_no); } }
 
-const unsigned long cIndexVers = 0x0000000B;
+const unsigned long cIndexVers = 0x0000000C;
 const unsigned long cIndexType_Mask = ~0x00030000;
-// SIndexRecord.mSequence is not written to cache, so subtract it from struct size
-#define sIndexWriteLength (sizeof(CLocalClient::SIndexRecord) - sizeof(uint32_t))
+
+// Disk sizes: WriteHost/ReadHost always write sizeof(uint32_t) per field
+// regardless of sizeof(unsigned long) on the host platform.
+// These MUST match the number of WriteHost calls in write() methods.
+// Version 0x0C adds HIGHESTMODSEQ (2 fields) to header and MODSEQ (2 fields) to record.
+const unsigned long cDiskHeaderSize_0B = 9 * sizeof(uint32_t);
+const unsigned long cDiskHeaderSize_0C = 11 * sizeof(uint32_t);
+const unsigned long cDiskRecordSize_0B = 6 * sizeof(uint32_t);
+const unsigned long cDiskRecordSize_0C = 8 * sizeof(uint32_t);
 
 const unsigned long cSearchBufferSize = 8192;
 const unsigned long cWorkBufferSize = 4096;
@@ -99,6 +106,8 @@ void CLocalClient::SIndexHeader::write(std::ostream& out) const
 	::WriteHost(out, UIDNext());
 	::WriteHost(out, LastUID());
 	::WriteHost(out, LocalUIDNext());
+	::WriteHost(out, mHighestModSeqHi);
+	::WriteHost(out, mHighestModSeqLo);
 }
 
 void CLocalClient::SIndexHeader::write_LastSync(std::ostream& out) const
@@ -137,6 +146,13 @@ void CLocalClient::SIndexHeader::write_LocalUIDNext(std::ostream& out) const
 	::WriteHost(out, LocalUIDNext());
 }
 
+void CLocalClient::SIndexHeader::write_HighestModSeq(std::ostream& out) const
+{
+	out.seekp(offsetof(SIndexHeader, mHighestModSeqHi), std::ios_base::beg);
+	::WriteHost(out, mHighestModSeqHi);
+	::WriteHost(out, mHighestModSeqLo);
+}
+
 void CLocalClient::SIndexHeader::read(std::istream& in)
 {
 	in.seekg(0);
@@ -149,9 +165,22 @@ void CLocalClient::SIndexHeader::read(std::istream& in)
 	::ReadHost(in, UIDNext());
 	::ReadHost(in, LastUID());
 	::ReadHost(in, LocalUIDNext());
-	
+
 	// Need to remove line end type from version
-	mVersion &= cIndexType_Mask;
+	unsigned long raw_version = mVersion & cIndexType_Mask;
+
+	if (raw_version >= 0x0C)
+	{
+		::ReadHost(in, mHighestModSeqHi);
+		::ReadHost(in, mHighestModSeqLo);
+	}
+	else
+	{
+		mHighestModSeqHi = 0;
+		mHighestModSeqLo = 0;
+	}
+
+	mVersion = raw_version;
 }
 
 #pragma mark ____________________________SIndexRecord
@@ -164,6 +193,8 @@ void CLocalClient::SIndexRecord::write(std::ostream& out) const
 	::WriteHost(out, UID());
 	::WriteHost(out, LocalUID());
 	::WriteHost(out, MessageStart());
+	::WriteHost(out, mModSeqHi);
+	::WriteHost(out, mModSeqLo);
 }
 
 void CLocalClient::SIndexRecord::write_Flags(std::ostream& out) const
@@ -178,7 +209,7 @@ void CLocalClient::SIndexRecord::write_UID(std::ostream& out) const
 	::WriteHost(out, UID());
 }
 
-void CLocalClient::SIndexRecord::read(std::istream& in)
+void CLocalClient::SIndexRecord::read(std::istream& in, unsigned long version)
 {
 	::ReadHost(in, Cache());
 	::ReadHost(in, Index());
@@ -186,6 +217,17 @@ void CLocalClient::SIndexRecord::read(std::istream& in)
 	::ReadHost(in, UID());
 	::ReadHost(in, LocalUID());
 	::ReadHost(in, MessageStart());
+
+	if (version >= 0x0C)
+	{
+		::ReadHost(in, mModSeqHi);
+		::ReadHost(in, mModSeqLo);
+	}
+	else
+	{
+		mModSeqHi = 0;
+		mModSeqLo = 0;
+	}
 }
 
 #pragma mark ____________________________CLocalClient
@@ -236,6 +278,8 @@ void CLocalClient::InitLocalClient()
 
 	mEndl = eEndl_Auto;
 
+	mDiskHeaderSize = cDiskHeaderSize_0C;
+	mDiskRecordSize = cDiskRecordSize_0C;
 	mMboxNew = 0;
 	mInPostProcess = false;
 	mMboxUpdate = false;
@@ -644,6 +688,14 @@ void CLocalClient::_CloseMbox(CMbox* mbox)
 		// Close the mailbox and cache files
 		mMailbox.close();
 		mCache.close();
+
+		// Save HIGHESTMODSEQ to index before final sync
+		if (mMboxReadWrite && mbox->GetHighestModSeq() > 0)
+		{
+			SIndexHeader hdr;
+			hdr.SetHighestModSeq(mbox->GetHighestModSeq());
+			hdr.write_HighestModSeq(mIndex);
+		}
 
 		// Update the index header (if writeable) and close
 		if (mMboxReadWrite)
@@ -2055,7 +2107,7 @@ void CLocalClient::_RemapUID(unsigned long local_uid, unsigned long new_uid)
 			mIndexList[GetIndex(seq)].UID() = new_uid;
 
 			// Force update of disk cache
-			mIndex.seekp(sizeof(SIndexHeader) + GetIndex(seq) * sIndexWriteLength);
+			mIndex.seekp(mDiskHeaderSize + GetIndex(seq) * mDiskRecordSize);
 			mIndexList[GetIndex(seq)].write_UID(mIndex);
 			CHECK_STREAM(mIndex)
 		}
@@ -2172,7 +2224,7 @@ void CLocalClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fl
 				mIndexList[GetIndex(*iter)].Flags() = new_flags.Get();
 
 				// Force update of disk cache
-				mIndex.seekp(sizeof(SIndexHeader) + GetIndex(*iter) * sIndexWriteLength);
+				mIndex.seekp(mDiskHeaderSize + GetIndex(*iter) * mDiskRecordSize);
 				mIndexList[GetIndex(*iter)].write_Flags(mIndex);
 				CHECK_STREAM(mIndex)
 				changed = true;
@@ -2604,6 +2656,7 @@ void CLocalClient::OpenCache(CMbox* mbox, cdfstream& mailbox, cdfstream& cache, 
 	mbox->SetUIDValidity(index_header.UIDValidity());
 	mbox->SetUIDNext(index_header.UIDNext());
 	mbox->SetLastSync(index_header.LastSync());
+	mbox->SetHighestModSeq(index_header.GetHighestModSeq());
 }
 
 // Open cache files
@@ -2898,6 +2951,7 @@ void CLocalClient::Reconstruct(CMbox* mbox)
 				index_item.LocalUID() = recovered ? recovered_localuids.at(uid - 1) : (mSeparateUIDs ? uid : 0);
 				index_item.Flags() = (*iter)->GetFlags().Get() & NMessage::eLocalFlags;
 				index_item.MessageStart() = static_cast<CLocalMessage*>(*iter)->GetIndexStart();
+				index_item.SetModSeq((*iter)->GetModSeq());
 
 				indices.push_back(index_item);
 			}
@@ -3173,14 +3227,14 @@ void CLocalClient::SyncIndexHeader(CMbox* mbox, cdfstream& index)
 
 	// Is it different? Compare the cached modtimes (the old method) and compare the index modtime
 	// against the other two files - it its older then we must touch it
-	if ((header.MboxModified() != (unsigned long)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name)) ||
-		(header.CacheModified() != (unsigned long)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name)) ||
-		((unsigned long)mbox_finfo.st_mtime > (unsigned long)index_finfo.st_mtime) ||
-		((unsigned long)cache_finfo.st_mtime > (unsigned long)index_finfo.st_mtime))
+	if ((header.MboxModified() != (uint32_t)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name)) ||
+		(header.CacheModified() != (uint32_t)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name)) ||
+		((uint32_t)mbox_finfo.st_mtime > (uint32_t)index_finfo.st_mtime) ||
+		((uint32_t)cache_finfo.st_mtime > (uint32_t)index_finfo.st_mtime))
 	{
 		// Change mod times and write header back
-		header.MboxModified() = (unsigned long)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name);
-		header.CacheModified() = (unsigned long)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name);
+		header.MboxModified() = (uint32_t)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name);
+		header.CacheModified() = (uint32_t)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name);
 		header.write(index);
 		
 		index << std::flush;
@@ -3226,13 +3280,17 @@ void CLocalClient::ReadIndex(cdfstream& in, SIndexHeader& header, SIndexList& in
 		throw CGeneralException(-1L);
 	}
 
+	// Set disk sizes based on cache version for all subsequent seeking
+	mDiskHeaderSize = (header.Version() >= 0x0C) ? cDiskHeaderSize_0C : cDiskHeaderSize_0B;
+	mDiskRecordSize = (header.Version() >= 0x0C) ? cDiskRecordSize_0C : cDiskRecordSize_0B;
+
 	// Verify file size matches expected index size
 	in.seekg(0, std::ios::end);
 	std::streampos file_size = in.tellg();
-	in.seekg(sizeof(SIndexHeader));  // Reset to start of index data
+	in.seekg(mDiskHeaderSize);
 
-	std::streampos expected_size = sizeof(SIndexHeader) +
-		static_cast<std::streampos>(header.IndexSize()) * sIndexWriteLength;
+	std::streampos expected_size = static_cast<std::streampos>(mDiskHeaderSize) +
+		static_cast<std::streampos>(header.IndexSize()) * mDiskRecordSize;
 
 	// Allow some tolerance for file system overhead, but reject grossly mismatched sizes
 	if (file_size < expected_size || file_size > expected_size + static_cast<std::streamoff>(4096))
@@ -3252,7 +3310,7 @@ void CLocalClient::ReadIndex(cdfstream& in, SIndexHeader& header, SIndexList& in
 	for(unsigned long index_pos = 0; index_pos < header.IndexSize(); index_pos++)
 	{
 		SIndexRecord index_item;
-		index_item.read(in);
+		index_item.read(in, header.Version());
 		index_item.Sequence() = seq ? index_pos : index_pos + 1;
 
 		// Check that no error occurred
@@ -3291,7 +3349,7 @@ void CLocalClient::ReadIndexHeader(cdfstream& in, SIndexHeader& header)
 // Write back single index entry
 void CLocalClient::WriteIndex(cdfstream& out, unsigned long index)
 {
-	mIndex.seekp(sizeof(SIndexHeader) + index * sIndexWriteLength);
+	mIndex.seekp(mDiskHeaderSize + index * mDiskRecordSize);
 	mIndexList[index].write(mIndex);
 	CHECK_STREAM(mIndex)
 }
@@ -3299,7 +3357,7 @@ void CLocalClient::WriteIndex(cdfstream& out, unsigned long index)
 // Write back single index entry
 void CLocalClient::WriteIndexFlag(cdfstream& out, unsigned long index)
 {
-	mIndex.seekp(sizeof(SIndexHeader) + index * sIndexWriteLength);
+	mIndex.seekp(mDiskHeaderSize + index * mDiskRecordSize);
 	mIndexList[index].write_Flags(mIndex);
 	CHECK_STREAM(mIndex)
 }
@@ -3388,7 +3446,7 @@ void CLocalClient::ClearRecent()
 		if (mIndexList[i].Flags() & NMessage::eRecent)
 		{
 			mIndexList[i].Flags() = mIndexList[i].Flags() & ~NMessage::eRecent;
-			mIndex.seekp(sizeof(SIndexHeader) + i * sIndexWriteLength);
+			mIndex.seekp(mDiskHeaderSize + i * mDiskRecordSize);
 			mIndexList[i].write_Flags(mIndex);
 			CHECK_STREAM(mIndex)
 		}
@@ -3577,8 +3635,9 @@ void CLocalClient::FetchMessage(CLocalMessage* msg, unsigned long seq, CMboxProt
 		// Read index after cache as we need attachments created before attachment indiced can be read in
 		ReadMessageIndex(msg);
 
-		// UID & flags stored elsewhere
+		// UID, flags & MODSEQ stored elsewhere
 		msg->SetUID(mIndexList[GetIndex(seq)].UID());
+		msg->SetModSeq(mIndexList[GetIndex(seq)].GetModSeq());
 
 		// Change flags on cached message - only update if changed
 		SBitFlags new_flags(mIndexList[GetIndex(seq)].Flags());
@@ -4091,6 +4150,7 @@ unsigned long CLocalClient::AppendMessage(CMbox* mbox, CMessage* msg, bool add,
 	index_item.UID() = new_uid;
 	index_item.LocalUID() = new_local_uid;
 	index_item.MessageStart() = start;
+	index_item.SetModSeq(msg->GetModSeq());
 
 	// Done with any temporary message
 	delete temp;

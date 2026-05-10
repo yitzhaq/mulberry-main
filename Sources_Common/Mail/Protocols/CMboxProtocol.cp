@@ -779,21 +779,22 @@ void CMboxProtocol::RecoverClone()
 	bool recovery = GetNoRecovery();
 	SetNoRecovery(true);
 
+	// Save before clearing — must restore on failure so a retry
+	// does not dereference NULL
+	CMbox* reselect = mCurrent_mbox;
+	mCurrent_mbox = NULL;
+
 	try
 	{
-		// Just reselect the existing mailbox
-		CMbox* reselect = mCurrent_mbox;
-		mCurrent_mbox = NULL;
 		SetCurrentMbox(reselect, false, reselect->IsExamine());
 	}
 	catch(...)
 	{
 		CLOG_LOGCATCH(...);
 
-		// Reset recovery
+		mCurrent_mbox = reselect;
 		SetNoRecovery(recovery);
 
-		// Throw up
 		CLOG_LOGRETHROW;
 		throw;
 	}
@@ -2947,6 +2948,11 @@ bool CMboxProtocol::HasReplace() const
 bool CMboxProtocol::HasCondstore() const
 {
 	return mClient->_HasCondstore();
+}
+
+bool CMboxProtocol::HasQResync() const
+{
+	return mClient->_HasQResync();
 }
 
 void CMboxProtocol::FetchChangedFlags(uint64_t modseq)

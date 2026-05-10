@@ -285,6 +285,7 @@ public:
 			bool	HasBinary() const;						// Does server support BINARY?
 			bool	HasReplace() const;						// Does server support REPLACE?
 			bool	HasCondstore() const;					// Does server support CONDSTORE?
+			bool	HasQResync() const;						// Does server support QRESYNC?
 			void	FetchChangedFlags(uint64_t modseq);		// Fetch flags changed since modseq
 
 			void	ReplaceMessage(unsigned long old_uid,

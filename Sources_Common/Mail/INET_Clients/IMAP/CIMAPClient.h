@@ -280,6 +280,8 @@ protected:
 		{ return mHasReplace; }
 	virtual bool	_HasCondstore() const						// Does server support CONDSTORE?
 		{ return mHasCondstore; }
+	virtual bool	_HasQResync() const							// Does server support QRESYNC?
+		{ return mHasQResync; }
 	virtual void	_FetchChangedFlags(uint64_t modseq);		// Fetch flags changed since modseq
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
 									bool use_saved = false);	// Expunge uids
@@ -337,6 +339,7 @@ protected:
 	void	IMAPParseSearch(char** txt);						// Parse IMAP SEARCH reply
 	void	IMAPParseESearch(char** txt);					// Parse IMAP ESEARCH reply (RFC 4731)
 	void	IMAPParseStatus(char** txt);						// Parse IMAP STATUS reply
+	void	IMAPParseVanished(char** txt);					// Parse IMAP VANISHED reply (RFC 7162)
 
 	void	IMAPParseFetch(char** txt);							// Parse IMAP FETCH reply
 	void	IMAPParseEnvelope(char** txt);						// Parse IMAP ENVELOPE reply
