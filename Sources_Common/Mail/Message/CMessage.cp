@@ -156,6 +156,7 @@ CMessage::CMessage(const CMessage &copy)
 	SetMbox(const_cast<CMessage&>(copy).GetMbox());
 	mNumber = copy.mNumber;
 	mUID = copy.mUID;
+	mModSeq = copy.mModSeq;
 	mFlags = copy.mFlags;
 
 	if (copy.mCache)
@@ -393,6 +394,7 @@ void CMessage::InitMessage()
 	SetMbox(NULL);
 	mNumber = 0;
 	mUID = 0;
+	mModSeq = 0;
 	mFlags = eSeen;		// Messages start out seen and this flag is subtracted
 	mCache = NULL;
 	mThread = NULL;

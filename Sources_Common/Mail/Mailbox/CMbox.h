@@ -114,6 +114,7 @@ protected:
 		unsigned long		mUIDNext;					// UIDNext
 		unsigned long		mLastSync;					// UIDNext
 		uint64_t			mAppendLimit;				// APPENDLIMIT (UINT64_MAX = unknown)
+		uint64_t			mHighestModSeq;				// CONDSTORE: highest mod-sequence (RFC 7162)
 		NMessage::EFlags	mAllowedFlags;				// Flags that can be changed
 		ulvector			mSearchResults;				// SEARCH results
 		SACLRight			mMyRights;					// User's rights on this mailbox
@@ -337,7 +338,15 @@ public:
 	unsigned long	GetUIDValidity() const
 		{ return (mStatusInfo ? mStatusInfo->mUIDValidity : 0); }
 	void	SetUIDValidity(unsigned long uidv)
-		{ if (mStatusInfo) mStatusInfo->mUIDValidity = uidv; }
+		{ if (mStatusInfo)
+			{ if (mStatusInfo->mUIDValidity != 0 && mStatusInfo->mUIDValidity != uidv)
+				mStatusInfo->mHighestModSeq = 0;
+			  mStatusInfo->mUIDValidity = uidv; } }
+
+	uint64_t	GetHighestModSeq() const
+		{ return (mStatusInfo ? mStatusInfo->mHighestModSeq : 0); }
+	void	SetHighestModSeq(uint64_t hm)
+		{ InitStatusInfo(); mStatusInfo->mHighestModSeq = hm; }
 	void	ChangeUIDValidity(unsigned long uidv);
 
 	unsigned long	GetUIDNext() const

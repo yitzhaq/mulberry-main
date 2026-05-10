@@ -155,6 +155,7 @@ protected:
 	CMbox*						mMbox;						// Ptr to owning mbox
 	unsigned long				mNumber;					// Message number in mbox
 	unsigned long				mUID;						// Message UID
+	uint64_t					mModSeq;					// CONDSTORE mod-sequence
 	SBitFlags					mFlags;						// Message flags
 	CMessageCache*				mCache;						// Cached data
 	CThreadCache*				mThread;					// Cached thread data
@@ -232,6 +233,9 @@ public:
 	void SetUID(unsigned long uid, bool dont_sync = false);		// Set UID
 	void RemapUID(unsigned local_uid, unsigned long uid);		// Change UID based on local UID
 	unsigned long	GetUID() const;								// Get UID
+
+	uint64_t	GetModSeq() const { return mModSeq; }
+	void		SetModSeq(uint64_t modseq) { mModSeq = modseq; }
 
 	// Flag methods
 	bool SetFlags(SBitFlags& new_flags);						// Set flags

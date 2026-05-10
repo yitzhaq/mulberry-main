@@ -90,6 +90,9 @@ private:
 	bool			mHasSpecialUse;					// Supports SPECIAL-USE (RFC 6154)
 	bool			mHasReplace;					// Supports REPLACE (RFC 8508)
 	bool			mHasCompress;					// Supports COMPRESS=DEFLATE (RFC 4978)
+	bool			mHasEnable;						// Supports ENABLE (RFC 5161)
+	bool			mHasCondstore;					// Supports CONDSTORE (RFC 7162)
+	bool			mHasQResync;					// Supports QRESYNC (RFC 7162)
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
@@ -218,6 +221,7 @@ protected:
 										bool uids,
 										CMboxProtocol::EFetchItems items,
 										bool use_saved = false);
+	void	_FetchChangedFlags(uint64_t modseq);				// Fetch flags changed since modseq (RFC 7162)
 	virtual void	_ReadHeaders(const ulvector& nums,				// Get header list from messages
 									bool uids,
 									const cdstring& hdrs);

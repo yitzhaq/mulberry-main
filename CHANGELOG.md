@@ -149,6 +149,11 @@ X11 bitmap fonts).
   via zlib), Brotli (RFC 7932, optional), and Zstandard (RFC 8878/
   9659, optional). Reduces HTTP bandwidth by 60-80%. Legacy
   x-gzip/x-deflate aliases accepted per RFC 9110.
+- IMAP CONDSTORE (RFC 7162). Per-message modification sequence
+  tracking. ENABLE CONDSTORE/QRESYNC sent after login. MODSEQ
+  requested in FETCH, HIGHESTMODSEQ tracked per mailbox from
+  SELECT and STATUS responses. Lays groundwork for incremental
+  flag sync (CHANGEDSINCE FETCH) and QRESYNC.
 - IMAP COMPRESS=DEFLATE (RFC 4978). Reduces IMAP bandwidth by
   60-75% using zlib compression. Activated automatically after
   login when the server supports it. Includes decompression bomb

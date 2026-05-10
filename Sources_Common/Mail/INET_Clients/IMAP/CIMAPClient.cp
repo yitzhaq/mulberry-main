@@ -148,6 +148,9 @@ void CIMAPClient::InitIMAPClient()
 	mHasSpecialUse = false;
 	mHasReplace = false;
 	mHasCompress = false;
+	mHasEnable = false;
+	mHasCondstore = false;
+	mHasQResync = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -210,6 +213,9 @@ void CIMAPClient::_InitCapability()
 	mHasSpecialUse = false;
 	mHasReplace = false;
 	mHasCompress = false;
+	mHasEnable = false;
+	mHasCondstore = false;
+	mHasQResync = false;
 	mSearchSaved = false;
 	mSavedSearchResults.clear();
 	mListStatusDone = false;
@@ -276,6 +282,9 @@ void CIMAPClient::_ProcessCapability()
 	mHasSpecialUse = mLastResponse.CheckUntagged(cIMAP_SPECIAL_USE, true);
 	mHasReplace = mLastResponse.CheckUntagged(cIMAP_REPLACE, true);
 	mHasCompress = mLastResponse.CheckUntagged(cIMAP_COMPRESS, true);
+	mHasEnable = mLastResponse.CheckUntagged(cIMAP_ENABLE, true);
+	mHasCondstore = mLastResponse.CheckUntagged(cIMAP_CONDSTORE, true);
+	mHasQResync = mLastResponse.CheckUntagged(cIMAP_QRESYNC, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -349,6 +358,26 @@ void CIMAPClient::_PostProcess()
 			if (GetCurrentMbox())
 				GetCurrentMbox()->SetUIDNext(uidn);
 		}
+	}
+
+	if (mLastResponse.CheckUntagged(cSTATUS_HIGHESTMODSEQ))
+	{
+		const cdstring& hm_txt = mLastResponse.GetUntagged(cSTATUS_HIGHESTMODSEQ);
+
+		const char* p = ::strstrnocase(hm_txt, cSTATUS_HIGHESTMODSEQ);
+		if (p)
+		{
+			p += ::strlen(cSTATUS_HIGHESTMODSEQ);
+			uint64_t hm = ::strtoull(p, NULL, 10);
+			if (GetCurrentMbox())
+				GetCurrentMbox()->SetHighestModSeq(hm);
+		}
+	}
+
+	if (mLastResponse.CheckUntagged(cNOMODSEQ))
+	{
+		if (GetCurrentMbox())
+			GetCurrentMbox()->SetHighestModSeq(0);
 	}
 
 	if (mLastResponse.CheckUntagged(cUNSEEN))
@@ -757,10 +786,15 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 				INETSendString(cSpace);
 				INETSendString(wd_name, eQueueProcess);
 				INETSendString(cSpace);
-				if (mHasStatusSize)
-					INETSendString("(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT SIZE)");
-				else
-					INETSendString(cSTATUS_CHECK);
+				{
+					cdstring atts = "(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
+					if (mHasStatusSize)
+						atts += " SIZE";
+					if (mHasCondstore)
+						atts += " HIGHESTMODSEQ";
+					atts += ")";
+					INETSendString(atts);
+				}
 				INETFinishSend();
 			}
 			catch(CINETException& /*ex*/)
@@ -1044,10 +1078,24 @@ void CIMAPClient::IMAPParseID(char** txt)
 // Send ENABLE command (RFC 5161)
 void CIMAPClient::_Enable()
 {
-	if (!mLastResponse.CheckUntagged(cIMAP_ENABLE, true))
+	if (!mHasEnable)
 		return;
 
-	// Nothing to enable yet — CONDSTORE/QRESYNC will add extensions here
+	if (!mHasCondstore && !mHasQResync)
+		return;
+
+	try
+	{
+		INETStartSend("Status::IMAP::Enabling", "Error::IMAP::OSErrEnable", "Error::IMAP::NoBadEnable", cdstring::null_str);
+		INETSendString(cENABLE);
+		INETSendString(cSpace);
+		INETSendString(mHasQResync ? "QRESYNC" : "CONDSTORE");
+		INETFinishSend();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 // Find all subscribed mboxes
@@ -1085,6 +1133,8 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 				cdstring status_atts = "MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
 				if (mHasStatusSize)
 					status_atts += " SIZE";
+				if (mHasCondstore)
+					status_atts += " HIGHESTMODSEQ";
 				return_opts += " STATUS (";
 				return_opts += status_atts;
 				return_opts += ")";
@@ -1180,6 +1230,8 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 					cdstring status_atts = "MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
 					if (mHasStatusSize)
 						status_atts += " SIZE";
+					if (mHasCondstore)
+						status_atts += " HIGHESTMODSEQ";
 					return_opts += "STATUS (";
 					return_opts += status_atts;
 					return_opts += ")";
@@ -1756,7 +1808,10 @@ void CIMAPClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EF
 
 		case eIMAP4:
 		case eIMAP4rev1:
-			INETSendString(cSUMMARY4);
+			if (mHasCondstore)
+				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE ENVELOPE BODYSTRUCTURE MODSEQ)");
+			else
+				INETSendString(cSUMMARY4);
 			break;
 		}
 	}
@@ -1793,6 +1848,24 @@ void CIMAPClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EF
 	INETFinishSend();
 
 } // CIMAPClient::_FetchItems
+
+// Fetch only flags changed since a given mod-sequence (RFC 7162)
+void CIMAPClient::_FetchChangedFlags(uint64_t modseq)
+{
+	if (!mHasCondstore || !modseq)
+		return;
+
+	INETStartSend("Status::IMAP::Fetching", "Error::IMAP::OSErrSelect", "Error::IMAP::NoBadSelect", GetCurrentMbox()->GetName());
+	INETSendString(cUIDFETCH);
+	INETSendString(" 1:* (FLAGS) (");
+	INETSendString(cCHANGEDSINCE);
+	INETSendString(cSpace);
+	char buf[32];
+	::snprintf(buf, sizeof(buf), "%llu", (unsigned long long)modseq);
+	INETSendString(buf);
+	INETSendString(")");
+	INETFinishSend();
+}
 
 // Get header list from messages
 void CIMAPClient::_ReadHeaders(const ulvector& nums, bool uids, const cdstring& hdrs)
@@ -3197,6 +3270,17 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 		IMAPParseID(txt);
 	}
 
+	// ENABLED (RFC 5161)
+	else if (::stradvtokcmp(txt, "ENABLED") == 0)
+	{
+		while (**txt == ' ') (*txt)++;
+		if (!::strstrnocase(*txt, "CONDSTORE") && !::strstrnocase(*txt, "QRESYNC"))
+		{
+			mHasCondstore = false;
+			mHasQResync = false;
+		}
+	}
+
 	else
 		// Handle <n> message
 		IMAPParseMessageResponse(txt,response);
@@ -3600,9 +3684,17 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 				mCurrentResults->push_back(*iter);
 			break;
 		}
+		else if (::strncasecmp(p, "MODSEQ", 6) == 0)
+		{
+			p += 6;
+			while(*p == ' ') p++;
+			uint64_t modseq = ::strtoull(p, &p, 10);
+			if (GetCurrentMbox())
+				GetCurrentMbox()->SetHighestModSeq(modseq);
+		}
 		else
 		{
-			// Skip unknown keyword (COUNT, MIN, MAX, MODSEQ, etc.) and its value
+			// Skip unknown keyword (COUNT, MIN, MAX, etc.) and its value
 			while(*p && *p != ' ') p++;
 			while(*p == ' ') p++;
 			if (*p == '(' || isdigit((unsigned char)*p))
@@ -3732,6 +3824,15 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 				else
 					update->SetAppendLimit(::strtoull(q, &q, 10));
 			}
+			else if (::CheckStrAdv(&q, cSTATUS_HIGHESTMODSEQ))
+			{
+				uint64_t hm = ::strtoull(q, &q, 10);
+				if (update->GetHighestModSeq() != hm)
+				{
+					update->SetHighestModSeq(hm);
+					changed = true;
+				}
+			}
 			// Got an unknown item - just step over it
 			else
 			{
@@ -3782,6 +3883,20 @@ void CIMAPClient::IMAPParseFetch(char** txt)
 
 		else if (::CheckStrAdv(&q, cUID))
 			IMAPParseUID(&q);
+
+		else if (::CheckStrAdv(&q, cMODSEQ))
+		{
+			while (*q == ' ') q++;
+			if (*q == '(') q++;
+			uint64_t modseq = ::strtoull(q, &q, 10);
+			if (*q == ')') q++;
+			if (mCurrent_msg)
+			{
+				mCurrent_msg->SetModSeq(modseq);
+				if (GetCurrentMbox() && modseq > GetCurrentMbox()->GetHighestModSeq())
+					GetCurrentMbox()->SetHighestModSeq(modseq);
+			}
+		}
 
 		else if (::CheckStrAdv(&q, cBINARYSECTION_IN))
 			IMAPParseBodySection(&q);

@@ -85,6 +85,7 @@ CMbox::CMboxStatus::CMboxStatus()
 	mUIDNext = 0;
 	mLastSync = 0;
 	mAppendLimit = UINT64_MAX;
+	mHighestModSeq = 0;
 	mAllowedFlags = NMessage::eAllPermanent;
 	mACLs = NULL;
 	mQuotas = NULL;
@@ -423,6 +424,8 @@ void CMbox::UpdateStatus(const CMbox* copy)
 	SetNumberFound(copy->GetNumberFound());
 	SetNumberRecent(copy->GetNumberViewRecent());	// Use view recent in case mailbox is open
 	SetNumberUnseen(copy->GetNumberUnseen());
+	if (copy->GetHighestModSeq() > GetHighestModSeq())
+		SetHighestModSeq(copy->GetHighestModSeq());
 }
 
 // Are there any new messages
