@@ -179,8 +179,8 @@ void CPreferences::InitNetworkControlPrefs()
 	mConnectRetryTimeout.mValue = 15;				// 15 secs
 	mConnectRetryMaxCount.mValue = 3;				// 3 times
 	mBackgroundTimeout.mValue = 30;					// 30 secs
-	mTickleInterval.mValue = 25 * 60;				// 25 minutes
-	mTickleIntervalExpireTimeout.mValue = 5 * 60;	// 5 minutes
+	mTickleInterval.mValue = 5 * 60;				// 5 minutes
+	mTickleIntervalExpireTimeout.mValue = 2 * 60;	// 2 minutes
 	mSleepReconnect.mValue = true;					// Default to quick reconnect after sleep
 }
 

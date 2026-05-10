@@ -1325,8 +1325,8 @@ void CINETClient::_Tickle(bool force_tickle)
 		return;
 
 	// Intervals
-	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 25 * 60;
-	unsigned long tickleIntervalExpireTimeout = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleIntervalExpireTimeout.GetValue() : 5 * 60;
+	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 5 * 60;
+	unsigned long tickleIntervalExpireTimeout = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleIntervalExpireTimeout.GetValue() : 2 * 60;
 
 	// Current time plus timeout
 	time_t curr_time = ::time(NULL);
