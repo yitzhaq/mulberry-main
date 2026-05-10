@@ -244,6 +244,7 @@ public:
 	virtual void	Close();							// Close connection to protocol server
 	virtual void	Logon();							// Logon to protocol server
 	virtual void	Logoff();							// Logoff from protocol server
+	virtual void	Forceon();							// Forced reconnect
 	virtual void	Forceoff();							// Forced close
 
 			void	RecoverClone();							// Recover a cloned connection

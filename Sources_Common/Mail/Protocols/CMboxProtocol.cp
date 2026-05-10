@@ -746,6 +746,16 @@ void CMboxProtocol::Logoff()
 
 } // CMboxProtocol::Logoff
 
+// Forced reconnect — re-negotiate session state lost with the old connection
+void CMboxProtocol::Forceon()
+{
+	CINETProtocol::Forceon();
+
+	mClient->_Compress();
+	mClient->_SendID();
+	mClient->_Enable();
+}
+
 // Forced off server
 void CMboxProtocol::Forceoff()
 {

@@ -1036,10 +1036,10 @@ void CMbox::Recover()
 			SetNumberCached(0);
 
 			// Re-open the mailbox fully
-			if (!selectDone)
+			if (!selectDone && mOpenInfo && mOpenInfo->mMsgMailer)
 				mOpenInfo->mMsgMailer->RecoverClone();
 
-			// OpenMbox may have freed mOpenInfo via error recovery
+			// RecoverClone or its error handling may have freed mOpenInfo
 			if (!mOpenInfo)
 			{
 				CLOG_LOGTHROW(CGeneralException, -1);

@@ -302,6 +302,10 @@ CTCPStreamBuf::CTCPStreamBuf(const CTCPStreamBuf& copy)
 // Open TCP comms
 void CTCPStreamBuf::TCPOpen()
 {
+	// Clear stale COMPRESS state from previous connection — zlib inflate/deflate
+	// must not carry over to a fresh TCP session (the new greeting is plaintext)
+	CompressStop();
+
 	// Reset buffers to clear any stale data
 	setg(mBufIn, mBufIn, mBufIn);
 	setp(mBufOut, mBufOut + cTCPBufferSize);

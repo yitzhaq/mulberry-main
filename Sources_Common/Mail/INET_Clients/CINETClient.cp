@@ -1644,14 +1644,20 @@ void CINETClient::INETProcess()
 		char* txt = INETGetLine();
 
 		// WORKAROUND: COMPRESS inflate occasionally produces a single
-		// stray byte before '*' or '+' in responses. Root cause in
-		// CTCPStreamBuf::underflow inflate path is unknown. Strip the
-		// byte to prevent protocol desync. Remove when root cause found.
-		if (mStream && mStream->IsCompressOn() && txt[0] && txt[1] &&
-			txt[0] != '*' && txt[0] != '+' &&
-			(txt[1] == '*' || txt[1] == '+'))
+		// stray byte before '*' or '+' in responses, or duplicates
+		// the first byte (e.g. '**'). Root cause under investigation.
+		// Strip the byte to prevent protocol desync.
+		if (mStream && mStream->IsCompressOn() && txt[0] && txt[1])
 		{
-			::memmove(txt, txt + 1, ::strlen(txt));
+			bool stray = false;
+			if (txt[0] != '*' && txt[0] != '+' &&
+				(txt[1] == '*' || txt[1] == '+'))
+				stray = true;
+			if ((txt[0] == '*' && txt[1] == '*') ||
+				(txt[0] == '+' && txt[1] == '+'))
+				stray = true;
+			if (stray)
+				::memmove(txt, txt + 1, ::strlen(txt));
 		}
 
 		// Write to log file
@@ -2006,6 +2012,19 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 	// Handle network exception
 	if (nex)
 	{
+		// When NoRecovery is set, the caller (e.g. RecoverClone) manages
+		// recovery.  Kill the dead connection but do NOT cascade into
+		// INETRecoverDisconnect which would synchronously force-off the
+		// main protocol and close all mailboxes out from under us.
+		if (mOwner && mOwner->GetNoRecovery())
+		{
+			if (mStream && (mStream->TCPGetState() >= CTCPSocket::TCPConnected))
+				mStream->TCPAbort();
+			if (mOwner)
+				mOwner->SetErrorProcess(false);
+			return;
+		}
+
 		try
 		{
 			// See if recovery is possible before presenting an alert to the user
