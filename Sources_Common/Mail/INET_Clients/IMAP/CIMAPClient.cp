@@ -21,6 +21,8 @@
 #include "CINETClientResponses.h"
 #include "CINETCommon.h"
 
+#include <algorithm>
+
 #include "CAddress.h"
 #include "CAddressList.h"
 #include "CCharsetManager.h"
@@ -1688,6 +1690,7 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 		if (mHasSearchRes && results)
 		{
 			mSavedSearchResults = *results;
+			std::sort(mSavedSearchResults.begin(), mSavedSearchResults.end());
 			mSearchSaved = true;
 		}
 

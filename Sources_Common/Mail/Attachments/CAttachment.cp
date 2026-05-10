@@ -1701,12 +1701,15 @@ void CAttachment::ReadAttachment(CMessage* msg, bool peek, bool filter)
 #endif
 
 		// Get appropriate filter — skip CTE decoding when server
-		// supports BINARY (RFC 3516) as data arrives already decoded
+		// supports BINARY (RFC 3516) as data arrives already decoded.
+		// For non-text parts, skip ALL filtering to preserve binary data.
 		bool use_binary = msg->GetMbox() &&
 			msg->GetMbox()->GetProtocol() &&
 			msg->GetMbox()->GetProtocol()->HasBinary();
 		CFilter* aFilter;
-		if (use_binary || !filter)
+		if (use_binary && GetContent().GetContentType() != eContentText)
+			aFilter = new CFilter();
+		else if (use_binary || !filter)
 			aFilter = new CFilterEndls();
 		else
 			aFilter = CMIMESupport::GetFilter(this, true);
