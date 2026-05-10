@@ -406,14 +406,17 @@ CSearchItem* CSearchCriteriaContainer::ConstructSearch() const
 					and_list->push_back(new CSearchItem(**prev));
 					and_list->push_back(new CSearchItem(**next));
 					
+					// Save index before iterators are invalidated
+					const CSearchItemList::difference_type index = prev - flat_list.begin();
+
 					// Delete the next item
 					flat_list.erase(next, next + 1);
-					
+
 					// Delete the prev item
 					flat_list.erase(prev, prev + 1);
-					
-					// Adjust iter to previous item so it will point to the new item after cycling through the loop
-					iter = prev;
+
+					// Restore iter via index — points to the AND item
+					iter = flat_list.begin() + index;
 				}
 			}
 		}
@@ -427,35 +430,38 @@ CSearchItem* CSearchCriteriaContainer::ConstructSearch() const
 				// Get item before and after the OR operator
 				CSearchItemList::iterator prev = iter - 1;
 				CSearchItemList::iterator next = iter + 1;
-				
+
 				// Check to see if previous is an OR in which case we merge into that
 				if ((*prev)->GetType() == CSearchItem::eOr)
 				{
 					// Add next item into previous which is an OR
 					CSearchItemList* and_list = const_cast<CSearchItemList*>(static_cast<const CSearchItemList*>((*prev)->GetData()));
 					and_list->push_back(new CSearchItem(**next));
-					
+
 					// Delete the current item and the next item
 					flat_list.erase(iter, next + 1);
-					
+
 					// Adjust iter to previous item so it will point to the new item after cycling through the loop
 					iter = prev;
 				}
 				else
 				{
-					// Add previous and next to the AND list
+					// Add previous and next to the OR list
 					CSearchItemList* and_list = const_cast<CSearchItemList*>(static_cast<const CSearchItemList*>((*iter)->GetData()));
 					and_list->push_back(new CSearchItem(**prev));
 					and_list->push_back(new CSearchItem(**next));
-					
+
+					// Save index before iterators are invalidated
+					const CSearchItemList::difference_type index = prev - flat_list.begin();
+
 					// Delete the next item
 					flat_list.erase(next, next + 1);
-					
+
 					// Delete the prev item
 					flat_list.erase(prev, prev + 1);
-					
-					// Adjust iter to previous item so it will point to the new item after cycling through the loop
-					iter = prev;
+
+					// Restore iter via index — points to the OR item
+					iter = flat_list.begin() + index;
 				}
 			}
 		}
