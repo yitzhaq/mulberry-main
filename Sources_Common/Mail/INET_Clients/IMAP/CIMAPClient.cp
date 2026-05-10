@@ -2058,7 +2058,43 @@ void CIMAPClient::_ReadAttachment(unsigned long msg_num, const char* attach_spec
 		INETSendString(msg);
 	}
 
-	INETFinishSend();
+	try
+	{
+		INETFinishSend();
+	}
+	catch (CINETException& ex)
+	{
+		CLOG_LOGCATCH(CINETException&);
+
+		// BINARY may fail with NO [PARSE] on malformed MIME parts.
+		// Retry with BODY[] to let the client decode the CTE.
+		if (mHasBinary && ex.error() == CINETException::err_NoResponse)
+		{
+			mRcvStream = aStream;
+			mRcvOStream = NULL;
+
+			INETStartSend("Status::IMAP::FetchingOne", "Error::IMAP::OSErrReadMsg", "Error::IMAP::NoBadReadMsg", GetCurrentMbox()->GetName());
+			char msg[32];
+			::snprintf(msg, 32, "%ld", msg_num);
+			const char* fmt = peek ? cBODYSECTIONPEEK_OUT : cBODYSECTION_OUT;
+			cdstring body;
+			size_t body_reserve = ::strlen(fmt) + modified_spec.length() + 1;
+			body.reserve(body_reserve);
+			::snprintf(body.c_str_mod(), body_reserve, fmt, modified_spec.c_str());
+
+			INETSendString(cFETCH);
+			INETSendString(cSpace);
+			INETSendString(msg);
+			INETSendString(cSpace);
+			INETSendString(body);
+			INETFinishSend();
+		}
+		else
+		{
+			CLOG_LOGRETHROW;
+			throw;
+		}
+	}
 
 } // CIMAPClient::_ReadAttachment
 
