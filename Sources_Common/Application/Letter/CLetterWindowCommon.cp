@@ -1467,11 +1467,13 @@ void CLetterWindow::CopyNow(CMbox* mbox, bool option_key)
 			if (old_uid != 0 &&
 				mLastDraftMbox == mbox->GetAccountName())
 			{
+				bool replaced = false;
 				if (mbox->GetProtocol()->HasReplace())
 				{
 					try
 					{
 						mbox->ReplaceMessage(old_uid, mail_msg, new_uid);
+						replaced = true;
 					}
 					catch (...)
 					{
@@ -1480,7 +1482,7 @@ void CLetterWindow::CopyNow(CMbox* mbox, bool option_key)
 					}
 				}
 
-				if (!old_uid || !new_uid)
+				if (!replaced && (!old_uid || !new_uid))
 				{
 					new_uid = 0;
 					mbox->AppendMessage(mail_msg, new_uid);
@@ -1629,11 +1631,13 @@ void CLetterWindow::AutoSaveToServer()
 		if (old_uid != 0 &&
 			mLastDraftMbox == drafts_mbox->GetAccountName())
 		{
+			bool replaced = false;
 			if (drafts_mbox->GetProtocol()->HasReplace())
 			{
 				try
 				{
 					drafts_mbox->ReplaceMessage(old_uid, mail_msg, new_uid);
+					replaced = true;
 				}
 				catch (...)
 				{
@@ -1642,7 +1646,7 @@ void CLetterWindow::AutoSaveToServer()
 				}
 			}
 
-			if (!old_uid || !new_uid)
+			if (!replaced && (!old_uid || !new_uid))
 			{
 				new_uid = 0;
 				drafts_mbox->AppendMessage(mail_msg, new_uid);
