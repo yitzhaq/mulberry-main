@@ -980,7 +980,7 @@ void CIMAPClient::_SendID()
 // Send COMPRESS DEFLATE command (RFC 4978)
 void CIMAPClient::_Compress()
 {
-	if (!mHasCompress)
+	if (!mHasCompress || mStream->IsCompressOn())
 		return;
 
 	try
