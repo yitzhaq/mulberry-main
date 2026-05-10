@@ -43,6 +43,20 @@ struct SSmileySub
 };
 
 static const SSmileySub cSmileySubs[] = {
+	{ 0x00A2, "\xA2" },          // cent sign
+	{ 0x00A3, "\xA3" },          // pound sign
+	{ 0x00A5, "\xA5" },          // yen sign
+	{ 0x058F, "AMD" },           // Armenian dram
+	{ 0x20A3, "FRF" },           // French franc
+	{ 0x20A6, "NGN" },           // Nigerian naira
+	{ 0x20A8, "Rs" },            // rupee sign
+	{ 0x20A9, "KRW" },           // won sign
+	{ 0x20AA, "ILS" },           // Israeli new sheqel
+	{ 0x20AB, "VND" },           // Vietnamese dong
+	{ 0x20AC, "EUR" },           // euro sign
+	{ 0x20B9, "Rs" },            // Indian rupee
+	{ 0x20BD, "RUB" },           // Russian ruble
+	{ 0x20BF, "BTC" },           // bitcoin
 	{ 0x203C, "!!" },            // double exclamation mark
 	{ 0x2049, "!?" },            // exclamation question mark
 	{ 0x2190, "<-" },            // leftwards arrow
