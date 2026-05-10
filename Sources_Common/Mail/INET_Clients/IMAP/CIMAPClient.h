@@ -221,7 +221,6 @@ protected:
 										bool uids,
 										CMboxProtocol::EFetchItems items,
 										bool use_saved = false);
-	void	_FetchChangedFlags(uint64_t modseq);				// Fetch flags changed since modseq (RFC 7162)
 	virtual void	_ReadHeaders(const ulvector& nums,				// Get header list from messages
 									bool uids,
 									const cdstring& hdrs);
@@ -279,6 +278,9 @@ protected:
 		{ return mHasBinary; }
 	virtual bool	_HasReplace() const							// Does server support REPLACE?
 		{ return mHasReplace; }
+	virtual bool	_HasCondstore() const						// Does server support CONDSTORE?
+		{ return mHasCondstore; }
+	virtual void	_FetchChangedFlags(uint64_t modseq);		// Fetch flags changed since modseq
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
 									bool use_saved = false);	// Expunge uids
 			bool	MatchesSavedSearch(const ulvector& nums) const;

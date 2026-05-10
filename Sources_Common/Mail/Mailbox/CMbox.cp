@@ -916,6 +916,13 @@ void CMbox::Recover()
 	SetMboxRecent(0);
 	SetFirstNew(ULONG_MAX);
 
+	// Save CONDSTORE state for potential incremental recovery
+	uint64_t savedHighestModSeq = GetHighestModSeq();
+	unsigned long savedUIDValidity = GetUIDValidity();
+	bool canIncremental = savedHighestModSeq > 0 && savedUIDValidity > 0 &&
+		mOpenInfo->mMsgMailer->HasCondstore() && IsFullOpen() &&
+		mOpenInfo->mMessages->size() > 0;
+
 	try
 	{
 		// Indicate in Open command
@@ -924,25 +931,102 @@ void CMbox::Recover()
 		// Clear external references before deleting messages
 		CMailControl::CleanUpMboxRecover(this);
 
-		// Force mailbox cache to be cleared for now
-		// Ultimately we should do a UID sync on cached data
-		// Note: skip UncacheMessages here — its per-message notifications
-		// cause O(N²) resolution against the message list being cleared.
-		// CleanUpMboxRecover already handles external reference cleanup.
+		if (canIncremental)
+		{
+			// Incremental recovery: keep cached messages, use CHANGEDSINCE
+			// for flag updates after SELECT confirms same UIDVALIDITY
+			mStatusInfo->mNumberExists = 0;
+			mOpenInfo->mSortedMessages->DeleteFakes();
 
-		// Clear out the cached data to force a proper cache reload and take into account
-		// changes to the size of the mailbox whilst it was disconnected
-		mStatusInfo->mNumberExists = 0;
-		mOpenInfo->mSortedMessages->DeleteFakes();
-		mOpenInfo->mMessages->DeleteAll();
-		SetNumberCached(0);
+			// Re-SELECT the mailbox
+			mOpenInfo->mMsgMailer->RecoverClone();
 
-		// This effectively opens the mailbox
-		mOpenInfo->mMsgMailer->RecoverClone();
+			// OpenMbox may have freed mOpenInfo via error recovery
+			if (!mOpenInfo)
+			{
+				CLOG_LOGTHROW(CGeneralException, -1);
+				throw CGeneralException(-1);
+			}
 
-		// Now find all unseen/deleted/recent messages if fully open
-		if (IsFullOpen())
-			DoInitialSearch();
+			// Verify UIDVALIDITY is still the same
+			if (GetUIDValidity() != savedUIDValidity)
+			{
+				// UIDVALIDITY changed — fall back to full re-fetch
+				canIncremental = false;
+			}
+		}
+
+		if (canIncremental)
+		{
+			// Reconcile message count: handle additions and removals
+			unsigned long newExists = GetNumberFound();
+			unsigned long oldCount = mOpenInfo->mMessages->size();
+
+			if (newExists > oldCount)
+			{
+				// New messages arrived — add placeholders
+				for(unsigned long i = oldCount + 1; i <= newExists; i++)
+				{
+					CMessage* aMsg = CreateMessage();
+					aMsg->SetMessageNumber(i);
+					mOpenInfo->mMessages->push_back(aMsg);
+					mOpenInfo->mSortedMessages->push_back(aMsg);
+				}
+			}
+			else if (newExists < oldCount)
+			{
+				// Messages were expunged — remove excess from end
+				// (without QRESYNC we don't know WHICH were expunged,
+				// but reducing to match EXISTS prevents index errors)
+				while (mOpenInfo->mMessages->size() > newExists)
+				{
+					CMessage* last = mOpenInfo->mMessages->back();
+					mOpenInfo->mMessages->pop_back();
+					// Also remove from sorted list
+					CMessageList::iterator found = std::find(
+						mOpenInfo->mSortedMessages->begin(),
+						mOpenInfo->mSortedMessages->end(), last);
+					if (found != mOpenInfo->mSortedMessages->end())
+						mOpenInfo->mSortedMessages->erase(found);
+					delete last;
+				}
+				SetNumberCached(std::min(GetNumberCached(), newExists));
+			}
+
+			// Renumber messages to match current sequence
+			unsigned long num = 1;
+			for(CMessageList::iterator iter = mOpenInfo->mMessages->begin();
+				iter != mOpenInfo->mMessages->end(); iter++, num++)
+				(*iter)->SetMessageNumber(num);
+
+			// Use CHANGEDSINCE FETCH for incremental flag sync
+			mOpenInfo->mMsgMailer->FetchChangedFlags(savedHighestModSeq);
+		}
+		else
+		{
+			// Full recovery: clear all cached data and re-fetch
+			mStatusInfo->mNumberExists = 0;
+			if (mOpenInfo->mSortedMessages)
+				mOpenInfo->mSortedMessages->DeleteFakes();
+			if (mOpenInfo->mMessages)
+				mOpenInfo->mMessages->DeleteAll();
+			SetNumberCached(0);
+
+			// Re-open the mailbox fully
+			if (!canIncremental)
+				mOpenInfo->mMsgMailer->RecoverClone();
+
+			// OpenMbox may have freed mOpenInfo via error recovery
+			if (!mOpenInfo)
+			{
+				CLOG_LOGTHROW(CGeneralException, -1);
+				throw CGeneralException(-1);
+			}
+
+			// Now find all unseen/deleted/recent messages if fully open
+			if (IsFullOpen())
+				DoInitialSearch();
+		}
 
 		SetFlags(eBeingOpened, false);
 

@@ -2944,6 +2944,21 @@ bool CMboxProtocol::HasReplace() const
 	return mClient->_HasReplace();
 }
 
+bool CMboxProtocol::HasCondstore() const
+{
+	return mClient->_HasCondstore();
+}
+
+void CMboxProtocol::FetchChangedFlags(uint64_t modseq)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn() || !GetCurrentMbox())
+		return;
+
+	mClient->_FetchChangedFlags(modseq);
+}
+
 // Atomic message replacement (RFC 8508)
 void CMboxProtocol::ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* theMsg, unsigned long& new_uid, bool dummy_files)
 {
