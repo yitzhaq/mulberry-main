@@ -66,6 +66,7 @@
 
 const char cHDR_X[] = "X-";
 const char cHDR_MAILER[] = "Mailer: ";
+const char cHDR_USER_AGENT[] = "User-Agent: ";
 
 // Word break delimiters
 const char *host_delim = " ()<>@,;:\\\"";			// Host delimiters
@@ -411,6 +412,9 @@ void CRFC822::CreateHeader(CMessage* theMsg,
 
 		// Add details
 		out << CPreferences::sPrefs->GetMailerDetails(true) << os_endl;
+
+		if (!bounced)
+			out << cHDR_USER_AGENT << CPreferences::sPrefs->GetMailerDetails(true) << os_endl;
 	}
 
 	// Write identity specific headers
