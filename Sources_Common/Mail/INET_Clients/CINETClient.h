@@ -272,6 +272,8 @@ protected:
 public:
 	virtual void	Logoff();									// Logoff from server
 
+	CTCPStream*	GetStream() const
+		{ return mStream; }
 	virtual const cdstring& GetGreeting()
 		{ return mGreeting; }
 

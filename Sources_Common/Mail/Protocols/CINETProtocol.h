@@ -123,6 +123,7 @@ public:
 		{ return mMPState == eINETOpen;}
 	virtual bool	IsLoggedOn() const
 		{ return mMPState == eINETLoggedOn; }
+	virtual bool	IsConnectionAlive() const;
 	virtual bool	IsLoggedOff() const
 		{ return mMPState == eINETLoggedOff; }
 

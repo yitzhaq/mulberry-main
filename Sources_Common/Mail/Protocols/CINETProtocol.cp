@@ -147,6 +147,12 @@ void CINETProtocol::DirtyAccount()
 	// Must override in derived classes
 }
 
+bool CINETProtocol::IsConnectionAlive() const
+{
+	return IsLoggedOn() && mClient && mClient->GetStream() &&
+		mClient->GetStream()->TCPGetState() >= CTCPSocket::TCPConnected;
+}
+
 bool CINETProtocol::IsSecure() const
 {
 	// Check for TLS
@@ -940,7 +946,7 @@ CINETProtocol* CINETProtocol::NewConnection()
 		// Look for one not being used and still alive
 		if (!(*iter).mInUse)
 		{
-			if (!(*iter).mConnection->IsLoggedOn())
+			if (!(*iter).mConnection->IsConnectionAlive())
 			{
 				(*iter).mConnection->Forceoff();
 				delete (*iter).mConnection;
