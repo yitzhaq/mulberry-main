@@ -100,7 +100,7 @@ public:
 								bool dummy_files = false) {}		// Atomic message replacement (RFC 8508)
 	virtual void	_SetUIDValidity(unsigned long uidv) = 0;	// Set the UIDValidity
 	virtual void	_SetUIDNext(unsigned long uidn) = 0;	// Set the UIDNext
-	virtual void	_SetLastSync(unsigned long sync) = 0;	// Set the time of the last sync operation
+	virtual void	_SetLastSync(time_t sync) = 0;			// Set the time of the last sync operation
 
 	// Message related
 	virtual unsigned long _GetMessageLocalUID(unsigned long uid) = 0;

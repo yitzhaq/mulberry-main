@@ -85,7 +85,7 @@ const unsigned long cIndexType_Mask = ~0x00030000;
 // These MUST match the number of WriteHost calls in write() methods.
 // Version 0x0C adds HIGHESTMODSEQ (2 fields) to header and MODSEQ (2 fields) to record.
 const unsigned long cDiskHeaderSize_0B = 9 * sizeof(uint32_t);
-const unsigned long cDiskHeaderSize_0C = 11 * sizeof(uint32_t);
+const unsigned long cDiskHeaderSize_0C = 14 * sizeof(uint32_t);
 const unsigned long cDiskRecordSize_0B = 6 * sizeof(uint32_t);
 const unsigned long cDiskRecordSize_0C = 8 * sizeof(uint32_t);
 
@@ -108,12 +108,17 @@ void CLocalClient::SIndexHeader::write(std::ostream& out) const
 	::WriteHost(out, LocalUIDNext());
 	::WriteHost(out, mHighestModSeqHi);
 	::WriteHost(out, mHighestModSeqLo);
+	::WriteHost(out, mMboxModifiedHi);
+	::WriteHost(out, mCacheModifiedHi);
+	::WriteHost(out, mLastSyncHi);
 }
 
 void CLocalClient::SIndexHeader::write_LastSync(std::ostream& out) const
 {
 	out.seekp(offsetof(SIndexHeader, mLastSync), std::ios_base::beg);
-	::WriteHost(out, LastSync());
+	::WriteHost(out, mLastSync);
+	out.seekp(offsetof(SIndexHeader, mLastSyncHi), std::ios_base::beg);
+	::WriteHost(out, mLastSyncHi);
 }
 
 void CLocalClient::SIndexHeader::write_IndexSize(std::ostream& out) const
@@ -173,11 +178,17 @@ void CLocalClient::SIndexHeader::read(std::istream& in)
 	{
 		::ReadHost(in, mHighestModSeqHi);
 		::ReadHost(in, mHighestModSeqLo);
+		::ReadHost(in, mMboxModifiedHi);
+		::ReadHost(in, mCacheModifiedHi);
+		::ReadHost(in, mLastSyncHi);
 	}
 	else
 	{
 		mHighestModSeqHi = 0;
 		mHighestModSeqLo = 0;
+		mMboxModifiedHi = 0;
+		mCacheModifiedHi = 0;
+		mLastSyncHi = 0;
 	}
 
 	mVersion = raw_version;
@@ -1673,13 +1684,13 @@ void CLocalClient::_SetUIDNext(unsigned long uidn)
 }
 
 // Set the last sync
-void CLocalClient::_SetLastSync(unsigned long sync)
+void CLocalClient::_SetLastSync(time_t sync)
 {
 	try
 	{
 		// Set value and write it out
 		SIndexHeader header;
-		header.LastSync() = sync;
+		header.SetLastSync64(static_cast<int64_t>(sync));
 		header.write_LastSync(mIndex);
 
 		CHECK_STREAM(mIndex)
@@ -2655,7 +2666,7 @@ void CLocalClient::OpenCache(CMbox* mbox, cdfstream& mailbox, cdfstream& cache, 
 	// Set items in mailbox
 	mbox->SetUIDValidity(index_header.UIDValidity());
 	mbox->SetUIDNext(index_header.UIDNext());
-	mbox->SetLastSync(index_header.LastSync());
+	mbox->SetLastSync(static_cast<time_t>(index_header.GetLastSync64()));
 	mbox->SetHighestModSeq(index_header.GetHighestModSeq());
 }
 
@@ -2968,9 +2979,9 @@ void CLocalClient::Reconstruct(CMbox* mbox)
 			// Write out new header
 			SIndexHeader header;
 			header.Version() = CreateIndexVersion();
-			header.MboxModified() = 0;
-			header.CacheModified() = 0;
-			header.LastSync() = recovered ? recovered_index.LastSync() : 0;
+			header.SetMboxModified64(0);
+			header.SetCacheModified64(0);
+			header.SetLastSync64(recovered ? recovered_index.GetLastSync64() : 0);
 			header.IndexSize() = indices.size();
 
 			if (!saved_uids)
@@ -3227,14 +3238,14 @@ void CLocalClient::SyncIndexHeader(CMbox* mbox, cdfstream& index)
 
 	// Is it different? Compare the cached modtimes (the old method) and compare the index modtime
 	// against the other two files - it its older then we must touch it
-	if ((header.MboxModified() != (uint32_t)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name)) ||
-		(header.CacheModified() != (uint32_t)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name)) ||
-		((uint32_t)mbox_finfo.st_mtime > (uint32_t)index_finfo.st_mtime) ||
-		((uint32_t)cache_finfo.st_mtime > (uint32_t)index_finfo.st_mtime))
+	if ((header.GetMboxModified64() != (int64_t)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name)) ||
+		(header.GetCacheModified64() != (int64_t)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name)) ||
+		(mbox_finfo.st_mtime > index_finfo.st_mtime) ||
+		(cache_finfo.st_mtime > index_finfo.st_mtime))
 	{
 		// Change mod times and write header back
-		header.MboxModified() = (uint32_t)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name);
-		header.CacheModified() = (uint32_t)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name);
+		header.SetMboxModified64((int64_t)GetDefinitiveFileTime(mbox_finfo.st_mtime, mbox_name));
+		header.SetCacheModified64((int64_t)GetDefinitiveFileTime(cache_finfo.st_mtime, cache_name));
 		header.write(index);
 		
 		index << std::flush;
@@ -4718,9 +4729,7 @@ time_t CLocalClient::DateRead(const CLocalMessage* lmsg)
 		ReadMessageIndex(const_cast<CLocalMessage*>(lmsg));
 
 	mCache.seekg(mIndexList[GetIndex(lmsg)].Cache() + lmsg->GetEnvelopeIndex().GetDateIndex());
-	unsigned long date;
-	::ReadHost(mCache, date);
-	return (time_t)date;
+	return static_cast<time_t>(::ReadHost64(mCache));
 }
 
 time_t CLocalClient::InternalDateRead(const CLocalMessage* lmsg)
@@ -4730,9 +4739,7 @@ time_t CLocalClient::InternalDateRead(const CLocalMessage* lmsg)
 		ReadMessageIndex(const_cast<CLocalMessage*>(lmsg));
 
 	mCache.seekg(mIndexList[GetIndex(lmsg)].Cache());
-	unsigned long date;
-	::ReadHost(mCache, date);
-	return (time_t)date;
+	return static_cast<time_t>(::ReadHost64(mCache));
 }
 
 bool CLocalClient::StreamSearch(std::istream& in, unsigned long start, unsigned long length, const cdstring& txt, EContentTransferEncoding cte)

@@ -589,7 +589,7 @@ void CEnvelope::WriteCacheToStream(std::ostream& out, CEnvelopeIndex& index) con
 
 	// Write out envelope information first
 	index.SetDateIndex(0);
-	::WriteHost(out, static_cast<uint32_t>(mDate));
+	::WriteHost64(out, static_cast<int64_t>(mDate));
 	index.SetZoneIndex(out.tellp() - std::streamoff(offset));
 	::WriteHost(out, static_cast<uint32_t>(mZone));
 	out << cd_endl;
@@ -660,7 +660,7 @@ void CEnvelope::WriteAddressListToStream(std::ostream& out, const CAddressList* 
 void CEnvelope::ReadCacheFromStream(std::istream& in, unsigned long vers)
 {
 	// Write out envelope information first
-	::ReadHost(in, (long&)mDate);
+	mDate = static_cast<time_t>(::ReadHost64(in));
 	::ReadHost(in, mZone);
 	in.ignore();
 	::Read1522(in, mSubject);

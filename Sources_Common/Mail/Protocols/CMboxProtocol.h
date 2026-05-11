@@ -36,6 +36,8 @@
 #include "cdstring.h"
 #include "templs.h"
 
+#include <time.h>
+
 // Consts
 
 // Types
@@ -325,7 +327,7 @@ protected:
 
 			void	SetUIDValidity(unsigned long uidv);		// Set UID validity
 			void	SetUIDNext(unsigned long uidn);			// Set UID next
-			void	SetLastSync(unsigned long sync);		// Set last sync time
+			void	SetLastSync(time_t sync);				// Set last sync time
 			void	GetLastSync(CMbox* mbox);				// Get last sync of remote mailbox
 
 			void	SetCurrentMbox(CMbox* mbox,

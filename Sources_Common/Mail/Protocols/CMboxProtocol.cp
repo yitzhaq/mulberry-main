@@ -2039,7 +2039,7 @@ void CMboxProtocol::SetUIDNext(unsigned long uidn)
 }
 
 // Set Last sync time
-void CMboxProtocol::SetLastSync(unsigned long sync)
+void CMboxProtocol::SetLastSync(time_t sync)
 {
 	mClient->_SetLastSync(sync);
 }

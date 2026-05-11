@@ -38,6 +38,7 @@
 #include "CVCardVCard.h"
 
 #include <algorithm>
+#include <cstdlib>
 #include <memory>
 #include <strstream>
 
@@ -1684,7 +1685,10 @@ void CAddressBook::WriteXML(xmllib::XMLDocument* doc, xmllib::XMLNode* parent, b
 		
 		// Set last sync child node
 		if (mLastSync != 0)
-			xmllib::XMLObject::WriteValue(doc, xmlnode, cXMLElement_lastsync, mLastSync);
+		{
+			cdstring temp(static_cast<long>(mLastSync));
+			xmllib::XMLObject::WriteValue(doc, xmlnode, cXMLElement_lastsync, temp);
+		}
 	}
 	else
 		xmlnode = parent;
@@ -1742,7 +1746,12 @@ void CAddressBook::ReadXML(const xmllib::XMLNode* xmlnode, bool is_root)
 		xmllib::XMLObject::ReadValue(xmlnode, cXMLElement_displayname, mDisplayName);
 		
 		// Get last sync
-		xmllib::XMLObject::ReadValue(xmlnode, cXMLElement_lastsync, mLastSync);
+		{
+			cdstring temp;
+			xmllib::XMLObject::ReadValue(xmlnode, cXMLElement_lastsync, temp);
+			if (!temp.empty())
+				mLastSync = static_cast<time_t>(::strtol(temp.c_str(), NULL, 10));
+		}
 	}
 
 	// Scan into directories

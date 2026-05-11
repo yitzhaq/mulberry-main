@@ -205,6 +205,34 @@ void ReadHost(std::istream& in, ulvector* data)
 	}
 }
 
+void WriteHost64(std::ostream& out, int64_t value)
+{
+	unsigned char buf[8];
+	buf[0] = (value >> 56) & 0xFF;
+	buf[1] = (value >> 48) & 0xFF;
+	buf[2] = (value >> 40) & 0xFF;
+	buf[3] = (value >> 32) & 0xFF;
+	buf[4] = (value >> 24) & 0xFF;
+	buf[5] = (value >> 16) & 0xFF;
+	buf[6] = (value >>  8) & 0xFF;
+	buf[7] = value & 0xFF;
+	out.write(reinterpret_cast<char*>(buf), 8);
+}
+
+int64_t ReadHost64(std::istream& in)
+{
+	unsigned char buf[8];
+	in.read(reinterpret_cast<char*>(buf), 8);
+	return (static_cast<int64_t>(buf[0]) << 56) |
+	       (static_cast<int64_t>(buf[1]) << 48) |
+	       (static_cast<int64_t>(buf[2]) << 40) |
+	       (static_cast<int64_t>(buf[3]) << 32) |
+	       (static_cast<int64_t>(buf[4]) << 24) |
+	       (static_cast<int64_t>(buf[5]) << 16) |
+	       (static_cast<int64_t>(buf[6]) <<  8) |
+	       static_cast<int64_t>(buf[7]);
+}
+
 #pragma mark ____________________________I18L i/o
 
 void Write1522(std::ostream& out, const cdstring& text)

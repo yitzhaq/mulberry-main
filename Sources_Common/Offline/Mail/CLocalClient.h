@@ -63,6 +63,9 @@ protected:
 		uint32_t	mLocalUIDNext;
 		uint32_t	mHighestModSeqHi;	// RFC 7162 CONDSTORE (version >= 0x0C)
 		uint32_t	mHighestModSeqLo;
+		uint32_t	mMboxModifiedHi;	// Hi 32 bits of mbox mtime (version >= 0x0C)
+		uint32_t	mCacheModifiedHi;	// Hi 32 bits of cache mtime (version >= 0x0C)
+		uint32_t	mLastSyncHi;		// Hi 32 bits of last sync time (version >= 0x0C)
 
 		uint32_t& Version()
 			{ return mVersion; }
@@ -114,6 +117,24 @@ protected:
 		void SetHighestModSeq(uint64_t v)
 			{ mHighestModSeqHi = static_cast<uint32_t>(v >> 32);
 			  mHighestModSeqLo = static_cast<uint32_t>(v & 0xFFFFFFFF); }
+
+		int64_t GetMboxModified64() const
+			{ return (static_cast<int64_t>(mMboxModifiedHi) << 32) | mMboxModified; }
+		void SetMboxModified64(int64_t v)
+			{ mMboxModifiedHi = static_cast<uint32_t>(static_cast<uint64_t>(v) >> 32);
+			  mMboxModified = static_cast<uint32_t>(v & 0xFFFFFFFF); }
+
+		int64_t GetCacheModified64() const
+			{ return (static_cast<int64_t>(mCacheModifiedHi) << 32) | mCacheModified; }
+		void SetCacheModified64(int64_t v)
+			{ mCacheModifiedHi = static_cast<uint32_t>(static_cast<uint64_t>(v) >> 32);
+			  mCacheModified = static_cast<uint32_t>(v & 0xFFFFFFFF); }
+
+		int64_t GetLastSync64() const
+			{ return (static_cast<int64_t>(mLastSyncHi) << 32) | mLastSync; }
+		void SetLastSync64(int64_t v)
+			{ mLastSyncHi = static_cast<uint32_t>(static_cast<uint64_t>(v) >> 32);
+			  mLastSync = static_cast<uint32_t>(v & 0xFFFFFFFF); }
 
 		void write(std::ostream& out) const;
 		void write_LastSync(std::ostream& out) const;
@@ -325,7 +346,7 @@ protected:
 
 	virtual void	_SetUIDValidity(unsigned long uidv);	// Set the UIDValidity
 	virtual void	_SetUIDNext(unsigned long uidn);		// Set the UIDNext
-	virtual void	_SetLastSync(unsigned long sync);		// Set the time of the last sync operation
+	virtual void	_SetLastSync(time_t sync);				// Set the time of the last sync operation
 
 	// M E S S A G E S
 	virtual unsigned long _GetMessageLocalUID(unsigned long uid);

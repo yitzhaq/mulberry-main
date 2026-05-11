@@ -2435,7 +2435,7 @@ void CMbox::ChangeUIDNext(unsigned long uidn)
 		mOpenInfo->mMsgMailer->SetUIDNext(uidn);
 }
 
-unsigned long CMbox::GetLastSync()
+time_t CMbox::GetLastSync()
 {
 	// Determine last sync from disconnected mbox only if not local
 	if (!IsLocalMbox() &&
@@ -2450,7 +2450,7 @@ unsigned long CMbox::GetLastSync()
 	return (mStatusInfo ? mStatusInfo->mLastSync : 0);
 }
 
-void CMbox::ChangeLastSync(unsigned long sync)
+void CMbox::ChangeLastSync(time_t sync)
 {
 	SetLastSync(sync);
 	if (mOpenInfo)

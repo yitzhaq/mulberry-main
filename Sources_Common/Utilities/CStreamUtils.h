@@ -21,6 +21,7 @@
 #define __CSTREAMUTILS__MULBERRY__
 
 #include <iosfwd>
+#include <stdint.h>
 #include "cdstring.h"
 #include "templs.h"
 
@@ -48,6 +49,9 @@ void ReadHost(std::istream& in, unsigned long& data);
 void ReadHost(std::istream& in, uint32_t& data);
 void ReadHost(std::istream& in, long& data);
 void ReadHost(std::istream& in, ulvector* data);
+
+void WriteHost64(std::ostream& out, int64_t value);
+int64_t ReadHost64(std::istream& in);
 
 // I18L i/o
 void Write1522(std::ostream& out, const cdstring& text);

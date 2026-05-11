@@ -37,7 +37,9 @@
 
 #include "SBitFlags.h"
 
-namespace xmllib 
+#include <time.h>
+
+namespace xmllib
 {
 class XMLDocument;
 class XMLNode;
@@ -200,7 +202,7 @@ public:
 	}
 	void CheckSize();
 
-	uint32_t GetLastSync() const
+	time_t GetLastSync() const
 	{
 		return mLastSync;
 	}
@@ -278,7 +280,7 @@ protected:
 	cdstring				mShortName;					// Last part of the path name
 	cdstring				mDisplayName;				// Display name
 	uint32_t				mSize;						// Disk size
-	mutable uint32_t		mLastSync;					// Last sync time
+	mutable time_t			mLastSync;					// Last sync time
 	SACLRight				mMyRights;					// User's rights on this mailbox
 	CCalendarACLList*		mACLs;						// List of ACLs on this mailbox
 	

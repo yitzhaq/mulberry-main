@@ -35,6 +35,8 @@
 #include "cdomutex.h"
 #include "templs.h"
 
+#include <time.h>
+
 class CAttachment;
 class CIdentity;
 class CMboxList;
@@ -112,7 +114,7 @@ protected:
 		uint64_t			mSize;						// Size of mailbox (RFC 8438: 63-bit)
 		unsigned long		mUIDValidity;				// UIDValidity
 		unsigned long		mUIDNext;					// UIDNext
-		unsigned long		mLastSync;					// UIDNext
+		time_t				mLastSync;					// Last sync time
 		uint64_t			mAppendLimit;				// APPENDLIMIT (UINT64_MAX = unknown)
 		uint64_t			mHighestModSeq;				// CONDSTORE: highest mod-sequence (RFC 7162)
 		NMessage::EFlags	mAllowedFlags;				// Flags that can be changed
@@ -355,10 +357,10 @@ public:
 		{ if (mStatusInfo) mStatusInfo->mUIDNext = uidn; }
 	void	ChangeUIDNext(unsigned long uidn);
 
-	unsigned long	GetLastSync();
-	void	SetLastSync(unsigned long sync)
+	time_t	GetLastSync();
+	void	SetLastSync(time_t sync)
 		{ if (mStatusInfo) mStatusInfo->mLastSync = sync; }
-	void	ChangeLastSync(unsigned long sync);
+	void	ChangeLastSync(time_t sync);
 
 	uint64_t	GetAppendLimit() const
 		{ return (mStatusInfo ? mStatusInfo->mAppendLimit : UINT64_MAX); }

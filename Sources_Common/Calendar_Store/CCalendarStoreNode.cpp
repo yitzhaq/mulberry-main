@@ -39,6 +39,7 @@
 #include "XMLObject.h"
 
 #include <algorithm>
+#include <cstdlib>
 #include <memory>
 #include <stdint.h>
 
@@ -955,7 +956,10 @@ void CCalendarStoreNode::WriteXML(xmllib::XMLDocument* doc, xmllib::XMLNode* par
 		
 		// Set sync child nodes
 		if (mLastSync != 0)
-			xmllib::XMLObject::WriteValue(doc, xmlnode, cXMLElement_lastsync, mLastSync);
+		{
+			cdstring temp(static_cast<long>(mLastSync));
+			xmllib::XMLObject::WriteValue(doc, xmlnode, cXMLElement_lastsync, temp);
+		}
 		
 		// Do webcal info if present
 		if (mWebcal != NULL)
@@ -1019,7 +1023,12 @@ void CCalendarStoreNode::ReadXML(const xmllib::XMLNode* xmlnode, bool is_root)
 		xmllib::XMLObject::ReadValue(xmlnode, cXMLElement_displayname, mDisplayName);
 		
 		// Get sync details
-		xmllib::XMLObject::ReadValue(xmlnode, cXMLElement_lastsync, mLastSync);
+		{
+			cdstring temp;
+			xmllib::XMLObject::ReadValue(xmlnode, cXMLElement_lastsync, temp);
+			if (!temp.empty())
+				mLastSync = static_cast<time_t>(::strtol(temp.c_str(), NULL, 10));
+		}
 		
 		// Look for webcal node
 		const xmllib::XMLNode* webcalnode = xmlnode->GetChild(cXMLElement_webcal);

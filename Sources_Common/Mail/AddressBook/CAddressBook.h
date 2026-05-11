@@ -35,6 +35,8 @@
 #include "cdmutex.h"
 #include "ptrvector.h"
 
+#include <time.h>
+
 // Classes
 namespace xmllib 
 {
@@ -196,7 +198,7 @@ public:
 	}
 	void CheckSize();
 
-	uint32_t GetLastSync() const
+	time_t GetLastSync() const
 	{
 		return mLastSync;
 	}
@@ -328,7 +330,7 @@ protected:
 	cdstring			mShortName;					// Pointer to the last part of the path name
 	cdstring			mDisplayName;				// Display name of item
 	uint32_t			mSize;						// Disk size
-	mutable uint32_t	mLastSync;					// Last sync time
+	mutable time_t		mLastSync;					// Last sync time
 	CAddressList		mAddresses;
 	CGroupList			mGroups;
 	SACLRight			mMyRights;					// User's rights on this address book

@@ -213,7 +213,7 @@ void CLocalMessage::WriteCacheToStream(std::ostream& out) const
 	// Write out envelope information first
 	GetEnvelope()->WriteCacheToStream(out, const_cast<CEnvelope::CEnvelopeIndex&>(mEnvelopeIndex));
 
-	::WriteHost(out, static_cast<uint32_t>(mCache->mInternalDate));
+	::WriteHost64(out, static_cast<int64_t>(mCache->mInternalDate));
 	::WriteHost(out, static_cast<uint32_t>(mCache->mInternalZone));
 	out << cd_endl;
 
@@ -230,7 +230,7 @@ void CLocalMessage::ReadCacheFromStream(std::istream& in, unsigned long vers)
 	if (!GetEnvelope())
 		SetEnvelope(new CEnvelope);
 	GetEnvelope()->ReadCacheFromStream(in, vers);
-	::ReadHost(in, (long&)mCache->mInternalDate);
+	mCache->mInternalDate = static_cast<time_t>(::ReadHost64(in));
 	::ReadHost(in, mCache->mInternalZone);
 	in.ignore();
 

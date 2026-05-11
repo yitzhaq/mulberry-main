@@ -211,7 +211,7 @@ protected:
 
 	virtual void	_SetUIDValidity(unsigned long uidv) {}	// Set the UIDValidity - not done in IMAP
 	virtual void	_SetUIDNext(unsigned long uidn) {}		// Set the UIDNext - not done in IMAP
-	virtual void	_SetLastSync(unsigned long sync) {}		// Set the time of the last sync operation - not done in IMAP
+	virtual void	_SetLastSync(time_t sync) {}				// Set the time of the last sync operation - not done in IMAP
 
 	// M E S S A G E S
 	virtual unsigned long _GetMessageLocalUID(unsigned long uid)
