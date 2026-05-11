@@ -501,6 +501,14 @@ bool CActionManager::CopyMessage(CMbox* from, CMbox* to, ulvector* nums, bool de
 		from->CopyMessage(*nums, false, to, temp, false);
 	}
 
+	// MOVE removes messages atomically — clear stale selection in source
+	if (moved)
+	{
+		CMailboxView* fromView = CMailboxView::FindView(from);
+		if (fromView)
+			fromView->GetTable()->UnselectAllCells();
+	}
+
 	// Reset any open copied to window
 	CMailboxView* aView = CMailboxView::FindView(to);
 	if (aView)
