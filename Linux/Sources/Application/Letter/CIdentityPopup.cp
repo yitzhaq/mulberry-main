@@ -120,8 +120,6 @@ void CIdentityPopup::SetIdentity(CPreferences* prefs, const cdstring& name)
 
 const CIdentity& CIdentityPopup::GetIdentity(CPreferences* prefs) const
 {
-	return prefs->mIdentities.GetValue()[GetValue() - FirstIndex()];
-
 	// Check for custom
 	if (mHasCustom && (GetValue() == eIdentityPopup_Custom))
 		return (mCustomIdentity != NULL) ? *mCustomIdentity : prefs->mIdentities.GetValue()[0];
@@ -322,11 +320,16 @@ CIdentityPopup::AdjustPopupChoiceTitle
 	const JIndex index
 	)
 {
-	//We only want to change what is checked if it is not one of the commands
-	//We still want to act on that action (and will elsewhere) but here
-	//we don't want to update the title or value, so we don't call the parent
-	//AdjustPopupChoiceTitle and it never knows anything was selected.
-	if (index >= FirstIndex()) {
+	// For identity items, update both the title and value via the parent.
+	// For command items (New/Edit/Delete/Custom), set the value so the
+	// selection is broadcast to listeners, but don't update the popup
+	// title — it should remain the current identity name.
+	if (index >= FirstIndex())
+	{
 		HPopupMenu::AdjustPopupChoiceTitle(index);
-	} 
+	}
+	else
+	{
+		SetValue(index);
+	}
 }
