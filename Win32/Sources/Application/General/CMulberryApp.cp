@@ -695,6 +695,12 @@ void CMulberryApp::ProcessURL(const cdstring& url)
 
 		ProcessWebcal(addr);
 	}
+	else if (::strcmpnocase(scheme, "ics-file") == 0)
+	{
+		char* path = ::strtok(NULL, "");
+		if (path)
+			CActionManager::ImportICSFile(path);
+	}
 }
 
 // Parse mailto URL

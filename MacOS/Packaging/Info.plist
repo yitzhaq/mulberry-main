@@ -101,6 +101,20 @@
 			<integer>0</integer>
 		</dict>
 		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>ics</string>
+			</array>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>text/calendar</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>iCalendar Event</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
 			<key>CFBundleIconFile</key>
 			<string>Mbox.icns</string>
 			<key>CFBundleTypeExtensions</key>

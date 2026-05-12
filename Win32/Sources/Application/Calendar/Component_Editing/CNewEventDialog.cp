@@ -323,6 +323,17 @@ bool CNewEventDialog::DoEditOK()
 
 void CNewEventDialog::DoCancel()
 {
+	if (mAction == eImport && mComponent != NULL)
+	{
+		iCal::CICalendar* cal = iCal::CICalendar::GetICalendar(mComponent->GetCalendar());
+		if (cal != NULL)
+		{
+			cal->RemoveVEvent(static_cast<iCal::CICalendarVEvent*>(mComponent));
+			CCalendarView::EventChangedAll(static_cast<iCal::CICalendarVEvent*>(mComponent));
+			mComponent = NULL;
+		}
+	}
+
 	// Delete the event which we own and is not going to be used
 	delete mComponent;
 	mComponent = NULL;
@@ -381,8 +392,15 @@ void CNewEventDialog::StartDuplicate(const iCal::CICalendarVEvent& original)
 	// Start with an empty new event
 	iCal::CICalendarVEvent* vevent = new iCal::CICalendarVEvent(original);
 	vevent->Duplicated();
-	
+
 	StartModeless(*vevent, NULL, CNewEventDialog::eDuplicate);
+}
+
+void CNewEventDialog::StartImport(const iCal::CICalendarVEvent& original)
+{
+	iCal::CICalendarVEvent* vevent = new iCal::CICalendarVEvent(original);
+
+	StartModeless(*vevent, NULL, CNewEventDialog::eImport);
 }
 
 void CNewEventDialog::StartModeless(iCal::CICalendarVEvent& vevent, const iCal::CICalendarComponentExpanded* expanded, EModelessAction action)

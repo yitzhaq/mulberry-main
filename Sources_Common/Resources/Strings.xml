@@ -67,6 +67,16 @@
 	<string id="CCalendarStoreTable::NewWebCalendar">Enter the URL for a Web Calendar:</string>
 	<string id="CCalendarStoreTable::DuplicateWebCalendar">The Web Calendar at "%s" is already loaded.</string>
 
+<!-- ICS File Import -->
+	<string id="Alerts::Calendar::NoImportFile">The calendar file could not be opened.</string>
+	<string id="Alerts::Calendar::InvalidICSFile">The file does not contain valid iCalendar data.</string>
+	<string id="Alerts::Calendar::NoActiveCalendars">No calendars are available. Add a calendar account first.</string>
+	<string id="Alerts::Calendar::NoComponentsInFile">The file does not contain any events or tasks.</string>
+	<string id="Alerts::Calendar::ImportPickTitle">Import Calendar File</string>
+	<string id="Alerts::Calendar::ImportPickEvents">Select a calendar to import %s events into:</string>
+	<string id="Alerts::Calendar::ImportPickToDos">Select a calendar to import %s tasks into:</string>
+	<string id="Alerts::Calendar::ImportPickMixed">Select a calendar to import %s into:</string>
+
 <!-- New Component Dialog Bits -->
 	<string id="CNewComponentDialog::MissingNewCalendar">The chosen calendar no longer exists or is not open. Choose another calendar for this item.</string>
 	<string id="CNewEventDialog::MissingOriginal">The event being edited no longer exists and changes to it cannot be saved.</string>

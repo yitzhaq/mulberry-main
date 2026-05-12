@@ -34,6 +34,7 @@ public:
 	static void StartNew(const iCal::CICalendar* calin = NULL);
 	static void StartEdit(const iCal::CICalendarVToDo& vtodo, const iCal::CICalendarComponentExpanded* expanded);
 	static void StartDuplicate(const iCal::CICalendarVToDo& vtodo);
+	static void StartImport(const iCal::CICalendarVToDo& vtodo);
 
 						CNewToDoDialog();
 	virtual				~CNewToDoDialog();

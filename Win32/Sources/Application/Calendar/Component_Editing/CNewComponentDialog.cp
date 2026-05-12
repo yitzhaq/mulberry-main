@@ -249,11 +249,12 @@ void CNewComponentDialog::OnOK()
 		result = DoNewOK();
 		break;
 	case eEdit:
+	case eImport:
 		result = DoEditOK();
 		break;
 	default:;
 	}
-	
+
 	// Now do inherited if result was OK
 	if (result)
 		CModelessDialog::OnOK();
@@ -262,7 +263,7 @@ void CNewComponentDialog::OnOK()
 void CNewComponentDialog::OnCancel()
 {
 	DoCancel();
-	
+
 	// Now do inherited
 	CModelessDialog::OnCancel();
 }

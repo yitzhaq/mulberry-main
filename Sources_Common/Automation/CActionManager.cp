@@ -60,6 +60,20 @@
 #include "CTextEngine.h"
 #include "C3PaneWindow.h"
 
+#include "CCalendarStoreManager.h"
+#include "CCalendarStoreNode.h"
+#include "CCalendarView.h"
+#include "CICalendar.h"
+#include "CICalendarVEvent.h"
+#include "CICalendarVToDo.h"
+#include "CNewEventDialog.h"
+#include "CNewToDoDialog.h"
+
+#include "CTextListChoice.h"
+#include "CXStringResources.h"
+
+#include "cdfstream.h"
+
 #pragma mark ____________________________Mailbox UI processing
 
 // Open a mailbox
@@ -532,6 +546,149 @@ bool CActionManager::CopyMessage(CMbox* from, CMbox* to, ulvector* nums, bool de
 	}
 
 	return true;
+}
+
+void CActionManager::ImportICSFile(const cdstring& path)
+{
+	try
+	{
+		cdifstream fin(path);
+		if (fin.fail())
+		{
+			CErrorHandler::PutStopAlertRsrc("Alerts::Calendar::NoImportFile");
+			return;
+		}
+
+		iCal::CICalendar cal;
+		if (!cal.Parse(fin))
+		{
+			CErrorHandler::PutStopAlertRsrc("Alerts::Calendar::InvalidICSFile");
+			return;
+		}
+
+		if (calstore::CCalendarStoreManager::sCalendarStoreManager == NULL)
+			return;
+
+		const iCal::CICalendarList& cals = calstore::CCalendarStoreManager::sCalendarStoreManager->GetActiveCalendars();
+		if (cals.empty())
+		{
+			CErrorHandler::PutStopAlertRsrc("Alerts::Calendar::NoActiveCalendars");
+			return;
+		}
+
+		iCal::CICalendar* target = cals.front();
+		const calstore::CCalendarStoreNode* node =
+			calstore::CCalendarStoreManager::sCalendarStoreManager->GetNode(
+				CPreferences::sPrefs->mDefaultCalendar.GetValue());
+		if (node != NULL && node->GetCalendar() != NULL)
+			target = node->GetCalendar();
+
+		const iCal::CICalendarComponentDB& vevents = cal.GetVEvents();
+		const iCal::CICalendarComponentDB& vtodos = cal.GetVToDos();
+		unsigned long total = vevents.size() + vtodos.size();
+
+		if (total == 0)
+		{
+			CErrorHandler::PutStopAlertRsrc("Alerts::Calendar::NoComponentsInFile");
+			return;
+		}
+
+		if (total > 1)
+		{
+			cdstring count_str;
+			const char* desc_rsrc;
+			if (!vtodos.empty() && !vevents.empty())
+			{
+				desc_rsrc = "Alerts::Calendar::ImportPickMixed";
+				count_str = cdstring(static_cast<unsigned long>(vevents.size()));
+				count_str += " events and ";
+				count_str += cdstring(static_cast<unsigned long>(vtodos.size()));
+				count_str += " tasks";
+			}
+			else if (!vtodos.empty())
+			{
+				desc_rsrc = "Alerts::Calendar::ImportPickToDos";
+				count_str = cdstring(static_cast<unsigned long>(vtodos.size()));
+			}
+			else
+			{
+				desc_rsrc = "Alerts::Calendar::ImportPickEvents";
+				count_str = cdstring(static_cast<unsigned long>(vevents.size()));
+			}
+
+			const cdstring& desc_template = rsrc::GetString(desc_rsrc);
+			size_t desc_len = desc_template.length() + count_str.length() + 1;
+			cdstring desc_formatted;
+			desc_formatted.reserve(desc_len);
+			::snprintf(desc_formatted.c_str_mod(), desc_len,
+				desc_template.c_str(), count_str.c_str());
+
+			cdstrvect cal_names;
+			iCal::CICalendarList cal_order;
+			const iCal::CICalendarList& active = calstore::CCalendarStoreManager::sCalendarStoreManager->GetActiveCalendars();
+
+			// Put default calendar first so select_first highlights it
+			for(iCal::CICalendarList::const_iterator iter = active.begin(); iter != active.end(); iter++)
+			{
+				const calstore::CCalendarStoreNode* node =
+					calstore::CCalendarStoreManager::sCalendarStoreManager->GetNode(*iter);
+				cdstring name = node ? node->GetDisplayShortName() : (*iter)->GetName();
+				if (*iter == target)
+				{
+					cal_names.insert(cal_names.begin(), name);
+					cal_order.insert(cal_order.begin(), *iter);
+				}
+				else
+				{
+					cal_names.push_back(name);
+					cal_order.push_back(*iter);
+				}
+			}
+
+			ulvector selection;
+			if (!CTextListChoice::PoseDialog(
+				"Alerts::Calendar::ImportPickTitle",
+				desc_formatted.c_str(), NULL, false, true, false, true,
+				cal_names, cdstring::null_str, selection))
+				return;
+
+			if (!selection.empty() && selection.front() < cal_order.size())
+				target = cal_order.at(selection.front());
+		}
+
+		iCal::CICalendarVEvent* single_event = NULL;
+		iCal::CICalendarVToDo* single_todo = NULL;
+
+		for(iCal::CICalendarComponentMap::const_iterator iter = vevents.begin(); iter != vevents.end(); iter++)
+		{
+			iCal::CICalendarVEvent* copy = new iCal::CICalendarVEvent(*static_cast<iCal::CICalendarVEvent*>(iter->second));
+			copy->SetCalendar(target->GetRef());
+			target->AddNewVEvent(copy, true);
+			if (total == 1)
+				single_event = copy;
+		}
+
+		for(iCal::CICalendarComponentMap::const_iterator iter = vtodos.begin(); iter != vtodos.end(); iter++)
+		{
+			iCal::CICalendarVToDo* copy = new iCal::CICalendarVToDo(*static_cast<iCal::CICalendarVToDo*>(iter->second));
+			copy->SetCalendar(target->GetRef());
+			target->AddNewVToDo(copy, true);
+			if (total == 1)
+				single_todo = copy;
+		}
+
+		CCalendarView::EventsChangedAll();
+		CCalendarView::ToDosChangedAll();
+
+		if (single_event != NULL)
+			CNewEventDialog::StartImport(*single_event);
+		else if (single_todo != NULL)
+			CNewToDoDialog::StartImport(*single_todo);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+	}
 }
 
 bool CActionManager::MDNMessage(CMessage* msg)

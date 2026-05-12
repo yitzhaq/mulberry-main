@@ -304,6 +304,7 @@ void CNewComponentDialog::OnOK()
 			result = DoNewOK();
 			break;
 		case eEdit:
+		case eImport:
 			result = DoEditOK();
 			break;
 		default:;

@@ -23,6 +23,7 @@
 
 #include "CPostponeGURL.h"
 
+#include "CActionManager.h"
 #include "CCalendarStoreManager.h"
 #include "CErrorDialog.h"
 #include "CMailAccountManager.h"
@@ -93,6 +94,17 @@ void CPostponeGURL::SpendTime(const EventRecord &inMacEvent)
 				CMulberryApp::ProcessWebcal(mText);
 
 				// Delete this since it is one-shot
+				delete this;
+			}
+		}
+		else if (mType == eICSFile)
+		{
+			if (calstore::CCalendarStoreManager::sCalendarStoreManager != NULL)
+			{
+				StopIdling();
+
+				CActionManager::ImportICSFile(mText);
+
 				delete this;
 			}
 		}

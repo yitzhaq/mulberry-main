@@ -316,6 +316,17 @@ bool CNewToDoDialog::DoEditOK()
 
 void CNewToDoDialog::DoCancel()
 {
+	if (mAction == eImport && mComponent != NULL)
+	{
+		iCal::CICalendar* cal = iCal::CICalendar::GetICalendar(mComponent->GetCalendar());
+		if (cal != NULL)
+		{
+			cal->RemoveVToDo(static_cast<iCal::CICalendarVToDo*>(mComponent));
+			CCalendarView::ToDosChangedAll();
+			mComponent = NULL;
+		}
+	}
+
 	// Delete the to do which we own and is not going to be used
 	delete mComponent;
 	mComponent = NULL;
@@ -371,8 +382,15 @@ void CNewToDoDialog::StartDuplicate(const iCal::CICalendarVToDo& original)
 	// Start with an empty new event
 	iCal::CICalendarVToDo* vtodo = new iCal::CICalendarVToDo(original);
 	vtodo->Duplicated();
-	
+
 	StartModeless(*vtodo, NULL, CNewToDoDialog::eDuplicate);
+}
+
+void CNewToDoDialog::StartImport(const iCal::CICalendarVToDo& original)
+{
+	iCal::CICalendarVToDo* vtodo = new iCal::CICalendarVToDo(original);
+
+	StartModeless(*vtodo, NULL, CNewToDoDialog::eImport);
 }
 
 void CNewToDoDialog::StartModeless(iCal::CICalendarVToDo& vtodo, const iCal::CICalendarComponentExpanded* expanded, EModelessAction action)

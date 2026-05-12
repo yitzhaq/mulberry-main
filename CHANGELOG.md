@@ -184,6 +184,14 @@ X11 bitmap fonts).
 - Fix filter rules using COPY+DELETE instead of atomic MOVE (RFC
   6851) when moving messages. MOVE was implemented but the filter
   pipeline was never updated to use it.
+- Fix Y2038 timestamp truncation. All serialized time_t values in
+  offline cache, sync metadata, and calendar/address book XML now
+  use 64-bit representations. Offline cache date fields use 8-byte
+  big-endian format. SIndexHeader timestamps use Hi/Lo uint32_t pairs.
+  Calendar/address book sync timestamps serialized via text to bypass
+  XMLLib's int32_t truncation. SetLastSync API chain changed from
+  unsigned long to time_t for cross-platform correctness. CICalendar
+  and vCard DaysSince1970 and duration arithmetic widened to int64_t.
 - Timezone database updated from 2008 (tzdata2008i) to current IANA
   data. Timezone files are now generated at build time from the latest
   IANA source via vzic, so they stay current with each build. Fixes
@@ -295,6 +303,13 @@ X11 bitmap fonts).
   files are not configured.
 - Accept bare `mailto:` URLs on the command line, so desktop mail
   handlers can launch Mulberry directly.
+- ICS file import via command line and file association. Passing an
+  `.ics` file to Mulberry (by command line or file manager double-click)
+  imports the calendar data. Single-event files open the edit dialog
+  with the event pre-filled — OK saves, Cancel discards. Multi-event
+  files prompt to choose a target calendar from the list of active
+  calendars (default pre-selected), showing the number of events and
+  tasks to be imported. Registered as `text/calendar` MIME type handler.
 - Visual Studio 2019 build support (Win32, untested).
   Contributed by Quanah Gibson-Mount.
 

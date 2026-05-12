@@ -45,7 +45,8 @@ public:
 	{
 		eNew,
 		eEdit,
-		eDuplicate
+		eDuplicate,
+		eImport
 	};
 	
 	CNewComponentDialog(LStream *inStream);

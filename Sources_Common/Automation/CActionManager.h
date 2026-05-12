@@ -72,6 +72,7 @@ public:
 							const cdstring& subject, const cdstring& body, const cdstrvect& files, const CIdentity* id = NULL);
 
 	static bool CopyMessage(CMbox* from, CMbox* to, ulvector* nums, bool delete_after);
+	static void ImportICSFile(const cdstring& path);
 
 	static bool MDNMessage(CMessage* msg);
 

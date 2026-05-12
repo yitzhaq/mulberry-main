@@ -34,6 +34,7 @@ public:
 	static void StartNew(const iCal::CICalendarDateTime& dtstart, const iCal::CICalendar* calin = NULL);
 	static void StartEdit(const iCal::CICalendarVEvent& vevent, const iCal::CICalendarComponentExpanded* expanded);
 	static void StartDuplicate(const iCal::CICalendarVEvent& vevent);
+	static void StartImport(const iCal::CICalendarVEvent& vevent);
 
 						CNewEventDialog(JXDirector* supervisor);
 	virtual				~CNewEventDialog();

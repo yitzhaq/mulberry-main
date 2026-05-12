@@ -301,6 +301,18 @@ void CMulberryApp::CommandLine(const JPtrArray<JString>& argList)
 			else
 				ProcessURL(cdstring(arg));
 		}
+
+		// ICS file path — from desktop file association or command line
+		else if (arg.EndsWith(".ics") || arg.BeginsWith("file:"))
+		{
+			cdstring path(arg);
+			if (path.compare_start("file://"))
+				path.erase(0, 7);
+			if (!startedYet)
+				openurls.push_back(cdstring("ics-file:") + path);
+			else
+				CActionManager::ImportICSFile(path);
+		}
 	}
 }
 
@@ -440,6 +452,12 @@ void CMulberryApp::ProcessURL(const cdstring& url)
 		char* addr = ::strtok(NULL, "");		// Can be NULL
 
 		ProcessWebcal(addr);
+	}
+	else if (::strcmpnocase(scheme, "ics-file") == 0)
+	{
+		char* path = ::strtok(NULL, "");
+		if (path)
+			CActionManager::ImportICSFile(path);
 	}
 }
 

@@ -195,11 +195,23 @@ bool CTextListChoice::PoseDialog(const char* title, const char* description, con
 	dlog->mNoSelection = no_selection;
 	dlog->mSelectFirst = select_first;
 	if (description)
+	{
 		dlog->mTextListDescription.FromResource(description);
+		if (dlog->mTextListDescription.empty())
+			dlog->mTextListDescription = description;
+	}
 	if (item)
+	{
 		dlog->mTextListEnterDescription.FromResource(item);
+		if (dlog->mTextListEnterDescription.empty())
+			dlog->mTextListEnterDescription = item;
+	}
 	if (btn)
+	{
 		dlog->mButtonTitle.FromResource(btn);
+		if (dlog->mButtonTitle.empty())
+			dlog->mButtonTitle = btn;
+	}
 	dlog->mTextListEnter = text;
 
 	// Add the rest

@@ -88,17 +88,26 @@ void CTextListChoice::SetUpDetails(const char* title, const char* description, c
 	LStr255 txt;
 
 	// Give text to pane and window title
-	txt = rsrc::GetString(title);
+	cdstring title_str = rsrc::GetString(title);
+	if (title_str.empty())
+		title_str = title;
+	txt = title_str;
 	SetDescriptor(txt);
 
 	CStaticText* theCaption = (CStaticText*) FindPaneByID(paneid_TextListDescription);
-	txt = rsrc::GetString(description);
+	cdstring desc_str = rsrc::GetString(description);
+	if (desc_str.empty())
+		desc_str = description;
+	txt = desc_str;
 	theCaption->SetDescriptor(txt);
 
 	if (use_entry)
 	{
 		theCaption = (CStaticText*) FindPaneByID(paneid_TextListItemTitle);
-		txt = rsrc::GetString(item);
+		cdstring item_str = rsrc::GetString(item);
+		if (item_str.empty())
+			item_str = item;
+		txt = item_str;
 		theCaption->SetDescriptor(txt);
 		mName->SetText(text);
 		mName->SelectAll();
@@ -132,7 +141,10 @@ void CTextListChoice::SetUpDetails(const char* title, const char* description, c
 	// Set button
 	if (btn)
 	{
-		txt = rsrc::GetString(btn);
+		cdstring btn_str = rsrc::GetString(btn);
+		if (btn_str.empty())
+			btn_str = btn;
+		txt = btn_str;
 		LPushButton* theButton = (LPushButton*) FindPaneByID(paneid_TextListButton);
 		theButton->SetDescriptor(txt);
 		

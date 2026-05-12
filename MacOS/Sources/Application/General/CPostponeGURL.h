@@ -28,7 +28,8 @@ public:
 	enum EType
 	{
 		eMailto = 0,
-		eWebcal
+		eWebcal,
+		eICSFile
 	};
 					CPostponeGURL(char *text, EType type);
 					~CPostponeGURL();
