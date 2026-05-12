@@ -2338,18 +2338,26 @@ bool cdstring::IsUTF8() const
 			
 			// Determine length of utf8 encoded wchar_t
 			unsigned long charlen = 0;
-			if ((*p & 0xf0 ) == 0xe0)
+			if ((*p & 0xf8) == 0xf0)
+			{
+				charlen = 4;
+			}
+			else if ((*p & 0xf0) == 0xe0)
 			{
 				charlen = 3;
 			}
-			else if ((*p & 0xe0 ) == 0xc0)
+			else if ((*p & 0xe0) == 0xc0)
 			{
 				charlen = 2;
 			}
+			else
+			{
+				return false;
+			}
 			p++;
-			
+
 			// Now make sure trail bytes are valid
-			while(--charlen)
+			for (unsigned long i = 1; i < charlen; i++)
 			{
 				if ((*p++ & 0xc0) != 0x80)
 					return false;

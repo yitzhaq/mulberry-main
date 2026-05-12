@@ -26,13 +26,12 @@
 
 size_t unistrlen(const unichar_t* str)
 {
-	size_t	len = -1;
-	
+	size_t	len = 0;
+
 #if !__POWERPC__
-	
-	do
+
+	while (*str++)
 		len++;
-	while (*str++);
 	
 #else
 	

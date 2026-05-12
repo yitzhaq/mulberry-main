@@ -702,7 +702,8 @@ long CGSSAPIPluginDLL::ProcessNegStepData(SAuthPluginData* info)
 		}
 	}
 	// Save current id as recovered user id
-	::strcpy(mRecoveredUserID, buf+4);
+	::strncpy(mRecoveredUserID, buf+4, cMaxAuthStringLength - 1);
+	mRecoveredUserID[cMaxAuthStringLength - 1] = 0;
 
 	input_token.length = 4 + ::strlen(buf + 4);
 	input_token.value = buf;
