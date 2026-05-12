@@ -475,41 +475,46 @@ int CTCPStreamBuf::underflow()
 			}
 			else
 			{
-				// Get compressed input: use leftover from previous
-				// inflate, or read new data from socket
-				if (mCompressRawInPos >= mCompressRawInLen)
+				// Inflate until at least one byte of output is produced.
+				// Z_SYNC_FLUSH may consume input without producing output
+				// when accumulating a partial deflate block.
+				do
 				{
-					mCompressRawInLen = cTCPBufferSize;
-					TCPReceiveData(mCompressRawIn, &mCompressRawInLen);
-					mCompressRawInPos = 0;
+					if (mCompressRawInPos >= mCompressRawInLen)
+					{
+						mCompressRawInLen = cTCPBufferSize;
+						TCPReceiveData(mCompressRawIn, &mCompressRawInLen);
+						mCompressRawInPos = 0;
+					}
+
+					long raw_avail = mCompressRawInLen - mCompressRawInPos;
+
+					mInflateState.next_in = (Bytef*)(mCompressRawIn + mCompressRawInPos);
+					mInflateState.avail_in = raw_avail;
+					mInflateState.next_out = (Bytef*)mCompressBufIn;
+					mInflateState.avail_out = cTCPBufferSize;
+					int ret = inflate(&mInflateState, Z_SYNC_FLUSH);
+					if (ret != Z_OK && ret != Z_BUF_ERROR)
+					{
+						CLOG_LOGTHROW(CGeneralException, -1L);
+						throw CGeneralException(-1L);
+					}
+
+					long consumed = raw_avail - mInflateState.avail_in;
+					mCompressRawInPos += consumed;
+
+					mCompressBufInLen = cTCPBufferSize - mInflateState.avail_out;
+					mCompressBufInPos = 0;
+
+					// Decompression bomb check
+					if (mCompressBufInLen > 0 && consumed > 0 &&
+						(mCompressBufInLen / consumed) > 1000)
+					{
+						CLOG_LOGTHROW(CGeneralException, -1L);
+						throw CGeneralException(-1L);
+					}
 				}
-
-				long raw_avail = mCompressRawInLen - mCompressRawInPos;
-
-				mInflateState.next_in = (Bytef*)(mCompressRawIn + mCompressRawInPos);
-				mInflateState.avail_in = raw_avail;
-				mInflateState.next_out = (Bytef*)mCompressBufIn;
-				mInflateState.avail_out = cTCPBufferSize;
-				int ret = inflate(&mInflateState, Z_SYNC_FLUSH);
-				if (ret != Z_OK && ret != Z_BUF_ERROR)
-				{
-					CLOG_LOGTHROW(CGeneralException, -1L);
-					throw CGeneralException(-1L);
-				}
-
-				long consumed = raw_avail - mInflateState.avail_in;
-				mCompressRawInPos += consumed;
-
-				mCompressBufInLen = cTCPBufferSize - mInflateState.avail_out;
-				mCompressBufInPos = 0;
-
-				// Decompression bomb check
-				if (mCompressBufInLen > 0 && consumed > 0 &&
-					(mCompressBufInLen / consumed) > 1000)
-				{
-					CLOG_LOGTHROW(CGeneralException, -1L);
-					throw CGeneralException(-1L);
-				}
+				while (mCompressBufInLen == 0);
 
 				long copy = mCompressBufInLen;
 				if (copy > cTCPBufferSize)
@@ -518,6 +523,7 @@ int CTCPStreamBuf::underflow()
 				mCompressBufInPos = copy;
 				setg(mBufIn, mBufIn, mBufIn + copy);
 			}
+
 		}
 		else
 		{
