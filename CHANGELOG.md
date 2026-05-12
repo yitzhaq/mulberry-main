@@ -304,17 +304,24 @@ X11 bitmap fonts).
 - Accept bare `mailto:` URLs on the command line, so desktop mail
   handlers can launch Mulberry directly.
 - ICS file import via command line and file association. Passing an
-  `.ics` file to Mulberry (by command line or file manager double-click)
-  imports the calendar data. Single-event files open the edit dialog
-  with the event pre-filled — OK saves, Cancel discards. Multi-event
-  files prompt to choose a target calendar from the list of active
-  calendars (default pre-selected), showing the number of events and
-  tasks to be imported. Registered as `text/calendar` MIME type handler.
+  `.ics` file to Mulberry (by command line, file manager double-click,
+  or while the app is already running) imports the calendar data.
+  Single-event files open the edit dialog with the event pre-filled —
+  OK saves, Cancel discards. Multi-event files prompt to choose a
+  target calendar from the list of active calendars (default
+  pre-selected), showing the number of events and tasks to be
+  imported. Registered as `text/calendar` MIME type handler.
 - Visual Studio 2019 build support (Win32, untested).
   Contributed by Quanah Gibson-Mount.
 
 ### Fixed
 
+- Fix single-instance forwarding on Linux. Passing a `mailto:` URL,
+  `.ics` file, or any argument to Mulberry while it is already running
+  now forwards to the existing instance instead of launching a second
+  one. Root cause: the MDI socket name was derived from a legacy
+  `"cyrusoft-mulberry"` signature, while the running instance registered
+  under `"Mulberry"` — the two never matched.
 - Fix IMAP connection recovery after server restart or network
   interruption. Dead connections left open folders in a non-functional
   zombie state with no way to recover. Root cause: iostream exceptions

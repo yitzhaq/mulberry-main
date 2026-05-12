@@ -30,7 +30,7 @@
 #include "CRegistrationDialog.h"
 #include "CXStringResources.h"
 
-const char* cAppSignature = "cyrusoft-mulberry";
+const char* cAppSignature = "Mulberry";
 
 //#pragma mark ________________________Copy Protection
 
