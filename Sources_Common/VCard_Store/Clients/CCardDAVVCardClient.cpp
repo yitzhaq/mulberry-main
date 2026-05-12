@@ -716,15 +716,12 @@ void CCardDAVVCardClient::_RemoveComponent(CAddressBook* adbk, vCard::CVCardAddr
 	if (component.GetRURL().empty())
 		return;
 
-	// Do removal
-	_RemoveComponent(adbk, vadbk, component.GetRURL());
+	// Do removal with ETag for conflict detection
+	_RemoveComponent(adbk, vadbk, component.GetRURL(), component.GetETag());
 }
 
-void CCardDAVVCardClient::_RemoveComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const cdstring& comp_rurl)
+void CCardDAVVCardClient::_RemoveComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const cdstring& comp_rurl, const cdstring& etag)
 {
-	// NB We really ought to check whether the item has changed before we do the delete (ETag comparison),
-	// but we will ignore that for now
-
 	// Start UI action
 	StINETClientAction _action(this, "Status::Calendar::Removing", "Error::Calendar::OSErrRemoveFromCalendar", "Error::Calendar::NoBadRemoveFromCalendar", adbk->GetName());
 
@@ -737,8 +734,9 @@ void CCardDAVVCardClient::_RemoveComponent(CAddressBook* adbk, vCard::CVCardAddr
 	rurl.EncodeURL('/');
 	rurl += comp_rurl;
 
-	// Create WebDAV DELETE
+	// Create WebDAV DELETE with If-Match for conflict detection
 	std::unique_ptr<http::webdav::CWebDAVDelete> request(new http::webdav::CWebDAVDelete(this, rurl));
+	request->SetData(etag);
 
 	// Process it
 	RunSession(request.get());

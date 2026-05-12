@@ -668,6 +668,9 @@ IMPORT_FUNCTION(sSSLLoader, int, SSL_get_ex_new_index, (long argl, void *argp, C
 //int	SSL_set_fd(SSL *s, int fd);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_set_fd, (SSL *s, int fd), (s, fd))
 
+//long	SSL_ctrl(SSL *ssl, int cmd, long larg, void *parg);
+IMPORT_FUNCTION(sSSLLoader, long, SSL_ctrl, (SSL *ssl, int cmd, long larg, void *parg), (ssl, cmd, larg, parg))
+
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
 //OSSL_HANDSHAKE_STATE SSL_get_state(const SSL *ssl);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_get_state, (const SSL *ssl), (ssl))

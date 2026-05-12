@@ -80,6 +80,7 @@ CMbox::CMboxStatus::CMboxStatus()
 	mNumberExists = 0;
 	mNumberRecent = 0;
 	mNumberUnseen = 0;
+	mNumberDeleted = 0;
 	mSize = UINT64_MAX;
 	mUIDValidity = 0;
 	mUIDNext = 0;

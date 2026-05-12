@@ -111,6 +111,7 @@ protected:
 		unsigned long		mNumberExists;				// Number found in box on server
 		unsigned long		mNumberRecent;				// Number new on server
 		unsigned long		mNumberUnseen;				// Number unseen (STATUS)
+		unsigned long		mNumberDeleted;				// Number with \Deleted flag (RFC 9051)
 		uint64_t			mSize;						// Size of mailbox (RFC 8438: 63-bit)
 		unsigned long		mUIDValidity;				// UIDValidity
 		unsigned long		mUIDNext;					// UIDNext
@@ -322,6 +323,10 @@ public:
 				{ if (mStatusInfo) mStatusInfo->mNumberUnseen = num; }
 	unsigned long	GetNumberUnseen()	const							// Get number of unseen messages
 				{ return mStatusInfo ? mStatusInfo->mNumberUnseen : 0; }
+	void	SetStatusDeleted(const unsigned long num)
+				{ if (mStatusInfo) mStatusInfo->mNumberDeleted = num; }
+	unsigned long	GetStatusDeleted() const
+				{ return mStatusInfo ? mStatusInfo->mNumberDeleted : 0; }
 	bool	AnySeen() const												// Are there any seen but not deleted messages?
 				{ return AnyFlags(NMessage::eSeen, NMessage::eDeleted); }
 

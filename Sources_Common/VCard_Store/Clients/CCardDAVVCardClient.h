@@ -98,7 +98,7 @@ public:
 	virtual void _AddComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const vCard::CVCardVCard& component);
 	virtual void _ChangeComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const vCard::CVCardVCard& component);
 	virtual void _RemoveComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const vCard::CVCardVCard& component);
-	virtual void _RemoveComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const cdstring& rurl);
+	virtual void _RemoveComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const cdstring& rurl, const cdstring& etag = cdstring::null_str);
 	virtual void _ReadComponents(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const cdstrvect& rurls);
 	virtual vCard::CVCardVCard* _ReadComponent(CAddressBook* adbk, vCard::CVCardAddressBook& vadbk, const cdstring& rurl);
 

@@ -646,7 +646,7 @@ void CLocalCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCal
 	// Does nothing in this implementation
 }
 
-void CLocalCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCal::CICalendar& cal, const cdstring& rurl)
+void CLocalCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCal::CICalendar& cal, const cdstring& rurl, const cdstring& etag)
 {
 	// Does nothing in this implementation
 }

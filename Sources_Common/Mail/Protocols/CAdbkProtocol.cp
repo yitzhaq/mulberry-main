@@ -1193,10 +1193,10 @@ void CAdbkProtocol::SyncComponentsFromServerFast(CAddressBook* adbk)
 				// Is it still present on the server
 				if (removed.count((*iter).second.GetRURL()) != 0)
 				{
-					// Remove component from server
-					cardclient->_RemoveComponent(adbk, *vadbk, (*iter).second.GetRURL());
+					// Remove component from server with ETag for conflict detection
+					cardclient->_RemoveComponent(adbk, *vadbk, (*iter).second.GetRURL(), (*iter).second.GetETag());
 					changes_made = true;
-					
+
 					// Remove from server component info
 					if (changed.count((*iter).second.GetRURL()) != 0)
 						changed.erase((*iter).second.GetRURL());
@@ -1440,9 +1440,9 @@ void CAdbkProtocol::SyncComponentsFromServerSlow(CAddressBook* adbk)
 				// Is it still present on the server
 				if (comps.count((*iter).second.GetRURL()) != 0)
 				{
-					// Remove component from server
-					cardclient->_RemoveComponent(adbk, *vadbk, (*iter).second.GetRURL());
-					
+					// Remove component from server with ETag for conflict detection
+					cardclient->_RemoveComponent(adbk, *vadbk, (*iter).second.GetRURL(), (*iter).second.GetETag());
+
 					// Remove from server component info
 					comps.erase((*iter).second.GetRURL());
 				}

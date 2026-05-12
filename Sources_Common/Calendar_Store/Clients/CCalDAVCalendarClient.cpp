@@ -798,15 +798,12 @@ void CCalDAVCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCa
 	if (component.GetRURL().empty())
 		return;
 
-	// Do removal
-	_RemoveComponent(node, cal, component.GetRURL());
+	// Do removal with ETag for conflict detection
+	_RemoveComponent(node, cal, component.GetRURL(), component.GetETag());
 }
 
-void CCalDAVCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCal::CICalendar& cal, const cdstring& comp_rurl)
+void CCalDAVCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCal::CICalendar& cal, const cdstring& comp_rurl, const cdstring& etag)
 {
-	// NB We really ought to check whether the item has changed before we do the delete (ETag comparison),
-	// but we will ignore that for now
-
 	// Start UI action
 	StINETClientAction _action(this, "Status::Calendar::Removing", "Error::Calendar::OSErrRemoveFromCalendar", "Error::Calendar::NoBadRemoveFromCalendar", node.GetName());
 
@@ -819,8 +816,9 @@ void CCalDAVCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCa
 	rurl.EncodeURL('/');
 	rurl += comp_rurl;
 
-	// Create WebDAV DELETE
+	// Create WebDAV DELETE with If-Match for conflict detection
 	std::unique_ptr<http::webdav::CWebDAVDelete> request(new http::webdav::CWebDAVDelete(this, rurl));
+	request->SetData(etag);
 
 	// Process it
 	RunSession(request.get());

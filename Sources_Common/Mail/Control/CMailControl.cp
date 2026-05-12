@@ -134,16 +134,12 @@ void CMailControl::MboxServerReconnect(CMboxProtocol* server)
 // Forced disconnection of server
 void CMailControl::MboxServerDisconnect(CMboxProtocol* server)
 {
-	// When a clone disconnects, force-off the main protocol so all
-	// mailboxes are properly closed and listeners are notified
+	// When a clone disconnects, mark it for automatic reconnection
+	// rather than forcing off the main protocol (which would close
+	// ALL open folders)
 	if (server->IsCloned())
 	{
-		CMboxProtocol* owner = const_cast<CMboxProtocol*>(server->GetCloneOwner());
-		if (owner && owner->IsLoggedOn())
-		{
-			CServerForceoffTask* task = new CServerForceoffTask(owner);
-			task->Go();
-		}
+		server->SetNeedsReconnect(true);
 		return;
 	}
 
@@ -846,17 +842,19 @@ void CMailControl::SpendTime(bool force_tickle, bool do_checks)
 	for(CINETProtocolList::iterator iter = copy.begin(); iter != copy.end(); iter++)
 	{
 		// First make sure it is still in the list
-		CINETProtocolList::iterator found = std::find(sPeriodics.begin(), sPeriodics.end(), *iter);
-		if (found != sPeriodics.end())
 		{
-			try
-			{
-				(*iter)->SpendTime(force_tickle);
-			}
-			catch (...)
-			{
-				CLOG_LOGCATCH(...);
-			}
+			cdmutex::lock_cdmutex _lock(sPeriodicsMutex);
+			CINETProtocolList::iterator found = std::find(sPeriodics.begin(), sPeriodics.end(), *iter);
+			if (found == sPeriodics.end())
+				continue;
+		}
+		try
+		{
+			(*iter)->SpendTime(force_tickle);
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
 		}
 	}
 }

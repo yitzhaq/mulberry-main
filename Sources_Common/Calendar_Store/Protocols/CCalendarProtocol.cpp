@@ -1173,11 +1173,11 @@ bool CCalendarProtocol::SyncComponentsFromServerFast(const CCalendarStoreNode& n
 				// Is it still present on the server
 				if (removed.count((*iter).second.GetRURL()) == 0)
 				{
-					// Remove component from server
-					mClient->_RemoveComponent(node, cal, (*iter).second.GetRURL());
+					// Remove component from server with ETag for conflict detection
+					mClient->_RemoveComponent(node, cal, (*iter).second.GetRURL(), (*iter).second.GetETag());
 					changes_made = true;
                     result = true;
-					
+
 					// Remove from server changed info
 					if (changed.count((*iter).second.GetRURL()) != 0)
 						changed.erase((*iter).second.GetRURL());
@@ -1442,11 +1442,11 @@ bool CCalendarProtocol::SyncComponentsFromServerSlow(const CCalendarStoreNode& n
 				// Is it still present on the server
 				if (comps.count((*iter).second.GetRURL()) != 0)
 				{
-					// Remove component from server
-					mClient->_RemoveComponent(node, cal, (*iter).second.GetRURL());
+					// Remove component from server with ETag for conflict detection
+					mClient->_RemoveComponent(node, cal, (*iter).second.GetRURL(), (*iter).second.GetETag());
 					changes_made = true;
                     result = true;
-					
+
 					// Remove from server component info
 					comps.erase((*iter).second.GetRURL());
 				}

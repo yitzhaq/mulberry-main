@@ -262,6 +262,7 @@ void CIMAPClient::_ProcessCapability()
 	GetMboxOwner()->SetHasQuota(mLastResponse.CheckUntagged(cIMAP_QUOTA, true) ||
 								   mLastResponse.CheckUntagged(cIMAP_QUOTA_RES, false));
 	mAsyncLiteral = mLastResponse.CheckUntagged(cIMAP_LITERAL_PLUS, true);
+	mLoginAllowed = !mLastResponse.CheckUntagged(cIMAP_LOGINDISABLED, true);
 	mHasNamespace = mLastResponse.CheckUntagged(cIMAP_NAMESPACE, true);
 	mHasUIDPlus = mLastResponse.CheckUntagged(cIMAP_UIDPLUS, true);
 	mHasUnselect = mLastResponse.CheckUntagged(cIMAP_UNSELECT, true);
@@ -386,6 +387,13 @@ void CIMAPClient::_PostProcess()
 	// by this SELECT/EXAMINE (RFC 7162 §3.2.11). Mulberry handles
 	// this via SetCurrentMbox clearing mCurrent_mbox before SELECT.
 	mLastResponse.CheckUntagged(cCLOSED);
+
+	// [UIDNOTSTICKY] — mailbox does not support persistent UIDs (RFC 9051 §7.1)
+	if (mLastResponse.CheckUntagged(cUIDNOTSTICKY))
+	{
+		if (GetCurrentMbox())
+			GetCurrentMbox()->SetFlags(NMbox::eUIDNoSticky);
+	}
 
 	if (mLastResponse.CheckUntagged(cUNSEEN))
 	{
@@ -1797,6 +1805,13 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 
 		// Clean up and throw up
 		mCurrentResults = NULL;
+
+		// NOTSAVED: server could not save search results (RFC 9051 §6.4.4.3)
+		if (mSearchSaved && mLastResponse.FindTagged("NOTSAVED"))
+		{
+			mSearchSaved = false;
+			mSavedSearchResults.clear();
+		}
 
 		CLOG_LOGRETHROW;
 		throw;
@@ -3249,8 +3264,9 @@ bool CIMAPClient::ShouldStartIdle()
 
 bool CIMAPClient::ShouldReIdle() const
 {
+	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 5 * 60;
 	return mIdleState == eIdleActive &&
-		::difftime(::time(NULL), mIdleStartTime) >= 29 * 60;
+		::difftime(::time(NULL), mIdleStartTime) >= tickleInterval;
 }
 
 void CIMAPClient::_StartIdle()
@@ -4003,6 +4019,15 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 				if (update->GetNumberUnseen() != msg_unseen)
 				{
 					update->SetNumberUnseen(msg_unseen);
+					changed = true;
+				}
+			}
+			else if (::CheckStrAdv(&q, cSTATUS_DELETED))
+			{
+				unsigned long msg_deleted = ::strtoul(q, &q, 10);
+				if (update->GetStatusDeleted() != msg_deleted)
+				{
+					update->SetStatusDeleted(msg_deleted);
 					changed = true;
 				}
 			}
@@ -5147,8 +5172,8 @@ void CIMAPClient::IMAPParseRFC822Header(char** txt)
 // Parse IMAP RFC822.SIZE reply
 void CIMAPClient::IMAPParseRFC822Size(char** txt)
 {
-	// Get a number
-	long msg_size = ::strtol(*txt, txt, 10);
+	// Get a number (RFC 9051 allows number64 — up to 63-bit)
+	unsigned long msg_size = ::strtoull(*txt, txt, 10);
 
 	// Set messages size
 	if (mCurrent_msg && mCurrent_msg->IsCached())

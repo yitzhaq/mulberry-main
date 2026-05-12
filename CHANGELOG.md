@@ -104,8 +104,9 @@ X11 bitmap fonts).
   date-relative searches (e.g., messages from the last N days).
 - IMAP IDLE (RFC 2177). Server-push notifications replacing NOOP
   polling. Delivers new mail notifications in under one second.
-  Re-IDLEs every 29 minutes. Falls back to NOOP polling on
-  servers without IDLE support.
+  Re-IDLEs at the configured tickle interval (default 25 minutes,
+  under the RFC 2177 29-minute recommendation). Falls back to
+  NOOP polling on servers without IDLE support.
 - IMAP BINARY (RFC 3516). Server-side CTE decoding for FETCH,
   eliminating client-side base64/QP decoding and reducing
   attachment bandwidth by ~25%. Includes literal8 (~{size})
@@ -229,6 +230,34 @@ X11 bitmap fonts).
 - Add `mulberry(1)` man page covering all command-line options,
   supported protocols, external editor integration, and environment
   variables.
+- System timezone detection for calendar default. Calendar events
+  no longer default to US/Eastern (the original developer's personal
+  timezone). Reads from /etc/localtime symlink (Linux, macOS) with
+  /etc/timezone fallback (Debian/Ubuntu). Falls back to UTC.
+  Win32: deferred (requires CLDR windowsZones.xml mapping table).
+- IMAP STATUS DELETED attribute (RFC 9051). Parse the count of
+  \Deleted-flagged messages from STATUS and LIST-STATUS responses.
+  Not yet requested from servers (requires IMAP4rev2 capability
+  negotiation, G2).
+- Enforce LOGINDISABLED capability (RFC 9051 §6.2.3). Client no
+  longer sends LOGIN when the server advertises LOGINDISABLED.
+- Enforce TLS 1.2 minimum (RFC 8996, RFC 9051 §11.1). TLS 1.0 and
+  1.1 are now disabled via SSL_OP_NO_TLSv1 and SSL_OP_NO_TLSv1_1.
+- TLS Server Name Indication (SNI). The server hostname is now
+  sent during the TLS handshake for virtual hosting compatibility.
+- PREAUTH rejected on cleartext ports when STARTTLS is required
+  (RFC 9051 §7.1.4). Previously, PREAUTH was accepted regardless
+  of TLS state, bypassing encryption for the entire session.
+- ALERT response codes filtered before TLS or authentication is
+  established (RFC 9051 §11.3), preventing MITM injection of
+  fake alerts on unauthenticated cleartext connections.
+- RFC822.SIZE and literal sizes now parsed as 64-bit values per
+  RFC 9051 Appendix D (63-bit number64).
+- UIDNOTSTICKY, NOTSAVED, BADCHARSET, and HASCHILDREN response
+  codes parsed (RFC 9051 §7.1). NOTSAVED clears the saved search
+  result variable. UIDNOTSTICKY sets a flag on the mailbox.
+- $Junk, $NotJunk, $Phishing keyword string constants defined
+  (RFC 9051 §2.3.2). Flag enum bits and UI deferred.
 
 ### Added
 
@@ -316,6 +345,24 @@ X11 bitmap fonts).
 
 ### Fixed
 
+- Fix CalDAV/CardDAV DELETE losing concurrent server modifications.
+  DELETE requests now include an If-Match header with the component's
+  ETag. The server returns 412 Precondition Failed if the item was
+  modified by another client since the last fetch, instead of
+  silently overwriting the change.
+- Fix dead IMAP connections sitting in connection cache pool. The
+  cache health check (IsConnectionAlive) now runs when connections
+  are returned, not only when retrieved. Also fix race condition
+  in periodic connection maintenance (SpendTime) where the protocol
+  list could be modified while being iterated.
+- Fix dead per-mailbox IMAP connection closing all open folders.
+  When a clone (per-mailbox) connection drops, the client now
+  auto-reconnects instead of forcing off the main protocol, which
+  previously closed every open folder in the account.
+- Fix calendar default timezone hardcoded to US/Eastern. Now reads
+  from /etc/localtime symlink (Linux, macOS) with /etc/timezone
+  fallback (Debian/Ubuntu). Falls back to UTC. Win32: deferred
+  (requires CLDR windowsZones.xml mapping table).
 - Fix single-instance forwarding on Linux. Passing a `mailto:` URL,
   `.ics` file, or any argument to Mulberry while it is already running
   now forwards to the existing instance instead of launching a second

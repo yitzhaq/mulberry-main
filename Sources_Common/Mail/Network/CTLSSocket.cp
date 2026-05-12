@@ -686,8 +686,15 @@ void CTLSSocket::TLSStartConnection()
 			throw CTCPException(CTCPException::err_TCPSSLError);
 		}
 
-		// Work around all known bugs
-	    ::SSL_CTX_set_options(m_ctx, SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
+		// Work around all known bugs; enforce TLS 1.2 minimum per RFC 9051 §11.1
+	    ::SSL_CTX_set_options(m_ctx, SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3
+#ifdef SSL_OP_NO_TLSv1
+			| SSL_OP_NO_TLSv1
+#endif
+#ifdef SSL_OP_NO_TLSv1_1
+			| SSL_OP_NO_TLSv1_1
+#endif
+		);
 		
 		// Setup certificates
 		CCertificateManager::sCertificateManager->LoadSSLRootCerts(m_ctx);
@@ -715,6 +722,13 @@ void CTLSSocket::TLSStartConnection()
 
 		// Set socket
 		::SSL_set_fd(m_tls, mSocket);
+
+		// Set SNI hostname for virtual hosting (SSL_CTRL_SET_TLSEXT_HOSTNAME=55)
+#ifndef SSL_CTRL_SET_TLSEXT_HOSTNAME
+#define SSL_CTRL_SET_TLSEXT_HOSTNAME 55
+#endif
+		if (!mRemoteName.empty())
+			::SSL_ctrl(m_tls, SSL_CTRL_SET_TLSEXT_HOSTNAME, 0, (void*)mRemoteName.c_str());
 
 		// Load in client certificates if present
 		if ((mClientCert != NULL) && (mClientPrivate != NULL))

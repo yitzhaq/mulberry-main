@@ -51,6 +51,9 @@ extern const char* cENABLE;
 extern const char* cESEARCH;
 extern const char* cRETURN_ALL;
 extern const char* cIMAP_LITERAL_PLUS;
+extern const char* cIMAP_LITERAL_MINUS;
+extern const char* cIMAP_LOGINDISABLED;
+extern const char* cUIDNOTSTICKY;
 extern const char* cIMAP_NAMESPACE;
 extern const char* cIMAP_UIDPLUS;
 extern const char* cIMAP_UNSELECT;
@@ -219,6 +222,11 @@ extern const char* cSTATUS_HIGHESTMODSEQ;
 extern const char* cSTATUS_CHECK;
 extern const char* cSTATUS_APPENDLIMIT;
 extern const char* cSTATUS_SIZE;
+extern const char* cSTATUS_DELETED;
+
+extern const char* cFLAGJUNK;
+extern const char* cFLAGNOTJUNK;
+extern const char* cFLAGPHISHING;
 
 // SEARCH criteria
 extern const char* cSEARCH_CHARSET;

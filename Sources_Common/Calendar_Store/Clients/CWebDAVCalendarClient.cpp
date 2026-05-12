@@ -1040,7 +1040,7 @@ void CWebDAVCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCa
 	// Does nothing in this implementation
 }
 
-void CWebDAVCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCal::CICalendar& cal, const cdstring& rurl)
+void CWebDAVCalendarClient::_RemoveComponent(const CCalendarStoreNode& node, iCal::CICalendar& cal, const cdstring& rurl, const cdstring& etag)
 {
 	// Does nothing in this implementation
 }

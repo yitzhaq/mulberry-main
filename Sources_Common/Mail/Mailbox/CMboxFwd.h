@@ -47,7 +47,8 @@ namespace NMbox
 		eNoCabinet =				1L << 16,		// Must not show up in any cabinets
 		eExternalSort =				1L << 17,		// Sorting on server
 		eOpenSomewhere =			1L << 18,		// Mailbox of this name is open somewhere
-		
+		eUIDNoSticky =				1L << 19,		// UIDs not persistent (RFC 9051 UIDNOTSTICKY)
+
 		// IMAP flags - do not change these values as they
 		// may be cached in disconnected mailboxlist files
 		eNoInferiors =				1L << 24,

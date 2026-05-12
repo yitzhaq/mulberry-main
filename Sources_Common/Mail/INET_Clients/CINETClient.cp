@@ -724,6 +724,15 @@ void CINETClient::Logon()
 
 		pre_auth = INETCompareResponse(cStarPREAUTH);
 
+		// RFC 9051 §7.1.4: PREAUTH prevents STARTTLS, so reject on cleartext ports
+		if (pre_auth && mOwner &&
+			((GetAccount()->GetTLSType() == CINETAccount::eTLS) ||
+			 (GetAccount()->GetTLSType() == CINETAccount::eTLSBroken)))
+		{
+			CLOG_LOGTHROW(CINETException, CINETException::err_NoSTARTTLS);
+			throw CINETException(CINETException::err_NoSTARTTLS);
+		}
+
 		// Check capability
 		_Capability();
 
@@ -1325,8 +1334,8 @@ void CINETClient::_Tickle(bool force_tickle)
 		return;
 
 	// Intervals
-	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 5 * 60;
-	unsigned long tickleIntervalExpireTimeout = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleIntervalExpireTimeout.GetValue() : 2 * 60;
+	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 25 * 60;
+	unsigned long tickleIntervalExpireTimeout = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleIntervalExpireTimeout.GetValue() : 5 * 60;
 
 	// Current time plus timeout
 	time_t curr_time = ::time(NULL);
@@ -1678,9 +1687,14 @@ void CINETClient::INETProcess()
 	} while (!TAG_TEST(mLastResponse.code) && !PLUS_TEST(mLastResponse.code));
 
 	// Look for special unsolicited responses
+	// RFC 9051 §11.3: ignore ALERT before TLS or authentication
+	bool confidential = (mStream && mStream->TLSIsTLSOn()) ||
+						(mOwner && mOwner->IsLoggedOn());
 	while(mLastResponse.CheckUntagged(cALERT))
 	{
 		const cdstring alert = mLastResponse.PopUntagged(cALERT);
+		if (!confidential)
+			continue;
 		char* alrt_msg = ::strstrnocase(alert, cALERT);
 		if (alrt_msg)
 		{
@@ -1986,15 +2000,22 @@ void CINETClient::INETParseTagged(char** txt, CINETClientResponse* response)
 void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const char* nobad_id)
 {
 	// Always make sure outstanding alerts are processed before attempting any reconnects etc
-	while(mLastResponse.CheckUntagged(cALERT))
+	// RFC 9051 §11.3: ignore ALERT before TLS or authentication
 	{
-		const cdstring alert = mLastResponse.PopUntagged(cALERT);
-		char* alrt_msg = ::strstrnocase(alert, cALERT);
-		if (alrt_msg)
+		bool confidential = (mStream && mStream->TLSIsTLSOn()) ||
+							(mOwner && mOwner->IsLoggedOn());
+		while(mLastResponse.CheckUntagged(cALERT))
 		{
-			alrt_msg += ::strlen(cALERT) + 1;
-			cdstring txt(alrt_msg, ::strlen(alrt_msg));
-			CMailControl::PushAlert(txt);
+			const cdstring alert = mLastResponse.PopUntagged(cALERT);
+			if (!confidential)
+				continue;
+			char* alrt_msg = ::strstrnocase(alert, cALERT);
+			if (alrt_msg)
+			{
+				alrt_msg += ::strlen(cALERT) + 1;
+				cdstring txt(alrt_msg, ::strlen(alrt_msg));
+				CMailControl::PushAlert(txt);
+			}
 		}
 	}
 
@@ -2062,14 +2083,24 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 		// Force servers to closed state
 		if (failed_recovery || !mOwner || mOwner->IsOpen() || mOwner->IsLoggedOn())
 		{
-			// Force disconnect cleanup
-			if (mOwner)
-				mOwner->SetState(CINETProtocol::eINETNotOpen);
-			INETRecoverDisconnect();
+			if (mOwner && mOwner->IsCloned())
+			{
+				// Clone: mark for automatic reconnection instead of
+				// forcing off the main protocol (which closes all folders)
+				mOwner->SetState(CINETProtocol::eINETLoggedOff);
+				mOwner->SetNeedsReconnect(true);
+			}
+			else
+			{
+				// Force disconnect cleanup
+				if (mOwner)
+					mOwner->SetState(CINETProtocol::eINETNotOpen);
+				INETRecoverDisconnect();
 
-			// Flag exception as diconnected
-			if (nex)
-				nex->setdisconnect();
+				// Flag exception as disconnected
+				if (nex)
+					nex->setdisconnect();
+			}
 		}
 	}
 	
@@ -2112,6 +2143,10 @@ static const char* GetResponseCodeExplanation(const cdstring& tag_msg)
 		{ "[NONEXISTENT]",          "Mailbox or resource does not exist" },
 		{ "[TOOBIG]",               "Message exceeds server size limit" },
 		{ "[UNKNOWN-CTE]",          "Server cannot decode content transfer encoding" },
+		{ "[BADCHARSET]",            "Requested character set not supported by server" },
+		{ "[UIDNOTSTICKY]",          "Mailbox does not support persistent UIDs" },
+		{ "[NOTSAVED]",              "Server could not save search results" },
+		{ "[HASCHILDREN]",           "Mailbox has children that must be deleted first" },
 		{ NULL, NULL }
 	};
 
@@ -2433,8 +2468,8 @@ char* CINETClient::INETParseString(char** txt, bool nullify)
 				throw CINETException(CINETException::err_BadParse);
 			}
 
-			// Get length of text
-			long length = ::strtol(p, NULL, 10);
+			// Get length of text (RFC 9051 allows number64 in literals)
+			unsigned long length = ::strtoull(p, NULL, 10);
 
 			// Create new pointer for text (remember +1 for \0)
 			msg_txt = new char[length+1];
@@ -2524,24 +2559,26 @@ void CINETClient::INETParseStringStream(char** txt)
 			throw CINETException(CINETException::err_BadParse);
 		}
 
-		// Get length of text
-		long length = ::strtol(p, NULL, 10);
+		// Get length of text (RFC 9051 allows number64 in literals)
+		unsigned long length = ::strtoull(p, NULL, 10);
 
 		// Create network status item for % progress counter
 		CNetworkAttachProgress progress;
 
 		// Get data of specified size from TCP
+		// gettostream takes long* — narrow here (lossless on LP64)
+		long stream_len = (long)length;
 		if (mRcvStream)
-			mStream->gettostream(*mRcvStream, NULL, &length, &progress);
+			mStream->gettostream(*mRcvStream, NULL, &stream_len, &progress);
 		else if (mRcvOStream)
 		{
 			// May need to filter
 			if (mRcvOStream->IsNetworkType())
-				mStream->gettostream(mRcvOStream->Stream(), NULL, &length, &progress);
+				mStream->gettostream(mRcvOStream->Stream(), NULL, &stream_len, &progress);
 			else
 			{
 				CStreamFilter filter(new crlf_filterbuf(mRcvOStream->GetEndlType()), mRcvOStream->GetStream());
-				mStream->gettostream(filter, NULL, &length, &progress);
+				mStream->gettostream(filter, NULL, &stream_len, &progress);
 			}
 		}
 

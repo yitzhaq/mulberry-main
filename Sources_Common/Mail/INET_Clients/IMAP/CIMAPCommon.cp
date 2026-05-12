@@ -48,6 +48,9 @@ const char* cENABLE =					"ENABLE";
 const char* cESEARCH =					"ESEARCH";
 const char* cRETURN_ALL =				" RETURN (ALL)";
 const char* cIMAP_LITERAL_PLUS =		"LITERAL+";
+const char* cIMAP_LITERAL_MINUS =		"LITERAL-";
+const char* cIMAP_LOGINDISABLED =		"LOGINDISABLED";
+const char* cUIDNOTSTICKY =				"UIDNOTSTICKY";
 const char* cIMAP_NAMESPACE =			"NAMESPACE";
 const char* cIMAP_UIDPLUS =				"UIDPLUS";
 const char* cIMAP_UNSELECT =			"UNSELECT";
@@ -223,6 +226,11 @@ const char* cSTATUS_HIGHESTMODSEQ =		"HIGHESTMODSEQ";
 const char* cSTATUS_CHECK =				"(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT)";
 const char* cSTATUS_APPENDLIMIT =		"APPENDLIMIT";
 const char* cSTATUS_SIZE =				"SIZE";
+const char* cSTATUS_DELETED =			"DELETED";
+
+const char* cFLAGJUNK =				"$Junk";
+const char* cFLAGNOTJUNK =				"$NotJunk";
+const char* cFLAGPHISHING =			"$Phishing";
 
 // SEARCH criteria
 const char* cSEARCH_CHARSET =			"CHARSET";
