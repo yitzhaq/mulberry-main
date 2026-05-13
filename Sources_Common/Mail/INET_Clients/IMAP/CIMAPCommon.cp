@@ -159,6 +159,7 @@ const char* cCLOSED =					"CLOSED";
 const char* cRFC822 =					"RFC822";
 const char* cRFC822HEADER =				"RFC822.HEADER";
 const char* cRFC822HEADER_OUT =			"(RFC822.HEADER)";
+const char* cBODYPEEKHEADER_OUT =		"(BODY.PEEK[HEADER])";
 const char* cRFC822SIZE =				"RFC822.SIZE";
 const char* cRFC822TEXT =				"RFC822.TEXT";
 const char* cRFC822TEXTPEEK =			"RFC822.TEXT.PEEK";

@@ -267,6 +267,7 @@ void CINETClient::InitINETClient()
 	mRcvOStream = NULL;
 
 	mAsyncLiteral = false;
+	mAsyncLiteralLimit = 0;
 	mLoginAllowed = true;
 	mAuthLoginAllowed = false;
 	mAuthPlainAllowed = false;
@@ -347,15 +348,17 @@ void CINETClient::SendString(const char* str, int flags)
 	// If literal_size => do literal
 	if (literal_size)
 	{
+		bool use_async = mAsyncLiteral &&
+			(mAsyncLiteralLimit == 0 || literal_size <= mAsyncLiteralLimit);
 		char size[32];
-		::snprintf(size, 32, mAsyncLiteral ? "{%zu+}" : "{%zu}", literal_size);
+		::snprintf(size, 32, use_async ? "{%zu+}" : "{%zu}", literal_size);
 		mStream->write(size, ::strlen(size));
 		mStream->write(cCRLF, 2);
 		if (mAllowLog)
 			mLog.LogPartialEntry(size);
 
 		// Synchronising literal
-		if (!mAsyncLiteral)
+		if (!use_async)
 		{
 			// Flush out to server
 			*mStream << std::flush;

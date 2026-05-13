@@ -162,6 +162,7 @@ extern const char* cCLOSED;
 extern const char* cRFC822;
 extern const char* cRFC822HEADER;
 extern const char* cRFC822HEADER_OUT;
+extern const char* cBODYPEEKHEADER_OUT;
 extern const char* cRFC822SIZE;
 extern const char* cRFC822TEXT;
 extern const char* cRFC822TEXTPEEK;

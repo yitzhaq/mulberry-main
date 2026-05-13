@@ -170,6 +170,7 @@ protected:
 	cdstring			mCapability;					// Capability string
 	cdstring			mServerID;						// RFC 2971 server identification
 	bool				mAsyncLiteral;					// Non-synchronising literals supported
+	unsigned long		mAsyncLiteralLimit;				// 0 = unlimited (LITERAL+), 4096 = LITERAL-
 	bool				mLoginAllowed;					// Has 'LOGIN' command
 	bool				mAuthLoginAllowed;				// Has 'AUTH=LOGIN' command
 	bool				mAuthPlainAllowed;				// Has 'AUTH=PLAIN' command

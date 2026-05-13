@@ -95,6 +95,9 @@ private:
 	bool			mHasQResync;					// Supports QRESYNC (RFC 7162)
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
+	unsigned long	mSearchCount;					// ESEARCH COUNT result
+	unsigned long	mSearchMin;						// ESEARCH MIN result
+	unsigned long	mSearchMax;						// ESEARCH MAX result
 	bool			mListStatusDone;				// LIST-STATUS data obtained this cycle
 
 	// MULTIAPPEND state (RFC 3502)

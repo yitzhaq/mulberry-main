@@ -145,6 +145,9 @@ void CIMAPClient::InitIMAPClient()
 	mHasStatusSize = false;
 	mHasSearchRes = false;
 	mSearchSaved = false;
+	mSearchCount = 0;
+	mSearchMin = 0;
+	mSearchMax = 0;
 	mListStatusDone = false;
 	mHasMultiAppend = false;
 	mHasSpecialUse = false;
@@ -190,6 +193,7 @@ void CIMAPClient::_InitCapability()
 	GetMboxOwner()->SetHasQuota(false);
 
 	mAsyncLiteral = false;
+	mAsyncLiteralLimit = 0;
 	mHasNamespace = false;
 	mHasUIDPlus = false;
 	mHasUnselect = false;
@@ -261,7 +265,16 @@ void CIMAPClient::_ProcessCapability()
 	GetMboxOwner()->SetHasACL(mLastResponse.CheckUntagged(cIMAP_ACL, true));
 	GetMboxOwner()->SetHasQuota(mLastResponse.CheckUntagged(cIMAP_QUOTA, true) ||
 								   mLastResponse.CheckUntagged(cIMAP_QUOTA_RES, false));
-	mAsyncLiteral = mLastResponse.CheckUntagged(cIMAP_LITERAL_PLUS, true);
+	if (mLastResponse.CheckUntagged(cIMAP_LITERAL_PLUS, true))
+	{
+		mAsyncLiteral = true;
+		mAsyncLiteralLimit = 0;
+	}
+	else if (mLastResponse.CheckUntagged(cIMAP_LITERAL_MINUS, true))
+	{
+		mAsyncLiteral = true;
+		mAsyncLiteralLimit = 4096;
+	}
 	mLoginAllowed = !mLastResponse.CheckUntagged(cIMAP_LOGINDISABLED, true);
 	mHasNamespace = mLastResponse.CheckUntagged(cIMAP_NAMESPACE, true);
 	mHasUIDPlus = mLastResponse.CheckUntagged(cIMAP_UIDPLUS, true);
@@ -2112,7 +2125,7 @@ void CIMAPClient::_ReadHeader(CMessage* msg)
 		INETSendString(cSpace);
 		INETSendString(msg_spec);
 		INETSendString(cSpace);
-		INETSendString(cRFC822HEADER_OUT);
+		INETSendString((mVersion == eIMAP4rev1) ? cBODYPEEKHEADER_OUT : cRFC822HEADER_OUT);
 		INETFinishSend();
 	}
 
@@ -3370,6 +3383,11 @@ void CIMAPClient::ExitIdleIfActive()
 // Parse text sent by server (advance pointer to next bit to be parsed)
 void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 {
+	// RFC 9051 §11.3: before authentication, only CAPABILITY and status
+	// responses are meaningful — those are handled by the base class
+	if (mOwner && !mOwner->IsLoggedOn())
+		return;
+
 	// Found a mailbox - do this here to improve performance
 	if (::stradvtokcmp(txt,cLIST)==0)
 	{
@@ -3508,6 +3526,11 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 // Parse <n> message text sent by server
 void CIMAPClient::IMAPParseMessageResponse(char** txt, CINETClientResponse* response)
 {
+	// RFC 9051 §11.3: ignore message/mailbox status responses
+	// when no mailbox is selected
+	if (!GetCurrentMbox())
+		return;
+
 	// Get message number and ptr to message text
 	char* end;
 	unsigned long num = ::strtoul(*txt, &end, 10);
@@ -3888,11 +3911,15 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 	if (::strncasecmp(p, "UID", 3) == 0)
 		p += 3;
 
-	// Look for ALL result
+	// Parse result data items
+	mSearchCount = 0;
+	mSearchMin = 0;
+	mSearchMax = 0;
+
 	while(*p)
 	{
 		while(*p == ' ') p++;
-		if (::strncasecmp(p, "ALL", 3) == 0)
+		if (::strncasecmp(p, "ALL", 3) == 0 && (p[3] == ' ' || p[3] == 0))
 		{
 			p += 3;
 			while(*p == ' ') p++;
@@ -3900,7 +3927,24 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 			seq.ParseSequence(const_cast<const char**>(&p));
 			for(CSequence::const_iterator iter = seq.begin(); iter != seq.end(); iter++)
 				mCurrentResults->push_back(*iter);
-			break;
+		}
+		else if (::strncasecmp(p, "COUNT", 5) == 0 && (p[5] == ' ' || p[5] == 0))
+		{
+			p += 5;
+			while(*p == ' ') p++;
+			mSearchCount = ::strtoul(p, &p, 10);
+		}
+		else if (::strncasecmp(p, "MIN", 3) == 0 && (p[3] == ' ' || p[3] == 0))
+		{
+			p += 3;
+			while(*p == ' ') p++;
+			mSearchMin = ::strtoul(p, &p, 10);
+		}
+		else if (::strncasecmp(p, "MAX", 3) == 0 && (p[3] == ' ' || p[3] == 0))
+		{
+			p += 3;
+			while(*p == ' ') p++;
+			mSearchMax = ::strtoul(p, &p, 10);
 		}
 		else if (::strncasecmp(p, "MODSEQ", 6) == 0)
 		{
@@ -3912,7 +3956,7 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 		}
 		else
 		{
-			// Skip unknown keyword (COUNT, MIN, MAX, etc.) and its value
+			// Skip unknown keyword and its value
 			while(*p && *p != ' ') p++;
 			while(*p == ' ') p++;
 			if (*p == '(' || isdigit((unsigned char)*p))
