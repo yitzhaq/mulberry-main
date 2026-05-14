@@ -4000,6 +4000,10 @@ void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& 
 					unsigned long new_uid = 0;
 					mbox_to->AppendMessage(copy_from, new_uid, false, !IsSynchronising());
 
+					// Track UID mapping for cross-server copy
+					if (uids && new_uid)
+						copy_uids.insert(ulmap::value_type(*iter, new_uid));
+
 					// Clean up
 					if (clear_cache)
 						copy_from->UncacheMessage();

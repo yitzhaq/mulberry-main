@@ -592,15 +592,35 @@ bool CCharsetManager::FromUTF16(ECharsetCode to, const unichar_t* in, size_t ule
 // Convert to utf8
 bool CCharsetManager::ToUTF8(ECharsetCode from, const char* in, size_t len, std::ostream& out) const
 {
+	// Detect BOM and override declared charset if mislabeled
+	const unsigned char* p = reinterpret_cast<const unsigned char*>(in);
+	if (len >= 3 && p[0] == 0xEF && p[1] == 0xBB && p[2] == 0xBF)
+	{
+		// UTF-8 BOM — skip it, force UTF-8
+		in += 3;
+		len -= 3;
+		from = eUTF8;
+	}
+	else if (len >= 2 && p[0] == 0xFE && p[1] == 0xFF)
+	{
+		// UTF-16 BE BOM — override charset
+		from = eUTF16;
+	}
+	else if (len >= 2 && p[0] == 0xFF && p[1] == 0xFE)
+	{
+		// UTF-16 LE BOM — override charset
+		from = eUTF16;
+	}
+
 	if (from == eUTF8)
 	{
 		out.write(in, len);
 		return true;
 	}
-	
+
 	// Get converter
 	std::unique_ptr<CConverterBase> to_unicode(GetConverter(from));
-	
+
 	// Must have converter
 	if (!to_unicode.get())
 		return false;
