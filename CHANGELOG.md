@@ -261,6 +261,16 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP4rev2 capability negotiation (RFC 9051). Mulberry detects
+  IMAP4rev2 in server CAPABILITY, sends ENABLE IMAP4rev2 when both
+  rev1 and rev2 are advertised, and activates rev2-specific behavior:
+  STATUS omits deprecated RECENT and adds DELETED, SEARCH omits
+  CHARSET (UTF-8 default), LSUB replaced by LIST (SUBSCRIBED),
+  deprecated SEARCH keys (RECENT/NEW/OLD) substituted. Folded-in
+  extension flags set for pure rev2 servers. LIST \Remote attribute
+  parsed as unselectable (no referral support).
+- IMAP STATUS APPENDLIMIT (RFC 7889). Per-mailbox append size limits
+  requested in STATUS when the server advertises APPENDLIMIT.
 - IMAP ENABLE extension (RFC 5161). Capability detection and
   scaffolding for CONDSTORE/QRESYNC activation.
 - IMAP CHILDREN extension (RFC 3348). Parse \HasChildren and
@@ -340,25 +350,70 @@ X11 bitmap fonts).
   target calendar from the list of active calendars (default
   pre-selected), showing the number of events and tasks to be
   imported. Registered as `text/calendar` MIME type handler.
+- Automatic recovery of dead per-mailbox IMAP connections. When a
+  clone connection dies (server restart, network interruption, WiFi
+  loss), Mulberry now detects the dead connection and transparently
+  reconnects — re-authenticating, re-SELECTing the mailbox, and
+  reloading messages. Previously, dead clones either looped silently
+  or blocked indefinitely, requiring the user to close and reopen
+  the folder. Detection combines three mechanisms: dead-socket
+  checks in the IDLE tickle path, TCP keepalive probes at the kernel
+  level (~120s detection on Linux), and a 5-second timeout on IDLE
+  DONE response. Stale connections in the connection cache pool are
+  also detected and discarded. TCP keepalive parameters are
+  configurable via preferences (`TCP Keepalive Enabled`, `Idle`,
+  `Interval`, `Count`); platform-specific tuning on Linux
+  (TCP_KEEPIDLE/INTVL/CNT) and macOS (TCP_KEEPALIVE); Windows uses
+  OS default pending Winsock 2 upgrade.
 - Visual Studio 2019 build support (Win32, untested).
   Contributed by Quanah Gibson-Mount.
 
 ### Fixed
 
+- Fix RFC 2047 encoded-word NUL byte injection (Mailsploit class).
+  Strip NUL bytes and C0 control characters from decoded header
+  output at the ostrstream level before C string conversion.
+  Prevents display-name spoofing that bypasses DMARC. All 15
+  TextFrom1522 call sites protected.
+- Fix mailto: URI header injection. Restrict accepted parameters
+  to safe allowlist (to, cc, subject, body per RFC 6068 §5). Strip
+  CR/LF from header parameters to prevent header injection via
+  percent-encoded newlines. Remove bcc acceptance and
+  x-mulberry-file local file attachment parameter.
+- Fix attachment filename RLO spoofing. Strip Unicode bidirectional
+  control characters (U+200E-200F, U+202A-202E, U+2066-2069) from
+  filenames to prevent Right-to-Left Override display attacks that
+  disguise file extensions.
+- Fix HTML URI scheme injection. Only create clickable links for
+  known-safe URI schemes (http, https, mailto, ftp, webcal).
+  Blocks javascript:, vbscript:, data:, and unknown schemes from
+  being passed to the OS.
+- Fix HTML base tag hijacking. Disable `<base>` href extraction
+  from email HTML to prevent malicious relative URL redirection.
+  Strip iframe, frame, frameset, and object tags as
+  defense-in-depth.
+- Fix mailto: URI fragment identifier handling and scheme parsing
+  (RFC 6068 compliance). Strip fragment identifiers before parsing
+  parameters. Replace fragile strtok-based scheme extraction with
+  proper colon-delimited split.
+- Fix LDAP STARTTLS accepting invalid certificates.
+  LDAP_OPT_X_TLS_ALLOW changed to LDAP_OPT_X_TLS_DEMAND for
+  STARTTLS connections, matching the SSL path which already uses
+  LDAP_OPT_X_TLS_HARD.
+- Fix IMAP EXISTS race condition in STORE/FETCH/COPY response
+  parsers. Replace blanket try-catch with explicit bounds check
+  against GetNumberFound() to avoid masking unrelated exceptions.
+- Fix BOM detection for mislabeled charsets. Detect UTF-8 and
+  UTF-16 byte order marks at the CCharsetManager::ToUTF8 entry
+  point and override the declared charset when mislabeled.
+- Fix cross-server copy losing destination UIDs. Store source-to-
+  destination UID mapping in copy_uids after APPEND in the
+  cross-server copy path.
 - Fix CalDAV/CardDAV DELETE losing concurrent server modifications.
   DELETE requests now include an If-Match header with the component's
   ETag. The server returns 412 Precondition Failed if the item was
   modified by another client since the last fetch, instead of
   silently overwriting the change.
-- Fix dead IMAP connections sitting in connection cache pool. The
-  cache health check (IsConnectionAlive) now runs when connections
-  are returned, not only when retrieved. Also fix race condition
-  in periodic connection maintenance (SpendTime) where the protocol
-  list could be modified while being iterated.
-- Fix dead per-mailbox IMAP connection closing all open folders.
-  When a clone (per-mailbox) connection drops, the client now
-  auto-reconnects instead of forcing off the main protocol, which
-  previously closed every open folder in the account.
 - Fix calendar default timezone hardcoded to US/Eastern. Now reads
   from /etc/localtime symlink (Linux, macOS) with /etc/timezone
   fallback (Debian/Ubuntu). Falls back to UTC. Win32: deferred
@@ -515,6 +570,8 @@ X11 bitmap fonts).
 - Bundled PCRE 4.5 (from 2004) and GNU regex from the JX toolkit.
   Mulberry now links system libpcre3 and glibc regex, eliminating
   multiple Coverity findings in the outdated bundled copies.
+- Dead `cSTATUS_CHECK` constant (unreferenced; STATUS attributes are
+  built dynamically).
 - Obsolete `lround()` polyfill that conflicted with modern C library
   headers.
 

@@ -54,6 +54,10 @@ void CPreferences::_copy(const CPreferences &copy)
 	COPY(mTickleInterval)
 	COPY(mTickleIntervalExpireTimeout)
 	COPY(mSleepReconnect)
+	COPY(mTCPKeepaliveEnabled)
+	COPY(mTCPKeepaliveIdle)
+	COPY(mTCPKeepaliveInterval)
+	COPY(mTCPKeepaliveCount)
 
 //--------------------Account Prefs
 	COPY(mMailAccounts)
@@ -513,6 +517,10 @@ int CPreferences::operator==(const CPreferences& other) const
 	NOTEQUAL(mTickleInterval)
 	NOTEQUAL(mTickleIntervalExpireTimeout)
 	NOTEQUAL(mSleepReconnect)
+	NOTEQUAL(mTCPKeepaliveEnabled)
+	NOTEQUAL(mTCPKeepaliveIdle)
+	NOTEQUAL(mTCPKeepaliveInterval)
+	NOTEQUAL(mTCPKeepaliveCount)
 
 	// Test Account prefs
 	NOTEQUAL(mMailAccounts)
@@ -1025,6 +1033,10 @@ void CPreferences::DiffDirty()
 	SETDIRTY(mTickleInterval)
 	SETDIRTY(mTickleIntervalExpireTimeout)
 	SETDIRTY(mSleepReconnect)
+	SETDIRTY(mTCPKeepaliveEnabled)
+	SETDIRTY(mTCPKeepaliveIdle)
+	SETDIRTY(mTCPKeepaliveInterval)
+	SETDIRTY(mTCPKeepaliveCount)
 
 	// Test Account prefs
 	SETDIRTY(mMailAccounts)

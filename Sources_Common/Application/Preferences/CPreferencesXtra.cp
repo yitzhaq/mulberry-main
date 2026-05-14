@@ -182,6 +182,10 @@ void CPreferences::InitNetworkControlPrefs()
 	mTickleInterval.mValue = 25 * 60;				// 25 minutes
 	mTickleIntervalExpireTimeout.mValue = 5 * 60;	// 5 minutes
 	mSleepReconnect.mValue = true;					// Default to quick reconnect after sleep
+	mTCPKeepaliveEnabled.mValue = true;				// Enable TCP keepalive by default
+	mTCPKeepaliveIdle.mValue = 60;					// 60 secs before first probe
+	mTCPKeepaliveInterval.mValue = 15;				// 15 secs between probes
+	mTCPKeepaliveCount.mValue = 4;					// 4 failed probes before dead
 }
 
 void CPreferences::InitAccountPrefs()

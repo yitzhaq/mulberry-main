@@ -150,6 +150,10 @@ const char* cPrefsSection = "Preferences";
 		const char* cTickleIntervalKey = "Tickle Interval";						// New in v3.0b7
 		const char* cTickleIntervalExpireTimeoutKey = "Tickle Interval Expire";	// New in v3.0b7
 		const char* cSleepReconnectKey = "Sleep Reconnect";						// New in v4.0b3
+		const char* cTCPKeepaliveEnabledKey = "TCP Keepalive Enabled";			// New as of v4_2a1
+		const char* cTCPKeepaliveIdleKey = "TCP Keepalive Idle";				// New as of v4_2a1
+		const char* cTCPKeepaliveIntervalKey = "TCP Keepalive Interval";		// New as of v4_2a1
+		const char* cTCPKeepaliveCountKey = "TCP Keepalive Count";				// New as of v4_2a1
 
 	const char* cAccountSection = "Accounts";								// This section new in v1.4
 		const char* cMailAccountsKey_1_4 = "Mail Accounts";

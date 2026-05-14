@@ -20,6 +20,7 @@
 #include "CIMAPClient.h"
 #include "CINETClientResponses.h"
 #include "CINETCommon.h"
+#include "CTCPException.h"
 
 #include <algorithm>
 
@@ -3373,8 +3374,24 @@ bool CIMAPClient::MatchesSavedSearch(const ulvector& nums) const
 
 #pragma mark ____________________________IDLE
 
+void CIMAPClient::SignalDeadConnection()
+{
+	mIdleState = eIdleOff;
+	if (mOwner)
+	{
+		mOwner->SetState(CINETProtocol::eINETLoggedOff);
+		mOwner->SetNeedsReconnect(true);
+	}
+}
+
 void CIMAPClient::_Tickle(bool force_tickle)
 {
+	if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
+	{
+		SignalDeadConnection();
+		return;
+	}
+
 	if (mIdleState == eIdleActive)
 	{
 		_CheckIdleResponses();
@@ -3434,6 +3451,9 @@ void CIMAPClient::_StartIdle()
 		CLOG_LOGCATCH(...);
 		mIdleState = eIdleOff;
 		mIdleStartTime = ::time(NULL);
+
+		if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
+			SignalDeadConnection();
 	}
 }
 
@@ -3454,6 +3474,13 @@ void CIMAPClient::_EndIdle()
 		if (mAllowLog && mLog.DoLog())
 			*mLog.GetLog() << done_line << std::flush;
 
+		if (!mStream->WaitForData(5))
+		{
+			mStream->TCPAbort(true);
+			CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPAbort);
+			throw CTCPException(CTCPException::err_TCPAbort);
+		}
+
 		// Restore the IDLE tag so INETProcess matches it
 		char saved_tag[16];
 		::strcpy(saved_tag, mTag);
@@ -3467,6 +3494,9 @@ void CIMAPClient::_EndIdle()
 	{
 		CLOG_LOGCATCH(...);
 		mIdleState = eIdleOff;
+
+		if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
+			SignalDeadConnection();
 	}
 }
 
@@ -3499,6 +3529,9 @@ void CIMAPClient::_CheckIdleResponses()
 	{
 		CLOG_LOGCATCH(...);
 		mIdleState = eIdleOff;
+
+		if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
+			SignalDeadConnection();
 	}
 }
 

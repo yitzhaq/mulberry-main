@@ -117,6 +117,10 @@ void CPreferences::WriteToMap(COptionsMap* theMap, bool dirty_only,
 		WRITETOMAP(mTickleInterval, cTickleIntervalKey)								// v3.0b7
 		WRITETOMAP(mTickleIntervalExpireTimeout, cTickleIntervalExpireTimeoutKey)	// v3.0b7
 		WRITETOMAP(mSleepReconnect, cSleepReconnectKey)								// v4.0b3
+		WRITETOMAP(mTCPKeepaliveEnabled, cTCPKeepaliveEnabledKey)					// v4_2a1
+		WRITETOMAP(mTCPKeepaliveIdle, cTCPKeepaliveIdleKey)							// v4_2a1
+		WRITETOMAP(mTCPKeepaliveInterval, cTCPKeepaliveIntervalKey)					// v4_2a1
+		WRITETOMAP(mTCPKeepaliveCount, cTCPKeepaliveCountKey)						// v4_2a1
 	}
 
 	// Write account prefs
@@ -732,6 +736,10 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 		READFROMMAP(mTickleInterval, cTickleIntervalKey)
 		READFROMMAP(mTickleIntervalExpireTimeout, cTickleIntervalExpireTimeoutKey)
 		READFROMMAP(mSleepReconnect, cSleepReconnectKey)
+		READFROMMAP(mTCPKeepaliveEnabled, cTCPKeepaliveEnabledKey)
+		READFROMMAP(mTCPKeepaliveIdle, cTCPKeepaliveIdleKey)
+		READFROMMAP(mTCPKeepaliveInterval, cTCPKeepaliveIntervalKey)
+		READFROMMAP(mTCPKeepaliveCount, cTCPKeepaliveCountKey)
 	}
 
 //--------------------Network Prefs

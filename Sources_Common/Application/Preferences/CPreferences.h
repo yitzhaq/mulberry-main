@@ -111,6 +111,10 @@ public:
 	CPreferenceValueMap<long>					mTickleInterval;					// Idle interval for tickles
 	CPreferenceValueMap<long>					mTickleIntervalExpireTimeout;		// For failure if tickle interval is over this time
 	CPreferenceValueMap<bool>					mSleepReconnect;					// Allow quick reconnect after wake from sleep
+	CPreferenceValueMap<bool>					mTCPKeepaliveEnabled;				// Enable TCP keepalive on all connections
+	CPreferenceValueMap<long>					mTCPKeepaliveIdle;					// Seconds before first keepalive probe
+	CPreferenceValueMap<long>					mTCPKeepaliveInterval;				// Seconds between keepalive probes
+	CPreferenceValueMap<long>					mTCPKeepaliveCount;					// Failed probes before declaring dead
 
 	// Account prefs
 	CPreferenceValueMap<CMailAccountList>			mMailAccounts;					// List of mail accounts

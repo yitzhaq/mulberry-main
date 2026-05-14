@@ -91,6 +91,9 @@ public:
 
 	static void SetTimeouts(unsigned long connectRetryTimeout, unsigned long connectRetryMaxCount)
 		{ sConnectRetryTimeout = connectRetryTimeout; sConnectRetryMaxCount = connectRetryMaxCount; }
+	static void SetKeepalive(bool enabled, unsigned long idle, unsigned long interval, unsigned long count)
+		{ sKeepaliveEnabled = enabled; sKeepaliveIdle = idle;
+		  sKeepaliveInterval = interval; sKeepaliveCount = count; }
 
 	// O T H E R  M E T H O D S
 
@@ -118,6 +121,7 @@ public:
 	virtual void TimerReset() { mLastClock = ::time(NULL); }		// Reset timer
 	virtual time_t GetTimer() const { return mLastClock; }		// Get timer
 	virtual bool HasPendingData() const;							// Check for data without blocking
+	virtual bool WaitForData(unsigned long timeout_secs);			// Wait for data with timeout
 
 	virtual void SetAbort()
 		{ mAbort = true; }
@@ -176,6 +180,11 @@ protected:
 
 	static unsigned long		sConnectRetryTimeout;				// Retry connect after this time
 	static unsigned long		sConnectRetryMaxCount;				// Max. no. of connect retries before failure
+
+	static bool					sKeepaliveEnabled;					// Enable TCP keepalive
+	static unsigned long		sKeepaliveIdle;						// Seconds before first keepalive probe
+	static unsigned long		sKeepaliveInterval;					// Seconds between keepalive probes
+	static unsigned long		sKeepaliveCount;					// Failed probes before declaring dead
 
 	static long					sDrvrCtr;			// WinSock driver open counter
 	bool						mDrvrOpen;			// This object has aquired use of driver

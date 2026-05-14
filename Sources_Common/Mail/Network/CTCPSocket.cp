@@ -39,6 +39,7 @@
 #include <netdb.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h> //for struct linger for set_sock_option with SO_LINGER
+#include <netinet/tcp.h>
 typedef hostent HOSTENT;
 #include <sys/time.h> //for timeval
 #include <unistd.h>
@@ -113,6 +114,11 @@ typedef hostent HOSTENT;
 
 unsigned long CTCPSocket::sConnectRetryTimeout = 15;	// Application may change this
 unsigned long CTCPSocket::sConnectRetryMaxCount = 3;	// Application may change this
+
+bool CTCPSocket::sKeepaliveEnabled = true;
+unsigned long CTCPSocket::sKeepaliveIdle = 60;
+unsigned long CTCPSocket::sKeepaliveInterval = 15;
+unsigned long CTCPSocket::sKeepaliveCount = 4;
 
 long CTCPSocket::sDrvrCtr = 0;
 cdstring CTCPSocket::sLocalName;
@@ -575,6 +581,19 @@ bool CTCPSocket::HasPendingData() const
 	return result > 0;
 }
 
+bool CTCPSocket::WaitForData(unsigned long timeout_secs)
+{
+	try
+	{
+		TCPSelectYield(true, timeout_secs);
+		return true;
+	}
+	catch (CTCPTimeoutException&)
+	{
+		return false;
+	}
+}
+
 void CTCPSocket::TCPHandleError(int err)
 {
 	switch(err)
@@ -945,6 +964,29 @@ void CTCPSocket::TCPCreateSocket()
 			// Got an error => throw
 			CLOG_LOGTHROW(CTCPException, err);
 			throw CTCPException(err);
+		}
+
+		// TCP keepalive — detect dead peers
+		if (sKeepaliveEnabled)
+		{
+			optVal = true;
+			result = ::setsockopt(mSocket, SOL_SOCKET, SO_KEEPALIVE, (char*)&optVal, sizeof(optVal));
+			if (result != SOCKET_ERROR)
+			{
+#if defined(_bsdsock)
+#if __dest_os == __linux_os
+				int keepidle = sKeepaliveIdle;
+				::setsockopt(mSocket, IPPROTO_TCP, TCP_KEEPIDLE, &keepidle, sizeof(keepidle));
+				int keepintvl = sKeepaliveInterval;
+				::setsockopt(mSocket, IPPROTO_TCP, TCP_KEEPINTVL, &keepintvl, sizeof(keepintvl));
+				int keepcnt = sKeepaliveCount;
+				::setsockopt(mSocket, IPPROTO_TCP, TCP_KEEPCNT, &keepcnt, sizeof(keepcnt));
+#elif __dest_os == __mac_os_x
+				int keepalive = sKeepaliveIdle;
+				::setsockopt(mSocket, IPPROTO_TCP, TCP_KEEPALIVE, &keepalive, sizeof(keepalive));
+#endif
+#endif
+			}
 		}
 
 #ifdef _winsock

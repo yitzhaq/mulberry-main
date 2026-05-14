@@ -171,6 +171,7 @@ protected:
 			void	_StartIdle();
 			void	_EndIdle();
 			void	_CheckIdleResponses();
+			void	SignalDeadConnection();
 			bool	IsIdleActive() const { return mIdleState == eIdleActive; }
 			bool	ShouldStartIdle();
 			bool	ShouldReIdle() const;

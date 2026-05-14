@@ -137,6 +137,10 @@ extern const char* cPrefsSection;
 		extern const char* cTickleIntervalKey;						// New in v3.0b7
 		extern const char* cTickleIntervalExpireTimeoutKey;			// New in v3.0b7
 		extern const char* cSleepReconnectKey;						// New in v4.0b3
+		extern const char* cTCPKeepaliveEnabledKey;					// New as of v4_2a1
+		extern const char* cTCPKeepaliveIdleKey;					// New as of v4_2a1
+		extern const char* cTCPKeepaliveIntervalKey;				// New as of v4_2a1
+		extern const char* cTCPKeepaliveCountKey;					// New as of v4_2a1
 
 	extern const char* cAccountSection;								// This section new in v1.4
 		extern const char* cMailAccountsKey_1_4;

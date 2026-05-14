@@ -216,6 +216,8 @@ void CPreferences::Changed()
 {
 	// Update netwrk timeouts
 	CTCPSocket::SetTimeouts(mConnectRetryTimeout.GetValue(), mConnectRetryMaxCount.GetValue());
+	CTCPSocket::SetKeepalive(mTCPKeepaliveEnabled.GetValue(), mTCPKeepaliveIdle.GetValue(),
+		mTCPKeepaliveInterval.GetValue(), mTCPKeepaliveCount.GetValue());
 
 	// Update smart address cache
 	sFromAddr = (sPrefs->mIdentities.mValue.size() ? sPrefs->mIdentities.mValue.front().GetFrom() : cdstring::null_str);
