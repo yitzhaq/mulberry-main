@@ -96,6 +96,7 @@ private:
 	bool			mHasCondstore;					// Supports CONDSTORE (RFC 7162)
 	bool			mHasQResync;					// Supports QRESYNC (RFC 7162)
 	bool			mHasIMAP4rev2;					// Server advertises IMAP4REV2
+	bool			mHasAppendLimit;				// Supports APPENDLIMIT (RFC 7889)
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	unsigned long	mSearchCount;					// ESEARCH COUNT result
@@ -142,6 +143,7 @@ protected:
 	virtual void	_InitCapability();					// Initialise capability flags to empty set
 	virtual void	_ProcessCapability();				// Handle capability response
 	virtual void	_NoCapability();					// Handle failed capability response
+			void	SetRev2FoldedInCapabilities();		// Set folded-in capability flags for rev2
 
 	virtual void	_PreProcess();						// About to start processing input
 	virtual void	_PostProcess();						// Finished processing input

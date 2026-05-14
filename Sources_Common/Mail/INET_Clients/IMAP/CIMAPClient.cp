@@ -157,6 +157,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasCondstore = false;
 	mHasQResync = false;
 	mHasIMAP4rev2 = false;
+	mHasAppendLimit = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -224,6 +225,7 @@ void CIMAPClient::_InitCapability()
 	mHasCondstore = false;
 	mHasQResync = false;
 	mHasIMAP4rev2 = false;
+	mHasAppendLimit = false;
 	mSearchSaved = false;
 	mSavedSearchResults.clear();
 	mListStatusDone = false;
@@ -319,7 +321,8 @@ void CIMAPClient::_ProcessCapability()
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
 		const cdstring& cap = mLastResponse.GetUntagged(cIMAP_APPENDLIMIT);
-		if (!cap.empty())
+		mHasAppendLimit = !cap.empty();
+		if (mHasAppendLimit)
 		{
 			const char* p = ::strstrnocase(cap, cIMAP_APPENDLIMIT);
 			if (p)
@@ -343,23 +346,27 @@ void CIMAPClient::_ProcessCapability()
 	// RFC 9051 Appendix E.2: Pure rev2 servers may not explicitly list
 	// folded-in extensions — set capability flags defensively
 	if (mVersion == eIMAP4rev2)
+		SetRev2FoldedInCapabilities();
+}
+
+// Set capability flags for extensions folded into IMAP4rev2 (RFC 9051 Appendix E.2)
+void CIMAPClient::SetRev2FoldedInCapabilities()
+{
+	mHasEnable = true;
+	mHasNamespace = true;
+	mHasUnselect = true;
+	mHasUIDPlus = true;
+	mHasESearch = true;
+	mHasSearchRes = true;
+	mHasIdle = true;
+	mAuthInitialClientData = true;
+	mHasListExtended = true;
+	mHasListStatus = true;
+	mHasMove = true;
+	if (!mAsyncLiteral)
 	{
-		mHasNamespace = true;
-		mHasUnselect = true;
-		mHasUIDPlus = true;
-		mHasESearch = true;
-		mHasSearchRes = true;
-		mHasEnable = true;
-		mHasIdle = true;
-		mAuthInitialClientData = true;
-		mHasListExtended = true;
-		mHasListStatus = true;
-		mHasMove = true;
-		if (!mAsyncLiteral)
-		{
-			mAsyncLiteral = true;
-			mAsyncLiteralLimit = 4096;
-		}
+		mAsyncLiteral = true;
+		mAsyncLiteralLimit = 4096;
 	}
 }
 
@@ -928,6 +935,8 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 						atts += " SIZE";
 					if (mHasCondstore)
 						atts += " HIGHESTMODSEQ";
+					if (mHasAppendLimit)
+						atts += " APPENDLIMIT";
 					atts += ")";
 					INETSendString(atts);
 				}
@@ -1311,6 +1320,8 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 					status_atts += " SIZE";
 				if (mHasCondstore)
 					status_atts += " HIGHESTMODSEQ";
+				if (mHasAppendLimit)
+					status_atts += " APPENDLIMIT";
 				return_opts += " STATUS (";
 				return_opts += status_atts;
 				return_opts += ")";
@@ -1414,6 +1425,8 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 						status_atts += " SIZE";
 					if (mHasCondstore)
 						status_atts += " HIGHESTMODSEQ";
+					if (mHasAppendLimit)
+						status_atts += " APPENDLIMIT";
 					return_opts += "STATUS (";
 					return_opts += status_atts;
 					return_opts += ")";
@@ -3624,24 +3637,7 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 		{
 			mVersion = eIMAP4rev2;
 			GetMboxOwner()->SetType(cType_IMAP4rev2);
-
-			// Folded-in extensions now active
-			mHasEnable = true;
-			mHasNamespace = true;
-			mHasUnselect = true;
-			mHasUIDPlus = true;
-			mHasESearch = true;
-			mHasSearchRes = true;
-			mHasIdle = true;
-			mAuthInitialClientData = true;
-			mHasListExtended = true;
-			mHasListStatus = true;
-			mHasMove = true;
-			if (!mAsyncLiteral)
-			{
-				mAsyncLiteral = true;
-				mAsyncLiteralLimit = 4096;
-			}
+			SetRev2FoldedInCapabilities();
 		}
 
 		bool gotQResync = (::strstrnocase(*txt, "QRESYNC") != NULL);
