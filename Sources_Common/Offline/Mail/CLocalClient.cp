@@ -1537,7 +1537,7 @@ void CLocalClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new
 }
 
 // Search messages on the server
-void CLocalClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool uids)
+void CLocalClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool uids, bool save)
 {
 	StINETClientAction action(this, "Status::IMAP::Searching", "Error::IMAP::OSErrSearch", "Error::IMAP::NoBadSearch", GetCurrentMbox()->GetName());
 	StLocalProcess process(this);

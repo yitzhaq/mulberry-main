@@ -1739,7 +1739,9 @@ bool CMbox::SetViewSearch(const CSearchItem* spec, bool update)
 	}
 
 	// If spec do search and save results
-	Search(spec, &mOpenInfo->mViewSearchResults);
+	// Initial view search (update=false) saves for SEARCHRES $;
+	// incremental update (update=true) must not overwrite $
+	Search(spec, &mOpenInfo->mViewSearchResults, false, false, !update);
 
 	// Now, if search changed may need to redo sort list
 	switch(mOpenInfo->mViewMode)
@@ -1763,7 +1765,7 @@ bool CMbox::SetViewSearch(const CSearchItem* spec, bool update)
 // spec : search specification
 // results : vector to store message number results
 // no_flags : if true, message flags are not updated (default = false)
-void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool no_flags)
+void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool no_flags, bool save)
 {
 	InitStatusInfo();
 
@@ -1784,7 +1786,7 @@ void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool n
 		{
 			try
 			{
-				mOpenInfo->mMsgMailer->SearchMbox(this, spec, results, uids);
+				mOpenInfo->mMsgMailer->SearchMbox(this, spec, results, uids, save);
 			}
 			catch (...)
 			{
@@ -1796,7 +1798,7 @@ void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool n
 			Close();
 		}
 		else
-			mMailer->SearchMbox(this, spec, results, uids);
+			mMailer->SearchMbox(this, spec, results, uids, save);
 	}
 
 	// Always sort search results into ascending order

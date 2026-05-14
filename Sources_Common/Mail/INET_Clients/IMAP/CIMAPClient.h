@@ -206,7 +206,8 @@ protected:
 
 	virtual void	_SearchMbox(const CSearchItem* spec,	// Search messages on the server
 								ulvector* results,
-								bool uids);
+								bool uids,
+								bool save = false);
 			void	AddSearchItem(const CSearchItem* spec,	// Add search item to command line
 									bool force_charset = false);
 			void	AddSearchAddress(const CSearchItem* spec,

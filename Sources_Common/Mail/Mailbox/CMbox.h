@@ -396,7 +396,7 @@ public:
 	const CSearchItem* GetViewSearch() const
 		{ return (mOpenInfo != NULL) ? &mOpenInfo->mViewCurrent : NULL; }
 
-	void	Search(const CSearchItem* spec, ulvector* results = NULL, bool uids = false, bool no_flags = false);
+	void	Search(const CSearchItem* spec, ulvector* results = NULL, bool uids = false, bool no_flags = false, bool save = false);
 	
 	bool	OpenSearch();
 	bool	TransferSearch();

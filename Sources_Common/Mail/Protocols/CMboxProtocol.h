@@ -347,7 +347,8 @@ protected:
 			void	SearchMbox(CMbox* mbox,					// Search for messages in mbox
 								const CSearchItem* spec,
 								ulvector* results,
-								bool uids);
+								bool uids,
+								bool save = false);
 
 			void	ExpungeMbox(CMbox* mbox, bool closing);	// Clear (EXPUNGE) mbox
 

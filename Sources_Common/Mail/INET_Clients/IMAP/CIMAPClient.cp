@@ -359,6 +359,10 @@ void CIMAPClient::_PostProcess()
 			unsigned long uidv = ::strtoul(p, NULL, 10);
 			if (GetCurrentMbox())
 				GetCurrentMbox()->SetUIDValidity(uidv);
+
+			// RFC 5182: UIDVALIDITY change resets search result variable
+			mSearchSaved = false;
+			mSavedSearchResults.clear();
 		}
 	}
 
@@ -1772,20 +1776,28 @@ void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* 
 }
 
 // Search messages on the server
-void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool uids)
+void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool uids, bool save)
 {
 	// IMAP2bis can't do UID SEARCH
 	if (uids && (mVersion == eIMAP2bis))
 		return;
+
+	// Save previous state for BAD response restoration (RFC 5182:
+	// BAD must not change the variable; NO sets it to empty)
+	bool prevSearchSaved = mSearchSaved;
+	ulvector prevSavedResults;
+	if (save && mHasSearchRes)
+		prevSavedResults = mSavedSearchResults;
 
 	try
 	{
 		// Set results pointer
 		mCurrentResults = results;
 
-		// Clear saved search state before issuing new SEARCH.
+		// Clear saved search state before issuing new SAVE search.
 		// If SAVE fails (NO response), the variable must be empty (RFC 5182).
-		if (mHasSearchRes)
+		// Non-SAVE searches must not touch the saved state.
+		if (save && mHasSearchRes)
 		{
 			mSearchSaved = false;
 			mSavedSearchResults.clear();
@@ -1795,14 +1807,14 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 		INETStartSend("Status::IMAP::Searching", "Error::IMAP::OSErrSearch", "Error::IMAP::NoBadSearch", GetCurrentMbox()->GetName());
 		INETSendString(uids ? cUIDSEARCH : cSEARCH);
 		if (mHasESearch)
-			INETSendString(mHasSearchRes ? cRETURN_SAVE_ALL : cRETURN_ALL);
+			INETSendString((save && mHasSearchRes) ? cRETURN_SAVE_ALL : cRETURN_ALL);
 
 		// Parse out search hierarchy!
 		AddSearchItem(spec);
 		INETFinishSend();
 
 		// Store saved search results for $ substitution
-		if (mHasSearchRes && results)
+		if (save && mHasSearchRes && results)
 		{
 			mSavedSearchResults = *results;
 			std::sort(mSavedSearchResults.begin(), mSavedSearchResults.end());
@@ -1819,8 +1831,15 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 		// Clean up and throw up
 		mCurrentResults = NULL;
 
+		// RFC 5182: BAD must not change the search result variable
+		if (save && mHasSearchRes && mLastResponse.code == cTagBAD)
+		{
+			mSearchSaved = prevSearchSaved;
+			mSavedSearchResults = prevSavedResults;
+		}
+
 		// NOTSAVED: server could not save search results (RFC 9051 §6.4.4.3)
-		if (mSearchSaved && mLastResponse.FindTagged("NOTSAVED"))
+		if (save && mHasSearchRes && mLastResponse.FindTagged("NOTSAVED"))
 		{
 			mSearchSaved = false;
 			mSavedSearchResults.clear();
@@ -3238,7 +3257,9 @@ bool CIMAPClient::MatchesSavedSearch(const ulvector& nums) const
 		return false;
 	if (nums.size() != mSavedSearchResults.size())
 		return false;
-	return nums == mSavedSearchResults;
+	ulvector sorted_nums(nums);
+	std::sort(sorted_nums.begin(), sorted_nums.end());
+	return sorted_nums == mSavedSearchResults;
 }
 
 #pragma mark ____________________________IDLE
@@ -3580,7 +3601,18 @@ void CIMAPClient::IMAPParseMessageResponse(char** txt, CINETClientResponse* resp
 			mMboxUpdate = true;
 
 			if (mMboxReset)
+			{
+				// RFC 5182: remove expunged message from saved search results
+				if (mSearchSaved && !mSavedSearchResults.empty())
+				{
+					ulvector::iterator pos = std::lower_bound(
+						mSavedSearchResults.begin(), mSavedSearchResults.end(), num);
+					if (pos != mSavedSearchResults.end() && *pos == num)
+						mSavedSearchResults.erase(pos);
+				}
+
 				GetCurrentMbox()->RemoveMessage(num);
+			}
 		}
 		response->code = cMsgEXPUNGE;
 	}
@@ -4157,6 +4189,15 @@ void CIMAPClient::IMAPParseVanished(char** txt)
 	for(CSequence::const_iterator iter = vanished.begin();
 		iter != vanished.end(); iter++)
 	{
+		// RFC 5182: remove vanished UID from saved search results
+		if (mSearchSaved && !mSavedSearchResults.empty())
+		{
+			ulvector::iterator pos = std::lower_bound(
+				mSavedSearchResults.begin(), mSavedSearchResults.end(), *iter);
+			if (pos != mSavedSearchResults.end() && *pos == *iter)
+				mSavedSearchResults.erase(pos);
+		}
+
 		GetCurrentMbox()->RemoveMessageUID(*iter);
 	}
 

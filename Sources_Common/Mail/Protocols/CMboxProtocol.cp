@@ -2278,7 +2278,7 @@ bool CMboxProtocol::DoesMailboxSize() const
 }
 
 // Search for messages
-void CMboxProtocol::SearchMbox(CMbox* mbox, const CSearchItem* spec, ulvector* results, bool uids)
+void CMboxProtocol::SearchMbox(CMbox* mbox, const CSearchItem* spec, ulvector* results, bool uids, bool save)
 {
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
@@ -2293,7 +2293,7 @@ void CMboxProtocol::SearchMbox(CMbox* mbox, const CSearchItem* spec, ulvector* r
 	SetCurrentMbox(mbox, false, true);
 
 	// Send SEARCH message to server
-	mClient->_SearchMbox(spec, results, uids);
+	mClient->_SearchMbox(spec, results, uids, save);
 
 }
 

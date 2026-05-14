@@ -75,7 +75,8 @@ public:
 	virtual bool	_ExpungeMbox(bool closing) = 0;			// Do expunge mailbox
 	virtual void	_SearchMbox(const CSearchItem* spec,	// Do message search
 								ulvector* results,
-								bool uids) = 0;
+								bool uids,
+								bool save = false) = 0;
 	virtual void	_DeleteMbox(CMbox* mbox) = 0;			// Do delete mailbox
 	virtual void	_RenameMbox(CMbox* mbox_old,
 								const char* mbox_new) = 0;	// Do rename mbox
