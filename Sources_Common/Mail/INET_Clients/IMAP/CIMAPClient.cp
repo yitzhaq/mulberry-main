@@ -3737,55 +3737,31 @@ void CIMAPClient::IMAPParseMessageResponse(char** txt, CINETClientResponse* resp
 	else if (::stradvtokcmp(txt, cMSGSTORE)==0)
 	{
 		response->code = cMsgSTORE;
-		// Protect against index out of bounds which can happen
-		// under rare circumstances. This should be fixed properly by
-		// making sure EXISTS immediately updates the message list size
-		try
-		{
+		// Guard against EXISTS arriving after response references new messages
+		if (GetCurrentMbox() && num <= GetCurrentMbox()->GetNumberFound())
 			SetMessage(num);
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-
+		else
 			mCurrent_msg = NULL;
-		}
 		IMAPParseFetch(txt);
 	}
 	else if (::stradvtokcmp(txt, cMSGFETCH)==0)
 	{
 		response->code = cMsgFETCH;
-		// Protect against index out of bounds which can happen
-		// under rare circumstances. This should be fixed properly by
-		// making sure EXISTS immediately updates the message list size
-		try
-		{
+		// Guard against EXISTS arriving after response references new messages
+		if (GetCurrentMbox() && num <= GetCurrentMbox()->GetNumberFound())
 			SetMessage(num);
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-
+		else
 			mCurrent_msg = NULL;
-		}
 		IMAPParseFetch(txt);
 	}
 	else if (::stradvtokcmp(txt, cMSGCOPY)==0)
 	{
 		response->code = cMsgCOPY;
-		// Protect against index out of bounds which can happen
-		// under rare circumstances. This should be fixed properly by
-		// making sure EXISTS immediately updates the message list size
-		try
-		{
+		// Guard against EXISTS arriving after response references new messages
+		if (GetCurrentMbox() && num <= GetCurrentMbox()->GetNumberFound())
 			SetMessage(num);
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-
+		else
 			mCurrent_msg = NULL;
-		}
 	}
 	else
 		response->code = cResponseError;
