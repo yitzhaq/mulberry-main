@@ -156,6 +156,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasEnable = false;
 	mHasCondstore = false;
 	mHasQResync = false;
+	mHasIMAP4rev2 = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -222,6 +223,7 @@ void CIMAPClient::_InitCapability()
 	mHasEnable = false;
 	mHasCondstore = false;
 	mHasQResync = false;
+	mHasIMAP4rev2 = false;
 	mSearchSaved = false;
 	mSavedSearchResults.clear();
 	mListStatusDone = false;
@@ -241,9 +243,21 @@ void CIMAPClient::_InitCapability()
 // Check version of server
 void CIMAPClient::_ProcessCapability()
 {
+	// Detect IMAP4REV2 advertisement (RFC 9051)
+	mHasIMAP4rev2 = mLastResponse.CheckUntagged(cIMAP4REV2, true);
+	bool hasRev1 = mLastResponse.CheckUntagged(cIMAP4REV1, true);
+
 	// Process response to look for versions (in decreasing version order to get the latest)
-	if (mLastResponse.CheckUntagged(cIMAP4REV1, true))
+	if (mHasIMAP4rev2 && !hasRev1)
 	{
+		// Pure rev2 server — rev2 behavior active without ENABLE
+		mVersion = eIMAP4rev2;
+		GetMboxOwner()->SetType(cType_IMAP4rev2);
+		GetMboxOwner()->SetHasDisconnected(true);
+	}
+	else if (hasRev1)
+	{
+		// Rev1 (possibly also rev2 — ENABLE needed to upgrade)
 		mVersion = eIMAP4rev1;
 		GetMboxOwner()->SetType(cType_IMAP4rev1);
 		GetMboxOwner()->SetHasDisconnected(true);
@@ -325,6 +339,28 @@ void CIMAPClient::_ProcessCapability()
 	mAuthAnonAllowed = mLastResponse.CheckUntagged(cIMAP_AUTHANON, true);
 	mSTARTTLSAllowed = mLastResponse.CheckUntagged(cSTARTTLS, true);
 	mAuthInitialClientData = mLastResponse.CheckUntagged(cIMAP_SASL_IR, true);
+
+	// RFC 9051 Appendix E.2: Pure rev2 servers may not explicitly list
+	// folded-in extensions — set capability flags defensively
+	if (mVersion == eIMAP4rev2)
+	{
+		mHasNamespace = true;
+		mHasUnselect = true;
+		mHasUIDPlus = true;
+		mHasESearch = true;
+		mHasSearchRes = true;
+		mHasEnable = true;
+		mHasIdle = true;
+		mAuthInitialClientData = true;
+		mHasListExtended = true;
+		mHasListStatus = true;
+		mHasMove = true;
+		if (!mAsyncLiteral)
+		{
+			mAsyncLiteral = true;
+			mAsyncLiteralLimit = 4096;
+		}
+	}
 }
 
 // Handle failed capability response
@@ -569,7 +605,7 @@ void CIMAPClient::_CreateMbox(CMbox* mbox)
 	if (mbox->IsDirectory())
 		wd_name += mbox->GetDirDelim();
 
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send CREATE message to server
@@ -591,7 +627,7 @@ bool CIMAPClient::_TestMbox(CMbox* mbox)
 	// Get the WD
 	mCurrentWD = NULL;
 	cdstring wd = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd.ToModifiedUTF7(true);
 
 	// Depends on server version
@@ -609,6 +645,7 @@ bool CIMAPClient::_TestMbox(CMbox* mbox)
 		}
 
 	case eIMAP4:
+	case eIMAP4rev2:
 	case eIMAP4rev1:
 		{
 			// Get start spec
@@ -657,7 +694,7 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 	{
 		// Get full name
 		cdstring wd_name = mbox->GetName();
-		if (mVersion == eIMAP4rev1)
+		if (mVersion >= eIMAP4rev1)
 			wd_name.ToModifiedUTF7(true);
 
 		// Issue SELECT/EXAMINE call
@@ -767,7 +804,7 @@ void CIMAPClient::_Deselect(CMbox* mbox)
 	{
 		// Get full name
 		cdstring wd_name = mbox->GetName();
-		if (mVersion == eIMAP4rev1)
+		if (mVersion >= eIMAP4rev1)
 			wd_name.ToModifiedUTF7(true);
 
 		// Use UNSELECT if supported
@@ -860,6 +897,7 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 			GetMboxOwner()->SetCurrentMbox(mbox, false, true);
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			// Skip if LIST-STATUS already provided status data
 			if (mListStatusDone && mbox->HasStatus())
@@ -880,7 +918,12 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 				INETSendString(wd_name, eQueueProcess);
 				INETSendString(cSpace);
 				{
-					cdstring atts = "(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
+					cdstring atts = "(MESSAGES";
+					if (mVersion < eIMAP4rev2)
+						atts += " RECENT";
+					atts += " UNSEEN UIDVALIDITY UIDNEXT";
+					if (mVersion >= eIMAP4rev2)
+						atts += " DELETED";
 					if (mHasStatusSize)
 						atts += " SIZE";
 					if (mHasCondstore)
@@ -947,7 +990,7 @@ void CIMAPClient::_DeleteMbox(CMbox* mbox)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send DELETE message to server
@@ -964,11 +1007,11 @@ void CIMAPClient::_RenameMbox(CMbox* mbox_old, const char* mbox_new)
 {
 	// Get full names
 	cdstring wd_name_old = mbox_old->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name_old.ToModifiedUTF7(true);
 
 	cdstring wd_name_new = mbox_new;
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name_new.ToModifiedUTF7(true);
 
 	// Send RENAME message to server
@@ -987,7 +1030,7 @@ void CIMAPClient::_SubscribeMbox(CMbox* mbox)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send SUBSCRIBE MAILBOX message to server
@@ -1004,7 +1047,7 @@ void CIMAPClient::_UnsubscribeMbox(CMbox* mbox)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send UNSUBSCRIBE MAILBOX message to server
@@ -1182,13 +1225,33 @@ void CIMAPClient::IMAPParseID(char** txt)
 	}
 }
 
-// Send ENABLE command (RFC 5161)
+// Send ENABLE command (RFC 5161 / RFC 9051)
 void CIMAPClient::_Enable()
 {
 	if (!mHasEnable)
 		return;
 
-	if (!mHasCondstore && !mHasQResync)
+	cdstring enable_args;
+
+	// RFC 9051 Appendix A: When both rev1 and rev2 are advertised,
+	// must ENABLE IMAP4rev2 to activate rev2 behavior
+	if (mHasIMAP4rev2 && mVersion != eIMAP4rev2)
+		enable_args = "IMAP4REV2";
+
+	if (mHasQResync)
+	{
+		if (enable_args.length())
+			enable_args += " ";
+		enable_args += "QRESYNC";
+	}
+	else if (mHasCondstore)
+	{
+		if (enable_args.length())
+			enable_args += " ";
+		enable_args += "CONDSTORE";
+	}
+
+	if (enable_args.empty())
 		return;
 
 	try
@@ -1196,7 +1259,7 @@ void CIMAPClient::_Enable()
 		INETStartSend("Status::IMAP::Enabling", "Error::IMAP::OSErrEnable", "Error::IMAP::NoBadEnable", cdstring::null_str);
 		INETSendString(cENABLE);
 		INETSendString(cSpace);
-		INETSendString(mHasQResync ? "QRESYNC" : "CONDSTORE");
+		INETSendString(enable_args);
 		INETFinishSend();
 	}
 	catch(...)
@@ -1224,8 +1287,9 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 		break;
 
 	case eIMAP4:
+	case eIMAP4rev2:
 	case eIMAP4rev1:
-		if (mHasListExtended && mVersion == eIMAP4rev1)
+		if (mHasListExtended && mVersion >= eIMAP4rev1)
 		{
 			// Use LIST (SUBSCRIBED) instead of LSUB (RFC 5258)
 			INETSendString(cLIST);
@@ -1237,7 +1301,12 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 			cdstring return_opts = "CHILDREN";
 			if (mHasListStatus)
 			{
-				cdstring status_atts = "MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
+				cdstring status_atts = "MESSAGES";
+				if (mVersion < eIMAP4rev2)
+					status_atts += " RECENT";
+				status_atts += " UNSEEN UIDVALIDITY UIDNEXT";
+				if (mVersion >= eIMAP4rev2)
+					status_atts += " DELETED";
 				if (mHasStatusSize)
 					status_atts += " SIZE";
 				if (mHasCondstore)
@@ -1279,7 +1348,7 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 	// Get the WD (NULL => do hierarchy character descovery)
 	mCurrentWD = mboxes;
 	cdstring wd = (mboxes ? mboxes->GetRoot() : cdstring::null_str);
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd.ToModifiedUTF7(true);
 
 	// Turn on/off flag for hierarchy delimiter search
@@ -1311,6 +1380,7 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 		}
 
 	case eIMAP4:
+	case eIMAP4rev2:
 	case eIMAP4rev1:
 		{
 			// Get start spec
@@ -1334,7 +1404,12 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 				{
 					if (return_opts.length())
 						return_opts += " ";
-					cdstring status_atts = "MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT";
+					cdstring status_atts = "MESSAGES";
+					if (mVersion < eIMAP4rev2)
+						status_atts += " RECENT";
+					status_atts += " UNSEEN UIDVALIDITY UIDNEXT";
+					if (mVersion >= eIMAP4rev2)
+						status_atts += " DELETED";
 					if (mHasStatusSize)
 						status_atts += " SIZE";
 					if (mHasCondstore)
@@ -1609,7 +1684,7 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 	{
 		// MULTIAPPEND mode (RFC 3502)
 		cdstring wd_name = mbox->GetName();
-		if (mVersion == eIMAP4rev1)
+		if (mVersion >= eIMAP4rev1)
 			wd_name.ToModifiedUTF7(true);
 
 		if (mMultiAppendCount == 0)
@@ -1635,7 +1710,7 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 			try
 			{
 				cdstring wd_name = mbox->GetName();
-				if (mVersion == eIMAP4rev1)
+				if (mVersion >= eIMAP4rev1)
 					wd_name.ToModifiedUTF7(true);
 
 				// Send APPEND message to server
@@ -1711,7 +1786,7 @@ void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* 
 			CheckAppendLimit(mbox);
 
 			cdstring wd_name = mbox->GetName();
-			if (mVersion == eIMAP4rev1)
+			if (mVersion >= eIMAP4rev1)
 				wd_name.ToModifiedUTF7(true);
 
 			// Send UID REPLACE <uid> <mailbox> [flags] [date] {literal}
@@ -1857,6 +1932,19 @@ void CIMAPClient::AddSearchItem(const CSearchItem* spec, bool force_charset)
 	cdstrboolvect items;
 	if (spec)
 		spec->GenerateItems(items);
+
+	// RFC 9051: RECENT/NEW/OLD removed from SEARCH grammar in rev2
+	if (mVersion >= eIMAP4rev2)
+	{
+		for(cdstrboolvect::iterator iter = items.begin(); iter != items.end(); iter++)
+		{
+			if ((*iter).first == cSEARCH_RECENT || (*iter).first == cSEARCH_OLD)
+				(*iter).first = cSEARCH_ALL;
+			else if ((*iter).first == cSEARCH_NEW)
+				(*iter).first = cSEARCH_UNSEEN;
+		}
+	}
+
 	bool add_charset = false;
 
 	for(cdstrboolvect::iterator iter = items.begin(); iter != items.end(); iter++)
@@ -1873,12 +1961,13 @@ void CIMAPClient::AddSearchItem(const CSearchItem* spec, bool force_charset)
 	}
 
 	// Add charset if required
-	if (add_charset)
+	// RFC 9051 §6.4.4: In IMAP4rev2, UTF-8 is the default — omit CHARSET
+	if (add_charset && mVersion < eIMAP4rev2)
 	{
 		INETSendString(cSpace);
 		INETSendString(cSEARCH_CHARSET);
 	}
-	if (add_charset || force_charset)
+	if ((add_charset && mVersion < eIMAP4rev2) || force_charset)
 	{
 		INETSendString(cSpace);
 		INETSendString(i18n::CCharsetManager::sCharsetManager.GetNameFromCode(add_charset ? i18n::eUTF8 : i18n::eUSASCII));
@@ -1951,6 +2040,7 @@ void CIMAPClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EF
 			break;
 
 		case eIMAP4:
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			if (mHasCondstore)
 				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE ENVELOPE BODYSTRUCTURE MODSEQ)");
@@ -2144,7 +2234,7 @@ void CIMAPClient::_ReadHeader(CMessage* msg)
 		INETSendString(cSpace);
 		INETSendString(msg_spec);
 		INETSendString(cSpace);
-		INETSendString((mVersion == eIMAP4rev1) ? cBODYPEEKHEADER_OUT : cRFC822HEADER_OUT);
+		INETSendString((mVersion >= eIMAP4rev1) ? cBODYPEEKHEADER_OUT : cRFC822HEADER_OUT);
 		INETFinishSend();
 	}
 
@@ -2178,7 +2268,7 @@ void CIMAPClient::_ReadAttachment(unsigned long msg_num, const char* attach_spec
 	cdstring modified_spec = attach_spec;
 
 	// Use IMAP4rev1 command syntax
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 	{
 		if (::strcmp(modified_spec, "0") == 0)
 			modified_spec = cBODYHEADER;
@@ -2254,6 +2344,7 @@ void CIMAPClient::_ReadAttachment(unsigned long msg_num, const char* attach_spec
 			templ = peek ? "%d BODY.PEEK[%s] %d %d" : "%d BODY[%s] %d %d";
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			// <> syntax - PEEK
 			cmd = cFETCH;
@@ -2328,7 +2419,7 @@ void CIMAPClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 		attach->GetPartNumber(attach_spec);
 
 		// Use IMAP4rev1 command syntax
-		if ((mVersion == eIMAP4rev1) && (attach_spec.length() >= 2) &&
+		if ((mVersion >= eIMAP4rev1) && (attach_spec.length() >= 2) &&
 			(::strcmp(attach_spec.c_str() + attach_spec.length() - 2, ".0") == 0))
 		{
 			((char*) attach_spec.c_str())[attach_spec.length() - 1] = 0;
@@ -2362,6 +2453,7 @@ void CIMAPClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 			out << (peek ? cRFC822TEXTPEEK : cRFC822TEXT);
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			out << (peek ? cBODYPEEKTEXT : cBODYTEXT);
 			break;
@@ -2381,6 +2473,7 @@ void CIMAPClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 			out << " " << start << " " << count;
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			out << "<" << start << "." << count << ">";
 			break;
@@ -2422,6 +2515,7 @@ void CIMAPClient::_CopyAttachment(unsigned long msg_num, CAttachment* attach,
 			cmd = cPARTIAL;
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			cmd = cFETCH;
 			break;
@@ -2684,7 +2778,7 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 {
 	// Get full name
 	cdstring wd_name = mbox_to->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send COPY message to server
@@ -2743,7 +2837,7 @@ void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 
 	// Get full name
 	cdstring wd_name = mbox_to->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send MOVE message to server
@@ -2817,6 +2911,7 @@ void CIMAPClient::_CopyMessage(unsigned long msg_num, bool uids, costream* aStre
 			INETSendString(cdstring(cRFC822PEEK_OUT));
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			INETSendString(cdstring(cBODYALL_OUT));
 			break;
@@ -2840,6 +2935,7 @@ void CIMAPClient::_CopyMessage(unsigned long msg_num, bool uids, costream* aStre
 			templ = "%d RFC822.PEEK %d %d";
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			cmd = cFETCH;
 			templ = "%d BODY[]<%d.%d>";
@@ -3028,7 +3124,7 @@ void CIMAPClient::_SetACL(CMbox* mbox, CACL* acl)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 	cdstring acl_txt = acl->GetFullTextRights();
 
@@ -3047,7 +3143,7 @@ void CIMAPClient::_DeleteACL(CMbox* mbox, CACL* acl)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send DELETEACL message to server
@@ -3069,7 +3165,7 @@ void CIMAPClient::_GetACL(CMbox* mbox)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send GETACL message to server
@@ -3089,7 +3185,7 @@ void CIMAPClient::_ListRights(CMbox* mbox, CACL* acl)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send LISTRIGHTS message to server
@@ -3110,7 +3206,7 @@ void CIMAPClient::_MyRights(CMbox* mbox)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send MYRIGHTS message to server
@@ -3174,7 +3270,7 @@ void CIMAPClient::_GetQuotaRoot(CMbox* mbox)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 		wd_name.ToModifiedUTF7(true);
 
 	// Send GETQUOTAROOT message to server
@@ -3292,7 +3388,7 @@ bool CIMAPClient::ShouldStartIdle()
 		mIdleState == eIdleOff &&
 		mStream != NULL &&
 		GetCurrentMbox() != NULL &&
-		mVersion == eIMAP4rev1 &&
+		mVersion >= eIMAP4rev1 &&
 		(mIdleStartTime == 0 || ::difftime(::time(NULL), mIdleStartTime) >= 30);
 }
 
@@ -3518,10 +3614,36 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 		IMAPParseID(txt);
 	}
 
-	// ENABLED (RFC 5161)
+	// ENABLED (RFC 5161 / RFC 9051)
 	else if (::stradvtokcmp(txt, "ENABLED") == 0)
 	{
 		while (**txt == ' ') (*txt)++;
+
+		// IMAP4rev2 enabled — upgrade negotiated version
+		if (::strstrnocase(*txt, "IMAP4REV2") != NULL)
+		{
+			mVersion = eIMAP4rev2;
+			GetMboxOwner()->SetType(cType_IMAP4rev2);
+
+			// Folded-in extensions now active
+			mHasEnable = true;
+			mHasNamespace = true;
+			mHasUnselect = true;
+			mHasUIDPlus = true;
+			mHasESearch = true;
+			mHasSearchRes = true;
+			mHasIdle = true;
+			mAuthInitialClientData = true;
+			mHasListExtended = true;
+			mHasListStatus = true;
+			mHasMove = true;
+			if (!mAsyncLiteral)
+			{
+				mAsyncLiteral = true;
+				mAsyncLiteralLimit = 4096;
+			}
+		}
+
 		bool gotQResync = (::strstrnocase(*txt, "QRESYNC") != NULL);
 		bool gotCondstore = (::strstrnocase(*txt, "CONDSTORE") != NULL);
 		// ENABLE QRESYNC implicitly enables CONDSTORE
@@ -3720,6 +3842,9 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		else if (CheckStrAdv(&p, cMBOXFLAGNONEXISTENT))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eNoSelect);
 
+		else if (CheckStrAdv(&p, cMBOXFLAGREMOTE))
+			new_flags = (NMbox::EFlags) (new_flags | NMbox::eNoSelect);
+
 		// RFC 6154 Special-Use attributes
 		else if (CheckStrAdv(&p, cMBOXFLAGSPECIAL_ALL))
 			special_use |= CMbox::eSpecialAll;
@@ -3860,7 +3985,7 @@ void CIMAPClient::IMAPParseMailbox(char** txt, char delim, NMbox::EFlags mbox_fl
 		BumpItemCtr(mFindingSubs ? "Status::IMAP::SubscribeFind" : "Status::IMAP::MailboxFind");
 
 		// Decode modified UTF7 here
-		if (mVersion == eIMAP4rev1)
+		if (mVersion >= eIMAP4rev1)
 		{
 			// Do mUTF7 decode
 			char* decoded = cdstring::FromModifiedUTF7(mbox_name, true);
@@ -4647,6 +4772,7 @@ CAttachment* CIMAPClient::IMAPParseBodyItem(char** txt, CAttachment* parent)
 				}
 				break;
 
+			case eIMAP4rev2:
 			case eIMAP4rev1:
 				// Get parameter
 				IMAPParseBodyParameter(&p, multipart->GetContent(), true, false);
@@ -4814,6 +4940,7 @@ CAttachment* CIMAPClient::IMAPParseBodyContent(char** txt)
 			IMAPParseBodyExtension(&p, content);
 			break;
 
+		case eIMAP4rev2:
 		case eIMAP4rev1:
 			// Optional
 			if (*p == ' ')
@@ -5485,7 +5612,7 @@ void CIMAPClient::IMAPParseQuotaRoot(char** txt)
 {
 	// Get mailbox name
 	char* mbox_name = INETParseString(txt);
-	if (mVersion == eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1)
 	{
 		// Do mUTF7 decode
 		char* decoded = cdstring::FromModifiedUTF7(mbox_name, true);

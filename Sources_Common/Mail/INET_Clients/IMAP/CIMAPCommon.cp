@@ -37,6 +37,7 @@ const int cOPENFAILED_LENGTH =			11;
 // Capability responses
 const char* cIMAP4 =					"IMAP4";
 const char* cIMAP4REV1 =				"IMAP4REV1";
+const char* cIMAP4REV2 =				"IMAP4REV2";
 const char* cIMAP_ACL =					"ACL";
 const char* cIMAP_QUOTA =				"QUOTA";
 const char* cIMAP_QUOTA_RES =			"QUOTA=RES-";
@@ -206,6 +207,7 @@ const char* cMBOXFLAGUNMARKEDHASCHILDREN =		"\\HasChildren";
 const char* cMBOXFLAGUNMARKEDHASNOCHILDREN =	"\\HasNoChildren";
 const char* cMBOXFLAGSUBSCRIBED =				"\\Subscribed";
 const char* cMBOXFLAGNONEXISTENT =				"\\NonExistent";
+const char* cMBOXFLAGREMOTE =					"\\Remote";
 
 // RFC 6154 Special-Use attributes
 const char* cMBOXFLAGSPECIAL_ALL =				"\\All";
@@ -224,7 +226,6 @@ const char* cSTATUS_UIDNEXT =			"UIDNEXT";
 const char* cSTATUS_UIDVALIDITY =		"UIDVALIDITY";
 const char* cSTATUS_UNSEEN =			"UNSEEN";
 const char* cSTATUS_HIGHESTMODSEQ =		"HIGHESTMODSEQ";
-const char* cSTATUS_CHECK =				"(MESSAGES RECENT UNSEEN UIDVALIDITY UIDNEXT)";
 const char* cSTATUS_APPENDLIMIT =		"APPENDLIMIT";
 const char* cSTATUS_SIZE =				"SIZE";
 const char* cSTATUS_DELETED =			"DELETED";

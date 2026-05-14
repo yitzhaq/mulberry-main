@@ -40,6 +40,7 @@ extern const int cOPENFAILED_LENGTH;
 // Capability responses
 extern const char* cIMAP4;
 extern const char* cIMAP4REV1;
+extern const char* cIMAP4REV2;
 extern const char* cIMAP_ACL;
 extern const char* cIMAP_QUOTA;
 extern const char* cIMAP_QUOTA_RES;
@@ -202,6 +203,7 @@ extern const char* cMBOXFLAGUNMARKEDHASCHILDREN;
 extern const char* cMBOXFLAGUNMARKEDHASNOCHILDREN;
 extern const char* cMBOXFLAGSUBSCRIBED;
 extern const char* cMBOXFLAGNONEXISTENT;
+extern const char* cMBOXFLAGREMOTE;
 
 // RFC 6154 Special-Use attributes
 extern const char* cMBOXFLAGSPECIAL_ALL;
@@ -220,7 +222,6 @@ extern const char* cSTATUS_UIDNEXT;
 extern const char* cSTATUS_UIDVALIDITY;
 extern const char* cSTATUS_UNSEEN;
 extern const char* cSTATUS_HIGHESTMODSEQ;
-extern const char* cSTATUS_CHECK;
 extern const char* cSTATUS_APPENDLIMIT;
 extern const char* cSTATUS_SIZE;
 extern const char* cSTATUS_DELETED;

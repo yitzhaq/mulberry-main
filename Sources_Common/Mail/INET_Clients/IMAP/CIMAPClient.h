@@ -29,12 +29,14 @@ enum EIMAPVersion
 {
 	eIMAP2bis = 1,
 	eIMAP4,
-	eIMAP4rev1
+	eIMAP4rev1,
+	eIMAP4rev2
 };
 
 const char cType_IMAP2bis[] = "IMAP2bis";
 const char cType_IMAP4[] = "IMAP4";
 const char cType_IMAP4rev1[] = "IMAP4rev1";
+const char cType_IMAP4rev2[] = "IMAP4rev2";
 
 enum
 {
@@ -93,6 +95,7 @@ private:
 	bool			mHasEnable;						// Supports ENABLE (RFC 5161)
 	bool			mHasCondstore;					// Supports CONDSTORE (RFC 7162)
 	bool			mHasQResync;					// Supports QRESYNC (RFC 7162)
+	bool			mHasIMAP4rev2;					// Server advertises IMAP4REV2
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	unsigned long	mSearchCount;					// ESEARCH COUNT result
