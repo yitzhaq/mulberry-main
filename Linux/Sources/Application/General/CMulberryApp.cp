@@ -436,28 +436,29 @@ void CMulberryApp::CleanUpBeforeSuddenDeath(const JXDocumentManager::SafetySaveR
 // Parse mailto URL
 void CMulberryApp::ProcessURL(const cdstring& url)
 {
-	// Get scheme and address
-	cdstring dup(url);
-	char* scheme = ::strtok(dup, " :");
-	if (!scheme)
+	// Split scheme from address at first ':'
+	const char* colon = ::strchr(url.c_str(), ':');
+	if (!colon)
 		return;
+
+	cdstring scheme(url.c_str(), colon - url.c_str());
+	const char* addr = colon + 1;
+	// Skip leading slashes (e.g., "mailto://")
+	while (*addr == '/')
+		addr++;
+
 	if (::strcmpnocase(scheme, "mailto") == 0)
 	{
-		char* addr = ::strtok(NULL, "");		// Can be NULL
-
 		ProcessMailto(addr);
 	}
 	else if (::strcmpnocase(scheme, "webcal") == 0)
 	{
-		char* addr = ::strtok(NULL, "");		// Can be NULL
-
 		ProcessWebcal(addr);
 	}
 	else if (::strcmpnocase(scheme, "ics-file") == 0)
 	{
-		char* path = ::strtok(NULL, "");
-		if (path)
-			CActionManager::ImportICSFile(path);
+		if (*addr)
+			CActionManager::ImportICSFile(addr);
 	}
 }
 

@@ -82,6 +82,13 @@ void CURLClickElement::ParseMailto(const char *address, cdstring& myTo, cdstring
 	if (!address || !*address)
 		return;
 
+	// Strip fragment identifier (RFC 6068 §2: SHOULD be ignored)
+	cdstring clean(address);
+	const char* frag = ::strchr(clean.c_str(), '#');
+	if (frag)
+		*(const_cast<char*>(frag)) = '\0';
+	address = clean.c_str();
+
 	cdstring part;
 
 	while(*address && (*address != cMailtoURL_StartExtended))
