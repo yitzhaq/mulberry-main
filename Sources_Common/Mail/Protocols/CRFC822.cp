@@ -1399,8 +1399,20 @@ bool CRFC822::TextFrom1522(cdstring& str)
 		// Copy stream back to string if decode done
 		if (decode)
 		{
-			*out << std::ends;
-			str.steal(out->str());
+			// Sanitize decoded output before converting to C string:
+			// strip NUL bytes and C0 control characters that could
+			// enable display spoofing (Mailsploit defense)
+			size_t raw_len = out->pcount();
+			char* raw = out->str();
+			char* w = raw;
+			for (size_t i = 0; i < raw_len; i++)
+			{
+				unsigned char c = raw[i];
+				if (c >= 0x20 || c == '\t')
+					*w++ = c;
+			}
+			*w = '\0';
+			str.steal(raw);
 			delete out;
 			out = NULL;
 		}
