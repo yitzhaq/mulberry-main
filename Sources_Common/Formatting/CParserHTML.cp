@@ -1335,6 +1335,15 @@ bool CParserHTML::ParseURL(unichar_t* param, cdustring &outScheme, cdustring &ou
 			if (r)
 			{
 				outScheme.assign(url, r++ - url + 1);
+
+				// Only allow known-safe URI schemes (allowlist)
+				if (::unistrncmpnocase(outScheme, "http:", 5) &&
+					::unistrncmpnocase(outScheme, "https:", 6) &&
+					::unistrncmpnocase(outScheme, "mailto:", 7) &&
+					::unistrncmpnocase(outScheme, "ftp:", 4) &&
+					::unistrncmpnocase(outScheme, "webcal:", 7))
+					return false;
+
 				outLocation = r;
 			}
 			else
@@ -1816,6 +1825,22 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 					{
 						p = CommentTag(p, "style", 5);
 					}
+					else if (!::unistrcmp(lformat.get(), "iframe"))
+					{
+						p = CommentTag(p, "iframe", 6);
+					}
+					else if (!::unistrcmp(lformat.get(), "frame"))
+					{
+						p = CommentTag(p, "frame", 5);
+					}
+					else if (!::unistrcmp(lformat.get(), "frameset"))
+					{
+						p = CommentTag(p, "frameset", 8);
+					}
+					else if (!::unistrcmp(lformat.get(), "object"))
+					{
+						p = CommentTag(p, "object", 6);
+					}
 					else if (!::unistrcmp(lformat.get(), "title"))
 					{
 						p = CommentTag(p, "title", 5);
@@ -1886,22 +1911,10 @@ const unichar_t* CParserHTML::Parse(int offset, bool for_display, bool quote, bo
 						}
 					}
 
+					// <base> tag ignored — do not allow email HTML to
+					// change relative URL resolution
 					else if (!::unistrcmp(lformat.get(), "base"))
 					{
-						if (ParseURL(format.get() + 4, mBaseScheme, mBaseLocation))
-						{
-							if (!mBaseScheme.empty() && !mBaseLocation.empty())
-							{
-								// Process base location
-								const unichar_t* p = &mBaseLocation[mBaseLocation.length() - 1];
-								if (*p != '/')
-								{
-									while((*--p != '/') && (p != mBaseLocation.c_str())) {}
-									if (*p == '/')
-										mBaseLocation = cdustring(mBaseLocation, p - mBaseLocation.c_str() + 1);
-								}
-							}
-						}
 					}
 
 					// Handle tables - break before/end, break at each row

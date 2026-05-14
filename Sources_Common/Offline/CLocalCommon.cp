@@ -828,10 +828,32 @@ void MakeSafeFileName(cdstring& name)
 				*p++ = '_';
 				break;
 				
-			// Pass other characters through
+			// Pass other characters through, but strip Unicode
+			// bidi control characters (RLO filename spoofing defense)
 			default:
+			{
+				unsigned char c = *p;
+				if (c == 0xE2 && *(p+1))
+				{
+					unsigned char c2 = *(p+1);
+					unsigned char c3 = *(p+2);
+					// U+200E-200F (LRM/RLM), U+202A-202E (bidi embeddings incl RLO)
+					if (c2 == 0x80 && ((c3 >= 0x8E && c3 <= 0x8F) ||
+									   (c3 >= 0xAA && c3 <= 0xAE)))
+					{
+						p += 3;
+						break;
+					}
+					// U+2066-2069 (bidi isolates)
+					if (c2 == 0x81 && (c3 >= 0xA6 && c3 <= 0xA9))
+					{
+						p += 3;
+						break;
+					}
+				}
 				p++;
 				break;
+			}
 			}
 		}
 	}

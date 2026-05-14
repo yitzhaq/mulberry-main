@@ -111,13 +111,7 @@ void CURLClickElement::ParseMailto(const char *address, cdstring& myTo, cdstring
 			while(*address && (*address != cMailtoURL_NextExtended))
 				myCc += *address++;
 		}
-		else if(strcmpnocase(part.c_str(), "bcc") == 0)
-		{
-			if (!myBcc.empty())
-				myBcc += ", ";
-			while(*address && (*address != cMailtoURL_NextExtended))
-				myBcc += *address++;
-		}
+		// RFC 6068 §5: only accept safe parameters (allowlist)
 		else if(strcmpnocase(part.c_str(), "body") == 0)
 		{
 			while(*address && (*address != cMailtoURL_NextExtended))
@@ -127,17 +121,6 @@ void CURLClickElement::ParseMailto(const char *address, cdstring& myTo, cdstring
 		{
 			while(*address && (*address != cMailtoURL_NextExtended))
 				mySubject += *address++;
-		}
-		else if(strcmpnocase(part.c_str(), "x-mulberry-file") == 0)
-		{
-			cdstring temp;
-			while(*address && (*address != cMailtoURL_NextExtended))
-				temp += *address++;
-			if (!temp.empty())
-			{
-				temp.DecodeURL();
-				files.push_back(temp);
-			}
 		}
 		else
 		{
@@ -154,11 +137,27 @@ void CURLClickElement::ParseMailto(const char *address, cdstring& myTo, cdstring
 	CRFC822::TextFrom1522(myTo);
 	myCc.DecodeURL();
 	CRFC822::TextFrom1522(myCc);
-	myBcc.DecodeURL();
-	CRFC822::TextFrom1522(myBcc);
 	myBody.DecodeURL();
 	mySubject.DecodeURL();
 	CRFC822::TextFrom1522(mySubject);
+
+	// Strip CR/LF from header parameters to prevent header injection
+	// (body parameter keeps line breaks per RFC 6068)
+	{
+		cdstring* hdrs[] = { &myTo, &myCc, &mySubject };
+		for (int i = 0; i < 3; i++)
+		{
+			char* w = hdrs[i]->c_str_mod();
+			char* r = w;
+			while (*r)
+			{
+				if (*r != '\r' && *r != '\n')
+					*w++ = *r;
+				r++;
+			}
+			*w = '\0';
+		}
+	}
 }
 
 cdstring CURLClickElement::GetDescriptor() const
