@@ -285,8 +285,7 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 			// Setup SSL options
 			if (GetAccount()->GetTLSType() != CINETAccount::eNoTLS)
 			{
-				// Allow illegals certs through for now
-				int cert_opt = LDAP_OPT_X_TLS_ALLOW;
+				int cert_opt = LDAP_OPT_X_TLS_DEMAND;
 				if (::ldap_set_option(NULL, LDAP_OPT_X_TLS_REQUIRE_CERT, &cert_opt) != LDAP_OPT_SUCCESS)
 				{
 					CLOG_LOGTHROW(CGeneralException, -1L);
