@@ -61,31 +61,25 @@ PluginDLLmain$O: ../Common/PluginDLLmain.cp sources/PluginDLLmain.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 %.dd: %.cp
-	@$(SHELL) -ec '$(CXX) -MM $(CXXFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %.dd: %.cpp
-	@$(SHELL) -ec '$(CXX) -MM $(CXXFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %.dd: %.c
-	@$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CC) -MM -MT "$*.o" -MF $@ $(CFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %_plugin.dd: %.cp
-	@$(SHELL) -ec '$(CXX) -MM $(CXXFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CXX) -MM -MT "$*_plugin.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %_plugin.dd: %.cpp
-	@$(SHELL) -ec '$(CXX) -MM $(CXXFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CXX) -MM -MT "$*_plugin.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %_plugin.dd: %.c
-	@$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CC) -MM -MT "$*_plugin.o" -MF $@ $(CFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'

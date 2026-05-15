@@ -37,17 +37,14 @@ distclean:
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 %.dd: %.cpp
-	@$(SHELL) -ec '$(CXX) -MM $(CXXFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %.dd: %.cp
-	@$(SHELL) -ec '$(CXX) -MM $(CXXFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %.dd: %.c
-	@$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< \
-	| sed '\''s|\($*\)\.o[ :]*|\1.o $@ : |g'\'' > $@; \
+	@$(SHELL) -ec '$(CC) -MM -MT "$*.o" -MF $@ $(CFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
