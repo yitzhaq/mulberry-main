@@ -120,6 +120,7 @@ protected:
 		uint64_t			mHighestModSeq;				// CONDSTORE: highest mod-sequence (RFC 7162)
 		NMessage::EFlags	mAllowedFlags;				// Flags that can be changed
 		ulvector			mSearchResults;				// SEARCH results
+		CSearchItem			mSearchSpec;				// Search criteria that produced mSearchResults
 		SACLRight			mMyRights;					// User's rights on this mailbox
 		CMboxACLList*		mACLs;						// List of ACLs on this mailbox
 		cdstrvect*			mQuotas;					// List of quota root names

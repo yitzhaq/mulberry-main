@@ -158,6 +158,8 @@ public:
 	virtual bool	_HasReplace() const { return false; }		// Does server support REPLACE?
 	virtual bool	_HasCondstore() const { return false; }		// Does server support CONDSTORE?
 	virtual bool	_HasQResync() const { return false; }		// Does server support QRESYNC?
+	virtual bool	_CanUseSavedSearch(const ulvector& expected) const { return false; }	// SEARCHRES $ matches?
+	virtual void	_SetSortDollarBroken() {}							// Mark $ as broken in SORT search-key
 	virtual void	_FetchChangedFlags(uint64_t) {}				// Fetch flags changed since modseq
 
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,

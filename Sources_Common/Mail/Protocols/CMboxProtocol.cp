@@ -3030,6 +3030,18 @@ bool CMboxProtocol::DoesExpungeMessage() const
 
 #pragma mark ____________________________SORT/THREAD
 
+// SEARCHRES $ matches expected results?
+bool CMboxProtocol::CanUseSavedSearch(const ulvector& expected) const
+{
+	return mClient->_CanUseSavedSearch(expected);
+}
+
+// Mark $ as broken in SORT search-key position on this connection
+void CMboxProtocol::SetSortDollarBroken()
+{
+	mClient->_SetSortDollarBroken();
+}
+
 // Does server-side sorting
 bool CMboxProtocol::DoesSort(ESortMessageBy sortby) const
 {

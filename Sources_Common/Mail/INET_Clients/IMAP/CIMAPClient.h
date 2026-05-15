@@ -98,6 +98,7 @@ private:
 	bool			mHasIMAP4rev2;					// Server advertises IMAP4REV2
 	bool			mHasAppendLimit;				// Supports APPENDLIMIT (RFC 7889)
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
+	bool			mSortDollarBroken;				// $ in SORT search-key returned empty (server doesn't support it)
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
 	unsigned long	mSearchCount;					// ESEARCH COUNT result
 	unsigned long	mSearchMin;						// ESEARCH MIN result
@@ -292,6 +293,10 @@ protected:
 		{ return mHasCondstore; }
 	virtual bool	_HasQResync() const							// Does server support QRESYNC?
 		{ return mHasQResync; }
+	virtual bool	_CanUseSavedSearch(const ulvector& expected) const
+		{ return mSearchSaved && !mSortDollarBroken && MatchesSavedSearch(expected); }
+	virtual void	_SetSortDollarBroken()
+		{ mSortDollarBroken = true; }
 	virtual void	_FetchChangedFlags(uint64_t modseq);		// Fetch flags changed since modseq
 	virtual void	_ExpungeMessage(const ulvector& nums, bool uids,
 									bool use_saved = false);	// Expunge uids

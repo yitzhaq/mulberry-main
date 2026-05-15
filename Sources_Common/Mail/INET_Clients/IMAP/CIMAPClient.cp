@@ -146,6 +146,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasStatusSize = false;
 	mHasSearchRes = false;
 	mSearchSaved = false;
+	mSortDollarBroken = false;
 	mSearchCount = 0;
 	mSearchMin = 0;
 	mSearchMax = 0;
@@ -228,6 +229,7 @@ void CIMAPClient::_InitCapability()
 	mHasIMAP4rev2 = false;
 	mHasAppendLimit = false;
 	mSearchSaved = false;
+	mSortDollarBroken = false;
 	mSavedSearchResults.clear();
 	mListStatusDone = false;
 	mMultiAppending = false;
@@ -3754,12 +3756,15 @@ void CIMAPClient::IMAPParseMessageResponse(char** txt, CINETClientResponse* resp
 			if (mMboxReset)
 			{
 				// RFC 5182: remove expunged message from saved search results
+				// and decrement subsequent sequence numbers (EXPUNGE shifts them)
 				if (mSearchSaved && !mSavedSearchResults.empty())
 				{
 					ulvector::iterator pos = std::lower_bound(
 						mSavedSearchResults.begin(), mSavedSearchResults.end(), num);
 					if (pos != mSavedSearchResults.end() && *pos == num)
-						mSavedSearchResults.erase(pos);
+						pos = mSavedSearchResults.erase(pos);
+					for (; pos != mSavedSearchResults.end(); ++pos)
+						--(*pos);
 				}
 
 				GetCurrentMbox()->RemoveMessage(num);

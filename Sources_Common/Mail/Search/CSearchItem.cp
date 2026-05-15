@@ -595,6 +595,10 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 		items.push_back(cdstrbool(temp, true));
 		break;
 
+	case eSavedSearch:	// SEARCHRES $ (RFC 5182)
+		items.push_back(cdstrbool("$", false));
+		break;
+
 	case eRecipient:	// cdstring*
 		if (expand_me)
 		{
@@ -1298,6 +1302,9 @@ CSearchItem* CSearchItem::ParseItem(char_stream& txt, bool convert)
 
 		else if (::strcmp(str, cSEARCH_NAMEDSTYLE) == 0)	// cdstring*
 			return new CSearchItem(eNamedStyle, convert ? cdstring::ConvertToOS(txt.get()) : cdstring(txt.get()), match);
+
+		else if (::strcmp(str, "$") == 0)				// transient SEARCHRES ref
+			return new CSearchItem(eSavedSearch, match);
 
 		else												// ulvector*
 			return new CSearchItem(eNumber, ParseSequence(txt), match);

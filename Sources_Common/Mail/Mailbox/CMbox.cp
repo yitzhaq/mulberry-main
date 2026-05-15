@@ -1776,6 +1776,12 @@ void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool n
 
 		// Clear any previous results
 		results->clear();
+
+		// Store the search spec for use by TransferSearch/ReSort
+		if (spec)
+			mStatusInfo->mSearchSpec = *spec;
+		else
+			mStatusInfo->mSearchSpec.clear();
 	}
 
 	// Only bother with search if something to search for
@@ -1833,8 +1839,8 @@ bool CMbox::TransferSearch()
 	if (!mOpenInfo)
 		return false;
 
-	// Clear existing search spec
-	mOpenInfo->mViewCurrent.clear();
+	// Transfer search spec to view spec (preserves structured criteria for SORT/THREAD)
+	mOpenInfo->mViewCurrent = mStatusInfo->mSearchSpec;
 
 	// Transfer search results to view results
 	mOpenInfo->mViewSearchResults = mStatusInfo->mSearchResults;
@@ -1948,10 +1954,13 @@ bool CMbox::ReSort()
 		bool skip_server_sort = false;
 		if (do_sort && (GetViewMode() == eViewMode_ShowMatch))
 		{
-			// Use original search criteria if available, otherwise
-			// use message number list for small result sets. For large
+			// Prefer SEARCHRES $ when server has matching saved results (avoids
+			// re-evaluating search criteria). Fall back to structured criteria,
+			// then to message number list for small result sets. For large
 			// result sets without criteria, fall back to client-side sort.
-			if (mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
+			if (mOpenInfo->mMsgMailer->CanUseSavedSearch(mOpenInfo->mViewSearchResults))
+				input_window = CSearchItem(CSearchItem::eSavedSearch);
+			else if (mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
 				input_window = mOpenInfo->mViewCurrent;
 			else if (mOpenInfo->mViewSearchResults.size() <= 1000)
 			{
@@ -1971,7 +1980,32 @@ bool CMbox::ReSort()
 			mOpenInfo->mMsgMailer->Sort(mOpenInfo->mSortBy, cShowMessageAscending,
 										(GetViewMode() != eViewMode_ShowMatch) ? NULL : &input_window,
 										&results, false);
-		
+
+		// RFC 5182 $ in SORT: not all servers support $ as a search-key in
+		// SORT (e.g. Dovecot returns empty results). Detect this on-the-fly:
+		// if we used $ and got empty results but the search found messages,
+		// mark $ as broken on this connection and retry with structured criteria.
+		if (do_sort && !skip_server_sort && results.empty() &&
+			!mOpenInfo->mViewSearchResults.empty() &&
+			input_window.GetType() == CSearchItem::eSavedSearch)
+		{
+			mOpenInfo->mMsgMailer->SetSortDollarBroken();
+
+			if (mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
+				input_window = mOpenInfo->mViewCurrent;
+			else if (mOpenInfo->mViewSearchResults.size() <= 1000)
+			{
+				CSearchItem temp(CSearchItem::eNumber, mOpenInfo->mViewSearchResults);
+				input_window = temp;
+			}
+			else
+				skip_server_sort = true;
+
+			if (!skip_server_sort)
+				mOpenInfo->mMsgMailer->Sort(mOpenInfo->mSortBy, cShowMessageAscending,
+											&input_window, &results, false);
+		}
+
 		if (!skip_server_sort)
 		{
 			// Do global reverse
@@ -1988,34 +2022,74 @@ bool CMbox::ReSort()
 	}
 	else if ((mOpenInfo->mSortBy == cSortMessageThread) && mOpenInfo->mMsgMailer->DoesThreading(cThreadMessageAny))
 	{
-		// May need to make fixed search results into a search criteria
+		// May need to use view results as search criteria to maintain semi-dynamic view
 		CSearchItem input_window;
 		bool do_thread = (GetNumberFound() > 0);
+		bool skip_server_thread = false;
 		if (do_thread && (GetViewMode() == eViewMode_ShowMatch))
 		{
-			// Add search results as search item
-			CSearchItem temp(CSearchItem::eNumber, mOpenInfo->mViewSearchResults);
-			input_window = temp;
-			
+			// Same three-tier fallback as SORT: $ → criteria → eNumber
+			if (mOpenInfo->mMsgMailer->CanUseSavedSearch(mOpenInfo->mViewSearchResults))
+				input_window = CSearchItem(CSearchItem::eSavedSearch);
+			else if (mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
+				input_window = mOpenInfo->mViewCurrent;
+			else if (mOpenInfo->mViewSearchResults.size() <= 1000)
+			{
+				CSearchItem temp(CSearchItem::eNumber, mOpenInfo->mViewSearchResults);
+				input_window = temp;
+			}
+			else
+				skip_server_thread = true;
+
 			// Don't do thread command if results are empty
-			do_thread = mOpenInfo->mViewSearchResults.size();
+			do_thread = mOpenInfo->mViewSearchResults.size() > 0;
 		}
 
 		bool use_references = mOpenInfo->mMsgMailer->DoesThreading(cThreadMessageReferences);
 
 		// Don't let server reverse because it does not do implicit sequence reversal
 		threadvector results;
-		if (do_thread)
+		if (do_thread && !skip_server_thread)
 			mOpenInfo->mMsgMailer->Thread(use_references ? cThreadMessageReferences : cThreadMessageSubject,
 											(GetViewMode() != eViewMode_ShowMatch) ? NULL : &input_window,
 											&results, false);
-		
-		// Create a CMessageThread tree based on results - might be reversed
-		mOpenInfo->mSortedMessages->DeleteFakes();
-		CMessageThread::ThreadResults(this, results, mOpenInfo->mSortedMessages, mOpenInfo->mShowBy == cShowMessageDescending);
-		mOpenInfo->mSortedMessages->SortDirty();
 
-		external = true;
+		// Same $ retry logic as SORT path — see comment there
+		if (do_thread && !skip_server_thread && results.empty() &&
+			!mOpenInfo->mViewSearchResults.empty() &&
+			input_window.GetType() == CSearchItem::eSavedSearch)
+		{
+			mOpenInfo->mMsgMailer->SetSortDollarBroken();
+
+			if (mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
+				input_window = mOpenInfo->mViewCurrent;
+			else if (mOpenInfo->mViewSearchResults.size() <= 1000)
+			{
+				CSearchItem temp(CSearchItem::eNumber, mOpenInfo->mViewSearchResults);
+				input_window = temp;
+			}
+			else
+				skip_server_thread = true;
+
+			if (!skip_server_thread)
+				mOpenInfo->mMsgMailer->Thread(use_references ? cThreadMessageReferences : cThreadMessageSubject,
+												&input_window, &results, false);
+		}
+
+		if (!skip_server_thread)
+		{
+			// Create a CMessageThread tree based on results - might be reversed
+			mOpenInfo->mSortedMessages->DeleteFakes();
+			CMessageThread::ThreadResults(this, results, mOpenInfo->mSortedMessages, mOpenInfo->mShowBy == cShowMessageDescending);
+			mOpenInfo->mSortedMessages->SortDirty();
+
+			external = true;
+		}
+		else
+		{
+			// Client-side fallback needs References headers for proper threading
+			LoadReferences();
+		}
 	}
 	else
 	{

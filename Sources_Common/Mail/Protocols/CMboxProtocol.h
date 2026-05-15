@@ -446,6 +446,8 @@ protected:
 			bool	DoesExpungeMessage() const;					// Does server handle copy?
 
 	// Sort/thread support
+			bool	CanUseSavedSearch(const ulvector& expected) const;	// SEARCHRES $ matches expected results?
+			void	SetSortDollarBroken();								// Mark $ as broken in SORT search-key
 			bool	DoesSort(ESortMessageBy sortby) const;				// Does server-side sorting
 			void    Sort(ESortMessageBy sortby,						// Do server-side sort
 							EShowMessageBy show_by,

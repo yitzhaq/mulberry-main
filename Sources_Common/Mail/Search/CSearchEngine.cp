@@ -341,8 +341,8 @@ bool CSearchEngine::SearchMbox(CMbox* mbox, unsigned long& found)
 			open_mbox = mbox;
 		}
 
-		// Search in existing open mailbox
-		open_mbox->Search(&mSearchItem, NULL, false, true);
+		// save=true for SEARCHRES $ in subsequent SORT/THREAD
+		open_mbox->Search(&mSearchItem, NULL, false, true, true);
 		found = open_mbox->GetSearchResults().size();
 
 		// Do silent close
