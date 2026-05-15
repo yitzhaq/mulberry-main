@@ -47,6 +47,7 @@
 #include "CTCPException.h"
 #include "CXStringResources.h"
 
+#include "CPRECIS.h"
 #include "base64.h"
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
@@ -1107,27 +1108,42 @@ void CINETClient::DoPlainAuthentication()
 
 	CAuthenticatorUserPswd* auth = GetAccount()->GetAuthenticatorUserPswd();
 
+	// RFC 8265 PRECIS enforcement — normalize credentials before wire use
+	cdstring precis_uid;
+	cdstring precis_pwd;
+	try
+	{
+		precis_uid = precis::CPRECIS::EnforceUsernameCasePreserved(auth->GetUID());
+		precis_pwd = precis::CPRECIS::EnforceOpaqueString(auth->GetPswd());
+	}
+	catch (std::invalid_argument&)
+	{
+		CStopAlertRsrcTxtTask* task = new CStopAlertRsrcTxtTask("Error::INET::PRECISError");
+		task->Go();
+		throw;
+	}
+
 	if (force_login || (mLoginAllowed && !mAuthLoginAllowed && !mAuthPlainAllowed))
 	{
 		// LOGIN uid pswd
-		INETSendString(auth->GetUID(), eQueueProcess, false);
+		INETSendString(precis_uid, eQueueProcess, false);
 		INETSendString(cSpace, eQueueNoFlags, false);
-		INETSendString(auth->GetPswd(), eQueueProcess, false);
+		INETSendString(precis_pwd, eQueueProcess, false);
 	}
-	
+
 	// Use AUTH=PLAIN ahead of AUTH=LOGIN
 	else if (mAuthPlainAllowed)
 	{
 		// AUTHENTICATE PLAIN {..+}\0uid\0pswd
 		INETSendString(cPLAIN, eQueueProcess, false);	// Process since ACAP requires quoted strings always
-		
+
 		// Some SASL profiles allow extra data wiyth AUTHENTICATE others do not
 		if (mAuthInitialClientData)
 			INETSendString(cSpace, eQueueNoFlags, false);
 		else
 		{
 			INETSendString(cCRLF, eQueueNoFlags, false);
-			
+
 			// Wait for continuation of failure (which throws)
 			INETSendString(NULL, eQueueNoFlags, false);
 		}
@@ -1138,9 +1154,9 @@ void CINETClient::DoPlainAuthentication()
 		uint32_t buflen = 0;
 		buffer.write(reinterpret_cast<const char*>(&buflen), sizeof(uint32_t));
 		buffer.put('\0');
-		buffer << auth->GetUID();
+		buffer << precis_uid;
 		buffer.put('\0');
-		buffer << auth->GetPswd();
+		buffer << precis_pwd;
 		buflen = buffer.pcount() - sizeof(uint32_t);
 
 		// Some SASL profiles allow 'raw' data, others require base64
@@ -1174,17 +1190,17 @@ void CINETClient::DoPlainAuthentication()
 		INETSendString(NULL, eQueueNoFlags, false);
 		
 		// Send base64 encoded user id
-		cdstring buffer = auth->GetUID();
+		cdstring buffer = precis_uid;
 		cdstring b64;
 		b64.steal(::base64_encode(reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length()));
 		INETSendString(b64, eQueueProcess, false);
 		INETSendString(cCRLF, eQueueNoFlags, false);
-		
+
 		// Wait for continuation of failure (which throws)
 		INETSendString(NULL, eQueueNoFlags, false);
-		
+
 		// Send base64 encoded password
-		buffer = auth->GetPswd();
+		buffer = precis_pwd;
 		b64.steal(::base64_encode(reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length()));
 		INETSendString(b64, eQueueProcess, false);
 		
@@ -2150,6 +2166,7 @@ static const char* GetResponseCodeExplanation(const cdstring& tag_msg)
 		{ "[UIDNOTSTICKY]",          "Mailbox does not support persistent UIDs" },
 		{ "[NOTSAVED]",              "Server could not save search results" },
 		{ "[HASCHILDREN]",           "Mailbox has children that must be deleted first" },
+		{ "[BADCOMPARATOR]",         "No matching comparator found" },
 		{ NULL, NULL }
 	};
 

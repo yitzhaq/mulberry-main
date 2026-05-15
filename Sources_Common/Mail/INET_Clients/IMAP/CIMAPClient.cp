@@ -162,6 +162,9 @@ void CIMAPClient::InitIMAPClient()
 	mHasQResync = false;
 	mHasIMAP4rev2 = false;
 	mHasAppendLimit = false;
+	mHasLanguage = false;
+	mHasI18NLevel1 = false;
+	mHasI18NLevel2 = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -232,6 +235,11 @@ void CIMAPClient::_InitCapability()
 	mHasQResync = false;
 	mHasIMAP4rev2 = false;
 	mHasAppendLimit = false;
+	mHasLanguage = false;
+	mHasI18NLevel1 = false;
+	mHasI18NLevel2 = false;
+	mActiveLanguage.clear();
+	mActiveComparator.clear();
 	mSearchSaved = false;
 	mSortDollarBroken = false;
 	mSavedSearchResults.clear();
@@ -326,6 +334,9 @@ void CIMAPClient::_ProcessCapability()
 	mHasEnable = mLastResponse.CheckUntagged(cIMAP_ENABLE, true);
 	mHasCondstore = mLastResponse.CheckUntagged(cIMAP_CONDSTORE, true);
 	mHasQResync = mLastResponse.CheckUntagged(cIMAP_QRESYNC, true);
+	mHasLanguage = mLastResponse.CheckUntagged(cIMAP_LANGUAGE, true);
+	mHasI18NLevel2 = mLastResponse.CheckUntagged(cIMAP_I18NLEVEL2, true);
+	mHasI18NLevel1 = mHasI18NLevel2 || mLastResponse.CheckUntagged(cIMAP_I18NLEVEL1, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -1281,6 +1292,44 @@ void CIMAPClient::_Enable()
 		INETSendString(cENABLE);
 		INETSendString(cSpace);
 		INETSendString(enable_args);
+		INETFinishSend();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
+}
+
+// Send RFC 5255 LANGUAGE command (query available languages)
+// RFC 5255 §3.1/§7: post-TLS re-issue MUST is satisfied by post-login placement;
+// if pre-auth LANGUAGE-set is ever added, explicit re-issue after TLS/SASL is required
+void CIMAPClient::_Language()
+{
+	if (!mHasLanguage)
+		return;
+
+	try
+	{
+		INETStartSend("Status::IMAP::Language", "Error::IMAP::OSErrLanguage", "Error::IMAP::NoBadLanguage");
+		INETSendString(cLANGUAGE);
+		INETFinishSend();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+	}
+}
+
+// Send RFC 5255 COMPARATOR command (query active comparator)
+void CIMAPClient::_Comparator()
+{
+	if (!mHasI18NLevel2)
+		return;
+
+	try
+	{
+		INETStartSend("Status::IMAP::Comparator", "Error::IMAP::OSErrComparator", "Error::IMAP::NoBadComparator");
+		INETSendString(cCOMPARATOR);
 		INETFinishSend();
 	}
 	catch(...)
@@ -3808,6 +3857,20 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 		IMAPParseID(txt);
 	}
 
+	// LANGUAGE (RFC 5255)
+	else if (::stradvtokcmp(txt, cLANGUAGE) == 0)
+	{
+		response->code = cStarLANGUAGE;
+		IMAPParseLanguage(txt);
+	}
+
+	// COMPARATOR (RFC 5255)
+	else if (::stradvtokcmp(txt, cCOMPARATOR) == 0)
+	{
+		response->code = cStarCOMPARATOR;
+		IMAPParseComparator(txt);
+	}
+
 	// ENABLED (RFC 5161 / RFC 9051)
 	else if (::stradvtokcmp(txt, "ENABLED") == 0)
 	{
@@ -6006,4 +6069,80 @@ void CIMAPClient::IMAPParseNamespaceItem(cdstrpairvect* names, char** txt)
 		p++;
 
 	*txt = p;
+}
+
+#pragma mark ____________________________RFC 5255 Responses
+
+// Parse RFC 5255 LANGUAGE reply
+// Format: * LANGUAGE (lang-tag *(SP lang-tag))
+// Single tag = active language changed; multiple tags = enumeration only (§3.3)
+void CIMAPClient::IMAPParseLanguage(char** txt)
+{
+	while (**txt == ' ') (*txt)++;
+
+	if (**txt != '(')
+		return;
+
+	(*txt)++;
+
+	cdstring first_tag;
+	unsigned long count = 0;
+	while (**txt && **txt != ')')
+	{
+		while (**txt == ' ') (*txt)++;
+		if (**txt == ')')
+			break;
+
+		char* tag = INETParseString(txt);
+		if (tag)
+		{
+			if (count == 0)
+				first_tag = tag;
+			count++;
+			delete tag;
+		}
+
+		while (**txt == ' ') (*txt)++;
+	}
+
+	if (**txt == ')')
+		(*txt)++;
+
+	// Single tag means language was set; multiple tags is an enumeration
+	if (count == 1)
+		mActiveLanguage = first_tag;
+}
+
+// Parse RFC 5255 COMPARATOR reply
+// Format: * COMPARATOR comp-sel [SP "(" comp-id *(SP comp-id) ")"]
+void CIMAPClient::IMAPParseComparator(char** txt)
+{
+	while (**txt == ' ') (*txt)++;
+
+	char* comp = INETParseString(txt);
+	if (comp)
+	{
+		mActiveComparator = comp;
+		delete comp;
+	}
+
+	while (**txt == ' ') (*txt)++;
+
+	if (**txt == '(')
+	{
+		(*txt)++;
+		while (**txt && **txt != ')')
+		{
+			while (**txt == ' ') (*txt)++;
+			if (**txt == ')')
+				break;
+
+			char* avail = INETParseString(txt);
+			delete avail;
+
+			while (**txt == ' ') (*txt)++;
+		}
+		if (**txt == ')')
+			(*txt)++;
+	}
 }

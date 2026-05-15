@@ -34,6 +34,8 @@
 #include "CStreamUtils.h"
 #include "CURL.h"
 
+#include "CPRECIS.h"
+#include "CTaskClasses.h"
 #include "CHTTPAuthorizationBasic.h"
 #include "CHTTPAuthorizationDigest.h"
 #include "CHTTPDataString.h"
@@ -1772,8 +1774,21 @@ CHTTPAuthorization* CWebDAVVCardClient::GetAuthorization(bool first_time, const 
 		case CAuthenticator::ePlainText:
 		{
 			CAuthenticatorUserPswd* auth = GetAccount()->GetAuthenticatorUserPswd();
+			cdstring precis_uid;
+			cdstring precis_pwd;
+			try
+			{
+				precis_uid = precis::CPRECIS::EnforceUsernameCasePreserved(auth->GetUID());
+				precis_pwd = precis::CPRECIS::EnforceOpaqueString(auth->GetPswd());
+			}
+			catch (std::invalid_argument&)
+			{
+				CStopAlertRsrcTxtTask* task = new CStopAlertRsrcTxtTask("Error::INET::PRECISError");
+				task->Go();
+				throw;
+			}
 			mAuthUniqueness = GetAccount()->GetAuthenticator().GetUniqueness();
-			return new CHTTPAuthorizationBasic(auth->GetUID(), auth->GetPswd());
+			return new CHTTPAuthorizationBasic(precis_uid, precis_pwd);
 		}
 
 		case CAuthenticator::eSSL:
@@ -1785,8 +1800,21 @@ CHTTPAuthorization* CWebDAVVCardClient::GetAuthorization(bool first_time, const 
 			if (GetAccount()->GetAuthenticator().GetSASLID() == "DIGEST-MD5")
 			{
 				CAuthenticatorUserPswd* auth = GetAccount()->GetAuthenticatorUserPswd();
+				cdstring precis_uid;
+				cdstring precis_pwd;
+				try
+				{
+					precis_uid = precis::CPRECIS::EnforceUsernameCaseMapped(auth->GetUID());
+					precis_pwd = precis::CPRECIS::EnforceOpaqueString(auth->GetPswd());
+				}
+				catch (std::invalid_argument&)
+				{
+					CStopAlertRsrcTxtTask* task = new CStopAlertRsrcTxtTask("Error::INET::PRECISError");
+					task->Go();
+					throw;
+				}
 				mAuthUniqueness = GetAccount()->GetAuthenticator().GetUniqueness();
-				return new CHTTPAuthorizationDigest(auth->GetUID(), auth->GetPswd(), www_authenticate);
+				return new CHTTPAuthorizationDigest(precis_uid, precis_pwd, www_authenticate);
 			}
 			else
 				return NULL;					// Currently not supported with http

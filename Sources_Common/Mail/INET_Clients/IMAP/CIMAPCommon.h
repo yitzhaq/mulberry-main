@@ -83,6 +83,9 @@ extern const char* cRETURN_SAVE_ALL;
 extern const char* cIMAP_AUTHLOGIN;
 extern const char* cIMAP_AUTHPLAIN;
 extern const char* cIMAP_AUTHANON;
+extern const char* cIMAP_LANGUAGE;
+extern const char* cIMAP_I18NLEVEL1;
+extern const char* cIMAP_I18NLEVEL2;
 
 // Commands
 extern const char* cIDLE;
@@ -338,5 +341,14 @@ extern const char* cAPPENDUID;
 
 // Commands
 extern const char* cUNSELECT;
+
+// I18N (RFC 5255)
+
+// Commands
+extern const char* cLANGUAGE;
+extern const char* cCOMPARATOR;
+
+// Response codes
+extern const char* cBADCOMPARATOR;
 
 #endif

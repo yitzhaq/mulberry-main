@@ -34,12 +34,15 @@
 #include "CAuthPlugin.h"
 
 #include "CAuthenticator.h"
+#include "CPRECIS.h"
 #include "CLocalCommon.h"
 #include "CMailControl.h"
+#include "CTaskClasses.h"
 #include "CTCPStream.h"
 #include "CLog.h"
 
 #include <memory>
+#include <stdexcept>
 
 #pragma mark ____________________________CAuthPlugin
 
@@ -157,11 +160,26 @@ bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 		{
 			CAuthenticatorUserPswd* auth = (CAuthenticatorUserPswd*) acct_auth->GetAuthenticator();
 
+			// RFC 8265 PRECIS enforcement — CaseMapped for SASL plugins that compute hashes
+			cdstring precis_uid;
+			cdstring precis_pwd;
+			try
+			{
+				precis_uid = precis::CPRECIS::EnforceUsernameCaseMapped(auth->GetUID());
+				precis_pwd = precis::CPRECIS::EnforceOpaqueString(auth->GetPswd());
+			}
+			catch (std::invalid_argument&)
+			{
+				CStopAlertRsrcTxtTask* task = new CStopAlertRsrcTxtTask("Error::INET::PRECISError");
+				task->Go();
+				throw;
+			}
+
 			// Set info
 			clone->UseUserID(true);
-			clone->SetUserID(auth->GetUID().c_str());
+			clone->SetUserID(precis_uid.c_str());
 			clone->UsePassword(true);
-			clone->SetPassword(auth->GetPswd().c_str());
+			clone->SetPassword(precis_pwd.c_str());
 			clone->SetServer(cdstring::null_str);
 			clone->SetRealServer(cdstring::null_str);
 		}

@@ -14,6 +14,7 @@
 	<string id="Error::INET::NoBadOpen">Could not connect to server:\n</string>
 	<string id="Error::INET::OSErrLogon">while logging in to server.</string>
 	<string id="Error::INET::NoBadLogon">Could not login to server:\n</string>
+	<string id="Error::INET::PRECISError">Your username or password contains characters that are not allowed in credentials. Please re-enter using standard characters.\n</string>
 	<string id="Error::INET::OSErrLogout">while logging out of server.</string>
 	<string id="Error::INET::NoBadLogout">Could not logout of server:\n</string>
 	<string id="Error::INET::OSErrStartTLS">while doing TLS negotiation with the server.</string>
@@ -51,6 +52,10 @@
 	<string id="Error::IMAP::NoBadCompress">Could not enable compression:\n</string>
 	<string id="Error::IMAP::OSErrEnable">while enabling extensions.</string>
 	<string id="Error::IMAP::NoBadEnable">Could not enable extensions:\n</string>
+	<string id="Error::IMAP::OSErrLanguage">while negotiating language.</string>
+	<string id="Error::IMAP::NoBadLanguage">Could not negotiate language:\n</string>
+	<string id="Error::IMAP::OSErrComparator">while querying active comparator.</string>
+	<string id="Error::IMAP::NoBadComparator">Could not query active comparator:\n</string>
 	<string id="Error::IMAP::OSErrSearch">while searching a mailbox.</string>
 	<string id="Error::IMAP::NoBadSearch">Could not search a mailbox:\n</string>
 	<string id="Error::IMAP::OSErrReadMsg">while reading the message text.</string>

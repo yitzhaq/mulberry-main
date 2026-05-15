@@ -22,6 +22,7 @@
 #include "CLDAPClient.h"
 
 #include "CINETClient.h"
+#include "CPRECIS.h"
 #include "CINETProtocol.h"
 #include "CMailControl.h"
 #include "CMulberryApp.h"
@@ -379,10 +380,25 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 			{
 				first = false;
 
+				// RFC 8265 PRECIS enforcement
+				cdstring precis_uid;
+				cdstring precis_pwd;
+				try
+				{
+					precis_uid = precis::CPRECIS::EnforceUsernameCasePreserved(auth->GetUID());
+					precis_pwd = precis::CPRECIS::EnforceOpaqueString(auth->GetPswd());
+				}
+				catch (std::invalid_argument&)
+				{
+					CStopAlertRsrcTxtTask* task = new CStopAlertRsrcTxtTask("Error::INET::PRECISError");
+					task->Go();
+					throw;
+				}
+
 				// Send UID and password data and exit loop if success
-				int errcode = ::ldap_simple_bind_s(ld, const_cast<cdstring&>(auth->GetUID()).c_str_mod(),
-																		const_cast<cdstring&>(auth->GetPswd()).c_str_mod());
-				
+				int errcode = ::ldap_simple_bind_s(ld, precis_uid.c_str_mod(),
+																		precis_pwd.c_str_mod());
+
 				// Try LDAPv2 downgrade if protocol error
 				if ((errcode == LDAP_PROTOCOL_ERROR) && (GetAccount()->GetLDAPVersion() > LDAP_VERSION2))
 				{
@@ -394,10 +410,10 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 						CLOG_LOGTHROW(CINETClient::CINETException, CINETClient::CINETException::err_NoResponse);
 						throw CINETClient::CINETException(CINETClient::CINETException::err_NoResponse);
 					}
-					
+
 					// Try to bind again
-					errcode = ::ldap_simple_bind_s(ld, const_cast<cdstring&>(auth->GetUID()).c_str_mod(),
-																		const_cast<cdstring&>(auth->GetPswd()).c_str_mod());
+					errcode = ::ldap_simple_bind_s(ld, precis_uid.c_str_mod(),
+																		precis_pwd.c_str_mod());
 				}
 
 				if (HandleResult(errcode))

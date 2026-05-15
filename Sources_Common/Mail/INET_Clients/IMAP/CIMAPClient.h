@@ -99,6 +99,11 @@ private:
 	bool			mHasQResync;					// Supports QRESYNC (RFC 7162)
 	bool			mHasIMAP4rev2;					// Server advertises IMAP4REV2
 	bool			mHasAppendLimit;				// Supports APPENDLIMIT (RFC 7889)
+	bool			mHasLanguage;					// Supports LANGUAGE (RFC 5255)
+	bool			mHasI18NLevel1;					// Supports I18NLEVEL=1 (RFC 5255)
+	bool			mHasI18NLevel2;					// Supports I18NLEVEL=2 (RFC 5255)
+	cdstring		mActiveLanguage;				// Active language tag
+	cdstring		mActiveComparator;				// Active comparator
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
 	bool			mSortDollarBroken;				// $ in SORT search-key returned empty (server doesn't support it)
 	ulvector		mSavedSearchResults;			// UIDs from last SAVE search
@@ -197,6 +202,8 @@ protected:
 	virtual void	_SendID();					// Send RFC 2971 ID command
 	virtual void	_Enable();					// Send RFC 5161 ENABLE command
 			void	_Compress();				// Send RFC 4978 COMPRESS command
+			void	_Language();				// Send RFC 5255 LANGUAGE command
+			void	_Comparator();				// Send RFC 5255 COMPARATOR command
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes);		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes);			// Do find all mboxes
 			void	_FindSpecialUseMbox(CMboxList* mboxes);	// Find special-use mailboxes only (RFC 6154)
@@ -426,6 +433,8 @@ protected:
 	void	IMAPParseNamespaceItem(cdstrpairvect* names,		// Parse IMAP NAMESPACE item
 									char** txt);
 	void	IMAPParseID(char** txt);							// Parse RFC 2971 ID reply
+	void	IMAPParseLanguage(char** txt);						// Parse RFC 5255 LANGUAGE reply
+	void	IMAPParseComparator(char** txt);						// Parse RFC 5255 COMPARATOR reply
 
 };
 

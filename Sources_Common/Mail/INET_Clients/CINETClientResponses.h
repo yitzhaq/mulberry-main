@@ -66,6 +66,8 @@ enum EINETResponseCode
 	cStarACAP,
 	cStarALERT,
 	cStarENTRY,
+	cStarLANGUAGE,
+	cStarCOMPARATOR,
 	cStarMODTIME
 };
 

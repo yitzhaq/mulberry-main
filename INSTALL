@@ -270,6 +270,7 @@ Required:
   - OpenSSL 1.1+ development headers (libssl-dev)
   - LDAP development headers (libldap2-dev)
   - libsodium development headers (libsodium-dev)
+  - libunistring development headers (libunistring-dev)
   - PCRE development headers (libpcre3-dev)
   - X11/Xft/XPM development headers
   - Unicode CLDR annotations (unicode-cldr-core, for emoji table)

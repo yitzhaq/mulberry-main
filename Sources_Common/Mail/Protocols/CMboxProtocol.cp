@@ -675,6 +675,10 @@ void CMboxProtocol::Logon()
 	// Send RFC 5161 ENABLE command (IMAP only)
 	mClient->_Enable();
 
+	// Send RFC 5255 LANGUAGE and COMPARATOR commands (IMAP only)
+	mClient->_Language();
+	mClient->_Comparator();
+
 	// Do not reset current mbox for clone
 	if (!IsCloned())
 		mCurrent_mbox = NULL;
@@ -754,6 +758,8 @@ void CMboxProtocol::Forceon()
 	mClient->_Compress();
 	mClient->_SendID();
 	mClient->_Enable();
+	mClient->_Language();
+	mClient->_Comparator();
 }
 
 // Forced off server

@@ -422,6 +422,14 @@ AC_CHECK_HEADER([sodium.h], [],
 LDFLAGS="$LDFLAGS -lsodium"
 
 # ---------------------------------------------------------------------------
+# libunistring (required for PRECIS username/password normalization, RFC 8265)
+# ---------------------------------------------------------------------------
+
+AC_CHECK_HEADER([uninorm.h], [],
+    AC_MSG_ERROR([uninorm.h not found. Install libunistring-dev.]))
+LDFLAGS="$LDFLAGS -lunistring"
+
+# ---------------------------------------------------------------------------
 # Almost there...
 # ---------------------------------------------------------------------------
 

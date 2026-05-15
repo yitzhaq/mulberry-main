@@ -268,6 +268,13 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP internationalization (RFC 5255). Detects LANGUAGE, I18NLEVEL=1,
+  and I18NLEVEL=2 capabilities. Queries available languages via the
+  LANGUAGE command and the active comparator via the COMPARATOR command
+  after login. Parses `* LANGUAGE` and `* COMPARATOR` untagged responses
+  and handles the BADCOMPARATOR response code. I18NLEVEL=2 implies
+  I18NLEVEL=1 (superset). LANGUAGE pre-auth negotiation and NAMESPACE
+  TRANSLATION support are deferred.
 - IMAP4rev2 capability negotiation (RFC 9051). Mulberry detects
   IMAP4rev2 in server CAPABILITY, sends ENABLE IMAP4rev2 when both
   rev1 and rev2 are advertised, and activates rev2-specific behavior:
@@ -392,6 +399,17 @@ X11 bitmap fonts).
   OS default pending Winsock 2 upgrade.
 - Visual Studio 2019 build support (Win32, untested).
   Contributed by Quanah Gibson-Mount.
+- PRECIS username and password preparation (RFC 8265). Usernames and
+  passwords are now normalized before authentication using the three
+  PRECIS profiles: UsernameCasePreserved for plaintext protocols
+  (LOGIN, PLAIN, AUTH=LOGIN, HTTP Basic/Digest, LDAP bind),
+  UsernameCaseMapped for SASL mechanisms that compute hashes client-side
+  (CRAM-MD5, DIGEST-MD5), and OpaqueString for passwords. Processing
+  includes width mapping (fullwidth/halfwidth decomposition), PRECIS
+  IdentifierClass/FreeformClass validation, NFC normalization, non-ASCII
+  space mapping (for passwords), and RFC 5893 Bidi Rule enforcement
+  (for usernames). Full CONTEXTJ/CONTEXTO rule validation per RFC 5892
+  Appendix A. New build dependency: libunistring.
 
 ### Fixed
 

@@ -80,6 +80,9 @@ const char* cRETURN_SAVE_ALL =			" RETURN (SAVE ALL)";
 const char* cIMAP_AUTHLOGIN =			"AUTH=LOGIN";
 const char* cIMAP_AUTHPLAIN =			"AUTH=PLAIN";
 const char* cIMAP_AUTHANON =			"AUTH=ANONYMOUS";
+const char* cIMAP_LANGUAGE =			"LANGUAGE";
+const char* cIMAP_I18NLEVEL1 =			"I18NLEVEL=1";
+const char* cIMAP_I18NLEVEL2 =			"I18NLEVEL=2";
 
 // Commands
 const char* cIDLE =						"IDLE";
@@ -341,3 +344,12 @@ const char* cAPPENDUID =			"APPENDUID";
 
 // Commands
 const char* cUNSELECT =				"UNSELECT";
+
+// I18N (RFC 5255)
+
+// Commands
+const char* cLANGUAGE =				"LANGUAGE";
+const char* cCOMPARATOR =				"COMPARATOR";
+
+// Response codes
+const char* cBADCOMPARATOR =			"[BADCOMPARATOR]";
