@@ -783,6 +783,69 @@ bool CRFC822::HeaderSearch(const char* hdr, const cdstring& field, cdstring& res
 	return false;
 }
 
+bool CRFC822::HeaderSearchAll(const char* hdr, const cdstring& field, cdstrvect& results)
+{
+	const char* p = hdr;
+
+	cdstring temp_field = field;
+	if (!temp_field.compare_end(": "))
+		temp_field += ": ";
+	unsigned long field_length = temp_field.length();
+
+	while(*p)
+	{
+		if (!::strncmpnocase(p, temp_field, field_length))
+		{
+			const char* line_start = p + field_length;
+			const char* line_end = line_start;
+
+			while(true)
+			{
+				while(*line_end && (*line_end != lendl1))
+					line_end++;
+
+				const char* snoop = line_end;
+				if (*snoop == lendl1)
+				{
+					snoop++;
+#if OS_LINE_END == OS_CRLF
+					if (*snoop == lendl2)
+						snoop++;
+#endif
+				}
+
+				if ((*snoop != ' ') && (*snoop != '\t'))
+				{
+					cdstring result;
+					result.assign(line_start, line_end - line_start);
+					UnfoldLines(result.c_str_mod());
+					TextFrom1522(result);
+					results.push_back(result);
+					p = snoop;
+					break;
+				}
+
+				line_end = snoop;
+			}
+			continue;
+		}
+
+		while(*p && (*p != lendl1))
+			p++;
+
+		if (*p == lendl1)
+		{
+			p++;
+#if OS_LINE_END == OS_CRLF
+			if (*p == lendl2)
+				p++;
+#endif
+		}
+	}
+
+	return !results.empty();
+}
+
 // Add address list to header
 void CRFC822::AddAddressList(const char* field,
 								bool bounced,

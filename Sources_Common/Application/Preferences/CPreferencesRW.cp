@@ -121,6 +121,8 @@ void CPreferences::WriteToMap(COptionsMap* theMap, bool dirty_only,
 		WRITETOMAP(mTCPKeepaliveIdle, cTCPKeepaliveIdleKey)							// v4_2a1
 		WRITETOMAP(mTCPKeepaliveInterval, cTCPKeepaliveIntervalKey)					// v4_2a1
 		WRITETOMAP(mTCPKeepaliveCount, cTCPKeepaliveCountKey)						// v4_2a1
+		WRITETOMAP(mAuthResultsEnabled, cAuthResultsEnabledKey)						// v4_2a1
+		WRITETOMAP(mAuthResultsTrustedServers, cAuthResultsTrustedServersKey)		// v4_2a1
 	}
 
 	// Write account prefs
@@ -740,6 +742,8 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 		READFROMMAP(mTCPKeepaliveIdle, cTCPKeepaliveIdleKey)
 		READFROMMAP(mTCPKeepaliveInterval, cTCPKeepaliveIntervalKey)
 		READFROMMAP(mTCPKeepaliveCount, cTCPKeepaliveCountKey)
+		READFROMMAP(mAuthResultsEnabled, cAuthResultsEnabledKey)
+		READFROMMAP(mAuthResultsTrustedServers, cAuthResultsTrustedServersKey)
 	}
 
 //--------------------Network Prefs

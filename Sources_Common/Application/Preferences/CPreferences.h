@@ -115,6 +115,8 @@ public:
 	CPreferenceValueMap<long>					mTCPKeepaliveIdle;					// Seconds before first keepalive probe
 	CPreferenceValueMap<long>					mTCPKeepaliveInterval;				// Seconds between keepalive probes
 	CPreferenceValueMap<long>					mTCPKeepaliveCount;					// Failed probes before declaring dead
+	CPreferenceValueMap<bool>					mAuthResultsEnabled;				// Enable Authentication-Results processing
+	CPreferenceValueMap<cdstrvect>				mAuthResultsTrustedServers;			// Trusted authserv-id list (empty = auto-match)
 
 	// Account prefs
 	CPreferenceValueMap<CMailAccountList>			mMailAccounts;					// List of mail accounts

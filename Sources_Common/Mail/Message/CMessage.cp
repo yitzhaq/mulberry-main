@@ -20,6 +20,7 @@
 #include "CMessage.h"
 
 #include "CAddress.h"
+#include "CAuthenticationResults.h"
 #include "CAddressList.h"
 #include "CAdminLock.h"
 #include "CAttachment.h"
@@ -1023,6 +1024,177 @@ bool CMessage::GetHeaderField(const cdstring& field, cdstring& result)
 #else
 		return false;
 #endif
+}
+
+// Gmail uses google.com infrastructure but gmail.com as user-facing domain.
+// No generic heuristic resolves this — RFC 8601 §7.1.
+static const char* cGmailDomain = "gmail.com";
+static const char* cGoogleAuthservDomain = "google.com";
+
+static cdstring ExtractDomainFromAddress(const cdstring& addr)
+{
+	const char* at = ::strchr(addr.c_str(), '@');
+	if (at)
+		return cdstring(at + 1);
+	return cdstring::null_str;
+}
+
+static cdstring ExtractDomainFromHostname(const cdstring& hostname)
+{
+	const char* dot = ::strchr(hostname.c_str(), '.');
+	if (dot && *(dot + 1))
+		return cdstring(dot + 1);
+	return hostname;
+}
+
+static bool AuthservIdMatchesDomain(const cdstring& authserv_id, const cdstring& domain)
+{
+	if (authserv_id.empty() || domain.empty())
+		return false;
+
+	if (authserv_id.compare(domain, true) == 0)
+		return true;
+
+	// authserv-id is subdomain of domain
+	if (authserv_id.length() > domain.length() + 1)
+	{
+		const char* tail = authserv_id.c_str() + authserv_id.length() - domain.length();
+		if (*(tail - 1) == '.' && ::strcasecmp(tail, domain.c_str()) == 0)
+			return true;
+	}
+
+	return false;
+}
+
+bool CMessage::GetAuthenticationResults(std::vector<CAuthenticationResults>& results)
+{
+	results.clear();
+
+	// RFC 8601 §7.10: ignore A-R headers inside message/rfc822 attachments
+	if (IsSubMessage())
+		return false;
+
+	if (!CPreferences::sPrefs || !CPreferences::sPrefs->mAuthResultsEnabled.GetValue())
+		return false;
+
+	if (!HasHeader())
+		ReadHeader();
+	if (!HasHeader())
+		return false;
+
+	// Get all A-R headers
+	cdstrvect raw_headers;
+	if (!CRFC822::HeaderSearchAll(GetHeader(), cHDR_AUTHENTICATION_RESULTS, raw_headers))
+		return false;
+
+	// Parse each
+	std::vector<CAuthenticationResults> all_parsed;
+	for (cdstrvect::const_iterator iter = raw_headers.begin(); iter != raw_headers.end(); iter++)
+	{
+		CAuthenticationResults ar;
+		if (ar.Parse((*iter).c_str()))
+			all_parsed.push_back(ar);
+	}
+
+	if (all_parsed.empty())
+		return false;
+
+	// Build trust domains from account
+	const cdstrvect& trusted_list = CPreferences::sPrefs->mAuthResultsTrustedServers.GetValue();
+
+	if (!trusted_list.empty())
+	{
+		// Explicit mode: exact match against configured list
+		for (std::vector<CAuthenticationResults>::const_iterator iter = all_parsed.begin();
+			iter != all_parsed.end(); iter++)
+		{
+			for (cdstrvect::const_iterator t = trusted_list.begin(); t != trusted_list.end(); t++)
+			{
+				if ((*iter).mAuthservId.compare(*t, true) == 0)
+				{
+					results.push_back(*iter);
+					break;
+				}
+			}
+		}
+	}
+	else if (GetMbox() && GetMbox()->GetProtocol())
+	{
+		// Auto-match mode: derive trust domains from account
+		cdstrvect trust_domains;
+		const CMboxProtocol* proto = GetMbox()->GetProtocol();
+		const CMailAccount* acct = proto->GetMailAccount();
+
+		if (acct)
+		{
+			// Email domain from identity
+			cdstring from_addr = acct->GetAccountIdentity().GetFrom();
+			cdstring email_domain = ExtractDomainFromAddress(from_addr);
+			if (!email_domain.empty())
+				trust_domains.push_back(email_domain);
+
+			// IMAP server domain
+			const cdstring& server_ip = acct->GetServerIP();
+			if (!server_ip.empty())
+			{
+				trust_domains.push_back(server_ip);
+				cdstring server_domain = ExtractDomainFromHostname(server_ip);
+				if (!server_domain.empty() && server_domain != server_ip)
+					trust_domains.push_back(server_domain);
+			}
+
+			// Gmail cross-domain mapping
+			bool has_gmail = false;
+			for (cdstrvect::const_iterator d = trust_domains.begin(); d != trust_domains.end(); d++)
+			{
+				if ((*d).compare(cGmailDomain, true) == 0)
+				{
+					has_gmail = true;
+					break;
+				}
+			}
+			if (has_gmail)
+				trust_domains.push_back(cdstring(cGoogleAuthservDomain));
+		}
+
+		// SMTP server domain from identity's SMTP account
+		const cdstring& smtp_name = acct ? acct->GetAccountIdentity().GetSMTPAccount(true) : cdstring::null_str;
+		if (!smtp_name.empty())
+		{
+			for (CSMTPAccountList::const_iterator iter = CPreferences::sPrefs->mSMTPAccounts.GetValue().begin();
+				iter != CPreferences::sPrefs->mSMTPAccounts.GetValue().end(); iter++)
+			{
+				if ((*iter)->GetName() == smtp_name)
+				{
+					const cdstring& smtp_server = (*iter)->GetServerIP();
+					if (!smtp_server.empty())
+					{
+						trust_domains.push_back(smtp_server);
+						cdstring smtp_domain = ExtractDomainFromHostname(smtp_server);
+						if (!smtp_domain.empty() && smtp_domain != smtp_server)
+							trust_domains.push_back(smtp_domain);
+					}
+					break;
+				}
+			}
+		}
+
+		// Filter parsed results by trust domains
+		for (std::vector<CAuthenticationResults>::const_iterator iter = all_parsed.begin();
+			iter != all_parsed.end(); iter++)
+		{
+			for (cdstrvect::const_iterator d = trust_domains.begin(); d != trust_domains.end(); d++)
+			{
+				if (AuthservIdMatchesDomain((*iter).mAuthservId, *d))
+				{
+					results.push_back(*iter);
+					break;
+				}
+			}
+		}
+	}
+
+	return !results.empty();
 }
 
 // Read in part text

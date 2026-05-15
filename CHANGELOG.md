@@ -350,6 +350,24 @@ X11 bitmap fonts).
   target calendar from the list of active calendars (default
   pre-selected), showing the number of events and tasks to be
   imported. Registered as `text/calendar` MIME type handler.
+- RFC 8601 Authentication-Results header parsing, RFC 8617 ARC chain
+  consumption, and iTIP anti-spoofing. Mulberry now parses
+  Authentication-Results headers added by the receiving MTA to verify
+  DKIM, DMARC, SPF, and ARC authentication status. ARC (Authenticated
+  Received Chain) results are used as a fallback when DKIM breaks in
+  transit through mailing lists or forwarding services. When processing
+  incoming calendar invitations (iMIP), the organizer's domain is
+  checked against the authentication results — if the domain did not
+  pass any authentication, the user is warned before accepting. Three
+  distinct warnings guide the user: authentication failed, untrusted
+  server (with configuration guidance), or missing authentication data.
+  Trust is established by matching the authserv-id against the user's
+  configured mail account domains (email address, IMAP server, SMTP
+  server). Configurable via preferences: `Auth Results Enabled`
+  (default on) and `Auth Results Trusted Servers` (empty = auto-match
+  from account domains). Addresses the organizer spoofing prevention
+  that the original developer marked as IMPORTANT in four separate
+  iTIP receive methods.
 - Automatic recovery of dead per-mailbox IMAP connections. When a
   clone connection dies (server restart, network interruption, WiFi
   loss), Mulberry now detects the dead connection and transparently

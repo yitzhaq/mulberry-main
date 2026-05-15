@@ -58,6 +58,8 @@ void CPreferences::_copy(const CPreferences &copy)
 	COPY(mTCPKeepaliveIdle)
 	COPY(mTCPKeepaliveInterval)
 	COPY(mTCPKeepaliveCount)
+	COPY(mAuthResultsEnabled)
+	COPY(mAuthResultsTrustedServers)
 
 //--------------------Account Prefs
 	COPY(mMailAccounts)
@@ -521,6 +523,8 @@ int CPreferences::operator==(const CPreferences& other) const
 	NOTEQUAL(mTCPKeepaliveIdle)
 	NOTEQUAL(mTCPKeepaliveInterval)
 	NOTEQUAL(mTCPKeepaliveCount)
+	NOTEQUAL(mAuthResultsEnabled)
+	NOTEQUAL(mAuthResultsTrustedServers)
 
 	// Test Account prefs
 	NOTEQUAL(mMailAccounts)
@@ -1037,6 +1041,8 @@ void CPreferences::DiffDirty()
 	SETDIRTY(mTCPKeepaliveIdle)
 	SETDIRTY(mTCPKeepaliveInterval)
 	SETDIRTY(mTCPKeepaliveCount)
+	SETDIRTY(mAuthResultsEnabled)
+	SETDIRTY(mAuthResultsTrustedServers)
 
 	// Test Account prefs
 	SETDIRTY(mMailAccounts)

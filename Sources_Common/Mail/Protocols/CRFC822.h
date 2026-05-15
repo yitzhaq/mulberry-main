@@ -87,6 +87,7 @@ const char cHDR_XMULBERRY_SIGN[] = "X-Mulberry-Sign: ";
 const char cHDR_XMULBERRY_ENCRYPT[] = "X-Mulberry-Encrypt: ";
 const char cHDR_XMULBERRY_DRAFTUID[] = "X-Mulberry-Draft-UID: ";
 const char cHDR_XMULBERRY_DRAFTMBOX[] = "X-Mulberry-Draft-Mailbox: ";
+const char cHDR_AUTHENTICATION_RESULTS[] = "Authentication-Results";
 
 const char cGMT_POS[] = "+";
 const char cGMT_NEG[] = "-";
@@ -144,6 +145,9 @@ public:
 	static bool		HeaderSearch(const char* hdr,				// Search and retreive header text
 									const cdstring& field,
 									cdstring& result);
+	static bool		HeaderSearchAll(const char* hdr,			// Retrieve all instances of a header
+									const cdstring& field,
+									cdstrvect& results);
 
 	static const char* 	RemoveMIMEHeaders(const char *header,
 											bool no_subject = false);

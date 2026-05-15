@@ -751,6 +751,7 @@
 .cp CEnvelope
 .cp CMessageThread
 .cp CCaptionParser
+.cp CAuthenticationResults
 -prefix ../Sources_Common/Mail/Search/
 .cp CSearchItem
 .cp CSearchEngine

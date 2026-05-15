@@ -116,4 +116,8 @@
 	<string id="CITIPProcessor::PartStat::InProcess">In Progress</string>
 	<string id="CITIPProcessor::PartStat::Unknown">Unknown</string>
 
+	<string id="CITIPProcessor::AuthFailed">The organizer's domain did not pass email authentication. The invitation may not be from who it claims. Accept anyway?</string>
+	<string id="CITIPProcessor::AuthUntrusted">This message contains email authentication results, but none are from a recognized server. You may need to configure 'Auth Results Trusted Servers' in your preferences. Accept anyway?</string>
+	<string id="CITIPProcessor::AuthMissing">The organizer's identity could not be verified because this message has no email authentication data. This is normal for some mail systems. Accept anyway?</string>
+
 </stringlist>

@@ -33,6 +33,7 @@
 // Constants
 
 class CAttachment;
+class CAuthenticationResults;
 class CDSN;
 class CMbox;
 class CMessageList;
@@ -345,6 +346,8 @@ public:
 	void	ReadHeader();											// Read in the message header
 
 	bool	GetHeaderField(const cdstring& field, cdstring& result);	// Fetch specific header field
+	bool	GetAuthenticationResults(								// RFC 8601: trusted auth results
+				std::vector<CAuthenticationResults>& results);
 
 	const char*	ReadPart(CAttachment* attach = NULL,
 							bool peek = false);						// Read in a part

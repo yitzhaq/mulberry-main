@@ -596,6 +596,7 @@ OBJS = \
 	../Sources_Common/Mail/Message/CMessageRef$O \
 	../Sources_Common/Mail/Message/CMessageList$O \
 	../Sources_Common/Mail/Message/CMessageComparators$O \
+	../Sources_Common/Mail/Message/CAuthenticationResults$O \
 	../Sources_Common/Mail/Message/CEnvelope$O \
 	../Sources_Common/Mail/Message/CMessageThread$O \
 	../Sources_Common/Mail/Message/CCaptionParser$O \
