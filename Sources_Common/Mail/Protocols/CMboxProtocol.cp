@@ -2297,6 +2297,32 @@ void CMboxProtocol::SearchMbox(CMbox* mbox, const CSearchItem* spec, ulvector* r
 
 }
 
+// Search with CONTEXT=SEARCH support (RFC 5267)
+void CMboxProtocol::SearchMboxContext(CMbox* mbox, const CSearchItem* spec,
+									  ulvector* results, bool uids, bool save, bool context_update)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	SetCurrentMbox(mbox, false, true);
+	mClient->_SearchMboxContext(spec, results, uids, save, context_update);
+}
+
+// Has active UPDATE context? (RFC 5267)
+bool CMboxProtocol::HasContextUpdate() const
+{
+	return mClient && mClient->_HasContextUpdate();
+}
+
+// Clear context state so next search creates a new context (RFC 5267)
+void CMboxProtocol::CancelSearchContext()
+{
+	if (mClient)
+		mClient->_ClearContextTag();
+}
+
 // Clear (EXPUNGE) mbox
 void CMboxProtocol::ExpungeMbox(CMbox* mbox, bool closing)
 {

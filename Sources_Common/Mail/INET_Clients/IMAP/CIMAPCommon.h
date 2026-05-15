@@ -71,6 +71,8 @@ extern const char* cIMAP_IDLE;
 extern const char* cIMAP_BINARY;
 extern const char* cIMAP_SORT_DISPLAY;
 extern const char* cIMAP_ESORT;
+extern const char* cIMAP_CONTEXT_SEARCH;
+extern const char* cIMAP_CONTEXT_SORT;
 extern const char* cIMAP_MULTIAPPEND;
 extern const char* cIMAP_SPECIAL_USE;
 extern const char* cIMAP_REPLACE;
@@ -120,6 +122,7 @@ extern const char* cUIDSEARCH;
 extern const char* cUIDEXPUNGE;
 extern const char* cUIDREPLACE;
 extern const char* cCOMPRESS;
+extern const char* cCANCELUPDATE;
 
 // Unsolicitied
 extern const char* cFLAGS;

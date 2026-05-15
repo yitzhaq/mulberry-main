@@ -135,6 +135,8 @@ void CIMAPClient::InitIMAPClient()
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
+	mHasContextSearch = false;
+	mHasContextSort = false;
 	mHasWithin = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
@@ -209,6 +211,8 @@ void CIMAPClient::_InitCapability()
 	mHasSort = false;
 	mHasSortDisplay = false;
 	mHasESort = false;
+	mHasContextSearch = false;
+	mHasContextSort = false;
 	mHasWithin = false;
 	mHasThreadSubject = false;
 	mHasThreadReferences = false;
@@ -303,6 +307,8 @@ void CIMAPClient::_ProcessCapability()
 	mHasSort = mLastResponse.CheckUntagged(cIMAP_SORT, true);
 	mHasSortDisplay = mLastResponse.CheckUntagged(cIMAP_SORT_DISPLAY, false);
 	mHasESort = mLastResponse.CheckUntagged(cIMAP_ESORT, true);
+	mHasContextSearch = mLastResponse.CheckUntagged(cIMAP_CONTEXT_SEARCH, false);
+	mHasContextSort = mLastResponse.CheckUntagged(cIMAP_CONTEXT_SORT, false);
 	mHasWithin = mLastResponse.CheckUntagged(cIMAP_WITHIN, true);
 	mHasThreadSubject = mLastResponse.CheckUntagged(cIMAP_THREAD_SUBJECT, true);
 	mHasThreadReferences = mLastResponse.CheckUntagged(cIMAP_THREAD_REFERENCES, true);
@@ -809,6 +815,9 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 // Deselect mbox
 void CIMAPClient::_Deselect(CMbox* mbox)
 {
+	// Cancel any active UPDATE contexts before deselecting
+	_CancelAllUpdates();
+
 	// This will only be required if the mailbox is already selected
 	try
 	{
@@ -1940,7 +1949,143 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 		throw;
 	}
 
-} // CIMAPClient::_ReadSize
+} // CIMAPClient::_SearchMbox
+
+// Search with CONTEXT=SEARCH support (RFC 5267)
+void CIMAPClient::_SearchMboxContext(const CSearchItem* spec, ulvector* results,
+									 bool uids, bool save, bool context_update)
+{
+	// CONTEXT=SEARCH UPDATE requires non-UID SEARCH — ADDTO/REMOVEFROM
+	// values are processed as message sequence numbers by SetSearchFlags
+	if (!mHasContextSearch || !context_update || uids)
+	{
+		_SearchMbox(spec, results, uids, save);
+		return;
+	}
+
+	if (mVersion == eIMAP2bis)
+		return;
+
+	// If we already have an active UPDATE context, the server is maintaining
+	// results via ADDTO/REMOVEFROM — no need to cancel and recreate
+	if (!mContextTag.empty())
+		return;
+
+	// Cancel any existing UPDATE context before starting a new one
+	_CancelAllUpdates();
+
+	// Save previous SEARCHRES state for BAD response restoration (RFC 5182)
+	bool prevSearchSaved = mSearchSaved;
+	ulvector prevSavedResults;
+	if (save && mHasSearchRes)
+		prevSavedResults = mSavedSearchResults;
+
+	try
+	{
+		mCurrentResults = results;
+
+		// Pre-clear SEARCHRES state (RFC 5182: NO sets variable to empty)
+		if (save && mHasSearchRes)
+		{
+			mSearchSaved = false;
+			mSavedSearchResults.clear();
+		}
+
+		INETStartSend("Status::IMAP::Searching", "Error::IMAP::OSErrSearch", "Error::IMAP::NoBadSearch", GetCurrentMbox()->GetName());
+
+		// Save the tag for UPDATE context tracking
+		cdstring searchTag = mTag;
+
+		INETSendString(cSEARCH);
+
+		// Build RETURN clause: CONTEXT UPDATE + SAVE if requested + ALL COUNT MIN MAX
+		cdstring returnOpt = " RETURN (CONTEXT UPDATE";
+		if (save && mHasSearchRes)
+			returnOpt += " SAVE";
+		returnOpt += " ALL COUNT MIN MAX)";
+		INETSendString(returnOpt);
+
+		AddSearchItem(spec);
+		INETFinishSend();
+
+		// Check for NOUPDATE: appears as [NOUPDATE "tag"] in * NO response
+		const cdstring& noResponse = mLastResponse.GetUntagged("NOUPDATE");
+		bool noupdate = !noResponse.empty() &&
+			(::strstrnocase(noResponse, "[NOUPDATE") != NULL);
+
+		if (!noupdate)
+			mContextTag = searchTag;
+
+		// Store saved search results if SAVE was requested
+		if (save && mHasSearchRes && results)
+		{
+			mSavedSearchResults = *results;
+			std::sort(mSavedSearchResults.begin(), mSavedSearchResults.end());
+			mSearchSaved = true;
+		}
+
+		mCurrentResults = NULL;
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		mCurrentResults = NULL;
+
+		// RFC 5182: BAD must not change the search result variable
+		if (save && mHasSearchRes && mLastResponse.code == cTagBAD)
+		{
+			mSearchSaved = prevSearchSaved;
+			mSavedSearchResults = prevSavedResults;
+		}
+
+		// NOTSAVED: server could not save search results (RFC 9051 §6.4.4.3)
+		if (save && mHasSearchRes && mLastResponse.FindTagged("NOTSAVED"))
+		{
+			mSearchSaved = false;
+			mSavedSearchResults.clear();
+		}
+
+		CLOG_LOGRETHROW;
+		throw;
+	}
+}
+
+// Cancel an UPDATE context (RFC 5267 §4.3.5)
+void CIMAPClient::_CancelUpdate(const cdstring& tag)
+{
+	if (tag.empty())
+		return;
+
+	INETStartSend("Status::IMAP::Searching", "Error::IMAP::OSErrSearch", "Error::IMAP::NoBadSearch");
+	INETSendString(cCANCELUPDATE);
+	INETSendString(cSpace);
+	cdstring quoted = "\"";
+	quoted += tag;
+	quoted += "\"";
+	INETSendString(quoted);
+	INETFinishSend();
+
+	if (mContextTag == tag)
+		mContextTag.clear();
+}
+
+// Cancel all active UPDATE contexts
+void CIMAPClient::_CancelAllUpdates()
+{
+	if (!mContextTag.empty())
+	{
+		cdstring tag = mContextTag;
+		try
+		{
+			_CancelUpdate(tag);
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			mContextTag.clear();
+		}
+	}
+}
 
 // Add search item to command line
 void CIMAPClient::AddSearchItem(const CSearchItem* spec, bool force_charset)
@@ -3379,6 +3524,7 @@ bool CIMAPClient::MatchesSavedSearch(const ulvector& nums) const
 void CIMAPClient::SignalDeadConnection()
 {
 	mIdleState = eIdleOff;
+	mContextTag.clear();
 	if (mOwner)
 	{
 		mOwner->SetState(CINETProtocol::eINETLoggedOff);
@@ -4057,25 +4203,47 @@ void CIMAPClient::IMAPParseSearch(char** txt)
 
 } // CIMAPClient::IMAPParseSearch
 
-// Parse ESEARCH response (RFC 4731)
+// Parse ESEARCH response (RFC 4731, RFC 5267)
 void CIMAPClient::IMAPParseESearch(char** txt)
 {
-	if (!mCurrentResults)
-		return;
-
 	char* p = *txt;
 
-	// Skip correlator "(TAG ...)" if present
+	// Extract TAG from correlator "(TAG "value")" if present
+	cdstring esearchTag;
 	while(*p == ' ') p++;
 	if (*p == '(')
 	{
+		p++;
+		while(*p == ' ') p++;
+		if (::strncasecmp(p, "TAG", 3) == 0 && (p[3] == ' ' || p[3] == '"'))
+		{
+			p += 3;
+			while(*p == ' ') p++;
+			if (*p == '"')
+			{
+				p++;
+				const char* tagStart = p;
+				while(*p && *p != '"') p++;
+				esearchTag.assign(tagStart, p - tagStart);
+				if (*p == '"') p++;
+			}
+		}
 		while(*p && *p != ')') p++;
 		if (*p == ')') p++;
 	}
 
+	// Determine target: command response or unsolicited UPDATE context
+	ulvector* results = mCurrentResults;
+
+	if (!results && (mContextTag.empty() || esearchTag != mContextTag))
+	{
+		*txt = p;
+		return;
+	}
+
 	// Skip optional UID indicator
 	while(*p == ' ') p++;
-	if (::strncasecmp(p, "UID", 3) == 0)
+	if (::strncasecmp(p, "UID", 3) == 0 && (p[3] == ' ' || p[3] == 0))
 		p += 3;
 
 	// Parse result data items
@@ -4086,14 +4254,20 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 	while(*p)
 	{
 		while(*p == ' ') p++;
+		if (!*p)
+			break;
+
 		if (::strncasecmp(p, "ALL", 3) == 0 && (p[3] == ' ' || p[3] == 0))
 		{
 			p += 3;
 			while(*p == ' ') p++;
 			CSequence seq;
 			seq.ParseSequence(const_cast<const char**>(&p));
-			for(CSequence::const_iterator iter = seq.begin(); iter != seq.end(); iter++)
-				mCurrentResults->push_back(*iter);
+			if (results)
+			{
+				for (CSequence::const_iterator iter = seq.begin(); iter != seq.end(); iter++)
+					results->push_back(*iter);
+			}
 		}
 		else if (::strncasecmp(p, "COUNT", 5) == 0 && (p[5] == ' ' || p[5] == 0))
 		{
@@ -4113,7 +4287,7 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 			while(*p == ' ') p++;
 			mSearchMax = ::strtoul(p, &p, 10);
 		}
-		else if (::strncasecmp(p, "MODSEQ", 6) == 0)
+		else if (::strncasecmp(p, "MODSEQ", 6) == 0 && (p[6] == ' ' || p[6] == 0))
 		{
 			p += 6;
 			while(*p == ' ') p++;
@@ -4121,12 +4295,93 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 			if (GetCurrentMbox() && modseq > GetCurrentMbox()->GetHighestModSeq())
 				GetCurrentMbox()->SetHighestModSeq(modseq);
 		}
+		else if (::strncasecmp(p, "ADDTO", 5) == 0 && (p[5] == ' ' || p[5] == 0))
+		{
+			// RFC 5267 §4.3.3: ADDTO (pos seqset [pos seqset ...])
+			p += 5;
+			while(*p == ' ') p++;
+			if (*p == '(')
+			{
+				p++;
+				while (*p && *p != ')')
+				{
+					while(*p == ' ') p++;
+					if (*p == ')') break;
+					unsigned long position = ::strtoul(p, &p, 10);
+					(void)position;
+					while(*p == ' ') p++;
+					CSequence seq;
+					seq.ParseSequence(const_cast<const char**>(&p));
+					if (GetCurrentMbox())
+					{
+						GetCurrentMbox()->AddToSearchResults(seq);
+						mMboxUpdate = true;
+					}
+				}
+				if (*p == ')') p++;
+			}
+		}
+		else if (::strncasecmp(p, "REMOVEFROM", 10) == 0 && (p[10] == ' ' || p[10] == 0))
+		{
+			// RFC 5267 §4.3.4: REMOVEFROM (pos seqset [pos seqset ...])
+			p += 10;
+			while(*p == ' ') p++;
+			if (*p == '(')
+			{
+				p++;
+				while (*p && *p != ')')
+				{
+					while(*p == ' ') p++;
+					if (*p == ')') break;
+					unsigned long position = ::strtoul(p, &p, 10);
+					(void)position;
+					while(*p == ' ') p++;
+					CSequence seq;
+					seq.ParseSequence(const_cast<const char**>(&p));
+					if (GetCurrentMbox())
+					{
+						GetCurrentMbox()->RemoveFromSearchResults(seq);
+						mMboxUpdate = true;
+					}
+				}
+				if (*p == ')') p++;
+			}
+		}
+		else if (::strncasecmp(p, "PARTIAL", 7) == 0 && (p[7] == ' ' || p[7] == 0))
+		{
+			// RFC 5267 §4.4: PARTIAL (range results/NIL)
+			p += 7;
+			while(*p == ' ') p++;
+			if (*p == '(')
+			{
+				p++;
+				while(*p == ' ') p++;
+				unsigned long range_min = ::strtoul(p, &p, 10);
+				if (*p == ':') p++;
+				unsigned long range_max = ::strtoul(p, &p, 10);
+				(void)range_min; (void)range_max;
+				while(*p == ' ') p++;
+				if (::strncasecmp(p, "NIL", 3) == 0 && (p[3] == ')' || p[3] == ' ' || p[3] == 0))
+					p += 3;
+				else if (results)
+				{
+					CSequence seq;
+					seq.ParseSequence(const_cast<const char**>(&p));
+					for (CSequence::const_iterator iter = seq.begin(); iter != seq.end(); iter++)
+						results->push_back(*iter);
+				}
+				while(*p && *p != ')') p++;
+				if (*p == ')') p++;
+			}
+		}
 		else
 		{
 			// Skip unknown keyword and its value
 			while(*p && *p != ' ') p++;
 			while(*p == ' ') p++;
-			if (*p == '(' || isdigit((unsigned char)*p))
+			if (*p == '(')
+				::strmatchbra(&p);
+			else if (isdigit((unsigned char)*p))
 				::strtoul(p, &p, 10);
 		}
 	}

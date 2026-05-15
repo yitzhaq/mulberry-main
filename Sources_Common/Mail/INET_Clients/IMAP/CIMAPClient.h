@@ -78,6 +78,8 @@ private:
 	bool			mHasSort;						// Supports SORT
 	bool			mHasSortDisplay;				// Supports SORT=DISPLAY (RFC 5957)
 	bool			mHasESort;						// Supports ESORT (RFC 5267)
+	bool			mHasContextSearch;				// Supports CONTEXT=SEARCH (RFC 5267)
+	bool			mHasContextSort;				// Supports CONTEXT=SORT (RFC 5267) — detected, not used
 	bool			mHasWithin;						// Supports WITHIN (RFC 5032)
 	bool			mHasThreadSubject;				// Supports THREAD=ORDEREDSUBJECT
 	bool			mHasThreadReferences;			// Supports THREAD=REFERENCES
@@ -121,6 +123,10 @@ private:
 	EIdleState		mIdleState;
 	time_t			mIdleStartTime;
 	char			mIdleTag[16];
+
+	// CONTEXT=SEARCH state (RFC 5267) — one context per connection;
+	// previous is cancelled before creating new (matches one-view-at-a-time UI)
+	cdstring		mContextTag;					// Tag of active UPDATE context (empty = none)
 
 	threadvector*	mThreadResults;					// Place to store thread results
 
@@ -215,6 +221,22 @@ protected:
 								ulvector* results,
 								bool uids,
 								bool save = false);
+	virtual void	_SearchMboxContext(const CSearchItem* spec,	// Search with CONTEXT=SEARCH (RFC 5267)
+								ulvector* results,
+								bool uids,
+								bool save,
+								bool context_update);
+	virtual void	_CancelUpdate(const cdstring& tag);			// Cancel UPDATE context (RFC 5267)
+	virtual bool	_HasContextUpdate() const					// Has active UPDATE context? (RFC 5267)
+		{ return !mContextTag.empty(); }
+	virtual void	_ClearContextTag()							// Clear context state without sending command
+		{ mContextTag.clear(); }
+			void	_CancelAllUpdates();						// Cancel all active UPDATE contexts
+
+			unsigned long GetSearchCount() const { return mSearchCount; }
+			unsigned long GetSearchMin() const { return mSearchMin; }
+			unsigned long GetSearchMax() const { return mSearchMax; }
+
 			void	AddSearchItem(const CSearchItem* spec,	// Add search item to command line
 									bool force_charset = false);
 			void	AddSearchAddress(const CSearchItem* spec,

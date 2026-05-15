@@ -98,8 +98,15 @@ X11 bitmap fonts).
   smart sort examined each message's From address to decide
   individually, which required downloading all envelopes and
   is less efficient.
-- IMAP ESORT (RFC 5267). Compact ESEARCH-format responses for
-  SORT commands via RETURN (ALL).
+- IMAP ESORT + CONTEXT=SEARCH (RFC 5267). Compact ESEARCH-format
+  responses for SORT and SEARCH commands with COUNT, MIN, MAX
+  return data. CONTEXT=SEARCH enables live-updating search views:
+  when a mailbox filter is active, the server pushes incremental
+  ADDTO/REMOVEFROM notifications as messages change, keeping the
+  filtered view current without re-searching. Includes CANCELUPDATE
+  command, NOUPDATE response code handling, and PARTIAL response
+  parsing. CONTEXT=SORT intentionally deferred (near-zero server
+  adoption). Tested against Dovecot.
 - IMAP WITHIN (RFC 5032). OLDER and YOUNGER search keys for
   date-relative searches (e.g., messages from the last N days).
 - IMAP IDLE (RFC 2177). Server-push notifications replacing NOOP

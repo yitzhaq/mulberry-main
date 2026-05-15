@@ -77,6 +77,15 @@ public:
 								ulvector* results,
 								bool uids,
 								bool save = false) = 0;
+	virtual void	_SearchMboxContext(const CSearchItem* spec,	// Search with CONTEXT (RFC 5267)
+								ulvector* results,
+								bool uids,
+								bool save,
+								bool context_update)
+		{ _SearchMbox(spec, results, uids, save); }
+	virtual void	_CancelUpdate(const cdstring& /*tag*/) {}	// Cancel UPDATE context (RFC 5267)
+	virtual bool	_HasContextUpdate() const { return false; }	// Has active UPDATE context? (RFC 5267)
+	virtual void	_ClearContextTag() {}						// Clear context state without sending command
 	virtual void	_DeleteMbox(CMbox* mbox) = 0;			// Do delete mailbox
 	virtual void	_RenameMbox(CMbox* mbox_old,
 								const char* mbox_new) = 0;	// Do rename mbox

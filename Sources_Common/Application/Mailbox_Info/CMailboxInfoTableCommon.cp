@@ -1161,6 +1161,9 @@ void CMailboxInfoTable::SetMatch(NMbox::EViewMode mbox_mode, CSearchItem* spec, 
 		}
 	}
 
+	// Clear any active CONTEXT=SEARCH UPDATE context before changing criteria
+	GetMbox()->ClearSearchContext();
+
 	bool reset = is_search ? GetMbox()->TransferSearch() : GetMbox()->SetViewSearch(spec);
 
 	// Do change to match mode if different

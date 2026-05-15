@@ -1728,6 +1728,13 @@ bool CMbox::SetViewSearch(const CSearchItem* spec, bool update)
 	if (!mOpenInfo)
 		return false;
 
+	// When CONTEXT=SEARCH UPDATE is active, the server pushes ADDTO/REMOVEFROM
+	// to maintain search results — skip redundant re-search and re-sort
+	bool hasContextUpdate = mOpenInfo->mMsgMailer &&
+		mOpenInfo->mMsgMailer->HasContextUpdate();
+	if (hasContextUpdate)
+		return false;
+
 	// Clear results and update current spec if not updating
 	if (!update)
 	{
@@ -1738,10 +1745,10 @@ bool CMbox::SetViewSearch(const CSearchItem* spec, bool update)
 			mOpenInfo->mViewCurrent.clear();
 	}
 
-	// If spec do search and save results
-	// Initial view search (update=false) saves for SEARCHRES $;
+	// Initial view search (update=false) saves for SEARCHRES $ and
+	// requests CONTEXT=SEARCH UPDATE for live view updates (RFC 5267);
 	// incremental update (update=true) must not overwrite $
-	Search(spec, &mOpenInfo->mViewSearchResults, false, false, !update);
+	Search(spec, &mOpenInfo->mViewSearchResults, false, false, !update, !update);
 
 	// Now, if search changed may need to redo sort list
 	switch(mOpenInfo->mViewMode)
@@ -1765,7 +1772,7 @@ bool CMbox::SetViewSearch(const CSearchItem* spec, bool update)
 // spec : search specification
 // results : vector to store message number results
 // no_flags : if true, message flags are not updated (default = false)
-void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool no_flags, bool save)
+void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool no_flags, bool save, bool context_update)
 {
 	InitStatusInfo();
 
@@ -1792,7 +1799,10 @@ void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool n
 		{
 			try
 			{
-				mOpenInfo->mMsgMailer->SearchMbox(this, spec, results, uids, save);
+				if (context_update)
+					mOpenInfo->mMsgMailer->SearchMboxContext(this, spec, results, uids, save, true);
+				else
+					mOpenInfo->mMsgMailer->SearchMbox(this, spec, results, uids, save);
 			}
 			catch (...)
 			{
@@ -1813,6 +1823,53 @@ void CMbox::Search(const CSearchItem* spec, ulvector* results, bool uids, bool n
 	// Change search flags on messages
 	if (!no_flags)
 		SetSearchFlags(*results);
+}
+
+// Clear CONTEXT=SEARCH UPDATE state so next search creates a fresh context
+void CMbox::ClearSearchContext()
+{
+	if (mOpenInfo && mOpenInfo->mMsgMailer &&
+		mOpenInfo->mMsgMailer->HasContextUpdate())
+		mOpenInfo->mMsgMailer->CancelSearchContext();
+}
+
+// Incrementally add to search results (RFC 5267 ADDTO)
+void CMbox::AddToSearchResults(const ulvector& nums)
+{
+	if (!mStatusInfo)
+		return;
+
+	for (ulvector::const_iterator it = nums.begin(); it != nums.end(); it++)
+		mStatusInfo->mSearchResults.push_back(*it);
+	std::sort(mStatusInfo->mSearchResults.begin(), mStatusInfo->mSearchResults.end());
+
+	if (mOpenInfo)
+	{
+		mOpenInfo->mViewSearchResults = mStatusInfo->mSearchResults;
+		SetSearchFlags(mOpenInfo->mViewSearchResults);
+	}
+}
+
+// Incrementally remove from search results (RFC 5267 REMOVEFROM)
+void CMbox::RemoveFromSearchResults(const ulvector& nums)
+{
+	if (!mStatusInfo)
+		return;
+
+	for (ulvector::const_iterator it = nums.begin(); it != nums.end(); it++)
+	{
+		ulvector::iterator pos = std::find(
+			mStatusInfo->mSearchResults.begin(),
+			mStatusInfo->mSearchResults.end(), *it);
+		if (pos != mStatusInfo->mSearchResults.end())
+			mStatusInfo->mSearchResults.erase(pos);
+	}
+
+	if (mOpenInfo)
+	{
+		mOpenInfo->mViewSearchResults = mStatusInfo->mSearchResults;
+		SetSearchFlags(mOpenInfo->mViewSearchResults);
+	}
 }
 
 // Transfer existing search results and reset view mode
@@ -2937,7 +2994,10 @@ void CMbox::LoadMessages()
 		}
 
 		// See if current search item is set to All => Last Search Results
-		if (mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
+		// Skip when CONTEXT=SEARCH UPDATE is active — ADDTO already handled it
+		bool hasCtxUpdate = mOpenInfo->mMsgMailer &&
+			mOpenInfo->mMsgMailer->HasContextUpdate();
+		if (!hasCtxUpdate && mOpenInfo->mViewCurrent.GetType() != CSearchItem::eAll)
 		{
 			// Now update match on new set
 			CSearchItemList* item_list = new CSearchItemList;

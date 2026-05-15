@@ -397,13 +397,16 @@ public:
 	const CSearchItem* GetViewSearch() const
 		{ return (mOpenInfo != NULL) ? &mOpenInfo->mViewCurrent : NULL; }
 
-	void	Search(const CSearchItem* spec, ulvector* results = NULL, bool uids = false, bool no_flags = false, bool save = false);
+	void	Search(const CSearchItem* spec, ulvector* results = NULL, bool uids = false, bool no_flags = false, bool save = false, bool context_update = false);
 	
 	bool	OpenSearch();
 	bool	TransferSearch();
 	void	SetSearchFlags(const ulvector& matches);
 	const ulvector& GetSearchResults() const					// Warning this is NOT protected against NULL mStatusInfo
 		{ return mStatusInfo->mSearchResults; }
+	void	ClearSearchContext();								// Clear CONTEXT=SEARCH state (RFC 5267)
+	void	AddToSearchResults(const ulvector& nums);			// Incremental add (RFC 5267 ADDTO)
+	void	RemoveFromSearchResults(const ulvector& nums);		// Incremental remove (RFC 5267 REMOVEFROM)
 
 	// Access Control
 	void	SetMyRights(SACLRight rights)						// Set user's rights to this mailbox

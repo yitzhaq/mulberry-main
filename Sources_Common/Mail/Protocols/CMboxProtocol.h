@@ -349,6 +349,14 @@ protected:
 								ulvector* results,
 								bool uids,
 								bool save = false);
+			void	SearchMboxContext(CMbox* mbox,			// Search with CONTEXT (RFC 5267)
+								const CSearchItem* spec,
+								ulvector* results,
+								bool uids,
+								bool save,
+								bool context_update);
+			bool	HasContextUpdate() const;					// Has active UPDATE context? (RFC 5267)
+			void	CancelSearchContext();						// Clear context state (RFC 5267)
 
 			void	ExpungeMbox(CMbox* mbox, bool closing);	// Clear (EXPUNGE) mbox
 

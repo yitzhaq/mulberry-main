@@ -159,14 +159,21 @@ void CSequence::ParseSequence(const char** txt, unsigned long size_estimate)
 		unsigned long temp1 = ::strtoul(p, const_cast<char**>(&p), 10);
 		push_back(temp1);
 
-		// Process sequence first
+		// Process sequence range (handles both 10:12 and 12:10)
 		if (*p == ':')
 		{
-			// Sequence
 			p++;
 			unsigned long temp2 = ::strtoul(p, const_cast<char**>(&p), 10);
-			for(unsigned long i = temp1 + 1; i <= temp2; i++)
-				push_back(i);
+			if (temp2 >= temp1)
+			{
+				for (unsigned long i = temp1 + 1; i <= temp2; i++)
+					push_back(i);
+			}
+			else
+			{
+				for (unsigned long i = temp1 - 1; i >= temp2 && i != 0; i--)
+					push_back(i);
+			}
 		}
 
 		if (*p == ',')
