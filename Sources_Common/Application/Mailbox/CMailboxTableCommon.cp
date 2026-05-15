@@ -917,6 +917,9 @@ void CMailboxTable::DoMessageCopy(CMbox* copy_mbox, bool option_key, bool force_
 
 			// Set deleted flag on chosen messages
 			GetMbox()->SetFlagMessage(actual_nums, false, NMessage::eDeleted, true, false, true);
+
+			// Force repaint so strikethrough renders over selection highlight
+			RefreshSelection();
 		}
 
 		if (want_delete)
