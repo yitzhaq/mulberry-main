@@ -1900,7 +1900,12 @@ void CSMTPSender::SMTPSendMail()
 {
 	cdstring theTxt;
 
-	if (mMessage->GetEnvelope()->GetFrom()->size())
+	// RFC 8098: MDN envelope sender MUST be null (<>) to prevent DSN bounce loops
+	if (mMessage->GetBody() && mMessage->GetBody()->IsMDN())
+	{
+		// Leave theTxt empty — produces MAIL FROM:<>
+	}
+	else if (mMessage->GetEnvelope()->GetFrom()->size())
 		 theTxt = mMessage->GetEnvelope()->GetFrom()->front()->GetMailAddress();
 
 	mStream << MAILFROM << theTxt << '>';

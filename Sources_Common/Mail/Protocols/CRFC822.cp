@@ -433,7 +433,7 @@ void CRFC822::CreateHeader(CMessage* theMsg,
 		out << os_endl;
 	}
 
-	// Add Auto-Generated for DSN
+	// Add Auto-Submitted for DSN reject and MDN (RFC 3834 §5)
 	if (flags & eRejectDSN)
 	{
 		out << cHDR_AUTO_SUBMITTED << cHDR_AUTO_GENERATED_FAILURE << os_endl;
@@ -441,6 +441,10 @@ void CRFC822::CreateHeader(CMessage* theMsg,
 		// Add fake header to force a special MAIL-FROM in SMTP exchange
 		if (flags & eAddXMulberry)
 			out << cHDR_XMULBERRY_MAIL_FROM << os_endl;
+	}
+	else if (flags & eMDN)
+	{
+		out << cHDR_AUTO_SUBMITTED << "auto-replied" << os_endl;
 	}
 
 	// Add any user defined header

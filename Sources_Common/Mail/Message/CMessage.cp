@@ -1678,11 +1678,12 @@ bool CMessage::MDNRequested()
 		
 		GetDeliveryData(return_path, received_from, received_by, received_for, received_date);
 		
-		// Compare D-N-T with return-path (as required by RFC these MUST match)
+		// Compare D-N-T with return-path (RFC 8098 §2.1: case-sensitive
+		// local-part, case-insensitive domain)
 		CAddress mdn_to_addr(mdn_to);
 		CAddress return_addr(return_path);
-		
-		return mdn_to_addr == return_addr;
+
+		return mdn_to_addr.StrictCompareEmail(return_addr);
 	}
 	else
 		return false;
@@ -1753,19 +1754,9 @@ CAttachment* CMessage::CreateMDNSeenBody(const CIdentity* id, bool automatic)
 	{
 		std::ostrstream out;
 
-		// Reporting-UA:
-		out << "Reporting-UA: ";
-		cdstring host = CTCPSocket::TCPGetLocalHostName();
-		host.trimspace();
-		if (host.length())
-		{
-			// Must put IP numbers inside [..]
-			if (CTCPSocket::TCPIsHostName(host))
-				out << host.c_str() << "; ";
-			else
-				out << "[" << host.c_str() << "]; ";
-		}
-		out << CPreferences::sPrefs->GetMailerDetails(true) << os_endl;
+		// Reporting-UA: product identifier only (RFC 8098 §3.2.1 removed
+		// the hostname recommendation from RFC 3798)
+		out << "Reporting-UA: " << CPreferences::sPrefs->GetMailerDetails(true) << os_endl;
 
 		// Original-Recipient:
 		if (!orcpt.empty())
@@ -1778,8 +1769,9 @@ CAttachment* CMessage::CreateMDNSeenBody(const CIdentity* id, bool automatic)
 		else
 			out << default_id->GetFrom(true) << os_endl;
 
-		// Original-Message-ID:
-		out << "Original-Message-ID: " << GetEnvelope()->GetMessageID() << os_endl;
+		// Original-Message-ID: present IFF original has Message-ID (RFC 8098 §3.2.5)
+		if (!GetEnvelope()->GetMessageID().empty())
+			out << "Original-Message-ID: " << GetEnvelope()->GetMessageID() << os_endl;
 
 		// Disposition:
 		out << "Disposition: manual-action/";
