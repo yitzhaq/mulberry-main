@@ -268,6 +268,9 @@ X11 bitmap fonts).
 
 ### Added
 
+- POP3 SYS/AUTH response codes (RFC 3206). Parse structured error
+  codes from POP3 servers to distinguish authentication failures
+  from temporary and permanent server errors.
 - IMAP internationalization (RFC 5255). Detects LANGUAGE, I18NLEVEL=1,
   and I18NLEVEL=2 capabilities. Queries available languages via the
   LANGUAGE command and the active comparator via the COMPARATOR command

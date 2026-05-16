@@ -68,6 +68,7 @@ private:
 	cdstring		mAPOPKey;
 	bool			mDoesUIDL;
 	bool			mDoesCAPA;
+	bool			mHasAuthRespCode;
 
 	// C O N S T R U C T I O N / D E S T R U C T I O N  M E T H O D S
 

@@ -2167,6 +2167,9 @@ static const char* GetResponseCodeExplanation(const cdstring& tag_msg)
 		{ "[NOTSAVED]",              "Server could not save search results" },
 		{ "[HASCHILDREN]",           "Mailbox has children that must be deleted first" },
 		{ "[BADCOMPARATOR]",         "No matching comparator found" },
+		{ "[AUTH]",                  "Authentication failed (invalid credentials)" },
+		{ "[SYS/PERM]",             "Permanent server error — contact administrator" },
+		{ "[SYS/TEMP]",             "Temporary server error — try again later" },
 		{ NULL, NULL }
 	};
 

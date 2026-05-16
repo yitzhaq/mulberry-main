@@ -105,7 +105,8 @@ void CPOP3Client::InitPOP3Client()
 	mDoesAPOP = false;
 	mDoesUIDL = true;
 	mDoesCAPA = true;
-	
+	mHasAuthRespCode = false;
+
 	// Must reocrd local UIDs in EXPUNGE
 	mRecordLocalUIDs = true;
 	
@@ -363,6 +364,7 @@ void CPOP3Client::_InitCapability()
 	mAuthPlainAllowed = false;
 	mAuthAnonAllowed = false;
 	mSTARTTLSAllowed = false;
+	mHasAuthRespCode = false;
 
 	mCapability = cdstring::null_str;
 }
@@ -372,8 +374,7 @@ void CPOP3Client::_ProcessCapability()
 {
 	// Process response to look for extensions
 	mSTARTTLSAllowed = mLastResponse.CheckUntagged(cSTLS, true);
-
-	// For now do nothing special with extensions
+	mHasAuthRespCode = mLastResponse.CheckUntagged("AUTH-RESP-CODE", true);
 
 	// Add all capabilities to capability line
 	mCapability = cdstring::null_str;
