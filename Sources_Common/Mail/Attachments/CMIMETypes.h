@@ -61,6 +61,7 @@ enum EContentSubType
 	eContentSubPGPEncrypted,
 	eContentSubPGPKeys,
 	eContentSubRFC822,
+	eContentSubGlobal,
 	eContentSubPartial,
 	eContentSubExternalBody,
 	eContentSubDeliveryStatus,

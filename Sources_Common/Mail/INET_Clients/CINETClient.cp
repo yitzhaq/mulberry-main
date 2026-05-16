@@ -1099,13 +1099,6 @@ void CINETClient::DoPlainAuthentication()
 	force_login = (GetAccount()->GetName().find("-login") != cdstring::npos);
 #endif
 
-	// Send password next
-	if (force_login || (mLoginAllowed && !mAuthLoginAllowed && !mAuthPlainAllowed))
-		INETSendString(cLOGIN, eQueueNoFlags, false);
-	else
-		INETSendString(GetAuthCommand(), eQueueNoFlags, false);
-	INETSendString(cSpace, eQueueNoFlags, false);
-
 	CAuthenticatorUserPswd* auth = GetAccount()->GetAuthenticatorUserPswd();
 
 	// RFC 8265 PRECIS enforcement — normalize credentials before wire use
@@ -1123,7 +1116,25 @@ void CINETClient::DoPlainAuthentication()
 		throw;
 	}
 
-	if (force_login || (mLoginAllowed && !mAuthLoginAllowed && !mAuthPlainAllowed))
+	// RFC 9755 §5: UTF-8 credentials require AUTHENTICATE, not LOGIN
+	bool has_utf8_creds = false;
+	for (const char* p = precis_uid.c_str(); *p; p++)
+		if ((unsigned char)*p >= 128) { has_utf8_creds = true; break; }
+	if (!has_utf8_creds)
+		for (const char* p = precis_pwd.c_str(); *p; p++)
+			if ((unsigned char)*p >= 128) { has_utf8_creds = true; break; }
+
+	bool use_login = !has_utf8_creds &&
+		(force_login || (mLoginAllowed && !mAuthLoginAllowed && !mAuthPlainAllowed));
+
+	// Send command
+	if (use_login)
+		INETSendString(cLOGIN, eQueueNoFlags, false);
+	else
+		INETSendString(GetAuthCommand(), eQueueNoFlags, false);
+	INETSendString(cSpace, eQueueNoFlags, false);
+
+	if (use_login)
 	{
 		// LOGIN uid pswd
 		INETSendString(precis_uid, eQueueProcess, false);

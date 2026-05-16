@@ -39,6 +39,12 @@ X11 bitmap fonts).
 
 ### Changed
 
+- RFC 8098 MDN compliance: MDN messages now use null envelope sender
+  (`MAIL FROM:<>`) to prevent DSN bounce loops, remove internal
+  hostname/IP from the Reporting-UA field for privacy, conditionally
+  emit Original-Message-ID only when the original has one, and use
+  RFC-correct case-sensitive local-part comparison for the
+  Disposition-Notification-To vs Return-Path security check.
 - Improve format=flowed reply quoting: replies to flowed messages now
   join soft-wrapped paragraphs before re-quoting, and alternative
   quote markers used by some mail clients (`|`, `#`) are recognized
@@ -77,7 +83,8 @@ X11 bitmap fonts).
 - IMAP LIST-EXTENDED (RFC 5258). Extended LIST command with selection
   and return options. Replaces LSUB with `LIST (SUBSCRIBED)` for
   accurate subscription flags. Parses `\Subscribed`, `\NonExistent`
-  attributes and CHILDINFO extended data.
+  attributes, CHILDINFO extended data, and OLDNAME extended data
+  (RFC 9051 §6.3.9.7) for server-pushed rename/delete notifications.
 - IMAP LIST-STATUS (RFC 5819). Combines STATUS data into LIST
   responses, retrieving message counts for all mailboxes in a single
   round-trip instead of individual STATUS commands per mailbox.
@@ -402,6 +409,15 @@ X11 bitmap fonts).
   OS default pending Winsock 2 upgrade.
 - Visual Studio 2019 build support (Win32, untested).
   Contributed by Quanah Gibson-Mount.
+- IMAP UTF-8 support (RFC 9755, obsoletes RFC 6855). Negotiates
+  UTF8=ACCEPT via ENABLE after login, enabling native UTF-8 mailbox
+  names (bypassing modified UTF-7), UTF-8 in IMAP quoted strings,
+  and CHARSET suppression in SEARCH. Handles UTF8=ONLY servers.
+  Parses message/global (RFC 6532) in BODYSTRUCTURE alongside
+  message/rfc822. Forces AUTHENTICATE over LOGIN when credentials
+  contain non-ASCII characters (§5). Mailbox name encoding is now
+  centralized through EncodeMailboxName(), which correctly skips
+  modified UTF-7 for both UTF8=ACCEPT and IMAP4rev2 connections.
 - PRECIS username and password preparation (RFC 8265). Usernames and
   passwords are now normalized before authentication using the three
   PRECIS profiles: UsernameCasePreserved for plaintext protocols

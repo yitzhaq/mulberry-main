@@ -165,6 +165,9 @@ void CIMAPClient::InitIMAPClient()
 	mHasLanguage = false;
 	mHasI18NLevel1 = false;
 	mHasI18NLevel2 = false;
+	mHasUTF8Accept = false;
+	mHasUTF8Only = false;
+	mUTF8Accepted = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -238,6 +241,9 @@ void CIMAPClient::_InitCapability()
 	mHasLanguage = false;
 	mHasI18NLevel1 = false;
 	mHasI18NLevel2 = false;
+	mHasUTF8Accept = false;
+	mHasUTF8Only = false;
+	mUTF8Accepted = false;
 	mActiveLanguage.clear();
 	mActiveComparator.clear();
 	mSearchSaved = false;
@@ -337,6 +343,8 @@ void CIMAPClient::_ProcessCapability()
 	mHasLanguage = mLastResponse.CheckUntagged(cIMAP_LANGUAGE, true);
 	mHasI18NLevel2 = mLastResponse.CheckUntagged(cIMAP_I18NLEVEL2, true);
 	mHasI18NLevel1 = mHasI18NLevel2 || mLastResponse.CheckUntagged(cIMAP_I18NLEVEL1, true);
+	mHasUTF8Only = mLastResponse.CheckUntagged(cIMAP_UTF8_ONLY, true);
+	mHasUTF8Accept = mHasUTF8Only || mLastResponse.CheckUntagged(cIMAP_UTF8_ACCEPT, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -632,8 +640,7 @@ void CIMAPClient::_CreateMbox(CMbox* mbox)
 	if (mbox->IsDirectory())
 		wd_name += mbox->GetDirDelim();
 
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send CREATE message to server
 	INETStartSend("Status::IMAP::Creating", "Error::IMAP::OSErrCreate", "Error::IMAP::NoBadCreate", mbox->GetName());
@@ -654,8 +661,7 @@ bool CIMAPClient::_TestMbox(CMbox* mbox)
 	// Get the WD
 	mCurrentWD = NULL;
 	cdstring wd = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd.ToModifiedUTF7(true);
+	EncodeMailboxName(wd);
 
 	// Depends on server version
 	INETStartSend("Status::IMAP::FindingAll", "Error::IMAP::OSErrFindAll", "Error::IMAP::NoBadFindAll");
@@ -721,8 +727,7 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 	{
 		// Get full name
 		cdstring wd_name = mbox->GetName();
-		if (mVersion >= eIMAP4rev1)
-			wd_name.ToModifiedUTF7(true);
+		EncodeMailboxName(wd_name);
 
 		// Issue SELECT/EXAMINE call
 		INETStartSend("Status::IMAP::Selecting", "Error::IMAP::OSErrSelect", "Error::IMAP::NoBadSelect", mbox->GetName(), false);
@@ -834,8 +839,7 @@ void CIMAPClient::_Deselect(CMbox* mbox)
 	{
 		// Get full name
 		cdstring wd_name = mbox->GetName();
-		if (mVersion >= eIMAP4rev1)
-			wd_name.ToModifiedUTF7(true);
+		EncodeMailboxName(wd_name);
 
 		// Use UNSELECT if supported
 		if (mHasUnselect)
@@ -939,7 +943,7 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 
 				// Get full name
 				cdstring wd_name = mbox->GetName();
-				wd_name.ToModifiedUTF7(true);
+				EncodeMailboxName(wd_name);
 
 				// Send STATUS message to server
 				INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", mbox->GetName());
@@ -1022,8 +1026,7 @@ void CIMAPClient::_DeleteMbox(CMbox* mbox)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send DELETE message to server
 	INETStartSend("Status::IMAP::DeletingMbox", "Error::IMAP::OSErrDelete", "Error::IMAP::NoBadDelete", mbox->GetName());
@@ -1039,12 +1042,10 @@ void CIMAPClient::_RenameMbox(CMbox* mbox_old, const char* mbox_new)
 {
 	// Get full names
 	cdstring wd_name_old = mbox_old->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name_old.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name_old);
 
 	cdstring wd_name_new = mbox_new;
-	if (mVersion >= eIMAP4rev1)
-		wd_name_new.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name_new);
 
 	// Send RENAME message to server
 	INETStartSend("Status::IMAP::Renaming", "Error::IMAP::OSErrRename", "Error::IMAP::NoBadRename", mbox_old->GetName());
@@ -1062,8 +1063,7 @@ void CIMAPClient::_SubscribeMbox(CMbox* mbox)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send SUBSCRIBE MAILBOX message to server
 	INETStartSend("Status::IMAP::Subscribing", "Error::IMAP::OSErrSubscribe", "Error::IMAP::NoBadSubscribe", mbox->GetName());
@@ -1079,8 +1079,7 @@ void CIMAPClient::_UnsubscribeMbox(CMbox* mbox)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send UNSUBSCRIBE MAILBOX message to server
 	INETStartSend("Status::IMAP::Unsubscribing", "Error::IMAP::OSErrUnsubscribe", "Error::IMAP::NoBadUnsubscribe", mbox->GetName());
@@ -1283,6 +1282,14 @@ void CIMAPClient::_Enable()
 		enable_args += "CONDSTORE";
 	}
 
+	// RFC 9755 §3/§7: ENABLE is always "UTF8=ACCEPT", never "UTF8=ONLY"
+	if (mHasUTF8Accept)
+	{
+		if (enable_args.length())
+			enable_args += " ";
+		enable_args += "UTF8=ACCEPT";
+	}
+
 	if (enable_args.empty())
 		return;
 
@@ -1293,6 +1300,13 @@ void CIMAPClient::_Enable()
 		INETSendString(cSpace);
 		INETSendString(enable_args);
 		INETFinishSend();
+
+		// RFC 9755 §7: UTF8=ONLY servers reject commands without prior ENABLE
+		if (mHasUTF8Only && !mUTF8Accepted)
+		{
+			CLOG_LOGTHROW(CINETException, CINETException::err_BadResponse);
+			throw CINETException(CINETException::err_BadResponse);
+		}
 	}
 	catch(...)
 	{
@@ -1336,6 +1350,59 @@ void CIMAPClient::_Comparator()
 	{
 		CLOG_LOGCATCH(...);
 	}
+}
+
+// RFC 9755: Encode mailbox name for wire — UTF-8 when accepted, modified UTF-7 otherwise
+void CIMAPClient::EncodeMailboxName(cdstring& name)
+{
+	if (mVersion < eIMAP4rev1)
+		return;
+	if (mUTF8Accepted || mVersion >= eIMAP4rev2)
+		return;
+	name.ToModifiedUTF7(true);
+}
+
+// RFC 9755 §3: Allow UTF-8 in quoted strings when UTF8=ACCEPT is enabled
+int CIMAPClient::ProcessString(cdstring& str)
+{
+	if (!mUTF8Accepted)
+		return CINETClient::ProcessString(str);
+
+	bool quote = false;
+	bool literal = false;
+
+	const char* p = str.c_str();
+	while (*p && !literal)
+	{
+		unsigned char c = (unsigned char)*p++;
+		if (c >= 128)
+		{
+			quote = true;
+		}
+		else
+		{
+			switch (cINETChar[c])
+			{
+			case 0:
+				break;
+			case 1:
+			case 2:
+				quote = true;
+				break;
+			case 3:
+				literal = true;
+				break;
+			}
+		}
+	}
+
+	if (literal)
+		return str.length();
+
+	if (quote || str.empty())
+		str.quote(true, true);
+
+	return 0;
 }
 
 // Find all subscribed mboxes
@@ -1420,8 +1487,7 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 	// Get the WD (NULL => do hierarchy character descovery)
 	mCurrentWD = mboxes;
 	cdstring wd = (mboxes ? mboxes->GetRoot() : cdstring::null_str);
-	if (mVersion >= eIMAP4rev1)
-		wd.ToModifiedUTF7(true);
+	EncodeMailboxName(wd);
 
 	// Turn on/off flag for hierarchy delimiter search
 	StValueChanger<bool> _delimiter(mFindingHier, mboxes == NULL);
@@ -1758,8 +1824,7 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 	{
 		// MULTIAPPEND mode (RFC 3502)
 		cdstring wd_name = mbox->GetName();
-		if (mVersion >= eIMAP4rev1)
-			wd_name.ToModifiedUTF7(true);
+		EncodeMailboxName(wd_name);
 
 		if (mMultiAppendCount == 0)
 		{
@@ -1784,8 +1849,7 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 			try
 			{
 				cdstring wd_name = mbox->GetName();
-				if (mVersion >= eIMAP4rev1)
-					wd_name.ToModifiedUTF7(true);
+				EncodeMailboxName(wd_name);
 
 				// Send APPEND message to server
 				INETStartSend("Status::IMAP::Appending", "Error::IMAP::OSErrAppend", "Error::IMAP::NoBadAppend", mbox->GetName());
@@ -1860,8 +1924,7 @@ void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* 
 			CheckAppendLimit(mbox);
 
 			cdstring wd_name = mbox->GetName();
-			if (mVersion >= eIMAP4rev1)
-				wd_name.ToModifiedUTF7(true);
+			EncodeMailboxName(wd_name);
 
 			// Send UID REPLACE <uid> <mailbox> [flags] [date] {literal}
 			INETStartSend("Status::IMAP::Appending", "Error::IMAP::OSErrAppend", "Error::IMAP::NoBadAppend", mbox->GetName());
@@ -2170,17 +2233,23 @@ void CIMAPClient::AddSearchItem(const CSearchItem* spec, bool force_charset)
 		}
 	}
 
-	// Add charset if required
-	// RFC 9051 §6.4.4: In IMAP4rev2, UTF-8 is the default — omit CHARSET
-	if (add_charset && mVersion < eIMAP4rev2)
+	// RFC 9755 §3: After ENABLE UTF8=ACCEPT, MUST NOT send CHARSET in SEARCH.
+	// RFC 9051 §6.4.4: In IMAP4rev2, UTF-8 is the default — omit CHARSET.
+	// SORT/THREAD grammar requires charset token — force UTF-8 when appropriate.
+	if (force_charset)
+	{
+		INETSendString(cSpace);
+		if (mUTF8Accepted || mVersion >= eIMAP4rev2)
+			INETSendString(i18n::CCharsetManager::sCharsetManager.GetNameFromCode(i18n::eUTF8));
+		else
+			INETSendString(i18n::CCharsetManager::sCharsetManager.GetNameFromCode(add_charset ? i18n::eUTF8 : i18n::eUSASCII));
+	}
+	else if (add_charset && mVersion < eIMAP4rev2 && !mUTF8Accepted)
 	{
 		INETSendString(cSpace);
 		INETSendString(cSEARCH_CHARSET);
-	}
-	if ((add_charset && mVersion < eIMAP4rev2) || force_charset)
-	{
 		INETSendString(cSpace);
-		INETSendString(i18n::CCharsetManager::sCharsetManager.GetNameFromCode(add_charset ? i18n::eUTF8 : i18n::eUSASCII));
+		INETSendString(i18n::CCharsetManager::sCharsetManager.GetNameFromCode(i18n::eUTF8));
 	}
 
 	if (!spec)
@@ -2988,8 +3057,7 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 {
 	// Get full name
 	cdstring wd_name = mbox_to->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send COPY message to server
 	CSequence sequence;
@@ -3047,8 +3115,7 @@ void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 
 	// Get full name
 	cdstring wd_name = mbox_to->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send MOVE message to server
 	CSequence sequence;
@@ -3334,8 +3401,7 @@ void CIMAPClient::_SetACL(CMbox* mbox, CACL* acl)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 	cdstring acl_txt = acl->GetFullTextRights();
 
 	// Send SETACL message to server
@@ -3353,8 +3419,7 @@ void CIMAPClient::_DeleteACL(CMbox* mbox, CACL* acl)
 {
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send DELETEACL message to server
 	INETStartSend("Status::IMAP::DeleteACL", "Error::IMAP::OSErrDeleteACL", "Error::IMAP::NoBadDeleteACL", mbox->GetName());
@@ -3375,8 +3440,7 @@ void CIMAPClient::_GetACL(CMbox* mbox)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send GETACL message to server
 	INETStartSend("Status::IMAP::GetACL", "Error::IMAP::OSErrGetACL", "Error::IMAP::NoBadGetACL", mbox->GetName());
@@ -3395,8 +3459,7 @@ void CIMAPClient::_ListRights(CMbox* mbox, CACL* acl)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send LISTRIGHTS message to server
 	INETStartSend("Status::IMAP::ListRights", "Error::IMAP::OSErrListRights", "Error::IMAP::NoBadListRights", mbox->GetName());
@@ -3416,8 +3479,7 @@ void CIMAPClient::_MyRights(CMbox* mbox)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send MYRIGHTS message to server
 	INETStartSend("Status::IMAP::MyRights", "Error::IMAP::OSErrMyRights", "Error::IMAP::NoBadMyRights", mbox->GetName());
@@ -3451,11 +3513,14 @@ void CIMAPClient::_SetQuota(CQuotaRoot* root)
 	}
 	list += ')';
 
+	cdstring wd_name = root->GetName();
+	EncodeMailboxName(wd_name);
+
 	// Send SETQUOTA message to server
 	INETStartSend("Status::IMAP::SetQuota", "Error::IMAP::OSErrSetQuota", "Error::IMAP::NoBadSetQuota", GetCurrentMbox()->GetName());
 	INETSendString(cSETQUOTA);
 	INETSendString(cSpace);
-	INETSendString(root->GetName(), eQueueProcess);
+	INETSendString(wd_name, eQueueProcess);
 	INETSendString(cSpace);
 	INETSendString(list);
 	INETFinishSend();
@@ -3464,11 +3529,14 @@ void CIMAPClient::_SetQuota(CQuotaRoot* root)
 // Get quota root values from server
 void CIMAPClient::_GetQuota(CQuotaRoot* root)
 {
+	cdstring wd_name = root->GetName();
+	EncodeMailboxName(wd_name);
+
 	// Send GETQUOTA message to server
 	INETStartSend("Status::IMAP::GetQuota", "Error::IMAP::OSErrGetQuota", "Error::IMAP::NoBadGetQuota", GetCurrentMbox()->GetName());
 	INETSendString(cGETQUOTA);
 	INETSendString(cSpace);
-	INETSendString(root->GetName(), eQueueProcess);
+	INETSendString(wd_name, eQueueProcess);
 	INETFinishSend();
 }
 
@@ -3480,8 +3548,7 @@ void CIMAPClient::_GetQuotaRoot(CMbox* mbox)
 
 	// Get full name
 	cdstring wd_name = mbox->GetName();
-	if (mVersion >= eIMAP4rev1)
-		wd_name.ToModifiedUTF7(true);
+	EncodeMailboxName(wd_name);
 
 	// Send GETQUOTAROOT message to server
 	INETStartSend("Status::IMAP::GetQuotaRoot", "Error::IMAP::OSErrGetQuotaRoot", "Error::IMAP::NoBadGetQuotaRoot", mbox->GetName());
@@ -3891,6 +3958,10 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 			mHasQResync = false;
 		if (!gotCondstore && !gotQResync)
 			mHasCondstore = false;
+
+		// RFC 9755: UTF8=ACCEPT enabled
+		if (::strstrnocase(*txt, "UTF8=ACCEPT") != NULL)
+			mUTF8Accepted = true;
 	}
 
 	// VANISHED (RFC 7162 §3.2.10)
@@ -4108,21 +4179,77 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		mFindingSubs = lsub;
 	IMAPParseMailbox(txt, *delim, new_flags, special_use);
 
-	// Skip any extended data items after mailbox name (RFC 5258)
+	// Parse extended data items after mailbox name (RFC 5258 / RFC 9051 §6.3.9.7)
 	if (*txt)
 	{
 		while(**txt == ' ') (*txt)++;
 		if (**txt == '(')
 		{
-			int depth = 0;
-			char* q = *txt;
-			while (*q)
+			(*txt)++;
+
+			while (**txt && **txt != ')')
 			{
-				if (*q == '(') depth++;
-				else if (*q == ')') { depth--; if (depth == 0) { q++; break; } }
-				q++;
+				while (**txt == ' ') (*txt)++;
+
+				// RFC 9051 §6.3.9.7: OLDNAME ("old-name")
+				if (::stradvtokcmp(txt, "OLDNAME") == 0)
+				{
+					while (**txt == ' ') (*txt)++;
+					if (**txt == '(')
+					{
+						(*txt)++;
+						while (**txt == ' ') (*txt)++;
+						char* old_name = INETParseString(txt);
+						if (old_name && *old_name)
+						{
+							// Decode modified UTF-7 if needed
+							if (mVersion >= eIMAP4rev1 && !mUTF8Accepted && mVersion < eIMAP4rev2)
+							{
+								char* decoded = cdstring::FromModifiedUTF7(old_name, true);
+								if (decoded != NULL)
+								{
+									delete old_name;
+									old_name = decoded;
+								}
+							}
+
+							// Find and remove the old mailbox from the hierarchy
+							CMbox* old_mbox = GetMboxOwner()->FindMbox(old_name);
+							if (old_mbox)
+								GetMboxOwner()->RemoveMbox(old_mbox);
+
+							delete old_name;
+						}
+						else
+							delete old_name;
+
+						while (**txt == ' ') (*txt)++;
+						if (**txt == ')') (*txt)++;
+					}
+				}
+				else
+				{
+					// Skip unknown extended data item (balanced parentheses)
+					if (**txt == '(')
+					{
+						int depth = 1;
+						(*txt)++;
+						while (**txt && depth > 0)
+						{
+							if (**txt == '(') depth++;
+							else if (**txt == ')') depth--;
+							(*txt)++;
+						}
+					}
+					else
+					{
+						// Skip atom or string value
+						delete INETParseString(txt);
+					}
+				}
 			}
-			*txt = q;
+
+			if (**txt == ')') (*txt)++;
 		}
 	}
 
@@ -4203,14 +4330,12 @@ void CIMAPClient::IMAPParseMailbox(char** txt, char delim, NMbox::EFlags mbox_fl
 		// Display status and bump count
 		BumpItemCtr(mFindingSubs ? "Status::IMAP::SubscribeFind" : "Status::IMAP::MailboxFind");
 
-		// Decode modified UTF7 here
-		if (mVersion >= eIMAP4rev1)
+		// Decode modified UTF-7 (not needed when UTF-8 is active or rev2)
+		if (mVersion >= eIMAP4rev1 && !mUTF8Accepted && mVersion < eIMAP4rev2)
 		{
-			// Do mUTF7 decode
 			char* decoded = cdstring::FromModifiedUTF7(mbox_name, true);
 			if (decoded != NULL)
 			{
-				// Reset mailbox name to the decoded value if it was actually decoded
 				if (dispose_str)
 					delete mbox_name;
 				mbox_name = decoded;
@@ -4462,12 +4587,11 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 		CLOG_LOGTHROW(CINETException, CINETException::err_BadParse);
 		throw CINETException(CINETException::err_BadParse);
 	}
+	if (!mUTF8Accepted && mVersion < eIMAP4rev2)
 	{
-		// Do mUTF7 decode
 		char* decoded = cdstring::FromModifiedUTF7(mbox_name, true);
 		if (decoded != NULL)
 		{
-			// Reset mailbox name to the decoded value if it was actually decoded
 			delete mbox_name;
 			mbox_name = decoded;
 		}
@@ -5197,7 +5321,8 @@ CAttachment* CIMAPClient::IMAPParseBodyContent(char** txt)
 	{
 		case eContentMessage:
 			// Only for RFC822's
-			if (content.GetContentSubtype() == eContentSubRFC822)
+			if (content.GetContentSubtype() == eContentSubRFC822 ||
+				content.GetContentSubtype() == eContentSubGlobal)
 			{
 				// Create a new sub-message for this type
 				// Sub-message will be created with its cache
@@ -5940,13 +6065,11 @@ void CIMAPClient::IMAPParseQuotaRoot(char** txt)
 {
 	// Get mailbox name
 	char* mbox_name = INETParseString(txt);
-	if (mVersion >= eIMAP4rev1)
+	if (mVersion >= eIMAP4rev1 && !mUTF8Accepted && mVersion < eIMAP4rev2)
 	{
-		// Do mUTF7 decode
 		char* decoded = cdstring::FromModifiedUTF7(mbox_name, true);
 		if (decoded != NULL)
 		{
-			// Reset mailbox name to the decoded value if it was actually decoded
 			delete mbox_name;
 			mbox_name = decoded;
 		}
@@ -6010,6 +6133,17 @@ void CIMAPClient::IMAPParseNamespaceItem(cdstrpairvect* names, char** txt)
 
 		// Get name and hierarchy character
 		char* q = INETParseString(&p);
+
+		// Decode modified UTF-7 (not needed when UTF-8 is active or rev2)
+		if (q && mVersion >= eIMAP4rev1 && !mUTF8Accepted && mVersion < eIMAP4rev2)
+		{
+			char* decoded = cdstring::FromModifiedUTF7(q, true);
+			if (decoded != NULL)
+			{
+				delete q;
+				q = decoded;
+			}
+		}
 
 		// Punt spaces
 		while(*p == ' ') p++;

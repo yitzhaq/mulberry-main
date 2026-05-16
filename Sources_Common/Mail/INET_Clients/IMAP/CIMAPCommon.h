@@ -86,6 +86,8 @@ extern const char* cIMAP_AUTHANON;
 extern const char* cIMAP_LANGUAGE;
 extern const char* cIMAP_I18NLEVEL1;
 extern const char* cIMAP_I18NLEVEL2;
+extern const char* cIMAP_UTF8_ACCEPT;
+extern const char* cIMAP_UTF8_ONLY;
 
 // Commands
 extern const char* cIDLE;

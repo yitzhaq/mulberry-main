@@ -102,6 +102,9 @@ private:
 	bool			mHasLanguage;					// Supports LANGUAGE (RFC 5255)
 	bool			mHasI18NLevel1;					// Supports I18NLEVEL=1 (RFC 5255)
 	bool			mHasI18NLevel2;					// Supports I18NLEVEL=2 (RFC 5255)
+	bool			mHasUTF8Accept;					// Supports UTF8=ACCEPT (RFC 9755)
+	bool			mHasUTF8Only;					// Supports UTF8=ONLY (RFC 9755)
+	bool			mUTF8Accepted;					// UTF8=ACCEPT successfully ENABLED this session
 	cdstring		mActiveLanguage;				// Active language tag
 	cdstring		mActiveComparator;				// Active comparator
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
@@ -147,6 +150,7 @@ private:
 
 public:
 	virtual CINETClient*	CloneConnection();		// Create duplicate, empty connection
+			bool	GetUTF8Accepted() const { return mUTF8Accepted; }
 
 protected:
 	virtual tcp_port GetDefaultPort();						// Get default port;
@@ -204,6 +208,8 @@ protected:
 			void	_Compress();				// Send RFC 4978 COMPRESS command
 			void	_Language();				// Send RFC 5255 LANGUAGE command
 			void	_Comparator();				// Send RFC 5255 COMPARATOR command
+			void	EncodeMailboxName(cdstring& name);
+	virtual int		ProcessString(cdstring& str);
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes);		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes);			// Do find all mboxes
 			void	_FindSpecialUseMbox(CMboxList* mboxes);	// Find special-use mailboxes only (RFC 6154)

@@ -1661,7 +1661,8 @@ bool CAttachment::IsCalendar() const
 bool CAttachment::IsMessage() const
 {
 	return ((mContent.GetContentType() == eContentMessage) &&
-			(mContent.GetContentSubtype() == eContentSubRFC822));
+			(mContent.GetContentSubtype() == eContentSubRFC822 ||
+			 mContent.GetContentSubtype() == eContentSubGlobal));
 }
 
 // Set sub-message
