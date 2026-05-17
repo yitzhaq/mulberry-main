@@ -181,6 +181,8 @@ protected:
 
 	virtual void	_CheckMbox(CMbox* mbox,				// Do check
 								bool fast = false);
+	virtual void	_BatchStatusCheck();				// Batch STATUS via LIST-STATUS (RFC 5819)
+			cdstring	BuildStatusAttributes() const;	// Build STATUS attribute list for STATUS/LIST-STATUS
 
 	// IDLE (RFC 2177)
 	virtual void	_Tickle(bool force_tickle);			// Override: IDLE-aware tickle

@@ -250,6 +250,7 @@ public:
 	virtual void	Forceoff();							// Forced close
 
 			void	RecoverClone();							// Recover a cloned connection
+			void	BatchStatusCheck();						// Batch STATUS via LIST-STATUS (RFC 5819)
 
 	// O F F L I N E
 	virtual void	InitDisconnect();

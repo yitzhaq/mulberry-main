@@ -737,8 +737,10 @@ void CINETClient::Logon()
 			throw CINETException(CINETException::err_NoSTARTTLS);
 		}
 
-		// Check capability
-		_Capability();
+		// Parse capability from greeting response code if available (RFC 9051 §7.1),
+		// otherwise send explicit CAPABILITY command
+		if (!_TryParseResponseCapability(mGreeting))
+			_Capability();
 
 		// Look for TLS and do STARTTLS
 		if (mOwner &&
@@ -772,11 +774,15 @@ void CINETClient::Logon()
 		else
 			auth_done = true;
 
-		// Refresh capabilities after authentication (RFC 3501 §6.1.1).
+		// Refresh capabilities after authentication (RFC 9051 §6.2.2/§6.2.3).
 		// Post-login capabilities differ from pre-login and may include
 		// extensions like SORT, COMPRESS, MOVE, etc.
-		if (auth_done)
-			_Capability();
+		// Use [CAPABILITY ...] from auth OK if available (saves one round-trip).
+		if (auth_done && !pre_auth)
+		{
+			if (!_TryParseResponseCapability(mLastResponse.tag_msg))
+				_Capability();
+		}
 	}
 	catch(unsigned long /*num*/)
 	{
@@ -1461,6 +1467,27 @@ void CINETClient::_Capability(bool after_tls)
 		}
 	}
 
+}
+
+bool CINETClient::_TryParseResponseCapability(const cdstring& text)
+{
+	const char* p = ::strstr(text.c_str(), "[CAPABILITY ");
+	if (!p)
+		return false;
+	p += 12;
+
+	const char* end = ::strchr(p, ']');
+	if (!end)
+		return false;
+
+	cdstring caps(p, end - p);
+
+	_InitCapability();
+	mCapability = caps;
+	mLastResponse.Clear();
+	mLastResponse.AddUntagged(caps);
+	_ProcessCapability();
+	return true;
 }
 
 // Authenticate user

@@ -292,6 +292,7 @@ protected:
 	virtual void	_InitCapability() {}					// Initialise capability flags to empty set
 	virtual void	_ProcessCapability() {}					// Handle capability response
 	virtual void	_NoCapability() {}						// Handle failed capability response
+			bool	_TryParseResponseCapability(const cdstring& text);	// Parse [CAPABILITY ...] from response code
 	virtual void	_Authenticate();						// Authenticate with server
 
 	virtual void	_PreProcess() {}						// About to start processing input

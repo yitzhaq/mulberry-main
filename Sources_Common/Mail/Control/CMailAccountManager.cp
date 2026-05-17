@@ -959,12 +959,30 @@ long CMailAccountManager::RunMailCheck(EFavourite type, const CMailNotification&
 	CMboxList match;
 	ResolveCabinetList(match, type);
 
+	// Batch STATUS via LIST-STATUS for protocols that support it (RFC 5819).
+	// Resets mListStatusDone per cycle; if LIST-STATUS is available, sets it
+	// true so _CheckMbox skips individual STATUS. Otherwise individual STATUS fires.
+	{
+		std::vector<CMboxProtocol*> seen;
+		for(CMboxList::iterator iter = match.begin(); !mHaltCheck && (iter != match.end()); iter++)
+		{
+			CMbox* mbox = static_cast<CMbox*>(*iter);
+			CMboxProtocol* proto = mbox->GetProtocol();
+			if (proto->IsLoggedOn() && !mbox->IsLocalMbox() &&
+				std::find(seen.begin(), seen.end(), proto) == seen.end())
+			{
+				seen.push_back(proto);
+				proto->BatchStatusCheck();
+			}
+		}
+	}
+
 	// Now convert CMbox to CMboxRefs as the mailbox object may get delete whilst this loop
 	// is run so we need to dynamically resolve it
 	CMboxRefList rmatch(true);
 	for(CMboxList::iterator iter = match.begin(); !mHaltCheck && (iter != match.end()); iter++)
 		rmatch.AddMbox(static_cast<CMbox*>(*iter));
-	
+
 	// Check each mailbox in resolved list
 	for(CMboxRefList::iterator iter = rmatch.begin(); !mHaltCheck && (iter != rmatch.end()); iter++)
 	{

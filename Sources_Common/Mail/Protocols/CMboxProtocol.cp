@@ -2157,6 +2157,23 @@ void CMboxProtocol::UpdateMbox(CMbox* mbox)
 
 } // CMboxProtocol::UpdateMbox
 
+void CMboxProtocol::BatchStatusCheck()
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	try
+	{
+		mClient->_BatchStatusCheck();
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+	}
+}
+
 // Check mbox for new messages
 long CMboxProtocol::CheckMbox(CMbox* mbox, bool fast)
 {

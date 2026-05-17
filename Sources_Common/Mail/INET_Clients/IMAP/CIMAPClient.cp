@@ -249,7 +249,6 @@ void CIMAPClient::_InitCapability()
 	mSearchSaved = false;
 	mSortDollarBroken = false;
 	mSavedSearchResults.clear();
-	mListStatusDone = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendUIDs.clear();
@@ -902,6 +901,50 @@ void CIMAPClient::_Deselect(CMbox* mbox)
 
 } // CIMAPClient::_Deselect
 
+cdstring CIMAPClient::BuildStatusAttributes() const
+{
+	cdstring atts = "MESSAGES";
+	if (mVersion < eIMAP4rev2)
+		atts += " RECENT";
+	atts += " UNSEEN UIDVALIDITY UIDNEXT";
+	if (mVersion >= eIMAP4rev2)
+		atts += " DELETED";
+	if (mHasStatusSize)
+		atts += " SIZE";
+	if (mHasCondstore)
+		atts += " HIGHESTMODSEQ";
+	if (mHasAppendLimit)
+		atts += " APPENDLIMIT";
+	return atts;
+}
+
+void CIMAPClient::_BatchStatusCheck()
+{
+	mListStatusDone = false;
+
+	if (!mHasListExtended || !mHasListStatus)
+		return;
+
+	// Discard list for LIST responses — we only want the STATUS data
+	CMboxList discard;
+	StValueChanger<CMboxList*> _wd(mCurrentWD, &discard);
+	StValueChanger<bool> _subs(mFindingSubs, false);
+	StValueChanger<CMbox*> _target(mTargetMbox, (CMbox*) NULL);
+
+	InitItemCtr();
+
+	INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck");
+	INETSendString(cLIST);
+	INETSendString(" (SUBSCRIBED) \"\" \"");
+	INETSendString(cWILDCARD);
+	INETSendString("\" RETURN (STATUS (");
+	INETSendString(BuildStatusAttributes());
+	INETSendString("))");
+	INETFinishSend();
+
+	mListStatusDone = true;
+}
+
 // Check mbox
 void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 {
@@ -951,22 +994,9 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 				INETSendString(cSpace);
 				INETSendString(wd_name, eQueueProcess);
 				INETSendString(cSpace);
-				{
-					cdstring atts = "(MESSAGES";
-					if (mVersion < eIMAP4rev2)
-						atts += " RECENT";
-					atts += " UNSEEN UIDVALIDITY UIDNEXT";
-					if (mVersion >= eIMAP4rev2)
-						atts += " DELETED";
-					if (mHasStatusSize)
-						atts += " SIZE";
-					if (mHasCondstore)
-						atts += " HIGHESTMODSEQ";
-					if (mHasAppendLimit)
-						atts += " APPENDLIMIT";
-					atts += ")";
-					INETSendString(atts);
-				}
+				INETSendString("(");
+				INETSendString(BuildStatusAttributes());
+				INETSendString(")");
 				INETFinishSend();
 			}
 			catch(CINETException& /*ex*/)
@@ -1438,20 +1468,8 @@ void CIMAPClient::_FindAllSubsMbox(CMboxList* mboxes)
 			cdstring return_opts = "CHILDREN";
 			if (mHasListStatus)
 			{
-				cdstring status_atts = "MESSAGES";
-				if (mVersion < eIMAP4rev2)
-					status_atts += " RECENT";
-				status_atts += " UNSEEN UIDVALIDITY UIDNEXT";
-				if (mVersion >= eIMAP4rev2)
-					status_atts += " DELETED";
-				if (mHasStatusSize)
-					status_atts += " SIZE";
-				if (mHasCondstore)
-					status_atts += " HIGHESTMODSEQ";
-				if (mHasAppendLimit)
-					status_atts += " APPENDLIMIT";
 				return_opts += " STATUS (";
-				return_opts += status_atts;
+				return_opts += BuildStatusAttributes();
 				return_opts += ")";
 			}
 			if (mHasSpecialUse)
@@ -1542,20 +1560,8 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 				{
 					if (return_opts.length())
 						return_opts += " ";
-					cdstring status_atts = "MESSAGES";
-					if (mVersion < eIMAP4rev2)
-						status_atts += " RECENT";
-					status_atts += " UNSEEN UIDVALIDITY UIDNEXT";
-					if (mVersion >= eIMAP4rev2)
-						status_atts += " DELETED";
-					if (mHasStatusSize)
-						status_atts += " SIZE";
-					if (mHasCondstore)
-						status_atts += " HIGHESTMODSEQ";
-					if (mHasAppendLimit)
-						status_atts += " APPENDLIMIT";
 					return_opts += "STATUS (";
-					return_opts += status_atts;
+					return_opts += BuildStatusAttributes();
 					return_opts += ")";
 				}
 				if (mHasSpecialUse)

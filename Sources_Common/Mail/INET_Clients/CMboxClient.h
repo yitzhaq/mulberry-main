@@ -70,6 +70,7 @@ public:
 	virtual void	_Deselect(CMbox* mbox) = 0;				// Unselect
 	virtual void	_CheckMbox(CMbox* mbox,					// Do check
 								bool fast = false) = 0;
+	virtual void	_BatchStatusCheck() {}					// Batch STATUS via LIST-STATUS (RFC 5819)
 	virtual void	_MailboxSize(CMbox* mbox) = 0;			// Get mailbox size;
 	virtual bool	_DoesMailboxSize() const = 0;			// Does server handle mailbox size?
 	virtual bool	_ExpungeMbox(bool closing) = 0;			// Do expunge mailbox
