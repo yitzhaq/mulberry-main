@@ -88,10 +88,12 @@ extern const char* cIMAP_I18NLEVEL1;
 extern const char* cIMAP_I18NLEVEL2;
 extern const char* cIMAP_UTF8_ACCEPT;
 extern const char* cIMAP_UTF8_ONLY;
+extern const char* cIMAP_NOTIFY;
 
 // Commands
 extern const char* cIDLE;
 extern const char* cDONE;
+extern const char* cNOTIFY;
 extern const char* cSELECT;
 extern const char* cEXAMINE;
 extern const char* cBBOARD;

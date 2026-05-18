@@ -85,10 +85,12 @@ const char* cIMAP_I18NLEVEL1 =			"I18NLEVEL=1";
 const char* cIMAP_I18NLEVEL2 =			"I18NLEVEL=2";
 const char* cIMAP_UTF8_ACCEPT =			"UTF8=ACCEPT";
 const char* cIMAP_UTF8_ONLY =				"UTF8=ONLY";
+const char* cIMAP_NOTIFY =				"NOTIFY";
 
 // Commands
 const char* cIDLE =						"IDLE";
 const char* cDONE =						"DONE";
+const char* cNOTIFY =					"NOTIFY";
 const char* cSELECT =					"SELECT";
 const char* cEXAMINE =					"EXAMINE";
 const char* cBBOARD =					"BBOARD";

@@ -105,6 +105,8 @@ private:
 	bool			mHasUTF8Accept;					// Supports UTF8=ACCEPT (RFC 9755)
 	bool			mHasUTF8Only;					// Supports UTF8=ONLY (RFC 9755)
 	bool			mUTF8Accepted;					// UTF8=ACCEPT successfully ENABLED this session
+	bool			mHasNotify;						// Supports NOTIFY (RFC 5465)
+	bool			mNotifyActive;					// NOTIFY SET successfully sent this session
 	cdstring		mActiveLanguage;				// Active language tag
 	cdstring		mActiveComparator;				// Active comparator
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
@@ -210,6 +212,7 @@ protected:
 			void	_Compress();				// Send RFC 4978 COMPRESS command
 			void	_Language();				// Send RFC 5255 LANGUAGE command
 			void	_Comparator();				// Send RFC 5255 COMPARATOR command
+			void	_Notify();					// Send RFC 5465 NOTIFY command
 			void	EncodeMailboxName(cdstring& name);
 	virtual int		ProcessString(cdstring& str);
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes);		// Do find subscribed mboxes

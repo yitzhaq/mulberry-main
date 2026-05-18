@@ -679,6 +679,10 @@ void CMboxProtocol::Logon()
 	mClient->_Language();
 	mClient->_Comparator();
 
+	// Send RFC 5465 NOTIFY command (main connection only)
+	if (!IsCloned())
+		mClient->_Notify();
+
 	// Do not reset current mbox for clone
 	if (!IsCloned())
 		mCurrent_mbox = NULL;

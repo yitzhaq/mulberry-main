@@ -98,6 +98,7 @@ public:
 	virtual void	_Compress() {}					// Send RFC 4978 COMPRESS command (IMAP-specific, default no-op)
 	virtual void	_Language() {}					// Send RFC 5255 LANGUAGE command (IMAP-specific, default no-op)
 	virtual void	_Comparator() {}				// Send RFC 5255 COMPARATOR command (IMAP-specific, default no-op)
+	virtual void	_Notify() {}					// Send RFC 5465 NOTIFY command (IMAP-specific, default no-op)
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes) = 0;		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes) = 0;			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) = 0;			// Starting multiple append

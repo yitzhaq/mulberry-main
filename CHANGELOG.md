@@ -275,6 +275,15 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP NOTIFY extension (RFC 5465). Server-pushed mailbox change
+  notifications replacing periodic STATUS polling. Monitors subscribed
+  mailboxes for message changes and personal namespace for hierarchy
+  changes (create, delete, rename, subscribe). IDLE without a selected
+  mailbox is enabled when NOTIFY is active so the main connection
+  receives pushed events in real-time. Handles NOTIFICATIONOVERFLOW
+  by falling back to polling, and BADEVENT by retrying with the
+  server's supported event subset. Servers without NOTIFY continue
+  with the existing polling flow unchanged.
 - POP3 SYS/AUTH response codes (RFC 3206). Parse structured error
   codes from POP3 servers to distinguish authentication failures
   from temporary and permanent server errors.
@@ -432,6 +441,13 @@ X11 bitmap fonts).
 
 ### Fixed
 
+- Fix IMAP capability handling: refresh capabilities after login
+  (RFC 9051 §6.2.2). Previous versions used pre-auth capabilities for
+  the entire session, missing post-auth extensions like SORT, MOVE,
+  COMPRESS, LIST-STATUS, and NOTIFY. Parse `[CAPABILITY ...]` from
+  server greeting and auth OK response code when available, saving up
+  to two round-trips per connection. Falls back to explicit CAPABILITY
+  command when not available.
 - Fix RFC 2047 encoded-word NUL byte injection (Mailsploit class).
   Strip NUL bytes and C0 control characters from decoded header
   output at the ostrstream level before C string conversion.

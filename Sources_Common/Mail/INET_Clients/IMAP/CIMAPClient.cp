@@ -168,6 +168,8 @@ void CIMAPClient::InitIMAPClient()
 	mHasUTF8Accept = false;
 	mHasUTF8Only = false;
 	mUTF8Accepted = false;
+	mHasNotify = false;
+	mNotifyActive = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -244,6 +246,8 @@ void CIMAPClient::_InitCapability()
 	mHasUTF8Accept = false;
 	mHasUTF8Only = false;
 	mUTF8Accepted = false;
+	mHasNotify = false;
+	mNotifyActive = false;
 	mActiveLanguage.clear();
 	mActiveComparator.clear();
 	mSearchSaved = false;
@@ -344,6 +348,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasI18NLevel1 = mHasI18NLevel2 || mLastResponse.CheckUntagged(cIMAP_I18NLEVEL1, true);
 	mHasUTF8Only = mLastResponse.CheckUntagged(cIMAP_UTF8_ONLY, true);
 	mHasUTF8Accept = mHasUTF8Only || mLastResponse.CheckUntagged(cIMAP_UTF8_ACCEPT, true);
+	mHasNotify = mLastResponse.CheckUntagged(cIMAP_NOTIFY, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -415,7 +420,7 @@ void CIMAPClient::_PreProcess()
 
 } // CIMAPClient::_PreProcess
 
-// Handle failed capability response
+// Post-process command responses
 void CIMAPClient::_PostProcess()
 {
 	if (mLastResponse.CheckUntagged(cUIDVALIDITY))
@@ -617,6 +622,10 @@ void CIMAPClient::_PostProcess()
 	// Recover last response/new message count
 	mLastResponse = save_response;
 	mMboxNew = new_msgs;
+
+	// RFC 5465 §5.8: NOTIFICATIONOVERFLOW means server disabled NOTIFY
+	if (mNotifyActive && mLastResponse.CheckUntagged("NOTIFICATIONOVERFLOW", false))
+		mNotifyActive = false;
 
 } // CIMAPClient::_PostProcess
 
@@ -922,11 +931,17 @@ void CIMAPClient::_BatchStatusCheck()
 {
 	mListStatusDone = false;
 
+	if (mNotifyActive)
+	{
+		mListStatusDone = true;
+		return;
+	}
+
 	if (!mHasListExtended || !mHasListStatus)
 		return;
 
 	// Discard list for LIST responses — we only want the STATUS data
-	CMboxList discard;
+	CMboxList discard(GetMboxOwner());
 	StValueChanger<CMboxList*> _wd(mCurrentWD, &discard);
 	StValueChanger<bool> _subs(mFindingSubs, false);
 	StValueChanger<CMbox*> _target(mTargetMbox, (CMbox*) NULL);
@@ -1379,6 +1394,115 @@ void CIMAPClient::_Comparator()
 	catch(...)
 	{
 		CLOG_LOGCATCH(...);
+	}
+}
+
+void CIMAPClient::_Notify()
+{
+	if (!mHasNotify)
+		return;
+
+	try
+	{
+		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck");
+		INETSendString(cNOTIFY);
+		INETSendString(" SET"
+			" (selected-delayed (MessageNew MessageExpunge FlagChange))"
+			" (subscribed (MessageNew MessageExpunge FlagChange))"
+			" (personal (MailboxName SubscriptionChange))");
+		INETFinishSend();
+
+		mNotifyActive = true;
+	}
+	catch(CINETException& ex)
+	{
+		CLOG_LOGCATCH(CINETException&);
+
+		if (ex.error() != CINETException::err_NoResponse)
+		{
+			mNotifyActive = false;
+			return;
+		}
+
+		// RFC 5465 §3.1: NO [BADEVENT (event ...)] — retry with supported subset
+		const char* p = ::strstr(mLastResponse.tag_msg.c_str(), "[BADEVENT ");
+		if (!p)
+		{
+			mNotifyActive = false;
+			return;
+		}
+		p += 10;
+		const char* end = ::strchr(p, ']');
+		if (!end)
+		{
+			mNotifyActive = false;
+			return;
+		}
+
+		cdstring supported(p, end - p);
+		::strupper(supported);
+
+		bool hasMessageNew = (::strstr(supported.c_str(), "MESSAGENEW") != NULL);
+		bool hasMessageExpunge = (::strstr(supported.c_str(), "MESSAGEEXPUNGE") != NULL);
+		bool hasFlagChange = (::strstr(supported.c_str(), "FLAGCHANGE") != NULL);
+		bool hasMailboxName = (::strstr(supported.c_str(), "MAILBOXNAME") != NULL);
+		bool hasSubscriptionChange = (::strstr(supported.c_str(), "SUBSCRIPTIONCHANGE") != NULL);
+
+		// Enforce pairing rules (RFC 5465 §5)
+		bool hasMsgPair = hasMessageNew && hasMessageExpunge;
+		if (hasFlagChange && !hasMsgPair)
+			hasFlagChange = false;
+
+		cdstring retry;
+		if (hasMsgPair)
+		{
+			cdstring msg_events = "MessageNew MessageExpunge";
+			if (hasFlagChange)
+				msg_events += " FlagChange";
+			retry += " (selected-delayed (";
+			retry += msg_events;
+			retry += ")) (subscribed (";
+			retry += msg_events;
+			retry += "))";
+		}
+		if (hasMailboxName || hasSubscriptionChange)
+		{
+			retry += " (personal (";
+			if (hasMailboxName)
+				retry += "MailboxName";
+			if (hasMailboxName && hasSubscriptionChange)
+				retry += " ";
+			if (hasSubscriptionChange)
+				retry += "SubscriptionChange";
+			retry += "))";
+		}
+
+		if (retry.empty())
+		{
+			mNotifyActive = false;
+			return;
+		}
+
+		try
+		{
+			INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck");
+			INETSendString(cNOTIFY);
+			INETSendString(" SET");
+			INETSendString(retry);
+			INETFinishSend();
+
+			mNotifyActive = true;
+		}
+		catch(...)
+		{
+			CLOG_LOGCATCH(...);
+			mNotifyActive = false;
+		}
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+		mNotifyActive = false;
 	}
 }
 
@@ -3687,7 +3811,7 @@ bool CIMAPClient::ShouldStartIdle()
 	return mHasIdle &&
 		mIdleState == eIdleOff &&
 		mStream != NULL &&
-		GetCurrentMbox() != NULL &&
+		(GetCurrentMbox() != NULL || mNotifyActive) &&
 		mVersion >= eIMAP4rev1 &&
 		(mIdleStartTime == 0 || ::difftime(::time(NULL), mIdleStartTime) >= 30);
 }
@@ -3708,7 +3832,7 @@ void CIMAPClient::_StartIdle()
 	{
 		mIdleState = eIdleRequested;
 
-		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", GetCurrentMbox()->GetName(), false);
+		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", GetCurrentMbox() ? GetCurrentMbox()->GetName() : cdstring::null_str, false);
 		::strcpy(mIdleTag, mTag);
 		INETSendString(cIDLE, eQueueNoFlags, false);
 		INETFinishSend(false);
@@ -4098,6 +4222,7 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 	char* p;
 	NMbox::EFlags new_flags = NMbox::eNone;
 	unsigned char special_use = CMbox::eSpecialNone;
+	bool nonexistent = false;
 
 	// Look for bracket
 	p = ::strmatchbra(txt);
@@ -4136,7 +4261,10 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		}
 
 		else if (CheckStrAdv(&p, cMBOXFLAGNONEXISTENT))
+		{
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eNoSelect);
+			nonexistent = true;
+		}
 
 		else if (CheckStrAdv(&p, cMBOXFLAGREMOTE))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eNoSelect);
@@ -4183,7 +4311,30 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 	// only fall back to the lsub parameter if \Subscribed was not seen.
 	if (!(new_flags & NMbox::eSubscribed))
 		mFindingSubs = lsub;
-	IMAPParseMailbox(txt, *delim, new_flags, special_use);
+
+	// RFC 5465 §5.4: \NonExistent means mailbox was deleted — remove from hierarchy
+	if (nonexistent)
+	{
+		char* mbox_name = INETParseString(txt);
+		if (mbox_name && *mbox_name)
+		{
+			if (mVersion >= eIMAP4rev1 && !mUTF8Accepted && mVersion < eIMAP4rev2)
+			{
+				char* decoded = cdstring::FromModifiedUTF7(mbox_name, true);
+				if (decoded != NULL)
+				{
+					delete mbox_name;
+					mbox_name = decoded;
+				}
+			}
+			CMbox* old_mbox = GetMboxOwner()->FindMbox(mbox_name);
+			if (old_mbox)
+				GetMboxOwner()->RemoveMbox(old_mbox);
+		}
+		delete mbox_name;
+	}
+	else
+		IMAPParseMailbox(txt, *delim, new_flags, special_use);
 
 	// Parse extended data items after mailbox name (RFC 5258 / RFC 9051 §6.3.9.7)
 	if (*txt)
