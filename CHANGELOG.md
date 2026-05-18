@@ -362,9 +362,13 @@ X11 bitmap fonts).
   Limited to characters available in ISO 8859-1 (Western European) due
   to JX toolkit constraints; Eastern European and other accented
   characters beyond Latin-1 are not supported via compose sequences.
-- Unicode clipboard support on Linux. Copy and paste of non-ASCII text
-  (accented characters, CJK, etc.) now works correctly with modern
-  desktop applications via UTF8_STRING X11 selection.
+- Fix clipboard on Linux. Ctrl+V and context menu paste now read
+  from the CLIPBOARD X11 selection (what Ctrl+C writes) instead of
+  PRIMARY (mouse-highlighted text). Middle-click paste still reads
+  PRIMARY. Non-ASCII text (accented characters, CJK, etc.) is
+  handled correctly via UTF8_STRING negotiation, with automatic
+  UTF-8 detection for sources that return UTF-8 data as XA_STRING.
+  CRLF line endings from external clipboard sources are normalized.
 - Fall back to xdg-open for opening attachments on Linux when no
   mailcap entry matches the MIME type. Previously, attachments with
   no mailcap match (notably application/octet-stream) simply could

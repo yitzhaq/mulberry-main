@@ -398,7 +398,7 @@ void CTextBase::HandleMouseDown(const JPoint& pt,
 
 Atom CTextBase::GetClipboardAtom() const
 {
-	return (mUseCommandClipboard ? XInternAtom(*GetDisplay(), "CLIPBOARD", False) : XA_PRIMARY);
+	return (mUseCommandClipboard ? kJXClipboardName : XA_PRIMARY);
 }
 
 // Exact copy of JXTEBase16 code except that it uses clipboard that this class determines
@@ -425,10 +425,20 @@ void CTextBase::TEClipboardChanged()
 		}
 }
 
-// Exact copy of JXTEBase16 code except that it uses clipboard that this class determines
+// Exact copy of JXTEBase16 code except that it uses clipboard that this class determines.
+// For command paste (Ctrl+V/menu), tries CLIPBOARD first (for data from external apps),
+// then falls back to PRIMARY.  Mouse paste (middle-click) reads PRIMARY directly.
 JBoolean CTextBase::TEGetExternalClipboard(JString16* text, JRunArray<Font>* style) const
 {
-	const JError err = GetSelectionData(GetClipboardAtom(), CurrentTime, text, style);
+	Atom pasteAtom = GetClipboardAtom();
+	if (mUseCommandClipboard)
+		pasteAtom = GetSelectionManager()->GetGnomeClipboardName();
+
+	JError err = GetSelectionData(pasteAtom, CurrentTime, text, style);
+
+	if (!err.OK() && mUseCommandClipboard)
+		err = GetSelectionData(kJXClipboardName, CurrentTime, text, style);
+
 	if (err.OK())
 		{
 		// Strip CR from CRLF line endings — X11 clipboard sources
