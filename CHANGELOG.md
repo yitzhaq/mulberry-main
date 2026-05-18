@@ -193,6 +193,17 @@ X11 bitmap fonts).
 - SMTP Enhanced Status Codes (RFC 2034/3463). Parse x.y.z status
   codes from SMTP responses for detailed error diagnostics with
   full RFC 3463 status code registry.
+- "Reflow Lines" command in compose window (context menu and Draft
+  menu). When replying to messages where the quoting merged items
+  that should be separate (e.g., numbered lists), the user can
+  manually insert line breaks, select the text, and trigger Reflow
+  Lines to properly re-wrap with correct quote prefixes. Handles
+  multiple quote depths.
+- Fix text selection after Wrap/Unwrap/Quote/Unquote/Requote/Reflow
+  and Shift operations in the compose window. The selection used
+  UTF-8 byte count instead of character count, causing the selection
+  to overflow into subsequent text when non-ASCII characters were
+  present. Fixed on all platforms (Linux, Win32, macOS).
 - Fix SMTP partial recipient failure: one rejected RCPT TO no
   longer aborts the entire message. Valid recipients still receive
   the message when others are rejected.

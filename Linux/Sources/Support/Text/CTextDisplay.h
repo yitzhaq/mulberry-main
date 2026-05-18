@@ -140,6 +140,7 @@ protected:
 	virtual void	OnQuoteLines();
 	virtual void	OnUnquoteLines();
 	virtual void	OnRequoteLines();
+	virtual void	OnReflowLines();
 	virtual void	OnShiftLeft();
 	virtual void	OnShiftRight();
 

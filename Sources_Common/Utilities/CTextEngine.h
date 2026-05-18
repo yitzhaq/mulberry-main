@@ -42,6 +42,11 @@ public:
 	static const char* UnquoteLines(const char* text,
 									unsigned long length,
 									const char* prefix);
+	static const char* ReflowLines(const char* text,
+									unsigned long length,
+									unsigned long wrap_len,
+									const cdstring& prefix,
+									const cdstrvect* recognise = NULL);
 
 	static void RemoveSigDashes(char* text);
 

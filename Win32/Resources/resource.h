@@ -476,6 +476,7 @@
 #define IDM_TEXT_QUOTE_LINES            1142
 #define IDM_TEXT_UNQUOTE_LINES          1143
 #define IDM_TEXT_REQUOTE_LINES          1144
+#define IDM_TEXT_REFLOW_LINES           1147
 #define IDM_TEXT_SHIFT_LEFT             1145
 #define IDM_TEXT_SHIFT_RIGHT            1146
 #define IDM_ADDR_MANAGER                1150

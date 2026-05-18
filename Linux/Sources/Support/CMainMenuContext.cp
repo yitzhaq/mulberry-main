@@ -185,6 +185,7 @@ const SMenuBuilder cLetterTextContext[] =
 	{"Quote Lines", CCommand::cDraftQuote},
 	{"Unquote Lines", CCommand::cDraftUnquote},
 	{"Requote Lines", CCommand::cDraftRequote},
+	{"Reflow Lines", CCommand::cDraftReflow},
 	{"Shift Left", CCommand::cDraftShiftLeft},
 	{"Shift Right %l", CCommand::cDraftShiftRight},
 	{"Check Spelling %l", CCommand::cEditCheckSpelling},

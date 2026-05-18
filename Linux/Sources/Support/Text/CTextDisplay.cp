@@ -359,6 +359,10 @@ bool CTextDisplay::ObeyCommand(unsigned long cmd, SMenuCommandChoice* menu)
 			OnRequoteLines();
 			break;
 
+		case CCommand::eDraftReflow:
+			OnReflowLines();
+			break;
+
 		case CCommand::eDraftShiftLeft:
 			OnShiftLeft();
 			break;
@@ -418,6 +422,9 @@ void CTextDisplay::UpdateCommand(unsigned long cmd, CCmdUI* cmdui)
 		cmdui->Enable(mWrapAllowed && has_editable_selection);
 		return;
 	case CCommand::eDraftRequote:
+		cmdui->Enable(mWrapAllowed && has_editable_selection);
+		return;
+	case CCommand::eDraftReflow:
 		cmdui->Enable(mWrapAllowed && has_editable_selection);
 		return;
 	case CCommand::eDraftShiftLeft:
@@ -719,6 +726,21 @@ void CTextDisplay::OnRequoteLines()
 	EndTextProcessing(txt, sel_start, sel_end);
 }
 
+void CTextDisplay::OnReflowLines()
+{
+	JIndex sel_start;
+	JIndex sel_end;
+	cdstring selected;
+	PrepareTextProcessing(sel_start, sel_end, selected);
+
+	const char* reflowed = CTextEngine::ReflowLines(selected.c_str(),
+								selected.length(), CRFC822::GetWrapLength(),
+								mQuotation,
+								&CPreferences::sPrefs->mRecognizeQuotes.GetValue());
+
+	EndTextProcessing(reflowed, sel_start, sel_end);
+}
+
 void CTextDisplay::OnShiftLeft()
 {
 	// Prepare for line based processing
@@ -850,10 +872,13 @@ void CTextDisplay::EndTextProcessing(const char* insert_text, JIndex& sel_start,
 	// Replace selection
 	if (insert_text)
 	{
-		size_t insert_length = ::strlen(insert_text);
 		InsertUTF8(insert_text);
 
-		sel_end = sel_start + insert_length;
+		// Get cursor position after insertion — this is the correct end
+		// in character units, regardless of UTF-8 multi-byte sequences
+		JIndex caret_start, caret_end;
+		GetSel(caret_start, caret_end);
+		sel_end = caret_end;
 	}
 	SetSel(sel_start, sel_end);
 	delete[] insert_text;

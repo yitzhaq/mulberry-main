@@ -316,6 +316,10 @@ Boolean CTextDisplay::ObeyCommand(CommandT inCommand,
 		OnRequoteLines();
 		break;
 
+	case cmd_ReflowLines:
+		OnReflowLines();
+		break;
+
 	case cmd_ShiftLeft:
 		OnShiftLeft();
 		break;
@@ -388,6 +392,7 @@ void CTextDisplay::FindCommandStatus(
 		case cmd_QuoteLines:
 		case cmd_UnquoteLines:
 		case cmd_RequoteLines:
+		case cmd_ReflowLines:
 			outEnabled = !IsReadOnly() && (sel_start != sel_end);
 			break;
 
@@ -936,6 +941,21 @@ void CTextDisplay::OnRequoteLines()
 	EndTextProcessing(txt, sel_start, sel_end);
 }
 
+void CTextDisplay::OnReflowLines()
+{
+	SInt32 sel_start;
+	SInt32 sel_end;
+	cdstring selected;
+	PrepareTextProcessing(sel_start, sel_end, selected);
+
+	const char* reflowed = CTextEngine::ReflowLines(selected.c_str(),
+								selected.length(), CRFC822::GetWrapLength(),
+								mQuotation,
+								&CPreferences::sPrefs->mRecognizeQuotes.GetValue());
+
+	EndTextProcessing(reflowed, sel_start, sel_end);
+}
+
 void CTextDisplay::OnShiftLeft()
 {
 	// Prepare for line based processing
@@ -1068,12 +1088,15 @@ void CTextDisplay::EndTextProcessing(const char* insert_text, SInt32& sel_start,
 	// Replace selection
 	if (insert_text)
 	{
-		size_t insert_length = ::strlen(insert_text);
-		InsertUTF8(insert_text, insert_length);
+		InsertUTF8(insert_text, ::strlen(insert_text));
 
 		FocusDraw();
 
-		sel_end = sel_start + insert_length + ((insert_text[insert_length - 1] == '\r') ? 0 : 1);
+		// Get cursor position after insertion — correct in character units
+		// regardless of UTF-8 multi-byte sequences
+		SInt32 caret_start, caret_end;
+		GetSelection(&caret_start, &caret_end);
+		sel_end = caret_end;
 	}
 	SetSelection(sel_start, sel_end);
 	delete insert_text;

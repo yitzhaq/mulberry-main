@@ -233,6 +233,7 @@ const SMenuBuilder cDraftMenuBuilder[] =
 	{"Quote Lines", CCommand::cDraftQuote},
 	{"Unquote Lines", CCommand::cDraftUnquote},
 	{"Requote Lines %k Meta-Ctrl-'", CCommand::cDraftRequote},
+	{"Reflow Lines", CCommand::cDraftReflow},
 	{"Shift Left", CCommand::cDraftShiftLeft},
 	{"Shift Right %l", CCommand::cDraftShiftRight},
 	{"Font", CCommand::cDraftFont},

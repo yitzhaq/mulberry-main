@@ -250,6 +250,7 @@ const	CommandT	cmd_UnwrapLines = 3311;
 const	CommandT	cmd_QuoteLines = 3312;
 const	CommandT	cmd_UnquoteLines = 3313;
 const	CommandT	cmd_RequoteLines = 3314;
+const	CommandT	cmd_ReflowLines = 3317;
 const	CommandT	cmd_ShiftLeft = 3315;
 const	CommandT	cmd_ShiftRight = 3316;
 

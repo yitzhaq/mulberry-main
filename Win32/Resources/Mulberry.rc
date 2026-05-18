@@ -1667,6 +1667,7 @@ BEGIN
         MENUITEM "&Quote Lines",                IDM_TEXT_QUOTE_LINES
         MENUITEM "U&nquote Lines",              IDM_TEXT_UNQUOTE_LINES
         MENUITEM "R&equote Lines\tAlt+Ctrl+'",  IDM_TEXT_REQUOTE_LINES
+        MENUITEM "Re&flow Lines",               IDM_TEXT_REFLOW_LINES
         MENUITEM "Shift &Left",                 IDM_TEXT_SHIFT_LEFT
         MENUITEM "Shift &Right",                IDM_TEXT_SHIFT_RIGHT
         MENUITEM SEPARATOR
@@ -4163,6 +4164,7 @@ BEGIN
         MENUITEM "Quote Lines",                 IDM_TEXT_QUOTE_LINES
         MENUITEM "Unquote Lines",               IDM_TEXT_UNQUOTE_LINES
         MENUITEM "Requote Lines",               IDM_TEXT_REQUOTE_LINES
+        MENUITEM "Reflow Lines",                IDM_TEXT_REFLOW_LINES
         MENUITEM "Shift Left",                  IDM_TEXT_SHIFT_LEFT
         MENUITEM "Shift Right",                 IDM_TEXT_SHIFT_RIGHT
         MENUITEM SEPARATOR
@@ -9447,6 +9449,7 @@ BEGIN
     IDM_TEXT_QUOTE_LINES    "Inserts the quotation string at the start of each selected line\nQuote Lines"
     IDM_TEXT_UNQUOTE_LINES  "Removes the first quotation string at the start of each selected line\nUnquote Lines"
     IDM_TEXT_REQUOTE_LINES  "Rewraps and requotes the selected lines\nRequote Lines"
+    IDM_TEXT_REFLOW_LINES   "Reflows quoted text, preserving paragraph breaks\nReflow Lines"
     IDM_TEXT_SHIFT_LEFT     "Removes a tab, or spaces, from the start of each selected line\nShift Left Lines"
     IDM_TEXT_SHIFT_RIGHT    "Inserts a tab, or spaces, at the start of each selected line\nShift Right Lines"
     IDM_ADDR_MANAGER        "Bring the address book manager window to the front\nAddress Book Manager"

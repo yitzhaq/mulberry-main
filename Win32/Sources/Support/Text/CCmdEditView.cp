@@ -90,6 +90,7 @@ BEGIN_MESSAGE_MAP(CCmdEditView, CRichEditView)
 	ON_UPDATE_COMMAND_UI(IDM_TEXT_QUOTE_LINES, OnUpdateSelectionReadWrite)
 	ON_UPDATE_COMMAND_UI(IDM_TEXT_UNQUOTE_LINES, OnUpdateSelectionReadWrite)
 	ON_UPDATE_COMMAND_UI(IDM_TEXT_REQUOTE_LINES, OnUpdateSelectionReadWrite)
+	ON_UPDATE_COMMAND_UI(IDM_TEXT_REFLOW_LINES, OnUpdateSelectionReadWrite)
 	ON_UPDATE_COMMAND_UI(IDM_TEXT_SHIFT_LEFT, OnUpdateReadWrite)
 	ON_UPDATE_COMMAND_UI(IDM_TEXT_SHIFT_RIGHT, OnUpdateReadWrite)
 
@@ -118,6 +119,7 @@ BEGIN_MESSAGE_MAP(CCmdEditView, CRichEditView)
 	ON_COMMAND(IDM_TEXT_QUOTE_LINES, OnQuoteLines)
 	ON_COMMAND(IDM_TEXT_UNQUOTE_LINES, OnUnquoteLines)
 	ON_COMMAND(IDM_TEXT_REQUOTE_LINES, OnRequoteLines)
+	ON_COMMAND(IDM_TEXT_REFLOW_LINES, OnReflowLines)
 	ON_COMMAND(IDM_TEXT_SHIFT_LEFT, OnShiftLeft)
 	ON_COMMAND(IDM_TEXT_SHIFT_RIGHT, OnShiftRight)
 
@@ -910,6 +912,21 @@ void CCmdEditView::OnRequoteLines()
 	EndTextProcessing(txt, sel_start, sel_end);
 }
 
+void CCmdEditView::OnReflowLines()
+{
+	long sel_start;
+	long sel_end;
+	cdstring selected;
+	PrepareTextProcessing(sel_start, sel_end, selected);
+
+	const char* reflowed = CTextEngine::ReflowLines(selected.c_str(),
+								selected.length(), CRFC822::GetWrapLength(),
+								mQuotation,
+								&CPreferences::sPrefs->mRecognizeQuotes.GetValue());
+
+	EndTextProcessing(reflowed, sel_start, sel_end);
+}
+
 void CCmdEditView::OnShiftLeft()
 {
 	// Prepare for line based processing
@@ -1048,10 +1065,14 @@ void CCmdEditView::EndTextProcessing(const char* insert_text, long& sel_start, l
 		// Must remove any LFs from text being inserted since RichEdit 2.0
 		// only uses CRs
 		::FilterOutLFs(const_cast<char*>(insert_text));
-		
-		size_t insert_length = ::strlen(insert_text);
+
 		InsertUTF8(insert_text);
-		sel_end = sel_start + insert_length + ((insert_text[insert_length - 1] == '\r') ? 0 : 1);
+
+		// Get cursor position after insertion â€” correct in character units
+		// regardless of UTF-8 multi-byte sequences
+		long caret_start, caret_end;
+		GetRichEditCtrl().GetSel(caret_start, caret_end);
+		sel_end = caret_end;
 	}
 	GetRichEditCtrl().SetSel(sel_start, sel_end);
 	delete insert_text;
@@ -1796,7 +1817,7 @@ bool CCmdEditView::CheckWord(const cdustring& word, long start)
 	// Canonicalise word
 	cdustring temp(word);
 	size_t wlen = temp.length();
-	if ((wlen > 0) && ((temp[wlen - 1] == '\'') || (temp[wlen - 1] == 'Õ')))
+	if ((wlen > 0) && ((temp[wlen - 1] == '\'') || (temp[wlen - 1] == 'ï¿½')))
 	{
 		if ((wlen > 1) && (temp[wlen - 2] != 's') && (temp[wlen - 2] != 'S'))
 		{

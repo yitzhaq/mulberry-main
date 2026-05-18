@@ -776,3 +776,249 @@ void CTextEngine::RemoveSigDashes(char* text)
 	if (start_dashes != NULL)
 		*start_dashes = 0;
 }
+
+const char* CTextEngine::ReflowLines(const char* text, unsigned long length,
+									unsigned long wrap_len, const cdstring& prefix,
+									const cdstrvect* recognise)
+{
+	if (wrap_len == 0)
+		wrap_len = 998;
+
+	// Build prefix match list (same as QuoteLines)
+	cdstrvect prefix_matches;
+	if (recognise)
+		prefix_matches = *recognise;
+	{
+		bool found = false;
+		for(cdstrvect::const_iterator iter = prefix_matches.begin();
+			(iter != prefix_matches.end()) && !found; iter++)
+			found = (*iter == prefix);
+		if (!found)
+			prefix_matches.push_back(prefix);
+	}
+
+	std::ostrstream out;
+
+	const char* p = text;
+	long remaining = length;
+
+	// Current paragraph state
+	long para_depth = 0;
+	cdstring para_content;
+	long prev_depth = -1;
+	bool first_output = true;
+
+	// Flush a completed paragraph: wrap content and output with prefix
+	auto FlushParagraph = [&]()
+	{
+		if (para_content.empty() && para_depth <= 0)
+			return;
+
+		if (!first_output)
+			out.write(os_endl, os_endl_len);
+		first_output = false;
+
+		if (para_content.empty())
+		{
+			// Blank quoted line
+			for (long d = 0; d < para_depth; d++)
+				out.write(prefix.c_str(), prefix.length());
+			return;
+		}
+
+		if (para_depth <= 0)
+		{
+			// Depth 0: output as-is
+			out.write(para_content.c_str(), para_content.length());
+			return;
+		}
+
+		// Build prefix string for this depth
+		cdstring full_prefix;
+		for (long d = 0; d < para_depth; d++)
+			full_prefix += prefix;
+
+		long pfx_len = full_prefix.length();
+		bool need_space = pfx_len > 0 &&
+			full_prefix[(unsigned long)(pfx_len - 1)] != ' ' &&
+			full_prefix[(unsigned long)(pfx_len - 1)] != '\t';
+		long pfx_display = pfx_len + (need_space ? 1 : 0);
+
+		long effective_wrap = wrap_len - pfx_display;
+		if (effective_wrap < 20)
+			effective_wrap = 20;
+
+		// Word-wrap content and output with prefix on each line
+		const char* s = para_content.c_str();
+		long content_left = para_content.length();
+
+		while (content_left > 0)
+		{
+			// Output prefix
+			out.write(full_prefix.c_str(), pfx_len);
+			if (need_space)
+				out.put(' ');
+
+			if (content_left <= effective_wrap)
+			{
+				out.write(s, content_left);
+				content_left = 0;
+			}
+			else
+			{
+				// Find last space before wrap point
+				long wrap_at = effective_wrap;
+				while (wrap_at > 0 && s[wrap_at] != ' ' && s[wrap_at] != '\t')
+					wrap_at--;
+
+				if (wrap_at == 0)
+					wrap_at = effective_wrap;
+
+				// Strip trailing whitespace
+				long out_len = wrap_at;
+				while (out_len > 0 && isspace((unsigned char)s[out_len - 1]))
+					out_len--;
+
+				out.write(s, out_len);
+				out.write(os_endl, os_endl_len);
+
+				// Skip whitespace at wrap point
+				while (wrap_at < content_left &&
+					   (s[wrap_at] == ' ' || s[wrap_at] == '\t'))
+					wrap_at++;
+
+				s += wrap_at;
+				content_left -= wrap_at;
+			}
+		}
+	};
+
+	// Process input line by line
+	while (remaining > 0)
+	{
+		// Find end of current line
+		long line_len = 0;
+		while (line_len < remaining && p[line_len] != lendl1)
+			line_len++;
+
+		// Parse quote depth
+		const char* content_start = p;
+		long content_remaining = line_len;
+		long depth = GetPrefixDepth(content_start, content_remaining, prefix_matches);
+
+		// Trim trailing whitespace from content
+		long content_len = content_remaining;
+		while (content_len > 0 && isspace((unsigned char)content_start[content_len - 1]))
+			content_len--;
+
+		bool blank = (content_len == 0);
+
+		// Determine if this line starts a new paragraph
+		bool new_para = false;
+		if (prev_depth < 0)
+			new_para = true;
+		else if (blank)
+			new_para = true;
+		else if (depth == 0 && prev_depth > 0)
+			new_para = true;
+		else if (depth > 0 && para_depth > 0 && depth != para_depth)
+			new_para = true;
+
+		if (new_para)
+		{
+			FlushParagraph();
+			para_content = cdstring::null_str;
+
+			if (blank)
+			{
+				para_depth = depth > 0 ? depth : para_depth;
+				// FlushParagraph will output blank line with prefix
+			}
+			else if (depth > 0)
+			{
+				para_depth = depth;
+				para_content.assign(content_start, content_len);
+			}
+			else
+			{
+				// Depth-0 line starting a paragraph — look ahead for depth
+				long target_depth = para_depth;
+				const char* lookahead = p + line_len;
+				long look_remaining = remaining - line_len;
+				// Skip past line ending
+				if (look_remaining > 0 && *lookahead == lendl1)
+				{
+					lookahead++;
+					look_remaining--;
+				}
+				while (look_remaining > 0)
+				{
+					long look_line_len = 0;
+					while (look_line_len < look_remaining && lookahead[look_line_len] != lendl1)
+						look_line_len++;
+					const char* look_content = lookahead;
+					long look_content_remaining = look_line_len;
+					long look_depth = GetPrefixDepth(look_content, look_content_remaining, prefix_matches);
+					if (look_depth > 0)
+					{
+						target_depth = look_depth;
+						break;
+					}
+					// Skip blank lines in lookahead
+					bool look_blank = true;
+					for (long j = 0; j < look_content_remaining; j++)
+					{
+						if (!isspace((unsigned char)look_content[j]))
+						{
+							look_blank = false;
+							break;
+						}
+					}
+					if (!look_blank)
+						break;
+					lookahead += look_line_len;
+					look_remaining -= look_line_len;
+					if (look_remaining > 0 && *lookahead == lendl1)
+					{
+						lookahead++;
+						look_remaining--;
+					}
+				}
+				para_depth = target_depth > 0 ? target_depth : 0;
+				para_content.assign(content_start, content_len);
+			}
+		}
+		else
+		{
+			// Continue current paragraph
+			if (!para_content.empty() && content_len > 0)
+				para_content += ' ';
+			para_content.append(content_start, content_len);
+		}
+
+		prev_depth = depth;
+
+		// Advance past line ending
+		p += line_len;
+		remaining -= line_len;
+		if (remaining > 0 && *p == lendl1)
+		{
+			p++;
+			remaining--;
+		}
+#if OS_LINE_END == OS_CRLF
+		if (remaining > 0 && *p == lendl2)
+		{
+			p++;
+			remaining--;
+		}
+#endif
+	}
+
+	// Flush final paragraph
+	FlushParagraph();
+
+	out.write(os_endl, os_endl_len);
+	out << std::ends;
+	return out.str();
+}

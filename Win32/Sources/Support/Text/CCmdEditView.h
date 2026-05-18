@@ -184,6 +184,7 @@ protected:
 	afx_msg void	OnQuoteLines();
 	afx_msg void	OnUnquoteLines();
 	afx_msg void	OnRequoteLines();
+	afx_msg void	OnReflowLines();
 	afx_msg void	OnShiftLeft();
 	afx_msg void	OnShiftRight();
 
