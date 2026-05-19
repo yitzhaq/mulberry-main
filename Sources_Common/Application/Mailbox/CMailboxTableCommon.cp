@@ -923,7 +923,12 @@ void CMailboxTable::DoMessageCopy(CMbox* copy_mbox, bool option_key, bool force_
 		}
 
 		if (want_delete)
-			SelectionNudge();
+		{
+			if (moved)
+				UnselectAllCells();
+			else
+				SelectionNudge();
+		}
 	}
 	catch (...)
 	{
