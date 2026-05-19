@@ -176,11 +176,11 @@ void CTimezonePopup::GetTimezone(iCal::CICalendarTimezone& tz) const
 			NULL, false, true, false, true, tzids, cdstring::null_str, selected,
 			"Alerts::Calendar::TimezoneChoice::Button"))
 		{
-			// Get selection from list
 			cdstring tzid = tzids.at(selected.front());
 			tz.SetTimezoneID(tzid);
 			CPreferences::sPrefs->mFavouriteTimezones.Value().insert(tzid);
-			const_cast<CTimezonePopup*>(this)->SetTimezone(iCal::CICalendar::getSICalendar().GetTimezone(tzid));
+			iCal::CICalendarTimezone seltz(false, tzid);
+			const_cast<CTimezonePopup*>(this)->SetTimezone(seltz);
 		}
 		else
 		{

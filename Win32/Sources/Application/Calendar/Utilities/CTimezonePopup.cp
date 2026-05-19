@@ -190,7 +190,8 @@ void CTimezonePopup::GetTimezone(iCal::CICalendarTimezone& tz) const
 			cdstring tzid = tzids.at(selected.front());
 			tz.SetTimezoneID(tzid);
 			CPreferences::sPrefs->mFavouriteTimezones.Value().insert(tzid);
-			const_cast<CTimezonePopup*>(this)->SetTimezone(iCal::CICalendar::getSICalendar().GetTimezone(tzid));
+			iCal::CICalendarTimezone seltz(false, tzid);
+			const_cast<CTimezonePopup*>(this)->SetTimezone(seltz);
 		}
 		else
 		{
