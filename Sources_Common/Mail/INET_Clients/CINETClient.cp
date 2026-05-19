@@ -1765,6 +1765,9 @@ void CINETClient::INETProcess()
 	// Should do this BEFORE processing NO and BAD since mailbox updates etc must be processed
 	_PostProcess();
 
+	// Reset bulk fetch counter so IDLE flag changes trigger per-message UI updates
+	mItemTotal = 0;
+
 	// Make sure the result was OK
 	if (!INETCheckLastResponse(cTagOK) && !INETCheckLastResponse(cPlusLabel))
 	{
