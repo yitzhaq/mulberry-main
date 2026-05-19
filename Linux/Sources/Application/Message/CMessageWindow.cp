@@ -463,7 +463,7 @@ void CMessageWindow::SetTwistList(CTextBase* aField,
 	bool got_two = false;
 	for(CAddressList::iterator iter = list->begin(); iter != list->end(); iter++)
 	{
-		cdstring txt = (*iter)->GetFullAddress();
+		cdstring txt = FilterUTF8ForDisplay((*iter)->GetFullAddress());
 		if (!first)
 			to_addrs += os_endl;
 		to_addrs += txt;
@@ -546,12 +546,13 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	else
 		theTitle.FromResource("UI::Message::NoSubject");
 
-	mText->GetWindow()->SetTitle(theTitle.c_str());
-
 	// Set the file name to use when saving
 	// Make it sage for unix
 	::strreplace(theTitle.c_str_mod(), "/", '_');
 	FileChanged(theTitle.c_str(), kFalse);
+
+	// Override window title with filtered text (FileChanged sets it from the raw filename)
+	mText->GetWindow()->SetTitle(FilterUTF8ForDisplay(theTitle).c_str());
 
 	// Make sure entry in Window menu is updated with new title
 	CWindowsMenu::RenamedWindow();
@@ -732,12 +733,13 @@ void CMessageWindow::SetMessageList(CMessageList* msgs)
 	else
 		theTitle.FromResource("UI::Message::NoSubject");
 
-	mText->GetWindow()->SetTitle(theTitle.c_str());
-
 	// Set the file name to use when saving
 	// Make it sage for unix
 	::strreplace(theTitle.c_str_mod(), "/", '_');
 	FileChanged(theTitle.c_str(), kFalse);
+
+	// Override window title with filtered text (FileChanged sets it from the raw filename)
+	mText->GetWindow()->SetTitle(FilterUTF8ForDisplay(theTitle).c_str());
 }
 
 // Someone else changed this message
