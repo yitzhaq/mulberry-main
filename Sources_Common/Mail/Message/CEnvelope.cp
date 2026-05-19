@@ -24,6 +24,7 @@
 #include "CINETCommon.h"
 #include "CRFC822.h"
 #include "CRFC822Parser.h"
+#include "CSMTPCommon.h"
 #include "CStreamUtils.h"
 #include "CStringUtils.h"
 

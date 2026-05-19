@@ -20,6 +20,7 @@
 #include "CRFC822.h"
 
 #include "CAddress.h"
+#include "CSMTPCommon.h"
 #include "CAddressList.h"
 #include "CAdminLock.h"
 #include "CCharSpecials.h"

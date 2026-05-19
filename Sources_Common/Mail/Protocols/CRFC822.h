@@ -20,7 +20,6 @@
 #ifndef __CRFC822__MULBERRY__
 #define __CRFC822__MULBERRY__
 
-#include "CSMTPCommon.h"
 #include "cdstring.h"
 
 //#include "CDSN.h"

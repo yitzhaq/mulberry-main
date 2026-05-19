@@ -28,6 +28,7 @@
 #include "CINETCommon.h"
 #include "CMailControl.h"
 #include "CRFC822.h"
+#include "CSMTPCommon.h"
 #include "CStatusWindow.h"
 #include "CStringUtils.h"
 
