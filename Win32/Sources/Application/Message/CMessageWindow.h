@@ -185,6 +185,8 @@ public:
 	afx_msg void	OnUpdateMessageFlagsAnswered(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateMessageFlagsDeleted(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateMessageFlagsDraft(CCmdUI* pCmdUI);
+	afx_msg void	OnUpdateMessageFlagsForwarded(CCmdUI* pCmdUI);
+	afx_msg void	OnUpdateMessageFlagsMDNSent(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateMessageFlagsLabel(CCmdUI* pCmdUI);
 			void	OnUpdateMessageFlags(CCmdUI* pCmdUI, NMessage::EFlags flag);
 	afx_msg void	OnUpdateMessageViewCurrent(CCmdUI* pCmdUI);
@@ -236,6 +238,8 @@ public:
 	afx_msg void	OnMessageFlagsImportant();
 	afx_msg void	OnMessageFlagsAnswered();
 	afx_msg void	OnMessageFlagsDraft();
+	afx_msg void	OnMessageFlagsForwarded();
+	afx_msg void	OnMessageFlagsMDNSent();
 	afx_msg void	OnMessageFlagsLabel(UINT nID);
 			void	OnMessageFlags(NMessage::EFlags flag);
 	afx_msg void	OnMessageViewCurrent();

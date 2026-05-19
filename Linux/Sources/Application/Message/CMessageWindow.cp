@@ -2148,6 +2148,14 @@ void CMessageWindow::UpdateCommand(unsigned long cmd, CCmdUI* cmdui)
 		OnUpdateMessageFlagsDraft(cmdui);
 		return;
 
+	case CCommand::eFlagsForwarded:
+		OnUpdateMessageFlags(cmdui, NMessage::eForwarded);
+		return;
+
+	case CCommand::eFlagsMDNSent:
+		OnUpdateMessageFlags(cmdui, NMessage::eMDNSent);
+		return;
+
 	case CCommand::eFlagsLabel1:
 	case CCommand::eFlagsLabel2:
 	case CCommand::eFlagsLabel3:
@@ -2334,6 +2342,14 @@ bool CMessageWindow::ObeyCommand(unsigned long cmd, SMenuCommandChoice* menu)
 
 	case CCommand::eFlagsDraft:
 		OnMessageFlagsDraft();
+		return true;
+
+	case CCommand::eFlagsForwarded:
+		OnMessageFlags(NMessage::eForwarded);
+		return true;
+
+	case CCommand::eFlagsMDNSent:
+		OnMessageFlags(NMessage::eMDNSent);
 		return true;
 
 	case CCommand::eFlagsLabel1:

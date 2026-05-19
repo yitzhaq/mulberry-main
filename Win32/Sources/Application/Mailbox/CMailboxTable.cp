@@ -1325,6 +1325,8 @@ int CMailboxTable::GetPlotFlag(const CMessage* aMsg) const
 		return eDeleted_Flag;
 	else if (aMsg->IsDraft())
 		return eDraft_Flag;
+	else if (aMsg->IsForwarded())
+		return eForwarded_Flag;
 	else if (aMsg->IsAnswered())
 		return eAnswered_Flag;
 	else if (aMsg->IsUnseen() && aMsg->IsRecent())

@@ -672,6 +672,16 @@ Boolean CMessageWindow::ObeyCommand(CommandT inCommand, void *ioParam)
 			OnMessageFlags(NMessage::eDraft);
 			break;
 
+		case cmd_FlagsForwarded:
+			// Toggle state
+			OnMessageFlags(NMessage::eForwarded);
+			break;
+
+		case cmd_FlagsMDNSent:
+			// Toggle state
+			OnMessageFlags(NMessage::eMDNSent);
+			break;
+
 		case cmd_FlagsLabel1:
 		case cmd_FlagsLabel2:
 		case cmd_FlagsLabel3:
@@ -999,6 +1009,14 @@ void CMessageWindow::FindCommandStatus(
 
 		case cmd_FlagsDraft:
 			FindFlagCommandStatus(outEnabled, outUsesMark, outMark, NMessage::eDraft);
+			break;
+
+		case cmd_FlagsForwarded:
+			FindFlagCommandStatus(outEnabled, outUsesMark, outMark, NMessage::eForwarded);
+			break;
+
+		case cmd_FlagsMDNSent:
+			FindFlagCommandStatus(outEnabled, outUsesMark, outMark, NMessage::eMDNSent);
 			break;
 
 		case cmd_FlagsLabel1:

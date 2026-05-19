@@ -755,6 +755,8 @@ BEGIN
             MENUITEM "&Answered\tAlt+Ctrl+3",       IDM_FLAGS_ANSWERED
             MENUITEM "&Deleted\tAlt+Ctrl+4",        IDM_FLAGS_DELETED
             MENUITEM "D&raft\tAlt+Ctrl+5",          IDM_FLAGS_DRAFT
+            MENUITEM "&Forwarded\tAlt+Ctrl+6",      IDM_FLAGS_FORWARDED
+            MENUITEM "&MDN Sent\tAlt+Ctrl+7",       IDM_FLAGS_MDNSENT
             MENUITEM SEPARATOR
             MENUITEM "Label&1",                     IDM_FLAGS_LABEL1
             MENUITEM "Label&2",                     IDM_FLAGS_LABEL2
@@ -1267,6 +1269,8 @@ BEGIN
             MENUITEM "&Answered\tAlt+Ctrl+3",       IDM_FLAGS_ANSWERED
             MENUITEM "&Deleted\tAlt+Ctrl+4",        IDM_FLAGS_DELETED
             MENUITEM "D&raft\tAlt+Ctrl+5",          IDM_FLAGS_DRAFT
+            MENUITEM "&Forwarded\tAlt+Ctrl+6",      IDM_FLAGS_FORWARDED
+            MENUITEM "&MDN Sent\tAlt+Ctrl+7",       IDM_FLAGS_MDNSENT
             MENUITEM SEPARATOR
             MENUITEM "Label&1",                     IDM_FLAGS_LABEL1
             MENUITEM "Label&2",                     IDM_FLAGS_LABEL2
@@ -1454,6 +1458,8 @@ BEGIN
             MENUITEM "&Answered\tAlt+Ctrl+3",       IDM_FLAGS_ANSWERED
             MENUITEM "&Deleted\tAlt+Ctrl+4",        IDM_FLAGS_DELETED
             MENUITEM "D&raft\tAlt+Ctrl+5",          IDM_FLAGS_DRAFT
+            MENUITEM "&Forwarded\tAlt+Ctrl+6",      IDM_FLAGS_FORWARDED
+            MENUITEM "&MDN Sent\tAlt+Ctrl+7",       IDM_FLAGS_MDNSENT
             MENUITEM SEPARATOR
             MENUITEM "Label&1",                     IDM_FLAGS_LABEL1
             MENUITEM "Label&2",                     IDM_FLAGS_LABEL2
@@ -3081,6 +3087,8 @@ BEGIN
         MENUITEM "&Answered",                   IDM_FLAGS_ANSWERED
         MENUITEM "&Deleted",                    IDM_FLAGS_DELETED
         MENUITEM "D&raft",                      IDM_FLAGS_DRAFT
+        MENUITEM "&Forwarded",                  IDM_FLAGS_FORWARDED
+        MENUITEM "&MDN Sent",                   IDM_FLAGS_MDNSENT
         MENUITEM SEPARATOR
         MENUITEM "Label&1",                     IDM_FLAGS_LABEL1
         MENUITEM "Label&2",                     IDM_FLAGS_LABEL2
@@ -4908,6 +4916,7 @@ IDI_FLAG_RECENT         ICON                    "resxp\\FlagRecent.ico"
 IDI_FLAG_UNSEEN         ICON                    "resxp\\FlagUnseen.ico"
 IDI_FLAG_READ           ICON                    "resxp\\FlagRead.ico"
 IDI_FLAG_DRAFT          ICON                    "resxp\\FlagDraft.ico"
+IDI_FLAG_FORWARDED      ICON                    "resxp\\FlagForwarded.ico"
 IDI_FLAG_ATTACHMENT     ICON                    "resxp\\FlagAttachment.ico"
 IDI_FLAG_CALENDAR       ICON                    "resxp\\FlagCalendar.ico"
 IDI_FLAG_ALTERNATIVE    ICON                    "resxp\\FlagAlternative.ico"
@@ -9382,6 +9391,8 @@ BEGIN
     IDM_FLAGS_ANSWERED      "Toggle the 'Answered' flag of the selected messages"
     IDM_FLAGS_DELETED       "Toggle the 'Deleted' flag of the selected messages"
     IDM_FLAGS_DRAFT         "Toggle the 'Draft' flag of the selected messages"
+    IDM_FLAGS_FORWARDED     "Toggle the '$Forwarded' flag of the selected messages"
+    IDM_FLAGS_MDNSENT       "Toggle the '$MDNSent' flag of the selected messages"
     IDM_DRAFT_INCLUDE       "Insert the text of the original message\nInclude Original"
     IDM_DRAFT_INSERT_SIGNATURE 
                             "Insert the current signature in the draft\nInsert Signature"

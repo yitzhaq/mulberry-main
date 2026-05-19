@@ -49,6 +49,7 @@ protected:
 		eUnseen_Flag,
 		eRead_Flag,
 		eDraft_Flag,
+		eForwarded_Flag,
 		eAttachment_Flag,
 		eAlternative_Flag,
 		eSigned_Flag,

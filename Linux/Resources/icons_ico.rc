@@ -97,6 +97,7 @@ IDI_FLAG_RECENT         ICON    DISCARDABLE     ./RESXP/FlagRecent.ico
 IDI_FLAG_UNSEEN         ICON    DISCARDABLE     ./RESXP/FlagUnseen.ico
 IDI_FLAG_READ           ICON    DISCARDABLE     ./RESXP/FlagRead.ico
 IDI_FLAG_DRAFT          ICON    DISCARDABLE     ./RESXP/FlagDraft.ico
+IDI_FLAG_FORWARDED      ICON    DISCARDABLE     ./RESXP/FlagForwarded.ico
 IDI_FLAG_ATTACHMENT     ICON    DISCARDABLE     ./RESXP/FlagAttachment.ico
 IDI_FLAG_CALENDAR       ICON    DISCARDABLE     ./RESXP/FlagCalendar.ico
 IDI_FLAG_ALTERNATIVE    ICON    DISCARDABLE     ./RESXP/FlagAlternative.ico

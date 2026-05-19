@@ -193,6 +193,10 @@ X11 bitmap fonts).
 - SMTP Enhanced Status Codes (RFC 2034/3463). Parse x.y.z status
   codes from SMTP responses for detailed error diagnostics with
   full RFC 3463 status code registry.
+- $Forwarded and $MDNSent flags in the Flags context menu and main
+  menu, with keyboard shortcuts (Alt+Ctrl+6/7). Forwarded messages
+  show a right-pointing arrow in the message list flags column,
+  mirroring the left-pointing arrow for answered messages.
 - "Reflow Lines" command in compose window (context menu and Draft
   menu). When replying to messages where the quoting merged items
   that should be separate (e.g., numbered lists), the user can

@@ -1321,6 +1321,8 @@ ResIDT CMailboxTable::GetPlotFlag(const CMessage* aMsg) const
 		return ICNx_Deleted_Flag;
 	else if (aMsg->IsDraft())
 		return ICNx_Draft_Flag;
+	else if (aMsg->IsForwarded())
+		return ICNx_Forwarded_Flag;
 	else if (aMsg->IsAnswered())
 		return ICNx_Answered_Flag;
 	else if (aMsg->IsUnseen() && aMsg->IsRecent())

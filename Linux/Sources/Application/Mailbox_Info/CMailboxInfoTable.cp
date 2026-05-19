@@ -543,6 +543,14 @@ void CMailboxInfoTable::UpdateCommand(unsigned long cmd, CCmdUI* cmdui)
 		OnUpdateFlagsDraft(cmdui);
 		return;
 
+	case CCommand::eFlagsForwarded:
+		OnUpdateFlags(cmdui, NMessage::eForwarded);
+		return;
+
+	case CCommand::eFlagsMDNSent:
+		OnUpdateFlags(cmdui, NMessage::eMDNSent);
+		return;
+
 	case CCommand::eFlagsLabel1:
 	case CCommand::eFlagsLabel2:
 	case CCommand::eFlagsLabel3:
@@ -751,6 +759,14 @@ bool CMailboxInfoTable::ObeyCommand(unsigned long cmd, SMenuCommandChoice* menu)
 
 	case CCommand::eFlagsDraft:
 		DoFlagMailMessage(NMessage::eDraft);
+		return true;
+
+	case CCommand::eFlagsForwarded:
+		DoFlagMailMessage(NMessage::eForwarded);
+		return true;
+
+	case CCommand::eFlagsMDNSent:
+		DoFlagMailMessage(NMessage::eMDNSent);
 		return true;
 
 	case CCommand::eFlagsLabel1:

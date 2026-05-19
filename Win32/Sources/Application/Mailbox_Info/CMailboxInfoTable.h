@@ -101,6 +101,8 @@ public:
 	afx_msg void	OnUpdateFlagsAnswered(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateFlagsImportant(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateFlagsDraft(CCmdUI* pCmdUI);
+	afx_msg void	OnUpdateFlagsForwarded(CCmdUI* pCmdUI);
+	afx_msg void	OnUpdateFlagsMDNSent(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateFlagsLabel(CCmdUI* pCmdUI);
 			void	OnUpdateFlags(CCmdUI* pCmdUI, NMessage::EFlags flag);
 	afx_msg void	OnUpdateMatchButton(CCmdUI* pCmdUI);
@@ -165,6 +167,8 @@ public:
 	afx_msg void	OnFlagsAnswered(void);
 	afx_msg void	OnFlagsImportant(void);
 	afx_msg void	OnFlagsDraft(void);
+	afx_msg void	OnFlagsForwarded(void);
+	afx_msg void	OnFlagsMDNSent(void);
 	afx_msg void	OnFlagsLabel(UINT nID);
 
 	        void	ResetSearch();								// Reset search UI items from mailbox

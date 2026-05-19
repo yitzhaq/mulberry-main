@@ -573,6 +573,14 @@ Boolean CMailboxInfoTable::ObeyCommand(CommandT inCommand,void *ioParam)
 			DoFlagMailMessage(NMessage::eDraft);
 			break;
 
+		case cmd_FlagsForwarded:
+			DoFlagMailMessage(NMessage::eForwarded);
+			break;
+
+		case cmd_FlagsMDNSent:
+			DoFlagMailMessage(NMessage::eMDNSent);
+			break;
+
 		case cmd_FlagsLabel1:
 		case cmd_FlagsLabel2:
 		case cmd_FlagsLabel3:
@@ -845,6 +853,14 @@ void CMailboxInfoTable::FindCommandStatus(
 
 		case cmd_FlagsDraft:
 			FindFlagCommandStatus(outEnabled, outUsesMark, outMark, NMessage::eDraft);
+			break;
+
+		case cmd_FlagsForwarded:
+			FindFlagCommandStatus(outEnabled, outUsesMark, outMark, NMessage::eForwarded);
+			break;
+
+		case cmd_FlagsMDNSent:
+			FindFlagCommandStatus(outEnabled, outUsesMark, outMark, NMessage::eMDNSent);
 			break;
 
 		case cmd_FlagsLabel1:

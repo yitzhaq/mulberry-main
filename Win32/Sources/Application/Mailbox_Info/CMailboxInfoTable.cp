@@ -120,6 +120,10 @@ BEGIN_MESSAGE_MAP(CMailboxInfoTable, CMailboxTable)
 	ON_COMMAND(IDM_FLAGS_IMPORTANT, OnFlagsImportant)
 	ON_UPDATE_COMMAND_UI(IDM_FLAGS_DRAFT, OnUpdateFlagsDraft)
 	ON_COMMAND(IDM_FLAGS_DRAFT, OnFlagsDraft)
+	ON_UPDATE_COMMAND_UI(IDM_FLAGS_FORWARDED, OnUpdateFlagsForwarded)
+	ON_COMMAND(IDM_FLAGS_FORWARDED, OnFlagsForwarded)
+	ON_UPDATE_COMMAND_UI(IDM_FLAGS_MDNSENT, OnUpdateFlagsMDNSent)
+	ON_COMMAND(IDM_FLAGS_MDNSENT, OnFlagsMDNSent)
 	ON_UPDATE_COMMAND_UI_RANGE(IDM_FLAGS_LABEL1, IDM_FLAGS_LABEL8, OnUpdateFlagsLabel)
 	ON_COMMAND_RANGE(IDM_FLAGS_LABEL1, IDM_FLAGS_LABEL8, OnFlagsLabel)
 
@@ -714,6 +718,16 @@ void CMailboxInfoTable::OnUpdateFlagsDraft(CCmdUI* pCmdUI)
 	OnUpdateFlags(pCmdUI, NMessage::eDraft);
 }
 
+void CMailboxInfoTable::OnUpdateFlagsForwarded(CCmdUI* pCmdUI)
+{
+	OnUpdateFlags(pCmdUI, NMessage::eForwarded);
+}
+
+void CMailboxInfoTable::OnUpdateFlagsMDNSent(CCmdUI* pCmdUI)
+{
+	OnUpdateFlags(pCmdUI, NMessage::eMDNSent);
+}
+
 void CMailboxInfoTable::OnUpdateFlagsLabel(CCmdUI* pCmdUI)
 {
 	OnUpdateFlags(pCmdUI, static_cast<NMessage::EFlags>(NMessage::eLabel1 << (pCmdUI->m_nID - IDM_FLAGS_LABEL1)));
@@ -848,6 +862,16 @@ void CMailboxInfoTable::OnFlagsImportant()
 void CMailboxInfoTable::OnFlagsDraft()
 {
 	DoFlagMailMessage(NMessage::eDraft);
+}
+
+void CMailboxInfoTable::OnFlagsForwarded()
+{
+	DoFlagMailMessage(NMessage::eForwarded);
+}
+
+void CMailboxInfoTable::OnFlagsMDNSent()
+{
+	DoFlagMailMessage(NMessage::eMDNSent);
 }
 
 void CMailboxInfoTable::OnFlagsLabel(UINT nID)

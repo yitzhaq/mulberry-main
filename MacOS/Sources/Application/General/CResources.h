@@ -52,6 +52,7 @@ const	ResIDT		ICNx_Deleted_Flag = 1102;
 const	ResIDT		ICNx_Answered_Flag = 1103;
 const	ResIDT		ICNx_Recent_Flag = 1104;
 const	ResIDT		ICNx_Draft_Flag = 1105;
+const	ResIDT		ICNx_Forwarded_Flag = 1120;
 const	ResIDT		ICNx_Attachment_Flag = 1106;
 const	ResIDT		ICNx_Alternative_Flag = 1107;
 const	ResIDT		ICNx_Signed_Flag = 1108;

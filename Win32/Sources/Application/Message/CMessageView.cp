@@ -123,6 +123,10 @@ BEGIN_MESSAGE_MAP(CMessageView, CBaseView)
 	ON_COMMAND(IDM_FLAGS_DELETED, OnMessageDelete)
 	ON_UPDATE_COMMAND_UI(IDM_FLAGS_DRAFT, OnUpdateMessageFlagsDraft)
 	ON_COMMAND(IDM_FLAGS_DRAFT, OnMessageFlagsDraft)
+	ON_UPDATE_COMMAND_UI(IDM_FLAGS_FORWARDED, OnUpdateMessageFlagsForwarded)
+	ON_COMMAND(IDM_FLAGS_FORWARDED, OnMessageFlagsForwarded)
+	ON_UPDATE_COMMAND_UI(IDM_FLAGS_MDNSENT, OnUpdateMessageFlagsMDNSent)
+	ON_COMMAND(IDM_FLAGS_MDNSENT, OnMessageFlagsMDNSent)
 	ON_UPDATE_COMMAND_UI_RANGE(IDM_FLAGS_LABEL1, IDM_FLAGS_LABEL8, OnUpdateMessageFlagsLabel)
 	ON_COMMAND_RANGE(IDM_FLAGS_LABEL1, IDM_FLAGS_LABEL8, OnMessageFlagsLabel)
 
@@ -1660,6 +1664,16 @@ void CMessageView::OnUpdateMessageFlagsDraft(CCmdUI* pCmdUI)
 	OnUpdateMessageFlags(pCmdUI, NMessage::eDraft);
 }
 
+void CMessageView::OnUpdateMessageFlagsForwarded(CCmdUI* pCmdUI)
+{
+	OnUpdateMessageFlags(pCmdUI, NMessage::eForwarded);
+}
+
+void CMessageView::OnUpdateMessageFlagsMDNSent(CCmdUI* pCmdUI)
+{
+	OnUpdateMessageFlags(pCmdUI, NMessage::eMDNSent);
+}
+
 void CMessageView::OnUpdateMessageFlagsLabel(CCmdUI* pCmdUI)
 {
 	OnUpdateMessageFlags(pCmdUI, static_cast<NMessage::EFlags>(NMessage::eLabel1 << (pCmdUI->m_nID - IDM_FLAGS_LABEL1)));
@@ -1959,6 +1973,16 @@ void CMessageView::OnMessageFlagsImportant()
 void CMessageView::OnMessageFlagsDraft()
 {
 	OnMessageFlags(NMessage::eDraft);
+}
+
+void CMessageView::OnMessageFlagsForwarded()
+{
+	OnMessageFlags(NMessage::eForwarded);
+}
+
+void CMessageView::OnMessageFlagsMDNSent()
+{
+	OnMessageFlags(NMessage::eMDNSent);
 }
 
 void CMessageView::OnMessageFlagsLabel(UINT nID)

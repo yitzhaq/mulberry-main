@@ -163,6 +163,8 @@ const	CommandT	cmd_FlagsImportant = 2101;
 const	CommandT	cmd_FlagsAnswered = 2102;
 const	CommandT	cmd_FlagsDeleted = 2103;
 const	CommandT	cmd_FlagsDraft = 2104;
+const	CommandT	cmd_FlagsForwarded = 2105;
+const	CommandT	cmd_FlagsMDNSent = 2106;
 
 const	CommandT	cmd_FlagsLabel1 = 2200;
 const	CommandT	cmd_FlagsLabel2 = 2201;
