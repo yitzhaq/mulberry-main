@@ -742,107 +742,123 @@ void CIMAPClient::_CloseMbox(CMbox* mbox)
 // Do Selection
 void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 {
-	try
+	for (int attempt = 0; attempt < 2; attempt++)
 	{
-		// Get full name
-		cdstring wd_name = mbox->GetName();
-		EncodeMailboxName(wd_name);
-
-		// Issue SELECT/EXAMINE call
-		INETStartSend("Status::IMAP::Selecting", "Error::IMAP::OSErrSelect", "Error::IMAP::NoBadSelect", mbox->GetName(), false);
-		INETSendString(examine ? cEXAMINE : cSELECT, eQueueNoFlags, false);
-		INETSendString(cSpace, eQueueNoFlags, false);
-		INETSendString(wd_name, eQueueProcess, false);
-
-		// QRESYNC SELECT parameter (RFC 7162 §3.2.5)
-		if (mHasQResync &&
-			mbox->GetHighestModSeq() > 0 &&
-			mbox->GetUIDValidity() > 0)
+		try
 		{
-			// QRESYNC parameter implicitly activates CONDSTORE
-			cdstring qresync = " (QRESYNC (";
-			qresync += cdstring(mbox->GetUIDValidity());
-			qresync += " ";
+			// Get full name
+			cdstring wd_name = mbox->GetName();
+			EncodeMailboxName(wd_name);
 
-			char modseq_buf[32];
-			::snprintf(modseq_buf, sizeof(modseq_buf), "%llu",
-				(unsigned long long)mbox->GetHighestModSeq());
-			qresync += modseq_buf;
+			// Issue SELECT/EXAMINE call — suppress error dialog so we can
+			// offer to create the mailbox if it was deleted by another client
+			INETStartSend("Status::IMAP::Selecting", "Error::IMAP::OSErrSelect", "Error::IMAP::NoBadSelect", mbox->GetName(), false);
+			INETSendString(examine ? cEXAMINE : cSELECT, eQueueNoFlags, false);
+			INETSendString(cSpace, eQueueNoFlags, false);
+			INETSendString(wd_name, eQueueProcess, false);
 
-			// Include known UIDs so server only reports relevant changes
-			if (mbox->IsFullOpen() && mbox->GetNumberCached() > 0)
+			// QRESYNC SELECT parameter (RFC 7162 §3.2.5)
+			if (mHasQResync &&
+				mbox->GetHighestModSeq() > 0 &&
+				mbox->GetUIDValidity() > 0)
 			{
-				CSequence known_uids;
-				CSequence seq_set;
-				CSequence uid_set;
-				for(unsigned long i = 1; i <= mbox->GetNumberCached(); i++)
-				{
-					CMessage* msg = mbox->GetMessage(i);
-					if (msg && msg->GetUID() > 0)
-					{
-						known_uids.push_back(msg->GetUID());
-						seq_set.push_back(i);
-						uid_set.push_back(msg->GetUID());
-					}
-				}
-				if (!known_uids.empty())
-				{
-					// UIDs must be in ascending order (RFC 7162 §3.2.5.2)
-					std::sort(known_uids.begin(), known_uids.end());
-					qresync += " ";
-					qresync += known_uids.GetSequenceText();
+				// QRESYNC parameter implicitly activates CONDSTORE
+				cdstring qresync = " (QRESYNC (";
+				qresync += cdstring(mbox->GetUIDValidity());
+				qresync += " ";
 
-					// Message sequence match data (§3.2.5.2)
-					if (!seq_set.empty())
+				char modseq_buf[32];
+				::snprintf(modseq_buf, sizeof(modseq_buf), "%llu",
+					(unsigned long long)mbox->GetHighestModSeq());
+				qresync += modseq_buf;
+
+				// Include known UIDs so server only reports relevant changes
+				if (mbox->IsFullOpen() && mbox->GetNumberCached() > 0)
+				{
+					CSequence known_uids;
+					CSequence seq_set;
+					CSequence uid_set;
+					for(unsigned long i = 1; i <= mbox->GetNumberCached(); i++)
 					{
-						qresync += " (";
-						qresync += seq_set.GetSequenceText();
+						CMessage* msg = mbox->GetMessage(i);
+						if (msg && msg->GetUID() > 0)
+						{
+							known_uids.push_back(msg->GetUID());
+							seq_set.push_back(i);
+							uid_set.push_back(msg->GetUID());
+						}
+					}
+					if (!known_uids.empty())
+					{
+						// UIDs must be in ascending order (RFC 7162 §3.2.5.2)
+						std::sort(known_uids.begin(), known_uids.end());
 						qresync += " ";
-						std::sort(uid_set.begin(), uid_set.end());
-						qresync += uid_set.GetSequenceText();
-						qresync += ")";
+						qresync += known_uids.GetSequenceText();
+
+						// Message sequence match data (§3.2.5.2)
+						if (!seq_set.empty())
+						{
+							qresync += " (";
+							qresync += seq_set.GetSequenceText();
+							qresync += " ";
+							std::sort(uid_set.begin(), uid_set.end());
+							qresync += uid_set.GetSequenceText();
+							qresync += ")";
+						}
 					}
 				}
+
+				qresync += "))";
+				INETSendString(qresync, eQueueNoFlags, false);
+			}
+			else if (mHasCondstore)
+			{
+				// CONDSTORE parameter (RFC 7162 §3.1.8)
+				INETSendString(" (CONDSTORE)", eQueueNoFlags, false);
 			}
 
-			qresync += "))";
-			INETSendString(qresync, eQueueNoFlags, false);
+			INETFinishSend(false);
+
+			// SEARCHRES variable resets on SELECT/EXAMINE (RFC 5182)
+			mSearchSaved = false;
+			mSavedSearchResults.clear();
+
+			// IDLE state resets on new SELECT/EXAMINE
+			mIdleState = eIdleOff;
+
+			// Can select - set flag
+			mbox->SetFlags(NMbox::eError, false);
+
+			// Check Read/Write status from OK response text
+			if (mLastResponse.FindTagged(cREAD_WRITE))
+				mbox->SetFlags(NMbox::eReadOnly, false);
+			else if (mLastResponse.FindTagged(cREAD_ONLY))
+				mbox->SetFlags(NMbox::eReadOnly, true);
+			else
+				mbox->SetFlags(NMbox::eReadOnly, false);
+
+			return;
 		}
-		else if (mHasCondstore)
+		catch (CINETException& ex)
 		{
-			// CONDSTORE parameter (RFC 7162 §3.1.8)
-			INETSendString(" (CONDSTORE)", eQueueNoFlags, false);
+			CLOG_LOGCATCH(CINETException&);
+
+			if (attempt == 0 && HandleSelectCreate(mbox))
+				continue;
+
+			INETHandleError(ex, "Error::IMAP::OSErrSelect", "Error::IMAP::NoBadSelect");
+			mbox->SetFlags(NMbox::eError);
+			CLOG_LOGRETHROW;
+			throw;
 		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
 
-		INETFinishSend();
-
-		// SEARCHRES variable resets on SELECT/EXAMINE (RFC 5182)
-		mSearchSaved = false;
-		mSavedSearchResults.clear();
-
-		// IDLE state resets on new SELECT/EXAMINE
-		mIdleState = eIdleOff;
-
-		// Can select - set flag
-		mbox->SetFlags(NMbox::eError, false);
-
-		// Check Read/Write status from OK response text
-		if (mLastResponse.FindTagged(cREAD_WRITE))
-			mbox->SetFlags(NMbox::eReadOnly, false);
-		else if (mLastResponse.FindTagged(cREAD_ONLY))
-			mbox->SetFlags(NMbox::eReadOnly, true);
-		else
-			mbox->SetFlags(NMbox::eReadOnly, false);
-	}
-	catch (...)
-	{
-		CLOG_LOGCATCH(...);
-
-		// Cannot select - set flag
-		mbox->SetFlags(NMbox::eError);
-
-		CLOG_LOGRETHROW;
-		throw;
+			mbox->SetFlags(NMbox::eError);
+			CLOG_LOGRETHROW;
+			throw;
+		}
 	}
 
 } // CIMAPClient::_SelectMbox
@@ -3287,6 +3303,37 @@ bool CIMAPClient::HandleTryCreate(CMbox* mbox_to)
 	cdstring mbox_name = mbox_to->GetName();
 	bool is_dir = mbox_to->IsDirectory();
 	char dir_delim = mbox_to->GetDirDelim();
+
+	short answer = CErrorHandler::PutCautionAlertRsrcStr(true,
+		"Alerts::Mailbox::TryCreate", mbox_name);
+	if (answer == CErrorHandler::Cancel)
+		return false;
+
+	cdstring wd_name = mbox_name;
+	if (is_dir)
+		wd_name += dir_delim;
+	EncodeMailboxName(wd_name);
+
+	INETStartSend("Status::IMAP::Creating", "Error::IMAP::OSErrCreate",
+		"Error::IMAP::NoBadCreate", mbox_name);
+	INETSendString(cCREATE);
+	INETSendString(cSpace);
+	INETSendString(wd_name, eQueueProcess);
+	INETFinishSend();
+	return true;
+}
+
+// Handle SELECT NO by offering to create the mailbox.
+// Covers the case where another client deleted a mailbox while
+// Mulberry still has it in the hierarchy list.
+bool CIMAPClient::HandleSelectCreate(CMbox* mbox)
+{
+	if (mLastResponse.code != cTagNO)
+		return false;
+
+	cdstring mbox_name = mbox->GetName();
+	bool is_dir = mbox->IsDirectory();
+	char dir_delim = mbox->GetDirDelim();
 
 	short answer = CErrorHandler::PutCautionAlertRsrcStr(true,
 		"Alerts::Mailbox::TryCreate", mbox_name);

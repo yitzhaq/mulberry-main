@@ -293,6 +293,8 @@ X11 bitmap fonts).
 - IMAP TRYCREATE handling (RFC 9051 §7.1). When COPY, MOVE, APPEND,
   REPLACE, or MULTIAPPEND targets a deleted mailbox, prompt the user
   to recreate it and retry. Covers same-server and cross-account paths.
+  Also offer to recreate when SELECT fails on a mailbox deleted by
+  another client while Mulberry was running.
 - IMAP $Junk/$NotJunk/$Phishing keyword support (RFC 9051 §2.3.2).
   Parse, store, and send the standard junk classification keywords.
   Enforce mutual exclusivity: if both $Junk and $NotJunk are present,

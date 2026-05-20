@@ -72,7 +72,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
     RFC 5322 line length compliance,
     MDN compliance fixes (8098),
     NOTIFY (5465),
-    TRYCREATE auto-create-and-retry (9051),
+    TRYCREATE auto-create-and-retry including SELECT (9051),
     $Junk/$NotJunk/$Phishing keywords (9051) with SBitFlags widened to uint64_t
   * PRECIS username/password normalization (RFC 8265) for internationalized
     credentials. New dependency: libunistring-dev

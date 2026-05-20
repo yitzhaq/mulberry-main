@@ -323,6 +323,7 @@ protected:
 									CMbox* mbox_to,
 									bool use_saved = false);	// Do move sequence to mailbox
 	bool			HandleTryCreate(CMbox* mbox_to);				// Handle [TRYCREATE] response
+	bool			HandleSelectCreate(CMbox* mbox);				// Offer to create on SELECT NO
 	virtual void	INETHandleError(std::exception& ex,
 									const char* err_id,
 									const char* nobad_id);		// Skip error display for TRYCREATE
