@@ -562,8 +562,17 @@ void CIMAPClient::_PostProcess()
 				else if (CheckStrAdv(&p,cFLAGIMPORTANT))
 					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eImportant);
 
+				else if (CheckStrAdv(&p,cFLAGJUNK))
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eJunk);
+
+				else if (CheckStrAdv(&p,cFLAGNOTJUNK))
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eNotJunk);
+
+				else if (CheckStrAdv(&p,cFLAGPHISHING))
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::ePhishing);
+
 				else if (CheckStrAdv(&p,cFLAGKEYWORDS))
-					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent | NMessage::eForwarded | NMessage::eImportant);
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent | NMessage::eForwarded | NMessage::eImportant | NMessage::eJunk | NMessage::eNotJunk | NMessage::ePhishing);
 
 				else
 				{
@@ -1876,6 +1885,24 @@ void CIMAPClient::BuildAppendFlags(CMessage* theMsg, cdstring& flags)
 		flags += cFLAGIMPORTANT;
 		added = true;
 	}
+	if (theMsg->IsJunk())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGJUNK;
+		added = true;
+	}
+	if (theMsg->IsNotJunk())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGNOTJUNK;
+		added = true;
+	}
+	if (theMsg->IsPhishing())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGPHISHING;
+		added = true;
+	}
 	for(unsigned long i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		if (theMsg->HasLabel(i))
@@ -3088,6 +3115,39 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 		if (got_one)
 			flag += ' ';
 		flag += cFLAGIMPORTANT;
+		got_one = true;
+
+		status_strid = "Status::IMAP::MarkingLabel";
+		oserr_strid = "Error::IMAP::OSErrLabelMsg";
+		nobad_strid = "Error::IMAP::NoBadLabelMsg";
+	}
+	if ((flags & NMessage::eJunk) && (mVersion != eIMAP2bis))
+	{
+		if (got_one)
+			flag += ' ';
+		flag += cFLAGJUNK;
+		got_one = true;
+
+		status_strid = "Status::IMAP::MarkingLabel";
+		oserr_strid = "Error::IMAP::OSErrLabelMsg";
+		nobad_strid = "Error::IMAP::NoBadLabelMsg";
+	}
+	if ((flags & NMessage::eNotJunk) && (mVersion != eIMAP2bis))
+	{
+		if (got_one)
+			flag += ' ';
+		flag += cFLAGNOTJUNK;
+		got_one = true;
+
+		status_strid = "Status::IMAP::MarkingLabel";
+		oserr_strid = "Error::IMAP::OSErrLabelMsg";
+		nobad_strid = "Error::IMAP::NoBadLabelMsg";
+	}
+	if ((flags & NMessage::ePhishing) && (mVersion != eIMAP2bis))
+	{
+		if (got_one)
+			flag += ' ';
+		flag += cFLAGPHISHING;
 		got_one = true;
 
 		status_strid = "Status::IMAP::MarkingLabel";
@@ -5999,6 +6059,15 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 		else if (CheckStrAdv(&p,cFLAGIMPORTANT))
 			new_flags.Set(NMessage::eImportant);
 
+		else if (CheckStrAdv(&p,cFLAGJUNK))
+			new_flags.Set(NMessage::eJunk);
+
+		else if (CheckStrAdv(&p,cFLAGNOTJUNK))
+			new_flags.Set(NMessage::eNotJunk);
+
+		else if (CheckStrAdv(&p,cFLAGPHISHING))
+			new_flags.Set(NMessage::ePhishing);
+
 		else
 		{
 			// Check for labels
@@ -6020,6 +6089,14 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 				p = ::strpbrk(p,SPACE);
 			}
 		}
+	}
+
+	// RFC 9051 §2.3.2: $Junk and $NotJunk are mutually exclusive.
+	// If both set, treat as if none are set.
+	if (new_flags.IsSet(NMessage::eJunk) && new_flags.IsSet(NMessage::eNotJunk))
+	{
+		new_flags.Set(NMessage::eJunk, false);
+		new_flags.Set(NMessage::eNotJunk, false);
 	}
 
 	// Change flags on cached message - only update if changed

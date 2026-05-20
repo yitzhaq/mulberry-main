@@ -290,6 +290,13 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP TRYCREATE handling (RFC 9051 §7.1). When COPY, MOVE, APPEND,
+  REPLACE, or MULTIAPPEND targets a deleted mailbox, prompt the user
+  to recreate it and retry. Covers same-server and cross-account paths.
+- IMAP $Junk/$NotJunk/$Phishing keyword support (RFC 9051 §2.3.2).
+  Parse, store, and send the standard junk classification keywords.
+  Enforce mutual exclusivity: if both $Junk and $NotJunk are present,
+  treat as neither (MUST). UI for marking messages as junk is planned.
 - IMAP NOTIFY extension (RFC 5465). Server-pushed mailbox change
   notifications replacing periodic STATUS polling. Monitors subscribed
   mailboxes for message changes and personal namespace for hierarchy

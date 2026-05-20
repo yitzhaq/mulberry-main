@@ -41,6 +41,11 @@ namespace NMessage
 		eForwarded =		1L << 9,
 		eImportant =		1L << 10,
 
+		// RFC 9051 §2.3.2 standard keywords (upper range, LP64)
+		eJunk =				1L << 32,
+		eNotJunk =			1L << 33,
+		ePhishing =			1L << 34,
+
 		// Labels
 		eLabel1 =			1L << 12,
 		eLabel2 =			1L << 13,
@@ -54,10 +59,10 @@ namespace NMessage
 
 		eUserFlags = eAnswered | eFlagged | eDeleted | eSeen | eDraft,
 		eLabels = eLabel1 | eLabel2 | eLabel3 | eLabel4 | eLabel5 | eLabel6 | eLabel7 | eLabel8,
-		eIMAPFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eLabels,
-		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | ePartial | eError | eLabels,
-		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | ePartial | eError | eLabels,
-		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | ePartial | eLabels,
+		eIMAPFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | eLabels,
+		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
+		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
+		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eLabels,
 		
 		// SMTP Flags
 		eSendingNow =		eAnswered,

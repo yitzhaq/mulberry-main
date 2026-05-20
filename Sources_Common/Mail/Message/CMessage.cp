@@ -711,6 +711,21 @@ bool CMessage::IsImportant() const
 	return (GetOwner() ? GetOwner()->IsImportant() : GetFlags().IsSet(eImportant));
 }
 
+bool CMessage::IsJunk() const
+{
+	return (GetOwner() ? GetOwner()->IsJunk() : GetFlags().IsSet(eJunk));
+}
+
+bool CMessage::IsNotJunk() const
+{
+	return (GetOwner() ? GetOwner()->IsNotJunk() : GetFlags().IsSet(eNotJunk));
+}
+
+bool CMessage::IsPhishing() const
+{
+	return (GetOwner() ? GetOwner()->IsPhishing() : GetFlags().IsSet(ePhishing));
+}
+
 // Check Partial flag (cannot be inline because of recursion)
 bool CMessage::IsPartial() const
 {

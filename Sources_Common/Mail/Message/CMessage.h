@@ -264,6 +264,9 @@ public:
 	bool IsMDNSent() const;										// Check MDNSent flag
 	bool IsForwarded() const;									// Check Forwarded flag
 	bool IsImportant() const;									// Check Important flag
+	bool IsJunk() const;
+	bool IsNotJunk() const;
+	bool IsPhishing() const;
 	bool IsPartial() const;										// Check for partial message
 	bool IsError() const;										// Check for error message
 	bool HasLabel(unsigned long index) const;					// Check for label
