@@ -197,7 +197,7 @@ public:
 				{ mFlags.Set(new_flags, add); }
 	void	SetListFlags(EFlags new_flags);						// Set list flags only
 	EFlags	GetFlags() const								// Get flags
-				{ return (EFlags) mFlags.Get(); }
+				{ return static_cast<EFlags>(mFlags.Get()); }
 
 	// RFC 6154 special-use
 	void	SetSpecialUse(unsigned char attrs)

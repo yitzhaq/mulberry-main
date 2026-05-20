@@ -296,7 +296,10 @@ X11 bitmap fonts).
 - IMAP $Junk/$NotJunk/$Phishing keyword support (RFC 9051 §2.3.2).
   Parse, store, and send the standard junk classification keywords.
   Enforce mutual exclusivity: if both $Junk and $NotJunk are present,
-  treat as neither (MUST). UI for marking messages as junk is planned.
+  treat as neither (MUST). SBitFlags widened from `unsigned long` to
+  `uint64_t` for cross-platform correctness (keywords use bits 32-34).
+  Offline cache updated to persist 64-bit flags.
+  UI for marking messages as junk is planned.
 - IMAP NOTIFY extension (RFC 5465). Server-pushed mailbox change
   notifications replacing periodic STATUS polling. Monitors subscribed
   mailboxes for message changes and personal namespace for hierarchy

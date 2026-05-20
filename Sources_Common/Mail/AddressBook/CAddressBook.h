@@ -135,7 +135,7 @@ public:
 	void	SetFlags(EFlags new_flags, bool add = true)			// Set flags
 		{ mFlags.Set(new_flags, add); }
 	EFlags	GetFlags() const								// Get flags
-		{ return (EFlags) mFlags.Get(); }
+		{ return static_cast<EFlags>(mFlags.Get()); }
 
 	bool IsProtocol() const
 	{

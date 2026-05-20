@@ -22,12 +22,14 @@
 
 #include "cdstring.h"
 
+#include <cstdint>
+
 namespace NMessage
 {
-	enum EFlags
+	enum EFlags : uint64_t
 	{
 		eNone = 		0,
-		
+
 		// IMAP flags
 		eRecent = 			1L << 0,
 		eAnswered = 		1L << 1,
@@ -63,7 +65,7 @@ namespace NMessage
 		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
 		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
 		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eLabels,
-		
+
 		// SMTP Flags
 		eSendingNow =		eAnswered,
 		eHold = 			eMDNSent,
@@ -86,8 +88,27 @@ namespace NMessage
 		// State flags
 		eHasText = 			1L << 29,
 		eHasTextChecked =	1L << 30,
-		
-		eFake =				1L << 31			// Fake message used for threading
+
+		eFake =				1L << 31,			// Fake message used for threading
+
+		// RFC 9051 §2.3.2 standard keywords
+		eJunk =				1ULL << 32,
+		eNotJunk =			1ULL << 33,
+		ePhishing =			1ULL << 34,
+
+		// Bitmask combinations
+		eUserFlags = eAnswered | eFlagged | eDeleted | eSeen | eDraft,
+		eLabels = eLabel1 | eLabel2 | eLabel3 | eLabel4 | eLabel5 | eLabel6 | eLabel7 | eLabel8,
+		eIMAPFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | eLabels,
+		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
+		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
+		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eLabels,
+
+		// SMTP Flags
+		eSendingNow =		eAnswered,
+		eHold = 			eMDNSent,
+		ePriority =			eFlagged,
+		eSendError =		eError
 	};
 	
 	enum EReplyType

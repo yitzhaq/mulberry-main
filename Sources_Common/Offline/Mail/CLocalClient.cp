@@ -80,14 +80,14 @@
 const unsigned long cIndexVers = 0x0000000C;
 const unsigned long cIndexType_Mask = ~0x00030000;
 
-// Disk sizes: WriteHost/ReadHost always write sizeof(uint32_t) per field
-// regardless of sizeof(unsigned long) on the host platform.
+// Disk sizes: WriteHost/ReadHost always write sizeof(uint32_t) per field.
 // These MUST match the number of WriteHost calls in write() methods.
-// Version 0x0C adds HIGHESTMODSEQ (2 fields) to header and MODSEQ (2 fields) to record.
+// Version 0x0C adds HIGHESTMODSEQ (2 fields) to header, MODSEQ (2 fields)
+// to record, and widens FLAGS from 1 to 2 uint32_t fields (lo + hi).
 const unsigned long cDiskHeaderSize_0B = 9 * sizeof(uint32_t);
 const unsigned long cDiskHeaderSize_0C = 14 * sizeof(uint32_t);
 const unsigned long cDiskRecordSize_0B = 6 * sizeof(uint32_t);
-const unsigned long cDiskRecordSize_0C = 8 * sizeof(uint32_t);
+const unsigned long cDiskRecordSize_0C = 9 * sizeof(uint32_t);
 
 const unsigned long cSearchBufferSize = 8192;
 const unsigned long cWorkBufferSize = 4096;
@@ -200,7 +200,10 @@ void CLocalClient::SIndexRecord::write(std::ostream& out) const
 {
 	::WriteHost(out, Cache());
 	::WriteHost(out, Index());
-	::WriteHost(out, Flags());
+	uint32_t flags_lo = static_cast<uint32_t>(mFlags);
+	uint32_t flags_hi = static_cast<uint32_t>(mFlags >> 32);
+	::WriteHost(out, flags_lo);
+	::WriteHost(out, flags_hi);
 	::WriteHost(out, UID());
 	::WriteHost(out, LocalUID());
 	::WriteHost(out, MessageStart());
@@ -211,7 +214,10 @@ void CLocalClient::SIndexRecord::write(std::ostream& out) const
 void CLocalClient::SIndexRecord::write_Flags(std::ostream& out) const
 {
 	out.seekp(offsetof(SIndexRecord, mFlags), std::ios_base::cur);
-	::WriteHost(out, Flags());
+	uint32_t flags_lo = static_cast<uint32_t>(mFlags);
+	uint32_t flags_hi = static_cast<uint32_t>(mFlags >> 32);
+	::WriteHost(out, flags_lo);
+	::WriteHost(out, flags_hi);
 }
 
 void CLocalClient::SIndexRecord::write_UID(std::ostream& out) const
@@ -224,7 +230,12 @@ void CLocalClient::SIndexRecord::read(std::istream& in, unsigned long version)
 {
 	::ReadHost(in, Cache());
 	::ReadHost(in, Index());
-	::ReadHost(in, Flags());
+	uint32_t flags_lo = 0;
+	uint32_t flags_hi = 0;
+	::ReadHost(in, flags_lo);
+	if (version >= 0x0C)
+		::ReadHost(in, flags_hi);
+	mFlags = (static_cast<uint64_t>(flags_hi) << 32) | flags_lo;
 	::ReadHost(in, UID());
 	::ReadHost(in, LocalUID());
 	::ReadHost(in, MessageStart());

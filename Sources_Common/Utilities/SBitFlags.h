@@ -15,10 +15,12 @@
 */
 
 
-// Class to implement a 32-bit flag
+// Class to implement a 64-bit flag
 
 #ifndef __SBITFLAGS__MULBERRY__
 #define __SBITFLAGS__MULBERRY__
+
+#include <cstdint>
 
 struct SBitFlags
 {
@@ -26,27 +28,27 @@ struct SBitFlags
 		{ mFlags = 0; }
 	SBitFlags(const SBitFlags& copy)
 		{ mFlags = copy.mFlags; }
-	SBitFlags(unsigned long flags)
+	SBitFlags(uint64_t flags)
 		{ mFlags = flags; }
 	~SBitFlags() {}
 
 	SBitFlags& operator=(const SBitFlags& copy)	// Assignment with same type
 		{ if (this != &copy) mFlags = copy.mFlags; return *this; }
-	SBitFlags& operator=(unsigned long flags)	// Assignment with flags
+	SBitFlags& operator=(uint64_t flags)	// Assignment with flags
 		{ mFlags = flags; return *this; }
 
-	bool IsSet(unsigned long flag) const
+	bool IsSet(uint64_t flag) const
 		{ return (mFlags & flag) == flag; }
-	bool IsUnset(unsigned long flag) const
+	bool IsUnset(uint64_t flag) const
 		{ return (mFlags & flag) == 0; }
-	void Set(unsigned long flag, bool add = true)
+	void Set(uint64_t flag, bool add = true)
 		{ mFlags  = (add ? (mFlags | flag) : (mFlags & ~flag)); }
 
-	unsigned long Get() const
+	uint64_t Get() const
 		{ return mFlags; }
 
 private:
-	unsigned long mFlags;
+	uint64_t mFlags;
 };
 
 #endif

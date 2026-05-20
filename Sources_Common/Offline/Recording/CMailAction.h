@@ -38,13 +38,13 @@ public:
 	{
 		SFlagAction()
 			{ mFlags = 0; mSet = false; }
-		SFlagAction(const ulvector& uids, const ulvector& luids, unsigned long flags, bool set)
+		SFlagAction(const ulvector& uids, const ulvector& luids, uint64_t flags, bool set)
 			{ mUids.first = uids; mUids.second = luids; mFlags = flags; mSet = set; }
 		SFlagAction(const SFlagAction& copy)
 			{ mUids = copy.mUids; mFlags = copy.mFlags; mSet = copy.mSet; }
 
 		SUIDs			mUids;
-		unsigned long	mFlags;
+		uint64_t		mFlags;
 		bool			mSet;
 	};
 
@@ -52,14 +52,14 @@ public:
 	{
 		SAppendAction()
 			{ mUid = 0; mFlags = 0; }
-		SAppendAction(const cdstring& mbox, unsigned long uid, unsigned long flags)
+		SAppendAction(const cdstring& mbox, unsigned long uid, uint64_t flags)
 			{ mName = mbox; mUid = uid; mFlags = flags; }
 		SAppendAction(const SAppendAction& copy)
 			{ mName = copy.mName; mUid = copy.mUid; mFlags = copy.mFlags; }
 
 		cdstring		mName;
 		unsigned long	mUid;
-		unsigned long	mFlags;
+		uint64_t		mFlags;
 	};
 
 	typedef std::pair<const cdstring, unsigned long> SNameUIDAction;
@@ -99,11 +99,11 @@ public:
 	CMailAction(EMailAction action, unsigned long id, const cdstring& name1, const cdstring& name2, unsigned long uid)
 		{ mAction = action; mID = id; mData = static_cast<void*>(new SRenameAction(cdstrpair(name1, name2), uid)); }
 	CMailAction(unsigned long id, const ulvector& uids, const ulvector& luids, NMessage::EFlags flags, bool set)
-		{ mAction = eFlag; mID = id; mData = static_cast<void*>(new SFlagAction(uids, luids, static_cast<unsigned long>(flags), set)); }
+		{ mAction = eFlag; mID = id; mData = static_cast<void*>(new SFlagAction(uids, luids, static_cast<uint64_t>(flags), set)); }
 	CMailAction(EMailAction action, unsigned long id, const cdstring& name, const ulmap& copy_uids, const ulmap& copy_luids)
 		{ mAction = action; mID = id; mData = static_cast<void*>(new SCopyAction(name, SMaps(copy_uids, copy_luids))); }
 	CMailAction(EMailAction action, unsigned long id, const cdstring& name, unsigned long uid, NMessage::EFlags flags)
-		{ mAction = action; mID = id; mData = static_cast<void*>(new SAppendAction(name, uid, static_cast<unsigned long>(flags))); }
+		{ mAction = action; mID = id; mData = static_cast<void*>(new SAppendAction(name, uid, static_cast<uint64_t>(flags))); }
 	CMailAction(EMailAction action, unsigned long id, const ulvector& uids, const ulvector& luids)
 		{ mAction = action; mID = id; mData = static_cast<void*>(new SExpungeAction(uids, luids)); }
 	virtual ~CMailAction()

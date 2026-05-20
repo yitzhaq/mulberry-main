@@ -2082,10 +2082,6 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 					throw;
 				}
 			}
-			catch (...)
-			{
-				throw;
-			}
 		}
 	}
 
@@ -3384,7 +3380,10 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 		{
 			CLOG_LOGCATCH(CINETException&);
 			if (attempt == 0 && HandleTryCreate(mbox_to))
+			{
+				copy_uids.clear();
 				continue;
+			}
 			CLOG_LOGRETHROW;
 			throw;
 		}

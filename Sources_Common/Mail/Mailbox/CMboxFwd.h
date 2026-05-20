@@ -20,11 +20,12 @@
 #ifndef __CMBOXFWD__MULBERRY__
 #define __CMBOXFWD__MULBERRY__
 
+#include <cstdint>
 #include <vector>
 
 namespace NMbox
 {
-	enum EFlags
+	enum EFlags : uint64_t
 	{
 		// Mbox status
 		eNone = 					0,

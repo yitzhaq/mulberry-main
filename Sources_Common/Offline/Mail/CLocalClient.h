@@ -149,11 +149,11 @@ protected:
 
 	struct SIndexRecord
 	{
-		// All members must be uint32_t for correct serialization on 64-bit
-		// (sizeof(unsigned long) = 8 on LP64, but file format is 4 bytes per field)
+		// All members are uint32_t for correct disk serialization, except mFlags
+		// which is uint64_t (serialized as two uint32_t values, lo then hi)
 		uint32_t mCache;
 		uint32_t mIndex;
-		uint32_t mFlags;
+		uint64_t mFlags;
 		uint32_t mUID;
 		uint32_t mLocalUID;
 		uint32_t mMessageStart;
@@ -181,9 +181,9 @@ protected:
 			{ return mIndex; }
 		const uint32_t& Index() const
 			{ return mIndex; }
-		uint32_t& Flags()
+		uint64_t& Flags()
 			{ return mFlags; }
-		const uint32_t& Flags() const
+		const uint64_t& Flags() const
 			{ return mFlags; }
 		uint32_t& UID()
 			{ return mUID; }

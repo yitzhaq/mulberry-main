@@ -271,7 +271,7 @@ void CMboxList::ReadHierarchy(std::istream& in, CMboxProtocol* local, bool add_i
 			break;
 
 		// Get flags
-		unsigned long flags;
+		uint64_t flags;
 		in >> flags;
 		in.ignore();
 

@@ -188,7 +188,7 @@ void CMailAction::WriteToStream(std::ostream& out, bool text) const
 		if (text)
 			out << GetFlagAction().mFlags;
 		else
-			out.write(reinterpret_cast<const char*>(&GetFlagAction().mFlags), 4);
+			out.write(reinterpret_cast<const char*>(&GetFlagAction().mFlags), 8);
 		if (text)
 			out << " set=" << (GetFlagAction().mSet ? cValueBoolTrue : cValueBoolFalse);
 		else
@@ -216,7 +216,7 @@ void CMailAction::WriteToStream(std::ostream& out, bool text) const
 			out.write(reinterpret_cast<const char*>(&GetAppendAction().mUid), 4);
 			char temp = 0;
 			out.write(&temp, 1);
-			out.write(reinterpret_cast<const char*>(&GetAppendAction().mFlags), 4);
+			out.write(reinterpret_cast<const char*>(&GetAppendAction().mFlags), 8);
 		}
 		out << std::endl;
 		break;
@@ -269,7 +269,7 @@ void CMailAction::ReadFromStream(std::istream& in, unsigned long vers)
 		mData = static_cast<void*>(new SFlagAction);
 		ReadUIDS(in, vers, const_cast<ulvector&>(GetFlagAction().mUids.first));
 		ReadUIDS(in, vers, const_cast<ulvector&>(GetFlagAction().mUids.second));
-		in.read(const_cast<char*>(reinterpret_cast<const char*>(&GetFlagAction().mFlags)), 4);
+		in.read(const_cast<char*>(reinterpret_cast<const char*>(&GetFlagAction().mFlags)), 8);
 		char set;
 		in.read(&set, 1);
 		*const_cast<bool*>(&GetFlagAction().mSet) = set;
@@ -294,7 +294,7 @@ void CMailAction::ReadFromStream(std::istream& in, unsigned long vers)
 			in.read(&test, 1);
 			if (test != '\n')
 			{
-				in.read(const_cast<char*>(reinterpret_cast<const char*>(&GetAppendAction().mFlags)), 4);
+				in.read(const_cast<char*>(reinterpret_cast<const char*>(&GetAppendAction().mFlags)), 8);
 				in.ignore();
 			}
 		}
