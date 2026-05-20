@@ -112,7 +112,8 @@ public:
 			err_BadResponse = '*BAD',
 			err_BadParse = '*PAR',
 			err_NoSTARTTLS = '*TLS',
-			err_INETUnknown = '*UKN'
+			err_INETUnknown = '*UKN',
+			err_TryCreateRetry = '*TRY'
 		};
 
 		// Only allow construction from the error codes we know about

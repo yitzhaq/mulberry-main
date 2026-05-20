@@ -3199,8 +3199,10 @@ void CMbox::AppendMessage(CMessage* msg, unsigned long& new_uid, bool dummy_file
 		{
 			mOpenInfo->mMsgMailer->AppendMbox(this, msg, new_uid, dummy_files, doMRU);
 
-			// Force fast check to bring into cache
-			if (!IsSynchronising())
+			// Force fast check to bring into cache — but not during
+			// MULTIAPPEND, which has a command still on the wire.
+			// The caller does Check after StopAppend.
+			if (!IsSynchronising() && !mOpenInfo->mMsgMailer->IsAppending())
 				Check(true);
 		}
 		else
@@ -4084,86 +4086,122 @@ void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& 
 					// Try to locate message via UID
 					CMessage* copy_from = NULL;
 					copy_from = const_cast<CMessage*>(GetMessageUID(*iter));
-					
+
 					// Not found => cache it
 					if (!copy_from)
 						force_uids.push_back(*iter);
 				}
-				
+
 				// Try to load all the missing UIDs
 				if (force_uids.size())
 					mOpenInfo->mMsgMailer->FetchItems(force_uids, true, CMboxProtocol::eUID);
 			}
 
-
-			// Start multiple append operation
-			mbox_to->StartAppend();
-
-			// For all messages
-			size_t total = actual_nums.size();
-			size_t current = 1;
-			for(ulvector::const_iterator iter = actual_nums.begin(); iter != actual_nums.end(); iter++, current++)
+			// Retry loop for TRYCREATE (RFC 9051 §7.1): if the destination
+			// was deleted, the server responds NO [TRYCREATE]. _StopAppend
+			// creates the mailbox and signals err_TryCreateRetry so we can
+			// re-send the batch.
+			for (int copy_attempt = 0; copy_attempt < 2; copy_attempt++)
 			{
-				// Set status info
-				lock_status.AllowChange();
-				CStatusWindow::SetIMAPStatus2("Status::IMAP::CopyingProgress", current, total);
-
-				// Get cached message
-				CMessage* copy_from = NULL;
-				if (uids)
-					copy_from = const_cast<CMessage*>(GetMessageUID(*iter));
-				else
-					copy_from = GetMessage(*iter);
-
-				// Must throw if no message is found
-				if (!copy_from)
-				{
-					CLOG_LOGTHROW(CGeneralException, -1L);
-					throw CGeneralException(-1L);
-				}
-
-				bool clear_cache = copy_from->CacheMessage();
-
-				// Clean up after exceptions
 				try
 				{
-					// Must read in message cache from server in order to do copy
-					copy_from->ReadCache();
+					// Start multiple append operation
+					mbox_to->StartAppend();
 
-					// Append new message to mbox
-					unsigned long new_uid = 0;
-					mbox_to->AppendMessage(copy_from, new_uid, false, !IsSynchronising());
+					// For all messages
+					size_t total = actual_nums.size();
+					size_t current = 1;
+					for(ulvector::const_iterator iter = actual_nums.begin(); iter != actual_nums.end(); iter++, current++)
+					{
+						// Set status info
+						lock_status.AllowChange();
+						CStatusWindow::SetIMAPStatus2("Status::IMAP::CopyingProgress", current, total);
 
-					// Track UID mapping for cross-server copy
-					if (uids && new_uid)
-						copy_uids.insert(ulmap::value_type(*iter, new_uid));
+						// Get cached message
+						CMessage* copy_from = NULL;
+						if (uids)
+							copy_from = const_cast<CMessage*>(GetMessageUID(*iter));
+						else
+							copy_from = GetMessage(*iter);
 
-					// Clean up
-					if (clear_cache)
-						copy_from->UncacheMessage();
+						// Must throw if no message is found
+						if (!copy_from)
+						{
+							CLOG_LOGTHROW(CGeneralException, -1L);
+							throw CGeneralException(-1L);
+						}
+
+						bool clear_cache = copy_from->CacheMessage();
+
+						// Clean up after exceptions
+						try
+						{
+							// Must read in message cache from server in order to do copy
+							copy_from->ReadCache();
+
+							// Append new message to mbox
+							unsigned long new_uid = 0;
+							mbox_to->AppendMessage(copy_from, new_uid, false, !IsSynchronising());
+
+							// Track UID mapping for cross-server copy
+							if (uids && new_uid)
+								copy_uids.insert(ulmap::value_type(*iter, new_uid));
+
+							// Clean up
+							if (clear_cache)
+								copy_from->UncacheMessage();
+						}
+						catch (...)
+						{
+							CLOG_LOGCATCH(...);
+
+							// Clean up and throw up
+							if (clear_cache)
+								copy_from->UncacheMessage();
+							CLOG_LOGRETHROW;
+							throw;
+						}
+					}
+
+					// Stop multiple append
+					mbox_to->StopAppend();
+					break;
+				}
+				catch (CINETClient::CINETException& iex)
+				{
+					CLOG_LOGCATCH(CINETException&);
+
+					lock_status.AllowChange();
+					mbox_to->StopAppend();
+
+					if (copy_attempt == 0 &&
+						iex.error() == CINETClient::CINETException::err_TryCreateRetry)
+					{
+						copy_uids.clear();
+						continue;
+					}
+
+					CLOG_LOGRETHROW;
+					throw;
 				}
 				catch (...)
 				{
 					CLOG_LOGCATCH(...);
 
-					// Clean up and throw up
-					if (clear_cache)
-						copy_from->UncacheMessage();
+					lock_status.AllowChange();
+					mbox_to->StopAppend();
+
 					CLOG_LOGRETHROW;
 					throw;
 				}
 			}
-
-			// Stop multiple append
-			mbox_to->StopAppend();
 		}
 		catch (...)
 		{
 			CLOG_LOGCATCH(...);
 
-			// Clean up multiple append operation
+			// Clean up after failed cross-server copy
 			lock_status.AllowChange();
-			mbox_to->StopAppend();
 			CStatusWindow::SetIMAPStatus("Status::IDLE");
 
 			CLOG_LOGRETHROW;

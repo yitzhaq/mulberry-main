@@ -159,6 +159,7 @@
 
 <!-- Mailbox Window -->
 	<string id="Alerts::Mailbox::NoClearMailbox">The seen messages in the INBOX cannot be copied to the specified mailbox because it does not exist. Please create the mailbox to copy to first.</string>
+	<string id="Alerts::Mailbox::TryCreate">The destination mailbox does not exist:\n\n%s\n\nWould you like to create it?</string>
 	<string id="Alerts::Mailbox::NoCloseMailbox">You cannot close this mailbox because some of its messages are in use in a draft window. You must finish composing the draft and either close it or send it before this mailbox can be closed.</string>
 	<string id="Alerts::Mailbox::MailboxRollover">Do you want to view the next mailbox with recent messages?</string>
 	<string id="Alerts::Mailbox::NoMailboxRollover">There are no more recent messages in any mailbox.</string>

@@ -624,11 +624,15 @@ void CINETProtocol::SpendTime(bool force_tickle)
 		return;
 	}
 
-	// Only do if logged on and no error and will not block
+	// Only do if logged on and no error and will not block.
+	// Check is_locked() first — the mutex is recursive, so try_lock()
+	// would succeed even when a command is in progress on the same
+	// thread (re-entrant event processing during I/O).  Tickling a
+	// connection with a command on the wire corrupts the protocol.
 	if (IsLoggedOn() && !IsErrorProcess())
 	{
 		// Must try block
-		if (_mutex.try_lock())
+		if (!_mutex.is_locked() && _mutex.try_lock())
 		{
 
 			try

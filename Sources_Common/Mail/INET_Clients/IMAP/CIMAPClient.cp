@@ -29,6 +29,7 @@
 #include "CCharsetManager.h"
 #include "CCharSpecials.h"
 #include "CEnvelope.h"
+#include "CErrorHandler.h"
 #include "CFilter.h"
 #include "CLocalMessage.h"
 #include "CMailControl.h"
@@ -41,6 +42,7 @@
 #include "CPreferences.h"
 #include "CQuotas.h"
 #include "CRFC822.h"
+#include "CSMTPCommon.h"
 #include "CSearchItem.h"
 #include "CSequence.h"
 #include "CStreamType.h"
@@ -1755,7 +1757,23 @@ void CIMAPClient::_StopAppend(CMbox* mbox)
 	mMultiAppendCount = 0;
 
 	// Read the final tagged response
-	INETFinishSend();
+	try
+	{
+		INETFinishSend();
+	}
+	catch (CINETException& ex)
+	{
+		CLOG_LOGCATCH(CINETException&);
+
+		if (HandleTryCreate(append_mbox))
+		{
+			CLOG_LOGTHROW(CINETException, CINETException::err_TryCreateRetry);
+			throw CINETException(CINETException::err_TryCreateRetry);
+		}
+
+		CLOG_LOGRETHROW;
+		throw;
+	}
 
 	// Parse APPENDUID for multiple UIDs (RFC 4315 + RFC 3502)
 	if (mLastResponse.FindTagged(cAPPENDUID))
@@ -2017,6 +2035,14 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 				// Set count to zero to indicate success
 				repeat = 0;
 			}
+			catch (CINETException& ex)
+			{
+				CLOG_LOGCATCH(CINETException&);
+				if (repeat && HandleTryCreate(mbox))
+					continue;
+				CLOG_LOGRETHROW;
+				throw;
+			}
 			catch(CNetworkException& ex)
 			{
 				CLOG_LOGCATCH(CNetworkException&);
@@ -2028,6 +2054,10 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 					CLOG_LOGRETHROW;
 					throw;
 				}
+			}
+			catch (...)
+			{
+				throw;
 			}
 		}
 	}
@@ -2103,6 +2133,14 @@ void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* 
 
 			mProcessMessage = NULL;
 			repeat = 0;
+		}
+		catch (CINETException& ex)
+		{
+			CLOG_LOGCATCH(CINETException&);
+			if (repeat && HandleTryCreate(mbox))
+				continue;
+			CLOG_LOGRETHROW;
+			throw;
 		}
 		catch(CNetworkException& ex)
 		{
@@ -3182,59 +3220,115 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 
 } // CIMAPClient::_SetFlag
 
+// Handle [TRYCREATE] response: prompt user to create the mailbox.
+// Must snapshot CMbox fields before the dialog — the modal event loop
+// processes unsolicited LIST responses that can invalidate the object.
+bool CIMAPClient::HandleTryCreate(CMbox* mbox_to)
+{
+	if (!mLastResponse.FindTagged(cTRYCREATE))
+		return false;
+
+	cdstring mbox_name = mbox_to->GetName();
+	bool is_dir = mbox_to->IsDirectory();
+	char dir_delim = mbox_to->GetDirDelim();
+
+	short answer = CErrorHandler::PutCautionAlertRsrcStr(true,
+		"Alerts::Mailbox::TryCreate", mbox_name);
+	if (answer == CErrorHandler::Cancel)
+		return false;
+
+	cdstring wd_name = mbox_name;
+	if (is_dir)
+		wd_name += dir_delim;
+	EncodeMailboxName(wd_name);
+
+	INETStartSend("Status::IMAP::Creating", "Error::IMAP::OSErrCreate",
+		"Error::IMAP::NoBadCreate", mbox_name);
+	INETSendString(cCREATE);
+	INETSendString(cSpace);
+	INETSendString(wd_name, eQueueProcess);
+	INETFinishSend();
+	return true;
+}
+
+// Suppress error display for TRYCREATE — the caller retries after prompting
+void CIMAPClient::INETHandleError(std::exception& ex, const char* err_id, const char* nobad_id)
+{
+	bool is_inet = dynamic_cast<CINETException*>(&ex) != NULL;
+	bool has_trycreate = mLastResponse.FindTagged(cTRYCREATE);
+	if (is_inet && has_trycreate)
+		return;
+
+	CINETClient::INETHandleError(ex, err_id, nobad_id);
+}
+
 // Copy specified message to specified mailbox
 void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& copy_uids, bool use_saved)
 {
-	// Get full name
-	cdstring wd_name = mbox_to->GetName();
-	EncodeMailboxName(wd_name);
-
-	// Send COPY message to server
-	CSequence sequence;
-	const char* msgnum_txt;
-	if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
-		msgnum_txt = "$";
-	else
+	for (int attempt = 0; attempt < 2; attempt++)
 	{
-		sequence = CSequence(nums);
-		msgnum_txt = sequence.GetSequenceText();
-	}
-
-	INETStartSend("Status::IMAP::Copying", "Error::IMAP::OSErrCopyMsg", "Error::IMAP::NoBadCopyMsg", GetCurrentMbox()->GetName());
-	INETSendString(uids ? cUIDCOPY : cCOPY, eQueueNoFlags);
-	INETSendString(cSpace, eQueueNoFlags);
-	INETSendString(msgnum_txt, eQueueNoFlags);
-	INETSendString(cSpace, eQueueNoFlags);
-	INETSendString(wd_name, eQueueProcess);
-	INETFinishSend();
-
-	// Check COPYUID status from OK response text
-	if (mLastResponse.FindTagged(cCOPYUID))
-	{
-		const cdstring& temp = mLastResponse.GetTagged();
-		const char* p = ::strstrnocase(temp, cCOPYUID);
-		if (p)
+		try
 		{
-			p += ::strlen(cCOPYUID);
+			// Get full name
+			cdstring wd_name = mbox_to->GetName();
+			EncodeMailboxName(wd_name);
 
-			unsigned long uidv = ::strtoul(p, const_cast<char**>(&p), 10);
-			CSequence source;
-			CSequence destination;
-			source.ParseSequence(&p, nums.size());
-			destination.ParseSequence(&p, nums.size());
-
-			// Now add to map
-			CSequence::const_iterator iter1 = source.begin();
-			CSequence::const_iterator iter2 = destination.begin();
-			while((iter1 != source.end()) && (iter2 != destination.end()))
+			// Send COPY message to server
+			CSequence sequence;
+			const char* msgnum_txt;
+			if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
+				msgnum_txt = "$";
+			else
 			{
-				copy_uids.insert(ulmap::value_type(*iter1, *iter2));
-				iter1++;
-				iter2++;
+				sequence = CSequence(nums);
+				msgnum_txt = sequence.GetSequenceText();
 			}
+
+			INETStartSend("Status::IMAP::Copying", "Error::IMAP::OSErrCopyMsg", "Error::IMAP::NoBadCopyMsg", GetCurrentMbox()->GetName());
+			INETSendString(uids ? cUIDCOPY : cCOPY, eQueueNoFlags);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(msgnum_txt, eQueueNoFlags);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(wd_name, eQueueProcess);
+			INETFinishSend();
+
+			// Check COPYUID status from OK response text
+			if (mLastResponse.FindTagged(cCOPYUID))
+			{
+				const cdstring& temp = mLastResponse.GetTagged();
+				const char* p = ::strstrnocase(temp, cCOPYUID);
+				if (p)
+				{
+					p += ::strlen(cCOPYUID);
+
+					unsigned long uidv = ::strtoul(p, const_cast<char**>(&p), 10);
+					CSequence source;
+					CSequence destination;
+					source.ParseSequence(&p, nums.size());
+					destination.ParseSequence(&p, nums.size());
+
+					// Add to map
+					CSequence::const_iterator iter1 = source.begin();
+					CSequence::const_iterator iter2 = destination.begin();
+					while((iter1 != source.end()) && (iter2 != destination.end()))
+					{
+						copy_uids.insert(ulmap::value_type(*iter1, *iter2));
+						iter1++;
+						iter2++;
+					}
+				}
+			}
+			break;
+		}
+		catch (CINETException& ex)
+		{
+			CLOG_LOGCATCH(CINETException&);
+			if (attempt == 0 && HandleTryCreate(mbox_to))
+				continue;
+			CLOG_LOGRETHROW;
+			throw;
 		}
 	}
-
 } // CIMAPClient::_CopyMessage
 
 // Do move message to mailbox (RFC 6851)
@@ -3243,46 +3337,60 @@ void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 	if (!mHasMove)
 		return;
 
-	// Get full name
-	cdstring wd_name = mbox_to->GetName();
-	EncodeMailboxName(wd_name);
-
-	// Send MOVE message to server
-	CSequence sequence;
-	const char* msgnum_txt;
-	if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
-		msgnum_txt = "$";
-	else
+	for (int attempt = 0; attempt < 2; attempt++)
 	{
-		sequence = CSequence(nums);
-		msgnum_txt = sequence.GetSequenceText();
-	}
-
-	INETStartSend("Status::IMAP::Moving", "Error::IMAP::OSErrMoveMsg", "Error::IMAP::NoBadMoveMsg", GetCurrentMbox()->GetName());
-	INETSendString(uids ? cUIDMOVE : cMOVE, eQueueNoFlags);
-	INETSendString(cSpace, eQueueNoFlags);
-	INETSendString(msgnum_txt, eQueueNoFlags);
-	INETSendString(cSpace, eQueueNoFlags);
-	INETSendString(wd_name, eQueueProcess);
-	INETFinishSend();
-
-	// Servers with UIDPLUS SHOULD send COPYUID in OK response (RFC 6851 §4.3)
-	if (mLastResponse.FindTagged(cCOPYUID))
-	{
-		const cdstring& temp = mLastResponse.GetTagged();
-		const char* p = ::strstrnocase(temp, cCOPYUID);
-		if (p)
+		try
 		{
-			p += ::strlen(cCOPYUID);
+			// Get full name
+			cdstring wd_name = mbox_to->GetName();
+			EncodeMailboxName(wd_name);
 
-			unsigned long uidv = ::strtoul(p, const_cast<char**>(&p), 10);
-			CSequence source;
-			CSequence destination;
-			source.ParseSequence(&p, nums.size());
-			destination.ParseSequence(&p, nums.size());
+			// Send MOVE message to server
+			CSequence sequence;
+			const char* msgnum_txt;
+			if (use_saved && mSearchSaved && MatchesSavedSearch(nums))
+				msgnum_txt = "$";
+			else
+			{
+				sequence = CSequence(nums);
+				msgnum_txt = sequence.GetSequenceText();
+			}
+
+			INETStartSend("Status::IMAP::Moving", "Error::IMAP::OSErrMoveMsg", "Error::IMAP::NoBadMoveMsg", GetCurrentMbox()->GetName());
+			INETSendString(uids ? cUIDMOVE : cMOVE, eQueueNoFlags);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(msgnum_txt, eQueueNoFlags);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(wd_name, eQueueProcess);
+			INETFinishSend();
+
+			// Servers with UIDPLUS SHOULD send COPYUID in OK response (RFC 6851 §4.3)
+			if (mLastResponse.FindTagged(cCOPYUID))
+			{
+				const cdstring& temp = mLastResponse.GetTagged();
+				const char* p = ::strstrnocase(temp, cCOPYUID);
+				if (p)
+				{
+					p += ::strlen(cCOPYUID);
+
+					unsigned long uidv = ::strtoul(p, const_cast<char**>(&p), 10);
+					CSequence source;
+					CSequence destination;
+					source.ParseSequence(&p, nums.size());
+					destination.ParseSequence(&p, nums.size());
+				}
+			}
+			break;
+		}
+		catch (CINETException& ex)
+		{
+			CLOG_LOGCATCH(CINETException&);
+			if (attempt == 0 && HandleTryCreate(mbox_to))
+				continue;
+			CLOG_LOGRETHROW;
+			throw;
 		}
 	}
-
 } // CIMAPClient::_MoveMessage
 
 // Do copy message to stream

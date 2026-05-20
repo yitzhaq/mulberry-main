@@ -103,6 +103,7 @@ public:
 	virtual void	_FindAllMbox(CMboxList* mboxes) = 0;			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) = 0;			// Starting multiple append
 	virtual void	_StopAppend(CMbox* mbox) = 0;			// Stopping multiple append
+	virtual bool	_IsAppending() const { return false; }	// MULTIAPPEND in progress
 	virtual void	_AppendMbox(CMbox* mbox,
 								CMessage* theMsg,
 								unsigned long& new_uid,

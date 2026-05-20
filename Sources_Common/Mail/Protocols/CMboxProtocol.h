@@ -375,6 +375,7 @@ protected:
 
 			void	StartAppend(CMbox* mbox);				// Append message to mbox
 			void	StopAppend(CMbox* mbox);				// Append message to mbox
+			bool	IsAppending() const;					// MULTIAPPEND in progress
 			void	AppendMbox(CMbox* mbox,					// Append message to mbox
 								CMessage* theMsg,
 								unsigned long& new_uid,

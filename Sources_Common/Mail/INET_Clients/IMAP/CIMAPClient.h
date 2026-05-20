@@ -220,6 +220,7 @@ protected:
 			void	_FindSpecialUseMbox(CMboxList* mboxes);	// Find special-use mailboxes only (RFC 6154)
 	virtual void	_StartAppend(CMbox* mbox);			// Starting multiple append
 	virtual void	_StopAppend(CMbox* mbox);			// Stopping multiple append
+	virtual bool	_IsAppending() const { return mMultiAppending; }
 	virtual void	_AppendMbox(CMbox* mbox,
 									CMessage* theMsg,
 									unsigned long& new_uid,
@@ -321,6 +322,11 @@ protected:
 									bool uids,
 									CMbox* mbox_to,
 									bool use_saved = false);	// Do move sequence to mailbox
+	bool			HandleTryCreate(CMbox* mbox_to);				// Handle [TRYCREATE] response
+	virtual void	INETHandleError(std::exception& ex,
+									const char* err_id,
+									const char* nobad_id);		// Skip error display for TRYCREATE
+
 	virtual bool	_DoesCopy() const							// Does server handle copy?
 		{ return true; }
 	bool			_HasMove() const							// Does server support MOVE?

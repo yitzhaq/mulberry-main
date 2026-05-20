@@ -2622,6 +2622,11 @@ void CMboxProtocol::StopAppend(CMbox* mbox)
 	mClient->_StopAppend(mbox);
 }
 
+bool CMboxProtocol::IsAppending() const
+{
+	return mClient && mClient->_IsAppending();
+}
+
 // Append to mbox
 void CMboxProtocol::AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_uid, bool dummy_files, bool doMRU)
 {

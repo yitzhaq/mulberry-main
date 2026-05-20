@@ -934,6 +934,8 @@ void CMailboxTable::DoMessageCopy(CMbox* copy_mbox, bool option_key, bool force_
 	{
 		CLOG_LOGCATCH(...);
 
+		// Ensure table display is consistent after a failed copy/move
+		Refresh();
 
 		// Should throw out of here in case abort and mbox now destroyed
 		CLOG_LOGRETHROW;
