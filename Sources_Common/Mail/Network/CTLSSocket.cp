@@ -868,7 +868,49 @@ void CTLSSocket::TLSCloseConnection()
 #ifdef _OS_X_SECURITY
     ::SSLClose(m_ctx);
 #endif
-    
+
+}
+
+bool CTLSSocket::TLSGetChannelBinding(char* type_out, size_t type_len,
+									unsigned char* cb_out, size_t* cb_len) const
+{
+#ifndef _OS_X_SECURITY
+	if (!mTLSOn || !m_tls || !cb_out || !cb_len || !type_out)
+		return false;
+
+	int ver = SSL_version(m_tls);
+	if (ver >= 0x0304)
+	{
+		// TLS 1.3+: use tls-exporter (RFC 9266)
+		if (*cb_len < 32)
+			return false;
+		int r = SSL_export_keying_material(const_cast<ssl_st*>(m_tls),
+			cb_out, 32, "EXPORTER-Channel-Binding", 24,
+			(const unsigned char*)"", 0, 0);
+		if (r != 1)
+			return false;
+		::strncpy(type_out, "tls-exporter", type_len - 1);
+		type_out[type_len - 1] = 0;
+		*cb_len = 32;
+		return true;
+	}
+	else
+	{
+		// TLS 1.2: use tls-unique (RFC 5929), but only with Extended Master Secret
+		// (RFC 7677 §4 — required for SCRAM -PLUS to prevent triple handshake attack)
+		if (!SSL_get_extms_support(const_cast<ssl_st*>(m_tls)))
+			return false;
+		size_t len = SSL_get_finished(m_tls, cb_out, *cb_len);
+		if (len == 0 || len > *cb_len)
+			return false;
+		::strncpy(type_out, "tls-unique", type_len - 1);
+		type_out[type_len - 1] = 0;
+		*cb_len = len;
+		return true;
+	}
+#else
+	return false;
+#endif
 }
 
 #ifdef _OS_X_SECURITY

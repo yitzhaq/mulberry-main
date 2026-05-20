@@ -290,6 +290,13 @@ X11 bitmap fonts).
 
 ### Added
 
+- SCRAM-SHA-1 and SCRAM-SHA-256 authentication plugins (RFC 5802,
+  RFC 7677). SASL challenge-response authentication with salted
+  password hashing and mutual server verification. Includes channel
+  binding support (RFC 9266): tls-exporter for TLS 1.3+, tls-unique
+  for TLS 1.2 with Extended Master Secret. Automatic -PLUS negotiation
+  when the server advertises channel binding support. SASL-IR (RFC 4959)
+  for single-round-trip authentication on capable IMAP servers.
 - IMAP TRYCREATE handling (RFC 9051 §7.1). When COPY, MOVE, APPEND,
   REPLACE, or MULTIAPPEND targets a deleted mailbox, prompt the user
   to recreate it and retry. Covers same-server and cross-account paths.

@@ -58,7 +58,8 @@ public:
 		eAuthSetPassword,
 		eAuthSetServer,
 		eAuthSetRealServer,
-		eAuthProcessData
+		eAuthProcessData,
+		eAuthSetChannelBinding
 	};
 
 	enum EAuthPluginReturnCode
@@ -113,6 +114,15 @@ public:
 												// output: c_string containing next line sent to server (no CRLF at end)
 	};
 
+	// Channel binding data for SCRAM -PLUS variants
+	struct SAuthChannelBindData
+	{
+		char mMode;								// 'n'=no CB, 'y'=supports but unused, 'p'=using CB
+		char mType[64];							// e.g. "tls-exporter" or "tls-unique"
+		long mLength;							// Length of CB data
+		unsigned char mData[256];				// Binary CB data (tls-exporter is 32 bytes)
+	};
+
 	// Actual plug-in class
 
 	CAuthPluginDLL();
@@ -132,9 +142,11 @@ public:
 	virtual void	SetRealServer(const char* str);			// Set real server from Mulberry (this is the canonical/reverse lookup name)
 
 	virtual long	ProcessData(SAuthPluginData* info) = 0;	// Process data
+	virtual void	SetChannelBinding(const SAuthChannelBindData* cb);	// Set channel binding data
 
 protected:
 	SAuthPluginInfo mAuthInfo;						// Information about plug-in
+	SAuthChannelBindData mChannelBind;				// Channel binding data for SCRAM -PLUS
 	EINETServerType mServerType;					// Type of server in use
 	bool mUseUserID;								// Use Mulberry supplied user id (otherwise try default)
 	char mUserID[cMaxAuthStringLength];				// User ID provided by Mulberry

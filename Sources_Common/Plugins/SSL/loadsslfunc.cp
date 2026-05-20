@@ -701,6 +701,19 @@ IMPORT_FUNCTION(sSSLLoader, int, SSL_version, (const SSL *ssl), (ssl))
 //int SSL_write(SSL *ssl,const void *buf,int num);
 IMPORT_FUNCTION(sSSLLoader, int, SSL_write, (SSL *ssl,const void *buf,int num), (ssl, buf, num))
 
+//size_t SSL_get_finished(const SSL *s, void *buf, size_t count);
+IMPORT_FUNCTION(sSSLLoader, size_t, SSL_get_finished, (const SSL *s, void *buf, size_t count), (s, buf, count))
+
+//int SSL_get_extms_support(SSL *s);
+IMPORT_FUNCTION(sSSLLoader, int, SSL_get_extms_support, (SSL *s), (s))
+
+//int SSL_export_keying_material(SSL *s, unsigned char *out, size_t olen,
+//    const char *label, size_t llen, const unsigned char *context, size_t contextlen, int use_context);
+IMPORT_FUNCTION(sSSLLoader, int, SSL_export_keying_material,
+	(SSL *s, unsigned char *out, size_t olen, const char *label, size_t llen,
+	 const unsigned char *context, size_t contextlen, int use_context),
+	(s, out, olen, label, llen, context, contextlen, use_context))
+
 //char *SSL_CIPHER_description(SSL_CIPHER *s,char *buf,int size);
 // argument was constified in 0.9.8m
 #if OPENSSL_VERSION_NUMBER >= 0x009080dfL

@@ -3,7 +3,7 @@
 O = .o
 
 # Plugins to build
-BUILD_PLUGINS := PluginLibrary CRAM-MD5 DIGEST-MD5 GSSAPI @KERBEROS@ \
+BUILD_PLUGINS := PluginLibrary CRAM-MD5 DIGEST-MD5 SCRAM-SHA-1 SCRAM-SHA-256 GSSAPI @KERBEROS@ \
 			@COMMUNICATOR_ADBK_IO@ Eudora4AdbkIO EudoraAdbkIO @NETSCAPE_ADBK_IO@ \
 			PineAdbkIO QuickmailAdbkIO vCardAdbkIO \
 			ISpell @ASPELL@ \

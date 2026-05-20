@@ -115,6 +115,12 @@ void CAuthPlugin::SetRealServer(const char* str)
 	CallPlugin(eAuthSetRealServer, (void*) str);
 }
 
+// Set channel binding data
+void CAuthPlugin::SetChannelBinding(const SAuthChannelBindData* cb)
+{
+	CallPlugin(eAuthSetChannelBinding, (void*) cb);
+}
+
 // Process data
 long CAuthPlugin::ProcessData(char* data, long length)
 {
@@ -129,7 +135,8 @@ long CAuthPlugin::ProcessData(char* data, long length)
 
 bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 									CINETAccount::EINETServerType type, const char* type_string,
-									CTCPStream& stream, CLog& log, char* buffer, size_t buflen, cdstring& capabilities)
+									CTCPStream& stream, CLog& log, char* buffer, size_t buflen,
+									cdstring& capabilities, bool serverSupportsPlus, bool saslIR)
 {
 	bool result = true;
 
@@ -211,7 +218,50 @@ bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 	default:;
 	}
 
+	// Set up channel binding for SCRAM -PLUS variants
+	cdstring mechName = mAuthTypeID;
+	SAuthChannelBindData cbData;
+	::memset(&cbData, 0, sizeof(cbData));
+	cbData.mMode = 'n';
 
+	if (stream.TLSIsTLSOn())
+	{
+		char cbType[64];
+		unsigned char cbBuf[256];
+		size_t cbLen = sizeof(cbBuf);
+		bool gotCB = stream.TLSGetChannelBinding(cbType, sizeof(cbType), cbBuf, &cbLen);
+
+		if (serverSupportsPlus && gotCB)
+		{
+			cbData.mMode = 'p';
+			::strncpy(cbData.mType, cbType, sizeof(cbData.mType) - 1);
+			cbData.mType[sizeof(cbData.mType) - 1] = 0;
+			cbData.mLength = cbLen;
+			::memcpy(cbData.mData, cbBuf, cbLen);
+			mechName += "-PLUS";
+		}
+		else
+		{
+			cbData.mMode = 'y';
+		}
+	}
+
+	clone->SetChannelBinding(&cbData);
+
+	// Generate initial response for SASL-IR with client-first mechanisms (SCRAM)
+	bool useSASLIR = saslIR &&
+		(type == CINETAccount::eIMAP || type == CINETAccount::eIMSP) &&
+		(mechName.compare_start("SCRAM-"));
+	cdstring initialResponse;
+	if (useSASLIR)
+	{
+		::strcpy(buffer, "+ ");
+		long ir_result = clone->ProcessData(buffer, buflen);
+		if (ir_result == CAuthPlugin::eAuthSendDataToServer)
+			initialResponse = buffer;
+		else
+			useSASLIR = false;
+	}
 
 	// Send first command
 	switch(type)
@@ -222,19 +272,24 @@ bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 		::strcpy(buffer, "a AUTHENTICATE ");
 		if (type == CINETAccount::eACAP)
 			::strcat(buffer, "\"");
-		::strcat(buffer, mAuthTypeID.c_str());
+		::strcat(buffer, mechName.c_str());
 		if (type == CINETAccount::eACAP)
 			::strcat(buffer, "\"");
+		if (useSASLIR)
+		{
+			::strcat(buffer, " ");
+			::strcat(buffer, initialResponse.c_str());
+		}
 		break;
 	case CINETAccount::eSMTP:
 	case CINETAccount::ePOP3:
 		::strcpy(buffer, "AUTH ");
-		::strcat(buffer, mAuthTypeID.c_str());
+		::strcat(buffer, mechName.c_str());
 		break;
 	case CINETAccount::eManageSIEVE:
 		::strcpy(buffer, "AUTHENTICATE ");
 		::strcat(buffer, "\"");
-		::strcat(buffer, mAuthTypeID.c_str());
+		::strcat(buffer, mechName.c_str());
 		::strcat(buffer, "\"");
 		break;
 	default:;
@@ -243,7 +298,6 @@ bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 	if (CLog::AllowAuthenticationLog())
 		log.LogEntry(buffer);
 	stream.qgetline(buffer, buflen);
-	//buffer[::strlen(buffer) - 1] = 0;
 	if (CLog::AllowAuthenticationLog())
 		log.LogEntry(buffer);
 

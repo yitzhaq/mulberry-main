@@ -1281,12 +1281,17 @@ void CINETClient::DoPluginAuthentication()
 
 	if (plugin)
 	{
+		// Check if server advertises -PLUS variant of the mechanism
+		cdstring plusMech = plugin->GetAuthTypeID() + "-PLUS";
+		bool serverSupportsPlus = (mCapability.find(plusMech) != cdstring::npos);
+
 		cdstring capability;
 		if (!plugin->DoAuthentication(&GetAccount()->GetAuthenticator(),
 									GetAccount()->GetServerType(),
 									GetAccount()->GetServerTypeString(),
 									*mStream, mLog, mLineData, cINETBufferLen,
-									capability))
+									capability, serverSupportsPlus,
+									mAuthInitialClientData))
 		{
 			const char* p = mLineData;
 

@@ -69,11 +69,17 @@ CAuthPluginDLL::CAuthPluginDLL()
 	*mPassword = 0;
 	*mServer = 0;
 	*mRealServer = 0;
+	mChannelBind.mMode = 'n';
+	mChannelBind.mType[0] = 0;
+	mChannelBind.mLength = 0;
 }
 
 // Destructor
 CAuthPluginDLL::~CAuthPluginDLL()
 {
+	::memset(mPassword, 0, sizeof(mPassword));
+	::memset(mUserID, 0, sizeof(mUserID));
+	::memset(mRecoveredUserID, 0, sizeof(mRecoveredUserID));
 }
 
 // DLL entry point and dispatch
@@ -108,6 +114,10 @@ long CAuthPluginDLL::Entry(long code, void* data, long refCon)
 
 	case CAuthPluginDLL::eAuthProcessData:
 		return ProcessData((SAuthPluginData*) data);
+
+	case CAuthPluginDLL::eAuthSetChannelBinding:
+		SetChannelBinding((const SAuthChannelBindData*) data);
+		return 1;
 
 	default:
 		return CPluginDLL::Entry(code, data, refCon);
@@ -172,4 +182,20 @@ void CAuthPluginDLL::SetRealServer(const char* str)
 {
 	::strncpy(mRealServer, str, cMaxAuthStringLength - 1);
 	mRealServer[cMaxAuthStringLength - 1] = 0;
+}
+
+// Set channel binding data from Mulberry
+void CAuthPluginDLL::SetChannelBinding(const SAuthChannelBindData* cb)
+{
+	if (cb)
+	{
+		mChannelBind.mMode = cb->mMode;
+		::strncpy(mChannelBind.mType, cb->mType, sizeof(mChannelBind.mType) - 1);
+		mChannelBind.mType[sizeof(mChannelBind.mType) - 1] = 0;
+		mChannelBind.mLength = cb->mLength;
+		if (cb->mLength > 0 && cb->mLength <= (long) sizeof(mChannelBind.mData))
+			::memcpy(mChannelBind.mData, cb->mData, cb->mLength);
+		else
+			mChannelBind.mLength = 0;
+	}
 }

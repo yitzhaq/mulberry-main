@@ -82,8 +82,7 @@ void _HEX_IT(char* digest_hex, unsigned char* digest)
 #define AUTHERROR(xx_msg) do { \
 	char err_buf[256]; \
   	mState = eError; \
-    ::strcpy(err_buf, "DIGEST-MD5 Plugin Error: "); \
-    ::strcat(err_buf, xx_msg); \
+    ::snprintf(err_buf, sizeof(err_buf), "DIGEST-MD5 Plugin Error: %s", xx_msg); \
     LogEntry(err_buf); \
   	return eAuthServerError; \
   } while (0)

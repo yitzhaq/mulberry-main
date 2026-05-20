@@ -84,7 +84,9 @@ public:
 										CLog& log,
 										char* buffer,
 										size_t buflen,
-										cdstring& capabilities);
+										cdstring& capabilities,
+										bool serverSupportsPlus = false,
+										bool saslIR = false);
 
 protected:
 	enum EAuthPluginCall
@@ -98,7 +100,8 @@ protected:
 		eAuthSetPassword,
 		eAuthSetServer,
 		eAuthSetRealServer,
-		eAuthProcessData
+		eAuthProcessData,
+		eAuthSetChannelBinding
 	};
 
 	enum EAuthPluginReturnCode
@@ -134,6 +137,15 @@ protected:
 												// output: c_string containing next line sent to server (no CRLF at end)
 	};
 
+	// Channel binding data for SCRAM -PLUS variants
+	struct SAuthChannelBindData
+	{
+		char mMode;								// 'n'=no CB, 'y'=supports but unused, 'p'=using CB
+		char mType[64];							// e.g. "tls-exporter" or "tls-unique"
+		long mLength;							// Length of CB data
+		unsigned char mData[256];				// Binary CB data (tls-exporter is 32 bytes)
+	};
+
 #if __dest_os == __mac_os
 #if PRAGMA_STRUCT_ALIGN
 #pragma options align=reset
@@ -153,6 +165,7 @@ protected:
 	virtual void	SetPassword(const char* str);			// Set password from Mulberry
 	virtual void	SetServer(const char* str);				// Set server from Mulberry (this may be an alias)
 	virtual void	SetRealServer(const char* str);			// Set real server from Mulberry (this is the cname)
+	virtual void	SetChannelBinding(const SAuthChannelBindData* cb);	// Set channel binding data
 
 	virtual long	ProcessData(char* data, long length);	// Process data
 };

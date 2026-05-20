@@ -51,6 +51,8 @@ public:
 			bool TLSIsTLSOn() const
 		{ return mTLSOn; }
 			bool TLSSetClientCert(const cdstring& cert, const cdstring& passphrase);
+			bool TLSGetChannelBinding(char* type_out, size_t type_len,
+									unsigned char* cb_out, size_t* cb_len) const;
 
 	// Connections
 	virtual void TCPWaitConnection();						// Passive connect (listen)
