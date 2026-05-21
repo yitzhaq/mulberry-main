@@ -3,7 +3,11 @@
 *.dd
 *.so
 *.so.ltrans*
+Build/Makefile
 Libraries/Makefile
+Libraries/CICalendar/Makefile
+Libraries/vCard/Makefile
+Libraries/XMLLib/Makefile
 Linux/Makefile
 Makefile
 Plug-ins/ASpell/Makefile
@@ -16,10 +20,13 @@ Plug-ins/GPG/Makefile
 Plug-ins/GSSAPI/Makefile
 Plug-ins/ISpell/Makefile
 Plug-ins/Kerberos/Makefile
+Plug-ins/Makefile
 Plug-ins/NetscapeAdbkIO/Makefile
 Plug-ins/PineAdbkIO/Makefile
 Plug-ins/PluginLibrary/Makefile
 Plug-ins/QuickmailAdbkIO/Makefile
+Plug-ins/SCRAM-SHA-1/Makefile
+Plug-ins/SCRAM-SHA-256/Makefile
 Plug-ins/SMIME/Makefile
 Plug-ins/SSL/Makefile
 Plug-ins/vCardAdbkIO/Makefile
