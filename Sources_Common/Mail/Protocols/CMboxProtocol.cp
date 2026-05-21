@@ -3023,6 +3023,68 @@ bool CMboxProtocol::HasQResync() const
 	return mClient->_HasQResync();
 }
 
+bool CMboxProtocol::HasUrlAuth() const
+{
+	return mClient->_HasUrlAuth();
+}
+
+bool CMboxProtocol::HasUrlAuthBinary() const
+{
+	return mClient->_HasUrlAuthBinary();
+}
+
+bool CMboxProtocol::HasUrlPartial() const
+{
+	return mClient->_HasUrlPartial();
+}
+
+void CMboxProtocol::GenUrlAuth(const cdstrvect& rump_urls,
+							   const cdstring& mechanism,
+							   cdstrvect& results)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	mClient->_GenUrlAuth(rump_urls, mechanism, &results);
+}
+
+void CMboxProtocol::UrlFetch(const cdstrvect& urls,
+							 SUrlFetchResults& results)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	mClient->_UrlFetch(urls, &results);
+}
+
+void CMboxProtocol::UrlFetchExtended(const cdstrvect& urls,
+									 bool want_binary,
+									 bool want_bodypartstructure,
+									 SUrlFetchResults& results)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	mClient->_UrlFetchExtended(urls, want_binary, want_bodypartstructure, &results);
+}
+
+void CMboxProtocol::ResetKey(const cdstring& mailbox,
+							 const cdstrvect* mechanisms)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	mClient->_ResetKey(mailbox, mechanisms);
+}
+
 void CMboxProtocol::FetchChangedFlags(uint64_t modseq)
 {
 	cdmutex::lock_cdmutex _lock(_mutex);

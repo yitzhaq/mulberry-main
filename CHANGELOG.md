@@ -290,6 +290,12 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP URLAUTH extension suite: full IMAP URL parser/builder (RFC 5092),
+  URLAUTH authorization (RFC 4467) with GENURLAUTH, URLFETCH, and
+  RESETKEY commands, extended URLFETCH for binary and converted parts
+  (RFC 5524, URLAUTH=BINARY capability), generic access identifiers
+  (RFC 5593), and URL-PARTIAL capability (RFC 5550). Foundation for
+  forward-without-download workflow (CATENATE and BURL to follow).
 - SCRAM-SHA-1 and SCRAM-SHA-256 authentication plugins (RFC 5802,
   RFC 7677). SASL challenge-response authentication with salted
   password hashing and mutual server verification. Includes channel

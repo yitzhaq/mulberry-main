@@ -50,6 +50,12 @@
 	<string id="Error::IMAP::MessageTooBig">Message exceeds server size limit (APPENDLIMIT).\nMessage size: </string>
 	<string id="Error::IMAP::OSErrCompress">while enabling compression.</string>
 	<string id="Error::IMAP::NoBadCompress">Could not enable compression:\n</string>
+	<string id="Error::IMAP::OSErrGenUrlAuth">while generating authorized URL.</string>
+	<string id="Error::IMAP::NoBadGenUrlAuth">Could not generate authorized URL:\n</string>
+	<string id="Error::IMAP::OSErrUrlFetch">while fetching URL data.</string>
+	<string id="Error::IMAP::NoBadUrlFetch">Could not fetch URL data:\n</string>
+	<string id="Error::IMAP::OSErrResetKey">while resetting URL authorization key.</string>
+	<string id="Error::IMAP::NoBadResetKey">Could not reset URL authorization key:\n</string>
 	<string id="Error::IMAP::OSErrEnable">while enabling extensions.</string>
 	<string id="Error::IMAP::NoBadEnable">Could not enable extensions:\n</string>
 	<string id="Error::IMAP::OSErrLanguage">while negotiating language.</string>

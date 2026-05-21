@@ -355,4 +355,19 @@ extern const char* cCOMPARATOR;
 // Response codes
 extern const char* cBADCOMPARATOR;
 
+// URLAUTH (RFC 4467, RFC 5524, RFC 5550)
+
+// Capability responses
+extern const char* cIMAP_URLAUTH;
+extern const char* cIMAP_URLAUTH_BINARY;
+extern const char* cIMAP_URL_PARTIAL;
+
+// Commands
+extern const char* cGENURLAUTH;
+extern const char* cURLFETCH;
+extern const char* cRESETKEY;
+
+// Response codes
+extern const char* cURLMECH;
+
 #endif

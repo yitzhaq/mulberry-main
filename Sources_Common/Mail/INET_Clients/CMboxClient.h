@@ -27,6 +27,7 @@
 
 #include "CINETClient.h"
 
+#include "CIMAPUrl.h"
 #include "CMboxProtocol.h"
 #include "CMbox.h"
 #include "CMessage.h"
@@ -99,6 +100,20 @@ public:
 	virtual void	_Language() {}					// Send RFC 5255 LANGUAGE command (IMAP-specific, default no-op)
 	virtual void	_Comparator() {}				// Send RFC 5255 COMPARATOR command (IMAP-specific, default no-op)
 	virtual void	_Notify() {}					// Send RFC 5465 NOTIFY command (IMAP-specific, default no-op)
+	virtual void	_GenUrlAuth(const cdstrvect& /*rump_urls*/,
+								const cdstring& /*mechanism*/,
+								cdstrvect* /*results*/) {}
+	virtual void	_UrlFetch(const cdstrvect& /*urls*/,
+							  SUrlFetchResults* /*results*/) {}
+	virtual void	_UrlFetchExtended(const cdstrvect& /*urls*/,
+									  bool /*want_binary*/,
+									  bool /*want_bodypartstructure*/,
+									  SUrlFetchResults* /*results*/) {}
+	virtual void	_ResetKey(const cdstring& /*mailbox*/ = cdstring::null_str,
+							  const cdstrvect* /*mechanisms*/ = NULL) {}
+	virtual bool	_HasUrlAuth() const { return false; }
+	virtual bool	_HasUrlAuthBinary() const { return false; }
+	virtual bool	_HasUrlPartial() const { return false; }
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes) = 0;		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes) = 0;			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) = 0;			// Starting multiple append

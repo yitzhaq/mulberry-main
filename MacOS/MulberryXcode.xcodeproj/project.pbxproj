@@ -966,6 +966,7 @@
 		AFCDE3960AE176E300E30447 /* CAdbkProtocol.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF6B0AE176DE00E30447 /* CAdbkProtocol.cp */; };
 		AFCDE3970AE176E300E30447 /* CFilterProtocol.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF6E0AE176DE00E30447 /* CFilterProtocol.cp */; };
 		AFCDE3980AE176E300E30447 /* CURL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF700AE176DE00E30447 /* CURL.cp */; };
+		B1CDEAA10AE176E300E30447 /* CIMAPUrl.cp in Sources */ = {isa = PBXBuildFile; fileRef = B1CDEAA30AE176DE00E30447 /* CIMAPUrl.cp */; };
 		AFCDE3990AE176E300E30447 /* CRFC822Parser.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF730AE176DE00E30447 /* CRFC822Parser.cp */; };
 		AFCDE39A0AE176E300E30447 /* CLocalCommon.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF750AE176DE00E30447 /* CLocalCommon.cp */; };
 		AFCDE39B0AE176E300E30447 /* CLocalMessage.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF770AE176DE00E30447 /* CLocalMessage.cp */; };
@@ -3432,6 +3433,8 @@
 		AFCDDF6E0AE176DE00E30447 /* CFilterProtocol.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CFilterProtocol.cp; path = ../Sources_Common/Mail/Protocols/CFilterProtocol.cp; sourceTree = SOURCE_ROOT; };
 		AFCDDF6F0AE176DE00E30447 /* CURL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CURL.h; path = ../Sources_Common/Mail/URLs/CURL.h; sourceTree = SOURCE_ROOT; };
 		AFCDDF700AE176DE00E30447 /* CURL.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CURL.cp; path = ../Sources_Common/Mail/URLs/CURL.cp; sourceTree = SOURCE_ROOT; };
+		B1CDEAA20AE176DE00E30447 /* CIMAPUrl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CIMAPUrl.h; path = ../Sources_Common/Mail/URLs/CIMAPUrl.h; sourceTree = SOURCE_ROOT; };
+		B1CDEAA30AE176DE00E30447 /* CIMAPUrl.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CIMAPUrl.cp; path = ../Sources_Common/Mail/URLs/CIMAPUrl.cp; sourceTree = SOURCE_ROOT; };
 		AFCDDF720AE176DE00E30447 /* CRFC822Parser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CRFC822Parser.h; path = ../Sources_Common/Offline/Mail/CRFC822Parser.h; sourceTree = SOURCE_ROOT; };
 		AFCDDF730AE176DE00E30447 /* CRFC822Parser.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CRFC822Parser.cp; path = ../Sources_Common/Offline/Mail/CRFC822Parser.cp; sourceTree = SOURCE_ROOT; };
 		AFCDDF740AE176DE00E30447 /* CLocalCommon.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CLocalCommon.h; path = ../Sources_Common/Offline/CLocalCommon.h; sourceTree = SOURCE_ROOT; };
@@ -7148,6 +7151,8 @@
 				AFCDDF6E0AE176DE00E30447 /* CFilterProtocol.cp */,
 				AFCDDF6F0AE176DE00E30447 /* CURL.h */,
 				AFCDDF700AE176DE00E30447 /* CURL.cp */,
+				B1CDEAA20AE176DE00E30447 /* CIMAPUrl.h */,
+				B1CDEAA30AE176DE00E30447 /* CIMAPUrl.cp */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -9090,6 +9095,7 @@
 				AFCDE3960AE176E300E30447 /* CAdbkProtocol.cp in Sources */,
 				AFCDE3970AE176E300E30447 /* CFilterProtocol.cp in Sources */,
 				AFCDE3980AE176E300E30447 /* CURL.cp in Sources */,
+				B1CDEAA10AE176E300E30447 /* CIMAPUrl.cp in Sources */,
 				AFCDE3990AE176E300E30447 /* CRFC822Parser.cp in Sources */,
 				AFCDE39A0AE176E300E30447 /* CLocalCommon.cp in Sources */,
 				AFCDE39B0AE176E300E30447 /* CLocalMessage.cp in Sources */,

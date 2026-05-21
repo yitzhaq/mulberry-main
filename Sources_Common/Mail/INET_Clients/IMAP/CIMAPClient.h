@@ -22,6 +22,7 @@
 
 #include "CMboxClient.h"
 #include "CIMAPCommon.h"
+#include "CIMAPUrl.h"
 
 // consts
 // Others
@@ -107,6 +108,9 @@ private:
 	bool			mUTF8Accepted;					// UTF8=ACCEPT successfully ENABLED this session
 	bool			mHasNotify;						// Supports NOTIFY (RFC 5465)
 	bool			mNotifyActive;					// NOTIFY SET successfully sent this session
+	bool			mHasUrlAuth;					// Supports URLAUTH (RFC 4467)
+	bool			mHasUrlAuthBinary;				// Supports URLAUTH=BINARY (RFC 5524)
+	bool			mHasUrlPartial;					// Supports URL-PARTIAL (RFC 5550)
 	cdstring		mActiveLanguage;				// Active language tag
 	cdstring		mActiveComparator;				// Active comparator
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
@@ -139,6 +143,11 @@ private:
 	cdstring		mContextTag;					// Tag of active UPDATE context (empty = none)
 
 	threadvector*	mThreadResults;					// Place to store thread results
+
+	// URLAUTH state (RFC 4467, RFC 5524)
+	cdstrvect		mUrlMechanisms;					// Available URLAUTH mechanisms from URLMECH response
+	cdstrvect*		mGenUrlAuthResults;				// Place to store GENURLAUTH response URLs
+	SUrlFetchResults*	mUrlFetchResults;			// Place to store URLFETCH response data
 
 	// C O N S T R U C T I O N / D E S T R U C T I O N  M E T H O D S
 
@@ -446,6 +455,28 @@ protected:
 
 	void	IMAPParseQuota(char** txt);							// Parse IMAP QUOTA reply
 	void	IMAPParseQuotaRoot(char** txt);						// Parse IMAP QUOTAROOT reply
+
+	// URLAUTH (RFC 4467, RFC 5524, RFC 5593)
+	void	_GenUrlAuth(const cdstrvect& rump_urls,
+						const cdstring& mechanism,
+						cdstrvect* results);
+	void	_UrlFetch(const cdstrvect& urls,
+					  SUrlFetchResults* results);
+	void	_UrlFetchExtended(const cdstrvect& urls,
+							  bool want_binary,
+							  bool want_bodypartstructure,
+							  SUrlFetchResults* results);
+	void	_ResetKey(const cdstring& mailbox = cdstring::null_str,
+					  const cdstrvect* mechanisms = NULL);
+	bool	_HasUrlAuth() const { return mHasUrlAuth; }
+	bool	_HasUrlAuthBinary() const { return mHasUrlAuthBinary; }
+	bool	_HasUrlPartial() const { return mHasUrlPartial; }
+	const cdstrvect& _GetUrlMechanisms() const { return mUrlMechanisms; }
+
+	void	IMAPParseUrlMech();							// Parse [URLMECH ...] from tagged OK
+
+	void	IMAPParseGenUrlAuth(char** txt);					// Parse IMAP GENURLAUTH reply
+	void	IMAPParseUrlFetch(char** txt);					// Parse IMAP URLFETCH reply
 
 	void	IMAPParseNamespace(char** txt);						// Parse IMAP NAMESPACE reply
 	void	IMAPParseNamespaceItem(cdstrpairvect* names,		// Parse IMAP NAMESPACE item

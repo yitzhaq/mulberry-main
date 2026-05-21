@@ -68,7 +68,9 @@ enum EINETResponseCode
 	cStarENTRY,
 	cStarLANGUAGE,
 	cStarCOMPARATOR,
-	cStarMODTIME
+	cStarMODTIME,
+	cStarGENURLAUTH,
+	cStarURLFETCH
 };
 
 #endif

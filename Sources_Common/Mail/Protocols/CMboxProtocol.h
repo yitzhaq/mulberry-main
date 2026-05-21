@@ -22,6 +22,7 @@
 
 #include "CINETProtocol.h"
 
+#include "CIMAPUrl.h"
 #include "CMailAccount.h"
 #include "CMboxFwd.h"
 #include "CMboxList.h"
@@ -290,7 +291,22 @@ public:
 			bool	HasReplace() const;						// Does server support REPLACE?
 			bool	HasCondstore() const;					// Does server support CONDSTORE?
 			bool	HasQResync() const;						// Does server support QRESYNC?
+			bool	HasUrlAuth() const;						// Does server support URLAUTH?
+			bool	HasUrlAuthBinary() const;				// Does server support URLAUTH=BINARY?
+			bool	HasUrlPartial() const;					// Does server support URL-PARTIAL?
 			void	FetchChangedFlags(uint64_t modseq);		// Fetch flags changed since modseq
+
+			void	GenUrlAuth(const cdstrvect& rump_urls,
+								const cdstring& mechanism,
+								cdstrvect& results);
+			void	UrlFetch(const cdstrvect& urls,
+							 SUrlFetchResults& results);
+			void	UrlFetchExtended(const cdstrvect& urls,
+									 bool want_binary,
+									 bool want_bodypartstructure,
+									 SUrlFetchResults& results);
+			void	ResetKey(const cdstring& mailbox = cdstring::null_str,
+							 const cdstrvect* mechanisms = NULL);
 
 			void	ReplaceMessage(unsigned long old_uid,
 								CMbox* mbox,

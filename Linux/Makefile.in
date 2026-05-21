@@ -653,6 +653,7 @@ OBJS = \
 	../Sources_Common/Mail/INET_Clients/SIEVE/SIEVE/CSIEVEClient$O \
 	../Sources_Common/Mail/INET_Clients/SMTP/CSMTPSender$O \
 	../Sources_Common/Mail/URLs/CURL$O \
+	../Sources_Common/Mail/URLs/CIMAPUrl$O \
 	../Sources_Common/i18n/Charsets/CCharsetManager$O \
 	../Sources_Common/i18n/Charsets/Converters/CConverterBase$O \
 	../Sources_Common/i18n/Charsets/Converters/OneByte/CASCII$O \

@@ -357,3 +357,18 @@ const char* cCOMPARATOR =				"COMPARATOR";
 
 // Response codes
 const char* cBADCOMPARATOR =			"[BADCOMPARATOR]";
+
+// URLAUTH (RFC 4467, RFC 5524, RFC 5550)
+
+// Capability responses
+const char* cIMAP_URLAUTH =			"URLAUTH";
+const char* cIMAP_URLAUTH_BINARY =		"URLAUTH=BINARY";
+const char* cIMAP_URL_PARTIAL =			"URL-PARTIAL";
+
+// Commands
+const char* cGENURLAUTH =				"GENURLAUTH";
+const char* cURLFETCH =					"URLFETCH";
+const char* cRESETKEY =					"RESETKEY";
+
+// Response codes
+const char* cURLMECH =					"[URLMECH ";

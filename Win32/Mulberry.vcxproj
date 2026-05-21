@@ -594,6 +594,7 @@
     <ClInclude Include="..\sources_common\mail\search\CSearchItem.h" />
     <ClInclude Include="..\sources_common\mail\search\CSearchThread.h" />
     <ClInclude Include="..\sources_common\mail\urls\CURL.h" />
+    <ClInclude Include="..\sources_common\mail\urls\CIMAPUrl.h" />
     <CustomBuild Include="..\sources_common\memdebug.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -1767,6 +1768,7 @@
     <None Include="..\sources_common\mail\search\CSearchItem.cp" />
     <None Include="..\sources_common\mail\search\CSearchThread.cp" />
     <None Include="..\sources_common\mail\urls\CURL.cp" />
+    <None Include="..\sources_common\mail\urls\CIMAPUrl.cp" />
     <ClCompile Include="..\sources_common\memdebug.cp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

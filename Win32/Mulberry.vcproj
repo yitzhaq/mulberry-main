@@ -3887,6 +3887,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\sources_common\mail\urls\CIMAPUrl.h"
+				>
+			</File>
+			<File
 				RelativePath="..\sources_common\application\three_pane\CUserAction.h"
 				>
 			</File>
@@ -9340,6 +9344,10 @@
 			</File>
 			<File
 				RelativePath="..\sources_common\mail\urls\CURL.cp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\urls\CIMAPUrl.cp"
 				>
 			</File>
 			<File

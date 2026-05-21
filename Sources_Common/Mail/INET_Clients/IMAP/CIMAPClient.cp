@@ -172,10 +172,15 @@ void CIMAPClient::InitIMAPClient()
 	mUTF8Accepted = false;
 	mHasNotify = false;
 	mNotifyActive = false;
+	mHasUrlAuth = false;
+	mHasUrlAuthBinary = false;
+	mHasUrlPartial = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
 	mThreadResults = NULL;
+	mGenUrlAuthResults = NULL;
+	mUrlFetchResults = NULL;
 
 } // CIMAPClient::CIMAPClient
 
@@ -250,6 +255,9 @@ void CIMAPClient::_InitCapability()
 	mUTF8Accepted = false;
 	mHasNotify = false;
 	mNotifyActive = false;
+	mHasUrlAuth = false;
+	mHasUrlAuthBinary = false;
+	mHasUrlPartial = false;
 	mActiveLanguage.clear();
 	mActiveComparator.clear();
 	mSearchSaved = false;
@@ -351,6 +359,9 @@ void CIMAPClient::_ProcessCapability()
 	mHasUTF8Only = mLastResponse.CheckUntagged(cIMAP_UTF8_ONLY, true);
 	mHasUTF8Accept = mHasUTF8Only || mLastResponse.CheckUntagged(cIMAP_UTF8_ACCEPT, true);
 	mHasNotify = mLastResponse.CheckUntagged(cIMAP_NOTIFY, true);
+	mHasUrlAuth = mLastResponse.CheckUntagged(cIMAP_URLAUTH, true);
+	mHasUrlAuthBinary = mLastResponse.CheckUntagged(cIMAP_URLAUTH_BINARY, false);
+	mHasUrlPartial = mLastResponse.CheckUntagged(cIMAP_URL_PARTIAL, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -836,6 +847,10 @@ void CIMAPClient::_SelectMbox(CMbox* mbox, bool examine)
 				mbox->SetFlags(NMbox::eReadOnly, true);
 			else
 				mbox->SetFlags(NMbox::eReadOnly, false);
+
+			// URLMECH (RFC 4467) — available URL authorization mechanisms
+			if (mHasUrlAuth)
+				IMAPParseUrlMech();
 
 			return;
 		}
@@ -4315,6 +4330,20 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 		IMAPParseVanished(txt);
 	}
 
+	// GENURLAUTH (RFC 4467)
+	else if (::stradvtokcmp(txt, cGENURLAUTH) == 0)
+	{
+		response->code = cStarGENURLAUTH;
+		IMAPParseGenUrlAuth(txt);
+	}
+
+	// URLFETCH (RFC 4467, RFC 5524)
+	else if (::stradvtokcmp(txt, cURLFETCH) == 0)
+	{
+		response->code = cStarURLFETCH;
+		IMAPParseUrlFetch(txt);
+	}
+
 	else
 		// Handle <n> message
 		IMAPParseMessageResponse(txt,response);
@@ -6666,5 +6695,354 @@ void CIMAPClient::IMAPParseComparator(char** txt)
 		}
 		if (**txt == ')')
 			(*txt)++;
+	}
+}
+
+// URLAUTH (RFC 4467, RFC 5524, RFC 5593)
+
+// GENURLAUTH "url-rump" mechanism ["url-rump" mechanism ...]
+void CIMAPClient::_GenUrlAuth(const cdstrvect& rump_urls,
+							  const cdstring& mechanism,
+							  cdstrvect* results)
+{
+	if (!mHasUrlAuth)
+		return;
+
+	mGenUrlAuthResults = results;
+
+	try
+	{
+		INETStartSend("Status::IMAP::GenUrlAuth", "Error::IMAP::OSErrGenUrlAuth", "Error::IMAP::NoBadGenUrlAuth");
+		INETSendString(cGENURLAUTH);
+
+		for (cdstrvect::const_iterator iter = rump_urls.begin();
+			 iter != rump_urls.end(); iter++)
+		{
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(*iter, eQueueProcess);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(mechanism, eQueueNoFlags);
+		}
+
+		INETFinishSend();
+
+		mGenUrlAuthResults = NULL;
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+		mGenUrlAuthResults = NULL;
+		CLOG_LOGRETHROW;
+		throw;
+	}
+}
+
+// URLFETCH "url-full" ["url-full" ...]  (RFC 4467 simple form)
+void CIMAPClient::_UrlFetch(const cdstrvect& urls,
+							SUrlFetchResults* results)
+{
+	if (!mHasUrlAuth)
+		return;
+
+	mUrlFetchResults = results;
+
+	try
+	{
+		INETStartSend("Status::IMAP::UrlFetch", "Error::IMAP::OSErrUrlFetch", "Error::IMAP::NoBadUrlFetch");
+		INETSendString(cURLFETCH);
+
+		for (cdstrvect::const_iterator iter = urls.begin();
+			 iter != urls.end(); iter++)
+		{
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(*iter, eQueueProcess);
+		}
+
+		INETFinishSend();
+
+		mUrlFetchResults = NULL;
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+		mUrlFetchResults = NULL;
+		CLOG_LOGRETHROW;
+		throw;
+	}
+}
+
+// URLFETCH ("url" BINARY BODYPARTSTRUCTURE) [...]  (RFC 5524 extended form)
+void CIMAPClient::_UrlFetchExtended(const cdstrvect& urls,
+									bool want_binary,
+									bool want_bodypartstructure,
+									SUrlFetchResults* results)
+{
+	if (!mHasUrlAuth)
+		return;
+
+	mUrlFetchResults = results;
+
+	try
+	{
+		INETStartSend("Status::IMAP::UrlFetch", "Error::IMAP::OSErrUrlFetch", "Error::IMAP::NoBadUrlFetch");
+		INETSendString(cURLFETCH);
+
+		for (cdstrvect::const_iterator iter = urls.begin();
+			 iter != urls.end(); iter++)
+		{
+			INETSendString(" (", eQueueNoFlags);
+			INETSendString(*iter, eQueueProcess);
+
+			if (want_binary)
+				INETSendString(" BINARY", eQueueNoFlags);
+			else
+				INETSendString(" BODY", eQueueNoFlags);
+
+			if (want_bodypartstructure)
+				INETSendString(" BODYPARTSTRUCTURE", eQueueNoFlags);
+
+			INETSendString(")", eQueueNoFlags);
+		}
+
+		INETFinishSend();
+
+		mUrlFetchResults = NULL;
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+		mUrlFetchResults = NULL;
+		CLOG_LOGRETHROW;
+		throw;
+	}
+}
+
+// RESETKEY [mailbox [mechanism ...]]  (RFC 4467)
+void CIMAPClient::_ResetKey(const cdstring& mailbox,
+							const cdstrvect* mechanisms)
+{
+	if (!mHasUrlAuth)
+		return;
+
+	try
+	{
+		INETStartSend("Status::IMAP::ResetKey", "Error::IMAP::OSErrResetKey", "Error::IMAP::NoBadResetKey");
+		INETSendString(cRESETKEY);
+
+		if (!mailbox.empty())
+		{
+			cdstring wd_name = mailbox;
+			EncodeMailboxName(wd_name);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(wd_name, eQueueProcess);
+
+			if (mechanisms)
+			{
+				for (cdstrvect::const_iterator iter = mechanisms->begin();
+					 iter != mechanisms->end(); iter++)
+				{
+					INETSendString(cSpace, eQueueNoFlags);
+					INETSendString(*iter, eQueueNoFlags);
+				}
+			}
+		}
+
+		INETFinishSend();
+
+		IMAPParseUrlMech();
+	}
+	catch(...)
+	{
+		CLOG_LOGCATCH(...);
+		CLOG_LOGRETHROW;
+		throw;
+	}
+}
+
+// Parse [URLMECH INTERNAL ...] from tagged OK response (RFC 4467 §BASE.7.1)
+void CIMAPClient::IMAPParseUrlMech()
+{
+	if (!mLastResponse.FindTagged(cURLMECH))
+		return;
+
+	mUrlMechanisms.clear();
+
+	const cdstring& tagged = mLastResponse.GetTagged();
+	const char* p = ::strstrnocase(tagged, cURLMECH);
+	if (!p)
+		return;
+
+	p += ::strlen(cURLMECH);
+
+	// Parse space-delimited mechanism names until ']'
+	while (*p && *p != ']')
+	{
+		while (*p == ' ') p++;
+		if (*p == ']' || !*p)
+			break;
+
+		const char* start = p;
+		while (*p && *p != ' ' && *p != ']' && *p != '=')
+			p++;
+
+		cdstring mech(start, p - start);
+		mUrlMechanisms.push_back(mech);
+
+		// Skip optional mechanism-specific data (mech=base64data)
+		if (*p == '=')
+		{
+			p++;
+			while (*p && *p != ' ' && *p != ']')
+				p++;
+		}
+	}
+}
+
+// Parse GENURLAUTH response: * GENURLAUTH "url" ["url" ...]
+void CIMAPClient::IMAPParseGenUrlAuth(char** txt)
+{
+	if (!mGenUrlAuthResults)
+		return;
+
+	while (**txt == ' ') (*txt)++;
+
+	while (**txt)
+	{
+		char* url = INETParseString(txt);
+		if (url)
+		{
+			mGenUrlAuthResults->push_back(url);
+			delete[] url;
+		}
+		while (**txt == ' ') (*txt)++;
+	}
+}
+
+// Parse URLFETCH response:
+//   Simple (RFC 4467):   * URLFETCH "url" nstring ["url" nstring ...]
+//   Extended (RFC 5524): * URLFETCH "url" (BODYPARTSTRUCTURE (...)) (BINARY nstring) [...]
+void CIMAPClient::IMAPParseUrlFetch(char** txt)
+{
+	if (!mUrlFetchResults)
+		return;
+
+	while (**txt == ' ') (*txt)++;
+
+	while (**txt)
+	{
+		// Get URL
+		char* url = INETParseString(txt);
+		if (!url)
+			break;
+
+		SUrlFetchItem item;
+		item.mUrl = url;
+		delete[] url;
+
+		while (**txt == ' ') (*txt)++;
+
+		// Detect extended vs simple form
+		if (**txt == '(')
+		{
+			// Extended form: parenthesized metadata items
+			while (**txt == '(')
+			{
+				(*txt)++;
+				while (**txt == ' ') (*txt)++;
+
+				if (::strncasecmp(*txt, "BODYPARTSTRUCTURE", 17) == 0)
+				{
+					*txt += 17;
+					while (**txt == ' ') (*txt)++;
+
+					// BODYPARTSTRUCTURE value is a parenthesized body description
+					if (**txt == '(')
+					{
+						char* bps = ::strmatchbra(txt);
+						if (bps)
+						{
+							item.mBodyPartStructure = "(";
+							item.mBodyPartStructure += bps;
+							item.mBodyPartStructure += ")";
+						}
+					}
+				}
+				else if (::strncasecmp(*txt, "BINARY", 6) == 0 &&
+						 ((*txt)[6] == ' ' || (*txt)[6] == ')'))
+				{
+					*txt += 6;
+					item.mIsBinary = true;
+					while (**txt == ' ') (*txt)++;
+
+					if (::strncasecmp(*txt, "NIL", 3) == 0 &&
+						((*txt)[3] == ')' || (*txt)[3] == ' ' || (*txt)[3] == '\0'))
+					{
+						*txt += 3;
+						item.mDataIsNil = true;
+					}
+					else if (**txt != ')')
+					{
+						char* data = INETParseString(txt);
+						if (data)
+						{
+							item.mData = data;
+							delete[] data;
+						}
+					}
+				}
+				else if (::strncasecmp(*txt, "BODY", 4) == 0 &&
+						 ((*txt)[4] == ' ' || (*txt)[4] == ')'))
+				{
+					*txt += 4;
+					item.mIsBinary = false;
+					while (**txt == ' ') (*txt)++;
+
+					if (::strncasecmp(*txt, "NIL", 3) == 0 &&
+						((*txt)[3] == ')' || (*txt)[3] == ' ' || (*txt)[3] == '\0'))
+					{
+						*txt += 3;
+						item.mDataIsNil = true;
+					}
+					else if (**txt != ')')
+					{
+						char* data = INETParseString(txt);
+						if (data)
+						{
+							item.mData = data;
+							delete[] data;
+						}
+					}
+				}
+
+				// Skip to closing ')'
+				while (**txt && **txt != ')') (*txt)++;
+				if (**txt == ')') (*txt)++;
+				while (**txt == ' ') (*txt)++;
+			}
+		}
+		else if (::strncasecmp(*txt, "NIL", 3) == 0 &&
+				 ((*txt)[3] == ' ' || (*txt)[3] == '\0'))
+		{
+			// Simple form: NIL
+			*txt += 3;
+			item.mDataIsNil = true;
+		}
+		else
+		{
+			// Simple form: nstring data
+			char* data = INETParseString(txt);
+			if (data)
+			{
+				item.mData = data;
+				delete[] data;
+			}
+			else
+			{
+				item.mDataIsNil = true;
+			}
+		}
+
+		mUrlFetchResults->push_back(item);
+		while (**txt == ' ') (*txt)++;
 	}
 }
