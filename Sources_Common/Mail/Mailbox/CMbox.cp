@@ -213,14 +213,21 @@ CMbox* CMbox::AddMbox()
 	if (!mMboxList)
 		mMboxList = GetProtocol()->FindMatchingList(this);
 
+	CMbox* result;
+
 	// Check for singletons
 	if (mMboxList)
-		return mMailer->AddMbox(this);		// WARNING: may delete this
+		result = mMailer->AddMbox(this);		// WARNING: may delete this
 	else
 	{
 		mMailer->AddSingleton(this);
-		return this;
+		result = this;
 	}
+
+	if (result)
+		result->InitStatusInfo();
+
+	return result;
 }
 
 void CMbox::SetProtocol(CMboxProtocol* proto)

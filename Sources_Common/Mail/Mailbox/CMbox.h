@@ -354,7 +354,7 @@ public:
 	uint64_t	GetHighestModSeq() const
 		{ return (mStatusInfo ? mStatusInfo->mHighestModSeq : 0); }
 	void	SetHighestModSeq(uint64_t hm)
-		{ InitStatusInfo(); mStatusInfo->mHighestModSeq = hm; }
+		{ if (mStatusInfo) mStatusInfo->mHighestModSeq = hm; }
 	void	ChangeUIDValidity(unsigned long uidv);
 
 	unsigned long	GetUIDNext() const
