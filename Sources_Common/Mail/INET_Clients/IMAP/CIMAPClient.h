@@ -87,6 +87,7 @@ private:
 	bool			mHasID;							// Supports ID extension (RFC 2971)
 	bool			mHasMove;						// Supports MOVE extension (RFC 6851)
 	bool			mHasESearch;					// Supports ESEARCH extension (RFC 4731)
+	bool			mHasFuzzySearch;				// Supports SEARCH=FUZZY (RFC 6203)
 	bool			mHasListExtended;				// Supports LIST-EXTENDED (RFC 5258)
 	bool			mHasListStatus;					// Supports LIST-STATUS (RFC 5819)
 	bool			mHasStatusSize;					// Supports STATUS=SIZE (RFC 8438)

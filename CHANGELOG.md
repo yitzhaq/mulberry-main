@@ -290,6 +290,12 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP SEARCH=FUZZY extension (RFC 6203). Server-side inexact/fuzzy
+  matching for SEARCH commands. The FUZZY search key wraps any other
+  search criterion, allowing the server to perform implementation-
+  defined matching (stemming, phonetic, typo tolerance). RELEVANCY
+  score-list parsed from ESEARCH responses. Search UI, RELEVANCY
+  sort key, and score display deferred.
 - IMAP SAVEDATE extension (RFC 8514). Server-reported date when a
   message was saved in its current mailbox (distinct from INTERNALDATE,
   which can be set arbitrarily on APPEND or copied on COPY/MOVE).

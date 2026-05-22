@@ -68,6 +68,7 @@ extern const char* cIMAP_LIST_STATUS;
 extern const char* cIMAP_STATUS_SIZE;
 extern const char* cIMAP_SAVEDATE;
 extern const char* cIMAP_SEARCHRES;
+extern const char* cIMAP_SEARCH_FUZZY;
 extern const char* cIMAP_IDLE;
 extern const char* cIMAP_BINARY;
 extern const char* cIMAP_SORT_DISPLAY;
@@ -285,6 +286,7 @@ extern const char* cSEARCH_SAVEDBEFORE;
 extern const char* cSEARCH_SAVEDON;
 extern const char* cSEARCH_SAVEDSINCE;
 extern const char* cSEARCH_SAVEDATESUPPORTED;
+extern const char* cSEARCH_FUZZY;
 
 // E X T E N S I O N S
 

@@ -145,6 +145,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasID = false;
 	mHasMove = false;
 	mHasESearch = false;
+	mHasFuzzySearch = false;
 	mHasListExtended = false;
 	mHasListStatus = false;
 	mHasStatusSize = false;
@@ -235,6 +236,7 @@ void CIMAPClient::_InitCapability()
 	mHasID = false;
 	mHasMove = false;
 	mHasESearch = false;
+	mHasFuzzySearch = false;
 	mHasListExtended = false;
 	mHasListStatus = false;
 	mHasStatusSize = false;
@@ -316,7 +318,7 @@ void CIMAPClient::_ProcessCapability()
 	// Look for other capabilities
 	GetMboxOwner()->SetHasACL(mLastResponse.CheckUntagged(cIMAP_ACL, true));
 	GetMboxOwner()->SetHasQuota(mLastResponse.CheckUntagged(cIMAP_QUOTA, true) ||
-								   mLastResponse.CheckUntagged(cIMAP_QUOTA_RES, false));
+								   mLastResponse.CheckUntagged(cIMAP_QUOTA_RES, true));
 	if (mLastResponse.CheckUntagged(cIMAP_LITERAL_PLUS, true))
 	{
 		mAsyncLiteral = true;
@@ -334,19 +336,20 @@ void CIMAPClient::_ProcessCapability()
 	mHasIdle = mLastResponse.CheckUntagged(cIMAP_IDLE, true);
 	mHasBinary = mLastResponse.CheckUntagged(cIMAP_BINARY, true);
 	mHasSort = mLastResponse.CheckUntagged(cIMAP_SORT, true);
-	mHasSortDisplay = mLastResponse.CheckUntagged(cIMAP_SORT_DISPLAY, false);
+	mHasSortDisplay = mLastResponse.CheckUntagged(cIMAP_SORT_DISPLAY, true);
 	mHasESort = mLastResponse.CheckUntagged(cIMAP_ESORT, true);
-	mHasContextSearch = mLastResponse.CheckUntagged(cIMAP_CONTEXT_SEARCH, false);
-	mHasContextSort = mLastResponse.CheckUntagged(cIMAP_CONTEXT_SORT, false);
+	mHasContextSearch = mLastResponse.CheckUntagged(cIMAP_CONTEXT_SEARCH, true);
+	mHasContextSort = mLastResponse.CheckUntagged(cIMAP_CONTEXT_SORT, true);
 	mHasWithin = mLastResponse.CheckUntagged(cIMAP_WITHIN, true);
 	mHasThreadSubject = mLastResponse.CheckUntagged(cIMAP_THREAD_SUBJECT, true);
 	mHasThreadReferences = mLastResponse.CheckUntagged(cIMAP_THREAD_REFERENCES, true);
 	mHasID = mLastResponse.CheckUntagged(cIMAP_ID, true);
 	mHasMove = mLastResponse.CheckUntagged(cIMAP_MOVE, true);
 	mHasESearch = mLastResponse.CheckUntagged(cIMAP_ESEARCH, true);
+	mHasFuzzySearch = mLastResponse.CheckUntagged(cIMAP_SEARCH_FUZZY, true);
 	mHasListExtended = mLastResponse.CheckUntagged(cIMAP_LIST_EXTENDED, true);
 	mHasListStatus = mLastResponse.CheckUntagged(cIMAP_LIST_STATUS, true);
-	mHasStatusSize = mLastResponse.CheckUntagged(cIMAP_STATUS_SIZE, false);
+	mHasStatusSize = mLastResponse.CheckUntagged(cIMAP_STATUS_SIZE, true);
 	mHasSaveDate = mLastResponse.CheckUntagged(cIMAP_SAVEDATE, true);
 	mHasSearchRes = mLastResponse.CheckUntagged(cIMAP_SEARCHRES, true);
 	mHasMultiAppend = mLastResponse.CheckUntagged(cIMAP_MULTIAPPEND, true);
@@ -363,7 +366,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasUTF8Accept = mHasUTF8Only || mLastResponse.CheckUntagged(cIMAP_UTF8_ACCEPT, true);
 	mHasNotify = mLastResponse.CheckUntagged(cIMAP_NOTIFY, true);
 	mHasUrlAuth = mLastResponse.CheckUntagged(cIMAP_URLAUTH, true);
-	mHasUrlAuthBinary = mLastResponse.CheckUntagged(cIMAP_URLAUTH_BINARY, false);
+	mHasUrlAuthBinary = mLastResponse.CheckUntagged(cIMAP_URLAUTH_BINARY, true);
 	mHasUrlPartial = mLastResponse.CheckUntagged(cIMAP_URL_PARTIAL, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
@@ -4986,6 +4989,14 @@ void CIMAPClient::IMAPParseESearch(char** txt)
 				while(*p && *p != ')') p++;
 				if (*p == ')') p++;
 			}
+		}
+		else if (::strncasecmp(p, "RELEVANCY", 9) == 0 && (p[9] == ' ' || p[9] == 0))
+		{
+			// RFC 6203 §4: relevancy score list — parse but don't store yet
+			p += 9;
+			while(*p == ' ') p++;
+			if (*p == '(')
+				::strmatchbra(&p);
 		}
 		else
 		{

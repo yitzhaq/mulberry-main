@@ -161,6 +161,7 @@ void CSearchItem::_copy(const CSearchItem& copy)
 		break;
 
 	case eNot:
+	case eFuzzy:
 		mData = (copy.mData ? new CSearchItem(*reinterpret_cast<CSearchItem*>(copy.mData)) : NULL);
 		break;
 
@@ -214,6 +215,7 @@ void CSearchItem::_tidy()
 		break;
 
 	case eNot:
+	case eFuzzy:
 		delete reinterpret_cast<CSearchItem*>(mData);
 		break;
 
@@ -617,6 +619,20 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 	case eSavedDateSupported:	// - (RFC 8514)
 		items.push_back(cdstrbool(cSEARCH_SAVEDATESUPPORTED, true));
 		break;
+
+	case eFuzzy:		// CSearchItem* (RFC 6203)
+	  {
+		items.push_back(cdstrbool(cSEARCH_FUZZY, true));
+		if (GetData())
+		{
+			if (reinterpret_cast<const CSearchItem*>(GetData())->IsMultiple(expand_me))
+				items.push_back(cdstrbool("(", false));
+			reinterpret_cast<const CSearchItem*>(GetData())->GenerateItems(items, expand_me);
+			if (reinterpret_cast<const CSearchItem*>(GetData())->IsMultiple(expand_me))
+				items.push_back(cdstrbool(")", false));
+		}
+		break;
+	  }
 
 	case eRecipient:	// cdstring*
 		if (expand_me)
@@ -1289,6 +1305,9 @@ CSearchItem* CSearchItem::ParseItem(char_stream& txt, bool convert)
 		else if (::strcmp(str, cSEARCH_SAVEDATESUPPORTED) == 0)	// - (RFC 8514)
 			return new CSearchItem(eSavedDateSupported, match);
 
+		else if (::strcmp(str, cSEARCH_FUZZY) == 0)			// CSearchItem* (RFC 6203)
+			return new CSearchItem(eFuzzy, ParseItem(txt, convert), match);
+
 		else if (::strcmp(str, cSEARCH_SMALLER) == 0)		// long
 			return new CSearchItem(eSmaller, ::atol(txt.get()), match);
 
@@ -1485,6 +1504,13 @@ void CSearchItem::GenerateSIEVEScript(std::ostream& out) const
 	case eNot:			// CSearchItem*
 	  {
 	  	out << "not ";
+	  	if (GetData())
+			reinterpret_cast<const CSearchItem*>(GetData())->GenerateSIEVEScript(out);
+		break;
+	  }
+
+	case eFuzzy:		// CSearchItem* — no Sieve equivalent, delegate to child
+	  {
 	  	if (GetData())
 			reinterpret_cast<const CSearchItem*>(GetData())->GenerateSIEVEScript(out);
 		break;
