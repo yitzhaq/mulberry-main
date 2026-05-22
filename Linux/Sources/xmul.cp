@@ -50,9 +50,6 @@ int main(int argc, char* argv[])
 	// locale regardless of the user's environment variables.
 	std::setlocale(LC_ALL, "");
 
-	// Ignore SIGPIPE — network writes to closed sockets must not crash
-	::signal(SIGPIPE, SIG_IGN);
-
 	// Always turn off JX asserts here - command line option may turn it back on
 	JAssertBase::SetAction(JAssertBase::kIgnoreFailure);
 
@@ -77,7 +74,11 @@ int main(int argc, char* argv[])
 		::XInitThreads();
 
 		CMulberryApp* app = new CMulberryApp(&argc, argv);
-		
+
+		// Ignore SIGPIPE — must be AFTER app construction because
+		// JThisProcess registers ACE handlers for SIGPIPE during init
+		::signal(SIGPIPE, SIG_IGN);
+
 		// Turn on XError sync capability if requested
 		if (xdebug)
 			::XSynchronize(*app->GetCurrentDisplay(), true);
