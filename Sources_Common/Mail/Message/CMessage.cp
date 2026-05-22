@@ -65,6 +65,8 @@ CMessage::CMessageCache::CMessageCache()
 	mSize = 0;
 	mInternalDate = 0;
 	mInternalZone = 0;
+	mSaveDate = 0;
+	mSaveZone = 0;
 	mHeader = NULL;
 	mBody = NULL;
 	mOwner = NULL;
@@ -83,6 +85,8 @@ CMessage::CMessageCache::CMessageCache(const CMessageCache& copy)
 	mTxt_ldate = copy.mTxt_ldate;
 	mInternalDate = copy.mInternalDate;
 	mInternalZone = copy.mInternalZone;
+	mSaveDate = copy.mSaveDate;
+	mSaveZone = copy.mSaveZone;
 
 	// NB Header and body data are not cached in the copy - will be read on demand
 	mHeader = NULL;
@@ -922,6 +926,11 @@ void CMessage::SetInternalDate(char* theDate, bool unixd)
 		CRFC822::SetDate(theDate, mCache->mInternalDate, mCache->mInternalZone);
 
 } // CMessage::SetDate
+
+void CMessage::SetSaveDate(char* theDate)
+{
+	CRFC822::SetDate(theDate, mCache->mSaveDate, mCache->mSaveZone);
+}
 
 // Copy date text
 cdstring CMessage::GetTextInternalDate(bool for_display, bool long_date) const

@@ -90,6 +90,7 @@ private:
 	bool			mHasListExtended;				// Supports LIST-EXTENDED (RFC 5258)
 	bool			mHasListStatus;					// Supports LIST-STATUS (RFC 5819)
 	bool			mHasStatusSize;					// Supports STATUS=SIZE (RFC 8438)
+	bool			mHasSaveDate;					// Supports SAVEDATE (RFC 8514)
 	bool			mHasSearchRes;					// Supports SEARCHRES (RFC 5182)
 	bool			mHasMultiAppend;				// Supports MULTIAPPEND (RFC 3502)
 	bool			mHasSpecialUse;					// Supports SPECIAL-USE (RFC 6154)
@@ -345,6 +346,8 @@ protected:
 		{ return mHasBinary; }
 	virtual bool	_HasReplace() const							// Does server support REPLACE?
 		{ return mHasReplace; }
+	virtual bool	_HasSaveDate() const						// Does server support SAVEDATE?
+		{ return mHasSaveDate; }
 	virtual bool	_HasCondstore() const						// Does server support CONDSTORE?
 		{ return mHasCondstore; }
 	virtual bool	_HasQResync() const							// Does server support QRESYNC?
@@ -437,6 +440,7 @@ protected:
 	void	IMAPParseBodySectionHeader(char** txt);				// Parse IMAP BODY[HEADER.XXX] reply
 	void	IMAPParseBinarySize(char** txt);					// Parse IMAP BINARY.SIZE[#] reply
 	void	IMAPParseInternalDate(char** txt);					// Parse IMAP INTERNALDATE reply
+	void	IMAPParseSaveDate(char** txt);						// Parse IMAP SAVEDATE reply (RFC 8514)
 	void	IMAPParseUID(char** txt);							// Parse IMAP UID reply
 	void	IMAPParseRFC822(char** txt);						// Parse IMAP RFC822 reply
 	void	IMAPParseRFC822Header(char** txt);					// Parse IMAP RFC822.HEADER reply

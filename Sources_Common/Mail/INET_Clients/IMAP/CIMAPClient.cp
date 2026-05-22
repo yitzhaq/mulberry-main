@@ -148,6 +148,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasListExtended = false;
 	mHasListStatus = false;
 	mHasStatusSize = false;
+	mHasSaveDate = false;
 	mHasSearchRes = false;
 	mSearchSaved = false;
 	mSortDollarBroken = false;
@@ -237,6 +238,7 @@ void CIMAPClient::_InitCapability()
 	mHasListExtended = false;
 	mHasListStatus = false;
 	mHasStatusSize = false;
+	mHasSaveDate = false;
 	mHasSearchRes = false;
 	mHasMultiAppend = false;
 	mHasSpecialUse = false;
@@ -345,6 +347,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasListExtended = mLastResponse.CheckUntagged(cIMAP_LIST_EXTENDED, true);
 	mHasListStatus = mLastResponse.CheckUntagged(cIMAP_LIST_STATUS, true);
 	mHasStatusSize = mLastResponse.CheckUntagged(cIMAP_STATUS_SIZE, false);
+	mHasSaveDate = mLastResponse.CheckUntagged(cIMAP_SAVEDATE, true);
 	mHasSearchRes = mLastResponse.CheckUntagged(cIMAP_SEARCHRES, true);
 	mHasMultiAppend = mLastResponse.CheckUntagged(cIMAP_MULTIAPPEND, true);
 	mHasSpecialUse = mLastResponse.CheckUntagged(cIMAP_SPECIAL_USE, true);
@@ -2544,8 +2547,12 @@ void CIMAPClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EF
 		case eIMAP4:
 		case eIMAP4rev2:
 		case eIMAP4rev1:
-			if (mHasCondstore)
+			if (mHasCondstore && mHasSaveDate)
+				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE SAVEDATE ENVELOPE BODYSTRUCTURE MODSEQ)");
+			else if (mHasCondstore)
 				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE ENVELOPE BODYSTRUCTURE MODSEQ)");
+			else if (mHasSaveDate)
+				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE SAVEDATE ENVELOPE BODYSTRUCTURE)");
 			else
 				INETSendString(cSUMMARY4);
 			break;
@@ -5273,6 +5280,9 @@ void CIMAPClient::IMAPParseFetch(char** txt)
 		else if (::CheckStrAdv(&q, cINTERNALDATE))
 			IMAPParseInternalDate(&q);
 
+		else if (::CheckStrAdv(&q, cIMAP_SAVEDATE))
+			IMAPParseSaveDate(&q);
+
 		else if (::CheckStrAdv(&q, cRFC822HEADER))
 			IMAPParseRFC822Header(&q);
 
@@ -6230,6 +6240,25 @@ void CIMAPClient::IMAPParseInternalDate(char** txt)
 		mCurrent_msg->SetInternalDate(p);
 
 } // CIMAPClient::IMAPParseInternalDate
+
+// Parse IMAP SAVEDATE reply (RFC 8514)
+void CIMAPClient::IMAPParseSaveDate(char** txt)
+{
+	// SAVEDATE can be NIL when storage doesn't support it
+	if (::CheckStrAdv(txt, cNIL))
+		return;
+
+	char* p = ::strgetquotestr(txt);
+
+	if (!p)
+	{
+		CLOG_LOGTHROW(CINETException, CINETException::err_BadParse);
+		throw CINETException(CINETException::err_BadParse);
+	}
+
+	if (mCurrent_msg && mCurrent_msg->IsCached())
+		mCurrent_msg->SetSaveDate(p);
+}
 
 // Parse IMAP UID reply
 void CIMAPClient::IMAPParseUID(char** txt)

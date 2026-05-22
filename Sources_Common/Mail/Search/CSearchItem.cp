@@ -599,6 +599,25 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 		items.push_back(cdstrbool("$", false));
 		break;
 
+	case eSavedBefore:	// date (RFC 8514)
+		items.push_back(cdstrbool(cSEARCH_SAVEDBEFORE, true));
+		items.push_back(cdstrbool(GenerateDate(expand_me), true));
+		break;
+
+	case eSavedOn:		// date (RFC 8514)
+		items.push_back(cdstrbool(cSEARCH_SAVEDON, true));
+		items.push_back(cdstrbool(GenerateDate(expand_me), true));
+		break;
+
+	case eSavedSince:	// date (RFC 8514)
+		items.push_back(cdstrbool(cSEARCH_SAVEDSINCE, true));
+		items.push_back(cdstrbool(GenerateDate(expand_me), true));
+		break;
+
+	case eSavedDateSupported:	// - (RFC 8514)
+		items.push_back(cdstrbool(cSEARCH_SAVEDATESUPPORTED, true));
+		break;
+
 	case eRecipient:	// cdstring*
 		if (expand_me)
 		{
@@ -1257,6 +1276,18 @@ CSearchItem* CSearchItem::ParseItem(char_stream& txt, bool convert)
 
 		else if (::strcmp(str, cSEARCH_SINCE) == 0)			// date
 			return new CSearchItem(eSince, ParseDate(txt), match);
+
+		else if (::strcmp(str, cSEARCH_SAVEDBEFORE) == 0)	// date (RFC 8514)
+			return new CSearchItem(eSavedBefore, ParseDate(txt), match);
+
+		else if (::strcmp(str, cSEARCH_SAVEDON) == 0)		// date (RFC 8514)
+			return new CSearchItem(eSavedOn, ParseDate(txt), match);
+
+		else if (::strcmp(str, cSEARCH_SAVEDSINCE) == 0)	// date (RFC 8514)
+			return new CSearchItem(eSavedSince, ParseDate(txt), match);
+
+		else if (::strcmp(str, cSEARCH_SAVEDATESUPPORTED) == 0)	// - (RFC 8514)
+			return new CSearchItem(eSavedDateSupported, match);
 
 		else if (::strcmp(str, cSEARCH_SMALLER) == 0)		// long
 			return new CSearchItem(eSmaller, ::atol(txt.get()), match);

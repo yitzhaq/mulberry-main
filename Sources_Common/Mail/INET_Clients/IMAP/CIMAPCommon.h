@@ -66,6 +66,7 @@ extern const char* cIMAP_APPENDLIMIT;
 extern const char* cIMAP_LIST_EXTENDED;
 extern const char* cIMAP_LIST_STATUS;
 extern const char* cIMAP_STATUS_SIZE;
+extern const char* cIMAP_SAVEDATE;
 extern const char* cIMAP_SEARCHRES;
 extern const char* cIMAP_IDLE;
 extern const char* cIMAP_BINARY;
@@ -280,6 +281,10 @@ extern const char* cSEARCH_UNSEEN;
 extern const char* cSEARCH_OLDER;
 extern const char* cSEARCH_YOUNGER;
 extern const char* cIMAP_WITHIN;
+extern const char* cSEARCH_SAVEDBEFORE;
+extern const char* cSEARCH_SAVEDON;
+extern const char* cSEARCH_SAVEDSINCE;
+extern const char* cSEARCH_SAVEDATESUPPORTED;
 
 // E X T E N S I O N S
 

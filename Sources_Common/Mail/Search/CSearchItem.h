@@ -83,6 +83,10 @@ public:
 		eYounger,		// long (seconds)
 		eModSeq,		// long (mod-sequence value, RFC 7162)
 		eSavedSearch,	// - (SEARCHRES $ reference, RFC 5182)
+		eSavedBefore,	// date (RFC 8514)
+		eSavedOn,		// date (RFC 8514)
+		eSavedSince,	// date (RFC 8514)
+		eSavedDateSupported,	// - (RFC 8514)
 
 		// These are local items that expand to something else on the server
 		eRecipient,		// cdstring*

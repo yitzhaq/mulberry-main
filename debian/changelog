@@ -76,7 +76,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
     $Junk/$NotJunk/$Phishing keywords (9051) with SBitFlags widened to uint64_t,
     SCRAM-SHA-1/SHA-256 auth plugins (5802/7677) with channel binding (9266),
     URLAUTH (4467) + IMAP URL (5092) + URLAUTH=BINARY (5524) +
-    URL Access Identifiers (5593) + URL-PARTIAL (5550)
+    URL Access Identifiers (5593) + URL-PARTIAL (5550),
+    SAVEDATE (8514)
   * PRECIS username/password normalization (RFC 8265) for internationalized
     credentials. New dependency: libunistring-dev
   * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux

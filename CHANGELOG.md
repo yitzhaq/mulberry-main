@@ -290,6 +290,12 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP SAVEDATE extension (RFC 8514). Server-reported date when a
+  message was saved in its current mailbox (distinct from INTERNALDATE,
+  which can be set arbitrarily on APPEND or copied on COPY/MOVE).
+  Fetched automatically when the server advertises the SAVEDATE
+  capability. Includes SAVEDBEFORE, SAVEDON, SAVEDSINCE, and
+  SAVEDATESUPPORTED search keys. Search UI deferred.
 - IMAP URLAUTH extension suite: full IMAP URL parser/builder (RFC 5092),
   URLAUTH authorization (RFC 4467) with GENURLAUTH, URLFETCH, and
   RESETKEY commands, extended URLFETCH for binary and converted parts

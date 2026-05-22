@@ -63,6 +63,7 @@ const char* cIMAP_APPENDLIMIT =		"APPENDLIMIT";
 const char* cIMAP_LIST_EXTENDED =	"LIST-EXTENDED";
 const char* cIMAP_LIST_STATUS =		"LIST-STATUS";
 const char* cIMAP_STATUS_SIZE =		"STATUS=SIZE";
+const char* cIMAP_SAVEDATE =			"SAVEDATE";
 const char* cIMAP_SEARCHRES =			"SEARCHRES";
 const char* cIMAP_IDLE =				"IDLE";
 const char* cIMAP_BINARY =				"BINARY";
@@ -284,6 +285,10 @@ const char* cSEARCH_UNSEEN =			"UNSEEN";
 const char* cSEARCH_OLDER =			"OLDER";
 const char* cSEARCH_YOUNGER =			"YOUNGER";
 const char* cIMAP_WITHIN =				"WITHIN";
+const char* cSEARCH_SAVEDBEFORE =		"SAVEDBEFORE";
+const char* cSEARCH_SAVEDON =			"SAVEDON";
+const char* cSEARCH_SAVEDSINCE =		"SAVEDSINCE";
+const char* cSEARCH_SAVEDATESUPPORTED =	"SAVEDATESUPPORTED";
 
 // E X T E N S I O N S
 

@@ -121,6 +121,8 @@ protected:
 		cdstring					mTxt_ldate;					// Message long date as text
 		time_t						mInternalDate;				// Message internal date in std-c format
 		long						mInternalZone;				// Offset from UTC
+		time_t						mSaveDate;					// RFC 8514 save date
+		long						mSaveZone;					// Save date offset from UTC
 		char*						mHeader;					// RFC822 Header
 		CAttachment*				mBody;						// Primary attachment
 		CMessage*					mOwner;						// Owner if sub-message
@@ -340,6 +342,12 @@ public:
 	time_t	GetUTCInternalDate() const;								// Get internal date based on UTC
 	long	GetInternalZone() const									// Get internal zone
 		{ return mCache ? mCache->mInternalZone : 0; }
+
+	void	SetSaveDate(char* theDate);								// Set save date from text (RFC 8514)
+	time_t	GetSaveDate() const										// Get save date
+		{ return mCache ? mCache->mSaveDate : 0; }
+	long	GetSaveZone() const										// Get save date zone
+		{ return mCache ? mCache->mSaveZone : 0; }
 
 	void	SetHeader(char* txt)									// Set pointer to header
 		{ if (mCache) {delete mCache->mHeader; mCache->mHeader = txt;} }
