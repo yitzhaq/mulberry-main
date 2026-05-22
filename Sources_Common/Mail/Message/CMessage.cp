@@ -1125,7 +1125,7 @@ bool CMessage::GetAuthenticationResults(std::vector<CAuthenticationResults>& res
 		{
 			for (cdstrvect::const_iterator t = trusted_list.begin(); t != trusted_list.end(); t++)
 			{
-				if ((*iter).mAuthservId.compare(*t, true) == 0)
+				if ((*iter).GetAuthservId().compare(*t, true) == 0)
 				{
 					results.push_back(*iter);
 					break;
@@ -1200,7 +1200,7 @@ bool CMessage::GetAuthenticationResults(std::vector<CAuthenticationResults>& res
 		{
 			for (cdstrvect::const_iterator d = trust_domains.begin(); d != trust_domains.end(); d++)
 			{
-				if (AuthservIdMatchesDomain((*iter).mAuthservId, *d))
+				if (AuthservIdMatchesDomain((*iter).GetAuthservId(), *d))
 				{
 					results.push_back(*iter);
 					break;

@@ -4503,10 +4503,10 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 		else if (CheckStrAdv(&p,cMBOXFLAGUNMARKED))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eUnMarked);
 
-		else if (CheckStrAdv(&p, cMBOXFLAGUNMARKEDHASCHILDREN))
+		else if (CheckStrAdv(&p, cMBOXFLAGHASCHILDREN))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eHasExpanded | NMbox::eHasInferiors);
 
-		else if (CheckStrAdv(&p, cMBOXFLAGUNMARKEDHASNOCHILDREN))
+		else if (CheckStrAdv(&p, cMBOXFLAGHASNOCHILDREN))
 			new_flags = (NMbox::EFlags) (new_flags | NMbox::eHasExpanded);
 
 		else if (CheckStrAdv(&p, cMBOXFLAGSUBSCRIBED))

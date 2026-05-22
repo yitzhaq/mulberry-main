@@ -256,6 +256,7 @@ void CINETClient::InitINETClient()
 {
 	// Init instance variables
 	mServerAddr = cdstring::null_str;
+	mServerID = cdstring::null_str;
 
 	mLineData = NULL;
 	mLongLine = NULL;

@@ -37,12 +37,12 @@ struct SAuthMethod
 class CAuthenticationResults
 {
 public:
-	cdstring mAuthservId;
-	int mVersion;
-	std::vector<SAuthMethod> mResults;
-
 			CAuthenticationResults() : mVersion(0) {}
 			~CAuthenticationResults() {}
+
+	const cdstring&					GetAuthservId() const { return mAuthservId; }
+	int								GetVersion() const { return mVersion; }
+	const std::vector<SAuthMethod>&	GetResults() const { return mResults; }
 
 	bool	Parse(const char* value);
 
@@ -59,6 +59,10 @@ public:
 	cdstring GetSPFDomain() const;
 
 private:
+	cdstring mAuthservId;
+	int mVersion;
+	std::vector<SAuthMethod> mResults;
+
 	static bool IsKnownMethod(const cdstring& method);
 	static bool IsKnownResult(const cdstring& result);
 	static bool IsKnownPtype(const cdstring& ptype);

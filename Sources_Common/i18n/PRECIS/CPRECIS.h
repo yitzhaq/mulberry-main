@@ -39,7 +39,7 @@ private:
 	enum EPRECISProperty
 	{
 		ePVALID,
-		eFREE_PVAL,
+		eFreePval,
 		eCONTEXTJ,
 		eCONTEXTO,
 		eDISALLOWED,

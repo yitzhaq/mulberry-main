@@ -224,6 +224,7 @@ CMbox* CMbox::AddMbox()
 		result = this;
 	}
 
+	// LIST-STATUS (RFC 5819) needs mStatusInfo at discovery time, not lazily
 	if (result)
 		result->InitStatusInfo();
 
@@ -994,6 +995,9 @@ void CMbox::Recover()
 						mOpenInfo->mSortedMessages->push_back(aMsg);
 					}
 				}
+
+				// RemoveMessageUID leaves gaps in sequence numbers
+				RenumberMessages();
 			}
 			else
 			{
@@ -1023,10 +1027,7 @@ void CMbox::Recover()
 					}
 
 					// Renumber messages to match current sequence
-					unsigned long num = 1;
-					for(CMessageList::iterator iter = mOpenInfo->mMessages->begin();
-						iter != mOpenInfo->mMessages->end(); iter++, num++)
-						(*iter)->SetMessageNumber(num);
+					RenumberMessages();
 
 					// Use CHANGEDSINCE FETCH for incremental flag sync
 					mOpenInfo->mMsgMailer->FetchChangedFlags(savedHighestModSeq);

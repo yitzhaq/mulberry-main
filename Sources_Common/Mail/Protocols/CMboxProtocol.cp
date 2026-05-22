@@ -764,6 +764,9 @@ void CMboxProtocol::Forceon()
 	mClient->_Enable();
 	mClient->_Language();
 	mClient->_Comparator();
+
+	if (!IsCloned())
+		mClient->_Notify();
 }
 
 // Forced off server
@@ -821,6 +824,24 @@ void CMboxProtocol::RecoverClone()
 
 	// Reset recovery
 	SetNoRecovery(recovery);
+}
+
+// Reconnect a dead per-mailbox clone: Open + Logon + reselect mbox
+bool CMboxProtocol::ReconnectDeadClone(CMbox* mbox)
+{
+	try
+	{
+		Open();
+		Logon();
+		mCurrent_mbox = NULL;
+		SetCurrentMbox(mbox, false, mbox->IsExamine());
+		return true;
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		return false;
+	}
 }
 
 #pragma mark ____________________________Mbox List related
@@ -2361,21 +2382,8 @@ void CMboxProtocol::ExpungeMbox(CMbox* mbox, bool closing)
 		return;
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox, false, mbox->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+		return;
 	if (GetCurrentMbox() != mbox)
 		return;
 
@@ -2680,25 +2688,8 @@ void CMboxProtocol::FetchItems(const ulvector& nums, bool uids, EFetchItems item
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			if (mCurrent_mbox)
-			{
-				CMbox* mbox = mCurrent_mbox;
-				mCurrent_mbox = NULL;
-				SetCurrentMbox(mbox, false, mbox->IsExamine());
-			}
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
+		return;
 	if (!GetCurrentMbox())
 		return;
 
@@ -2714,25 +2705,8 @@ void CMboxProtocol::ReadHeaders(const ulvector& nums, bool uids, const cdstring&
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			if (mCurrent_mbox)
-			{
-				CMbox* mbox = mCurrent_mbox;
-				mCurrent_mbox = NULL;
-				SetCurrentMbox(mbox, false, mbox->IsExamine());
-			}
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
+		return;
 	if (!GetCurrentMbox())
 		return;
 
@@ -2747,21 +2721,8 @@ void CMboxProtocol::ReadHeader(CMbox* mbox, CMessage* msg)
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox, false, mbox->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+		return;
 	if (GetCurrentMbox() != mbox)
 		return;
 
@@ -2777,21 +2738,8 @@ void CMboxProtocol::ReadAttachment(CMbox* mbox, unsigned long msg_num, CAttachme
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox, false, mbox->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+		return;
 	if (GetCurrentMbox() != mbox)
 		return;
 
@@ -2807,21 +2755,8 @@ void CMboxProtocol::CopyAttachment(CMbox* mbox, unsigned long msg_num, CAttachme
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox, false, mbox->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+		return;
 	if (GetCurrentMbox() != mbox)
 		return;
 
@@ -2866,21 +2801,8 @@ void CMboxProtocol::SetFlagMessage(CMbox* mbox, const ulvector& nums, bool uids,
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox, false, mbox->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+		return;
 	if (GetCurrentMbox() != mbox)
 		return;
 
@@ -2896,21 +2818,8 @@ void CMboxProtocol::CopyMessage(CMbox* mbox_from, const ulvector& nums, bool uid
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox_from, false, mbox_from->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox_from))
+		return;
 	if (GetCurrentMbox() != mbox_from)
 		return;
 
@@ -2934,21 +2843,8 @@ void CMboxProtocol::CopyMessage(CMbox* mbox, unsigned long msg_num, bool uids, c
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox, false, mbox->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+		return;
 	if (GetCurrentMbox() != mbox)
 		return;
 
@@ -2971,21 +2867,8 @@ void CMboxProtocol::MoveMessage(CMbox* mbox_from, const ulvector& nums, bool uid
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			mCurrent_mbox = NULL;
-			SetCurrentMbox(mbox_from, false, mbox_from->IsExamine());
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && !ReconnectDeadClone(mbox_from))
+		return;
 	if (GetCurrentMbox() != mbox_from)
 		return;
 
@@ -3116,25 +2999,8 @@ void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids, bool use_sav
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			if (mCurrent_mbox)
-			{
-				CMbox* mbox = mCurrent_mbox;
-				mCurrent_mbox = NULL;
-				SetCurrentMbox(mbox, false, mbox->IsExamine());
-			}
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
+		return;
 	if (!GetCurrentMbox())
 		return;
 
@@ -3175,25 +3041,8 @@ void CMboxProtocol::Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CS
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			if (mCurrent_mbox)
-			{
-				CMbox* mbox = mCurrent_mbox;
-				mCurrent_mbox = NULL;
-				SetCurrentMbox(mbox, false, mbox->IsExamine());
-			}
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
+		return;
 	if (!GetCurrentMbox())
 		return;
 
@@ -3214,25 +3063,8 @@ void CMboxProtocol::Thread(EThreadMessageBy threadby, const CSearchItem* search,
 	cdmutex::lock_cdmutex _lock(_mutex);
 
 	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn())
-	{
-		try
-		{
-			Open();
-			Logon();
-			if (mCurrent_mbox)
-			{
-				CMbox* mbox = mCurrent_mbox;
-				mCurrent_mbox = NULL;
-				SetCurrentMbox(mbox, false, mbox->IsExamine());
-			}
-		}
-		catch (...)
-		{
-			CLOG_LOGCATCH(...);
-			return;
-		}
-	}
+	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
+		return;
 	if (!GetCurrentMbox())
 		return;
 

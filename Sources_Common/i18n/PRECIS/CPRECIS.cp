@@ -208,7 +208,7 @@ CPRECIS::EPRECISProperty CPRECIS::GetDerivedProperty(uint32_t cp)
 	// Step 9: HasCompat (Q) — RFC 8264 §9.17: toNFKC(cp) != cp
 	// Returns ID_DIS for IdentifierClass, FREE_PVAL for FreeformClass
 	if (HasCompat(cp))
-		return eFREE_PVAL;
+		return eFreePval;
 
 	// Step 10: LetterDigits (A) — RFC 5892 §2.1 / RFC 8264 §9.1
 	// General_Category in {Ll, Lu, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No}
@@ -224,21 +224,21 @@ CPRECIS::EPRECISProperty CPRECIS::GetDerivedProperty(uint32_t cp)
 	if (uc_is_general_category_withtable(cp,
 		UC_CATEGORY_MASK_Lt | UC_CATEGORY_MASK_Nl |
 		UC_CATEGORY_MASK_No | UC_CATEGORY_MASK_Me))
-		return eFREE_PVAL;
+		return eFreePval;
 
 	// Step 12: Spaces (N) — RFC 8264 §9.14: General_Category = Zs
 	if (uc_is_general_category_withtable(cp, UC_CATEGORY_MASK_Zs))
-		return eFREE_PVAL;
+		return eFreePval;
 
 	// Step 13: Symbols (O) — RFC 8264 §9.15
 	// General_Category in {Sm, Sc, Sk, So}
 	if (uc_is_general_category_withtable(cp, UC_CATEGORY_MASK_S))
-		return eFREE_PVAL;
+		return eFreePval;
 
 	// Step 14: Punctuation (P) — RFC 8264 §9.16
 	// General_Category in {Pc, Pd, Ps, Pe, Pi, Pf, Po}
 	if (uc_is_general_category_withtable(cp, UC_CATEGORY_MASK_P))
-		return eFREE_PVAL;
+		return eFreePval;
 
 	// Step 15: Everything else is DISALLOWED
 	return eDISALLOWED;
@@ -395,7 +395,7 @@ void CPRECIS::ValidateIdentifierClass(const uint32_t* cps, size_t len)
 			if (!ValidateContextO(cps, len, i))
 				throw std::invalid_argument("PRECIS: invalid CONTEXTO code point in username");
 			break;
-		case eFREE_PVAL:
+		case eFreePval:
 			// FREE_PVAL = ID_DIS for IdentifierClass — disallowed
 			throw std::invalid_argument("PRECIS: code point not allowed in IdentifierClass");
 		case eDISALLOWED:
@@ -414,7 +414,7 @@ void CPRECIS::ValidateFreeformClass(const uint32_t* cps, size_t len)
 		switch (prop)
 		{
 		case ePVALID:
-		case eFREE_PVAL:
+		case eFreePval:
 			break;
 		case eCONTEXTJ:
 			if (!ValidateContextJ(cps, len, i))
