@@ -43,6 +43,7 @@ protected :
 	virtual int 	underflow();
 
 public:
+	virtual bool	HasPendingData() const;
 	void			CompressStart();
 	void			CompressStop();
 	bool			IsCompressOn() const { return mCompressOn; }

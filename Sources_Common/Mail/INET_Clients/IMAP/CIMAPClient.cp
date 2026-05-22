@@ -973,6 +973,13 @@ void CIMAPClient::_BatchStatusCheck()
 {
 	mListStatusDone = false;
 
+	// RFC 5465: re-establish NOTIFY after NOTIFICATIONOVERFLOW
+	if (mHasNotify && !mNotifyActive)
+	{
+		ExitIdleIfActive();
+		_Notify();
+	}
+
 	if (mNotifyActive)
 	{
 		mListStatusDone = true;
@@ -1033,8 +1040,10 @@ void CIMAPClient::_CheckMbox(CMbox* mbox, bool fast)
 
 		case eIMAP4rev2:
 		case eIMAP4rev1:
-			// Skip if LIST-STATUS already provided status data
-			if (mListStatusDone && mbox->HasStatus())
+			// Skip if LIST-STATUS already provided status data;
+			// only for subscribed mailboxes since the batch
+			// uses LIST (SUBSCRIBED)
+			if (mListStatusDone && mbox->HasStatus() && mbox->IsSubscribed())
 				break;
 			try
 			{
@@ -1716,26 +1725,18 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 			INETSendString(cSpace);
 			INETSendString(wd, eQueueProcess);
 
-			// Add RETURN options (RFC 5258 / RFC 5819 / RFC 6154)
-			if (mHasListExtended || mHasListStatus || mHasSpecialUse)
+			// RETURN options require LIST-EXTENDED (RFC 5258)
+			if (mHasListExtended)
 			{
-				cdstring return_opts;
-				if (mHasListExtended)
-					return_opts += "CHILDREN";
+				cdstring return_opts = "CHILDREN";
 				if (mHasListStatus)
 				{
-					if (return_opts.length())
-						return_opts += " ";
-					return_opts += "STATUS (";
+					return_opts += " STATUS (";
 					return_opts += BuildStatusAttributes();
 					return_opts += ")";
 				}
 				if (mHasSpecialUse)
-				{
-					if (return_opts.length())
-						return_opts += " ";
-					return_opts += "SPECIAL-USE";
-				}
+					return_opts += " SPECIAL-USE";
 				INETSendString(" RETURN (");
 				INETSendString(return_opts);
 				INETSendString(")");
@@ -1745,7 +1746,7 @@ void CIMAPClient::_FindAllMbox(CMboxList* mboxes)
 	}
 	INETFinishSend();
 
-	if (mHasListStatus)
+	if (mHasListExtended && mHasListStatus)
 		mListStatusDone = true;
 
 } // CIMAPClient::_FindAllMbox
@@ -4047,7 +4048,7 @@ bool CIMAPClient::ShouldStartIdle()
 
 bool CIMAPClient::ShouldReIdle() const
 {
-	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 5 * 60;
+	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 25 * 60;
 	return mIdleState == eIdleActive &&
 		::difftime(::time(NULL), mIdleStartTime) >= tickleInterval;
 }
@@ -4131,22 +4132,33 @@ void CIMAPClient::_CheckIdleResponses()
 	if (!mStream || !mStream->HasPendingData())
 		return;
 
+	// Reset per-response state so counters don't accumulate
+	// across tickle cycles within a single IDLE session
+	mMboxNew = 0;
+	mMboxUpdate = false;
+	mMboxReset = false;
+	mMboxReload = false;
+
 	try
 	{
-		char* line = INETGetLine();
-
-		if (line)
+		do
 		{
-			char* txt = line;
-			INETParseResponse(&txt, &mLastResponse);
+			char* line = INETGetLine();
 
-			if (TAG_TEST(mLastResponse.code))
+			if (line)
 			{
-				mIdleState = eIdleOff;
-			}
-		}
+				char* txt = line;
+				INETParseResponse(&txt, &mLastResponse);
 
-		_PostProcess();
+				if (TAG_TEST(mLastResponse.code))
+				{
+					mIdleState = eIdleOff;
+				}
+			}
+
+			_PostProcess();
+		}
+		while (mIdleState == eIdleActive && mStream && mStream->HasPendingData());
 	}
 	catch (...)
 	{
@@ -4571,13 +4583,19 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 				}
 			}
 			CMbox* old_mbox = GetMboxOwner()->FindMbox(mbox_name);
-			if (old_mbox)
+			if (old_mbox && !old_mbox->IsOpenSomewhere())
 				GetMboxOwner()->RemoveMbox(old_mbox);
 		}
 		delete mbox_name;
 	}
 	else
+	{
+		// During NOTIFY IDLE, mCurrentWD is stale — force AddMbox
+		// to use FindMatchingList for correct hierarchy placement
+		StValueChanger<CMboxList*> _wd(mCurrentWD,
+			(mNotifyActive && mIdleState == eIdleActive) ? (CMboxList*) NULL : mCurrentWD);
 		IMAPParseMailbox(txt, *delim, new_flags, special_use);
+	}
 
 	// Parse extended data items after mailbox name (RFC 5258 / RFC 9051 §6.3.9.7)
 	if (*txt)
@@ -4615,7 +4633,7 @@ void CIMAPClient::IMAPParseListLsub(char** txt, bool lsub)
 
 							// Find and remove the old mailbox from the hierarchy
 							CMbox* old_mbox = GetMboxOwner()->FindMbox(old_name);
-							if (old_mbox)
+							if (old_mbox && !old_mbox->IsOpenSomewhere())
 								GetMboxOwner()->RemoveMbox(old_mbox);
 
 							delete old_name;

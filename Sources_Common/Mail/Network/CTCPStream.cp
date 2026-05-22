@@ -455,6 +455,22 @@ int CTCPStreamBuf::flush_output()
 	return len;
 }
 
+bool CTCPStreamBuf::HasPendingData() const
+{
+	if (gptr() && gptr() < egptr())
+		return true;
+
+	if (mCompressOn)
+	{
+		if (mCompressBufInPos < mCompressBufInLen)
+			return true;
+		if (mCompressRawInPos < mCompressRawInLen)
+			return true;
+	}
+
+	return CTCPSocket::HasPendingData();
+}
+
 // Request for input
 int CTCPStreamBuf::underflow()
 {
