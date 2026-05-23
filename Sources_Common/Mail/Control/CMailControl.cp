@@ -117,12 +117,36 @@ void CMailControl::MboxServerReconnect(CMboxProtocol* server)
 
 	if (server->IsCloned())
 	{
-		// Must have existing mailbox
-		if (server->GetCurrentMbox())
+		CMbox* recoverMbox = server->GetCurrentMbox();
+
+		// mCurrent_mbox may have been cleared during the disconnect.
+		// Find the owning mailbox by matching the clone pointer.
+		if (!recoverMbox && server->GetCloneOwner())
 		{
-			// Get mailbox to recover its state
-			server->GetCurrentMbox()->Recover();
+			CMboxProtocol* owner = const_cast<CMboxProtocol*>(server->GetCloneOwner());
+			if (owner->GetINBOX() && owner->GetINBOX()->GetMsgProtocol() == server)
+				recoverMbox = owner->GetINBOX();
+
+			if (!recoverMbox)
+			{
+				CHierarchies& hiers = owner->GetHierarchies();
+				for(CHierarchies::iterator hi = hiers.begin(); !recoverMbox && hi != hiers.end(); hi++)
+				{
+					for(CMboxList::iterator mi = (*hi)->begin(); mi != (*hi)->end(); mi++)
+					{
+						CMbox* mbox = static_cast<CMbox*>(*mi);
+						if (mbox->IsOpen() && mbox->GetMsgProtocol() == server)
+						{
+							recoverMbox = mbox;
+							break;
+						}
+					}
+				}
+			}
 		}
+
+		if (recoverMbox)
+			recoverMbox->Recover();
 		else
 		{
 			CLOG_LOGTHROW(CGeneralException, -1);

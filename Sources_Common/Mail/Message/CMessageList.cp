@@ -328,7 +328,11 @@ void CMessageList::DeleteAll()
 
 }
 
-// Delete all fake messages from the list
+// Teardown: free fake message objects, clear thread info, then empty the
+// entire list.  Despite the name, this removes ALL entries (real and fake)
+// via clear() — it is a full teardown, not a selective removal.  Callers
+// must repopulate the list afterward or be about to destroy it.
+// For selective removal that preserves non-fake entries, use RemoveFakes().
 void CMessageList::DeleteFakes()
 {
 	// Delete all fakes in list
@@ -345,7 +349,8 @@ void CMessageList::DeleteFakes()
 }
 
 
-// Remove all fake messages from the list
+// Selective removal: free and erase only fake message objects, clear
+// thread info on non-fakes.  Non-fake entries are preserved in the list.
 void CMessageList::RemoveFakes()
 {
 	// Always clear out any fake messages in the message list

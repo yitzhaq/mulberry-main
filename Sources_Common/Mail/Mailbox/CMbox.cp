@@ -948,10 +948,15 @@ void CMbox::Recover()
 			// for flag updates after SELECT confirms same UIDVALIDITY.
 			// If SELECT fails, fall back to full re-fetch.
 			mStatusInfo->mNumberExists = 0;
-			mOpenInfo->mSortedMessages->DeleteFakes();
+			mOpenInfo->mSortedMessages->RemoveFakes();
 
 			try
 			{
+				// Ensure the clone knows which mailbox to re-SELECT —
+				// mCurrent_mbox may have been cleared during disconnect
+				if (!mOpenInfo->mMsgMailer->GetCurrentMbox())
+					mOpenInfo->mMsgMailer->mCurrent_mbox = this;
+
 				// Re-SELECT the mailbox
 				mOpenInfo->mMsgMailer->RecoverClone();
 				selectDone = true;
@@ -1046,7 +1051,11 @@ void CMbox::Recover()
 
 			// Re-open the mailbox fully
 			if (!selectDone && mOpenInfo && mOpenInfo->mMsgMailer)
+			{
+				if (!mOpenInfo->mMsgMailer->GetCurrentMbox())
+					mOpenInfo->mMsgMailer->mCurrent_mbox = this;
 				mOpenInfo->mMsgMailer->RecoverClone();
+			}
 
 			// RecoverClone or its error handling may have freed mOpenInfo
 			if (!mOpenInfo)
@@ -1066,8 +1075,10 @@ void CMbox::Recover()
 		if (GetNumberUnseen() && CPreferences::sPrefs && CPreferences::sPrefs->GetFilterManager())
 			CPreferences::sPrefs->GetFilterManager()->NewMailMailbox(this, 0);
 
-		// Force update of server and mailbox panes
-		CMailControl::MboxRefresh(this);
+		// Re-sort and refresh UI — MboxReset triggers ReSort which
+		// issues a server SORT to rebuild mSortedMessages after
+		// the incremental path added new messages unsorted
+		CMailControl::MboxReset(this);
 	}
 	catch(...)
 	{
