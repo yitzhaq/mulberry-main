@@ -62,6 +62,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
     BINARY (3516), MULTIAPPEND (3502), SPECIAL-USE (6154),
     REPLACE (8508), $Important (8457), Response Codes (5530),
     COMPRESS=DEFLATE (4978), INPROGRESS (9585),
+    OBJECTID (8474),
     IDLE (2177),
     I18N: LANGUAGE + I18NLEVEL=1/2 + COMPARATOR (5255),
     UTF-8 support: UTF8=ACCEPT/ONLY + message/global (9755),
@@ -77,7 +78,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
     SCRAM-SHA-1/SHA-256 auth plugins (5802/7677) with channel binding (9266),
     URLAUTH (4467) + IMAP URL (5092) + URLAUTH=BINARY (5524) +
     URL Access Identifiers (5593) + URL-PARTIAL (5550),
-    SAVEDATE (8514), SEARCH=FUZZY (6203)
+    SAVEDATE (8514), SEARCH=FUZZY (6203),
+    SMTP CHUNKING+BINARYMIME (3030)
   * PRECIS username/password normalization (RFC 8265) for internationalized
     credentials. New dependency: libunistring-dev
   * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux

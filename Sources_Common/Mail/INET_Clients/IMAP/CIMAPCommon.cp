@@ -28,6 +28,7 @@ const char* cTRYCREATE =				"[TRYCREATE]";
 const char* cTOOBIG =					"[TOOBIG]";
 const char* cUIDVALIDITY =				"[UIDVALIDITY ";
 const char* cUIDNEXT =					"[UIDNEXT ";
+const char* cMAILBOXID =				"[MAILBOXID ";
 const char* cUNSEEN =					"[UNSEEN ";
 const char* cNOSUCHMAILBOX =			"No such destination mailbox";
 const int cNOSUCHMAILBOX_LENGTH =		27;
@@ -88,6 +89,7 @@ const char* cIMAP_I18NLEVEL2 =			"I18NLEVEL=2";
 const char* cIMAP_UTF8_ACCEPT =			"UTF8=ACCEPT";
 const char* cIMAP_UTF8_ONLY =				"UTF8=ONLY";
 const char* cIMAP_NOTIFY =				"NOTIFY";
+const char* cIMAP_OBJECTID =			"OBJECTID";
 
 // Commands
 const char* cIDLE =						"IDLE";
@@ -162,6 +164,8 @@ const char* cBODYTEXT_OUT =				"(BODY[TEXT])";
 const char* cINTERNALDATE =				"INTERNALDATE";
 const char* cUID =						"UID";
 const char* cMODSEQ =					"MODSEQ";
+const char* cEMAILID =					"EMAILID";
+const char* cTHREADID =					"THREADID";
 const char* cNOMODSEQ =					"NOMODSEQ";
 const char* cCHANGEDSINCE =			"CHANGEDSINCE";
 const char* cUNCHANGEDSINCE =			"UNCHANGEDSINCE";
@@ -241,6 +245,7 @@ const char* cSTATUS_HIGHESTMODSEQ =		"HIGHESTMODSEQ";
 const char* cSTATUS_APPENDLIMIT =		"APPENDLIMIT";
 const char* cSTATUS_SIZE =				"SIZE";
 const char* cSTATUS_DELETED =			"DELETED";
+const char* cSTATUS_MAILBOXID =			"MAILBOXID";
 
 const char* cFLAGJUNK =				"$Junk";
 const char* cFLAGNOTJUNK =				"$NotJunk";

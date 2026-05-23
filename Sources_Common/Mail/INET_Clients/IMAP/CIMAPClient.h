@@ -108,6 +108,7 @@ private:
 	bool			mHasUTF8Accept;					// Supports UTF8=ACCEPT (RFC 9755)
 	bool			mHasUTF8Only;					// Supports UTF8=ONLY (RFC 9755)
 	bool			mUTF8Accepted;					// UTF8=ACCEPT successfully ENABLED this session
+	bool			mHasObjectId;					// Supports OBJECTID (RFC 8474)
 	bool			mHasNotify;						// Supports NOTIFY (RFC 5465)
 	bool			mNotifyActive;					// NOTIFY SET successfully sent this session
 	bool			mHasUrlAuth;					// Supports URLAUTH (RFC 4467)
@@ -349,6 +350,8 @@ protected:
 		{ return mHasReplace; }
 	virtual bool	_HasSaveDate() const						// Does server support SAVEDATE?
 		{ return mHasSaveDate; }
+	virtual bool	_HasObjectId() const						// Does server support OBJECTID?
+		{ return mHasObjectId; }
 	virtual bool	_HasCondstore() const						// Does server support CONDSTORE?
 		{ return mHasCondstore; }
 	virtual bool	_HasQResync() const							// Does server support QRESYNC?
@@ -442,6 +445,8 @@ protected:
 	void	IMAPParseBinarySize(char** txt);					// Parse IMAP BINARY.SIZE[#] reply
 	void	IMAPParseInternalDate(char** txt);					// Parse IMAP INTERNALDATE reply
 	void	IMAPParseSaveDate(char** txt);						// Parse IMAP SAVEDATE reply (RFC 8514)
+	void	IMAPParseEmailId(char** txt);						// Parse IMAP EMAILID reply (RFC 8474)
+	void	IMAPParseThreadId(char** txt);						// Parse IMAP THREADID reply (RFC 8474)
 	void	IMAPParseUID(char** txt);							// Parse IMAP UID reply
 	void	IMAPParseRFC822(char** txt);						// Parse IMAP RFC822 reply
 	void	IMAPParseRFC822Header(char** txt);					// Parse IMAP RFC822.HEADER reply

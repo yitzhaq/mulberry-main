@@ -118,6 +118,7 @@ protected:
 		time_t				mLastSync;					// Last sync time
 		uint64_t			mAppendLimit;				// APPENDLIMIT (UINT64_MAX = unknown)
 		uint64_t			mHighestModSeq;				// CONDSTORE: highest mod-sequence (RFC 7162)
+		cdstring			mMailboxId;					// RFC 8474 MAILBOXID (case-sensitive)
 		NMessage::EFlags	mAllowedFlags;				// Flags that can be changed
 		ulvector			mSearchResults;				// SEARCH results
 		CSearchItem			mSearchSpec;				// Search criteria that produced mSearchResults
@@ -355,6 +356,12 @@ public:
 		{ return (mStatusInfo ? mStatusInfo->mHighestModSeq : 0); }
 	void	SetHighestModSeq(uint64_t hm)
 		{ if (mStatusInfo) mStatusInfo->mHighestModSeq = hm; }
+
+	const cdstring&	GetMailboxId() const
+		{ return (mStatusInfo ? mStatusInfo->mMailboxId : cdstring::null_str); }
+	void	SetMailboxId(const cdstring& mid)
+		{ InitStatusInfo(); mStatusInfo->mMailboxId = mid; }
+
 	void	ChangeUIDValidity(unsigned long uidv);
 
 	unsigned long	GetUIDNext() const

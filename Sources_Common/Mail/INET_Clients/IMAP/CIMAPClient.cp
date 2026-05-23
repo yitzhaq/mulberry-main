@@ -172,6 +172,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasUTF8Accept = false;
 	mHasUTF8Only = false;
 	mUTF8Accepted = false;
+	mHasObjectId = false;
 	mHasNotify = false;
 	mNotifyActive = false;
 	mHasUrlAuth = false;
@@ -257,6 +258,7 @@ void CIMAPClient::_InitCapability()
 	mHasUTF8Accept = false;
 	mHasUTF8Only = false;
 	mUTF8Accepted = false;
+	mHasObjectId = false;
 	mHasNotify = false;
 	mNotifyActive = false;
 	mHasUrlAuth = false;
@@ -364,6 +366,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasI18NLevel1 = mHasI18NLevel2 || mLastResponse.CheckUntagged(cIMAP_I18NLEVEL1, true);
 	mHasUTF8Only = mLastResponse.CheckUntagged(cIMAP_UTF8_ONLY, true);
 	mHasUTF8Accept = mHasUTF8Only || mLastResponse.CheckUntagged(cIMAP_UTF8_ACCEPT, true);
+	mHasObjectId = mLastResponse.CheckUntagged(cIMAP_OBJECTID, true);
 	mHasNotify = mLastResponse.CheckUntagged(cIMAP_NOTIFY, true);
 	mHasUrlAuth = mLastResponse.CheckUntagged(cIMAP_URLAUTH, true);
 	mHasUrlAuthBinary = mLastResponse.CheckUntagged(cIMAP_URLAUTH_BINARY, true);
@@ -457,6 +460,21 @@ void CIMAPClient::_PostProcess()
 			// RFC 5182: UIDVALIDITY change resets search result variable
 			mSearchSaved = false;
 			mSavedSearchResults.clear();
+		}
+	}
+
+	if (mLastResponse.CheckUntagged(cMAILBOXID))
+	{
+		const cdstring& mbid_txt = mLastResponse.GetUntagged(cMAILBOXID);
+		const char* p = ::strstrnocase(mbid_txt, cMAILBOXID);
+		if (p)
+		{
+			p += ::strlen(cMAILBOXID);
+			if (*p == '(') p++;
+			const char* start = p;
+			while (*p && *p != ')') p++;
+			if (p > start && GetCurrentMbox())
+				GetCurrentMbox()->SetMailboxId(cdstring(start, p - start));
 		}
 	}
 
@@ -684,6 +702,23 @@ void CIMAPClient::_CreateMbox(CMbox* mbox)
 	INETSendString(cSpace);
 	INETSendString(wd_name, eQueueProcess);
 	INETFinishSend();
+
+	// RFC 8474: parse MAILBOXID from tagged OK response
+	if (mHasObjectId && mLastResponse.FindTagged(cSTATUS_MAILBOXID))
+	{
+		cdstring temp = mLastResponse.GetTagged();
+		const char* p = ::strstrnocase(temp.c_str(), cSTATUS_MAILBOXID);
+		if (p)
+		{
+			p += ::strlen(cSTATUS_MAILBOXID);
+			while (*p == ' ') p++;
+			if (*p == '(') p++;
+			const char* start = p;
+			while (*p && *p != ')') p++;
+			if (p > start)
+				mbox->SetMailboxId(cdstring(start, p - start));
+		}
+	}
 
 } // CIMAPClient::_CreateMbox
 
@@ -972,6 +1007,8 @@ cdstring CIMAPClient::BuildStatusAttributes() const
 		atts += " HIGHESTMODSEQ";
 	if (mHasAppendLimit)
 		atts += " APPENDLIMIT";
+	if (mHasObjectId)
+		atts += " MAILBOXID";
 	return atts;
 }
 
@@ -2550,14 +2587,21 @@ void CIMAPClient::_FetchItems(const ulvector& nums, bool uids, CMboxProtocol::EF
 		case eIMAP4:
 		case eIMAP4rev2:
 		case eIMAP4rev1:
-			if (mHasCondstore && mHasSaveDate)
-				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE SAVEDATE ENVELOPE BODYSTRUCTURE MODSEQ)");
-			else if (mHasCondstore)
-				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE ENVELOPE BODYSTRUCTURE MODSEQ)");
-			else if (mHasSaveDate)
-				INETSendString("(FLAGS RFC822.SIZE UID INTERNALDATE SAVEDATE ENVELOPE BODYSTRUCTURE)");
-			else
+			if (!mHasCondstore && !mHasSaveDate && !mHasObjectId)
 				INETSendString(cSUMMARY4);
+			else
+			{
+				cdstring summary = "(FLAGS RFC822.SIZE UID INTERNALDATE";
+				if (mHasSaveDate)
+					summary += " SAVEDATE";
+				summary += " ENVELOPE BODYSTRUCTURE";
+				if (mHasCondstore)
+					summary += " MODSEQ";
+				if (mHasObjectId)
+					summary += " EMAILID THREADID";
+				summary += ")";
+				INETSendString(summary);
+			}
 			break;
 		}
 	}
@@ -5149,6 +5193,19 @@ void CIMAPClient::IMAPParseStatus(char** txt)
 					changed = true;
 				}
 			}
+			else if (::CheckStrAdv(&q, cSTATUS_MAILBOXID))
+			{
+				while(*q && (*q == ' ')) q++;
+				if (*q == '(')
+				{
+					q++;
+					const char* start = q;
+					while (*q && *q != ')') q++;
+					if (q > start)
+						update->SetMailboxId(cdstring(start, q - start));
+					if (*q == ')') q++;
+				}
+			}
 			// Got an unknown item - just step over it
 			else
 			{
@@ -5293,6 +5350,12 @@ void CIMAPClient::IMAPParseFetch(char** txt)
 
 		else if (::CheckStrAdv(&q, cIMAP_SAVEDATE))
 			IMAPParseSaveDate(&q);
+
+		else if (::CheckStrAdv(&q, cEMAILID))
+			IMAPParseEmailId(&q);
+
+		else if (::CheckStrAdv(&q, cTHREADID))
+			IMAPParseThreadId(&q);
 
 		else if (::CheckStrAdv(&q, cRFC822HEADER))
 			IMAPParseRFC822Header(&q);
@@ -6269,6 +6332,46 @@ void CIMAPClient::IMAPParseSaveDate(char** txt)
 
 	if (mCurrent_msg && mCurrent_msg->IsCached())
 		mCurrent_msg->SetSaveDate(p);
+}
+
+// Parse IMAP EMAILID reply (RFC 8474)
+// Format: EMAILID (objectid)
+void CIMAPClient::IMAPParseEmailId(char** txt)
+{
+	while (**txt == ' ') (*txt)++;
+	if (**txt == '(')
+	{
+		(*txt)++;
+		const char* start = *txt;
+		while (**txt && **txt != ')') (*txt)++;
+		if (*txt > start && mCurrent_msg)
+			mCurrent_msg->SetEmailId(cdstring(start, *txt - start));
+		if (**txt == ')') (*txt)++;
+	}
+}
+
+// Parse IMAP THREADID reply (RFC 8474)
+// Format: THREADID (objectid) | THREADID NIL
+void CIMAPClient::IMAPParseThreadId(char** txt)
+{
+	while (**txt == ' ') (*txt)++;
+	if (::strncmpnocase(*txt, "NIL", 3) == 0 &&
+		((*txt)[3] == ' ' || (*txt)[3] == ')' || (*txt)[3] == 0))
+	{
+		*txt += 3;
+		if (mCurrent_msg)
+			mCurrent_msg->SetThreadId(cdstring::null_str);
+		return;
+	}
+	if (**txt == '(')
+	{
+		(*txt)++;
+		const char* start = *txt;
+		while (**txt && **txt != ')') (*txt)++;
+		if (*txt > start && mCurrent_msg)
+			mCurrent_msg->SetThreadId(cdstring(start, *txt - start));
+		if (**txt == ')') (*txt)++;
+	}
 }
 
 // Parse IMAP UID reply

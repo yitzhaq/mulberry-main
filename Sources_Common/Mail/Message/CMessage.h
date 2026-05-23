@@ -159,6 +159,8 @@ protected:
 	unsigned long				mNumber;					// Message number in mbox
 	unsigned long				mUID;						// Message UID
 	uint64_t					mModSeq;					// CONDSTORE mod-sequence
+	cdstring					mEmailId;					// RFC 8474 EMAILID (case-sensitive)
+	cdstring					mThreadId;					// RFC 8474 THREADID (case-sensitive, empty=NIL)
 	SBitFlags					mFlags;						// Message flags
 	CMessageCache*				mCache;						// Cached data
 	CThreadCache*				mThread;					// Cached thread data
@@ -239,6 +241,12 @@ public:
 
 	uint64_t	GetModSeq() const { return mModSeq; }
 	void		SetModSeq(uint64_t modseq) { mModSeq = modseq; }
+
+	const cdstring&	GetEmailId() const { return mEmailId; }
+	void		SetEmailId(const cdstring& eid) { mEmailId = eid; }
+
+	const cdstring&	GetThreadId() const { return mThreadId; }
+	void		SetThreadId(const cdstring& tid) { mThreadId = tid; }
 
 	// Flag methods
 	bool SetFlags(SBitFlags& new_flags);						// Set flags

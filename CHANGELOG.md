@@ -190,6 +190,13 @@ X11 bitmap fonts).
 - SMTP PIPELINING (RFC 2920). Send MAIL FROM and RCPT TO commands
   in a single batch, reducing latency by (N-1) round-trips for N
   recipients. Falls back to synchronous on servers without support.
+- SMTP CHUNKING + BINARYMIME (RFC 3030). Send messages via BDAT
+  command instead of DATA, eliminating dot-stuffing overhead.
+  Non-text attachments sent with binary content-transfer-encoding
+  when the server supports BINARYMIME, saving ~33% bandwidth by
+  skipping base64 encoding. Multiple BDAT chunks pipelined when
+  the server also supports PIPELINING (RFC 2920). Falls back to
+  traditional DATA on servers without CHUNKING support.
 - SMTP Enhanced Status Codes (RFC 2034/3463). Parse x.y.z status
   codes from SMTP responses for detailed error diagnostics with
   full RFC 3463 status code registry.
@@ -290,6 +297,14 @@ X11 bitmap fonts).
 
 ### Added
 
+- IMAP OBJECTID extension (RFC 8474). Persistent server-assigned
+  identifiers for mailboxes (MAILBOXID) and messages (EMAILID,
+  THREADID) that survive renames, copies, and moves. MAILBOXID
+  parsed from SELECT/EXAMINE, CREATE, and STATUS responses.
+  EMAILID and THREADID fetched automatically with message summaries
+  when the server advertises the OBJECTID capability. EMAILID and
+  THREADID SEARCH keys supported. THREADID NIL handled for servers
+  without threading support.
 - IMAP SEARCH=FUZZY extension (RFC 6203). Server-side inexact/fuzzy
   matching for SEARCH commands. The FUZZY search key wraps any other
   search criterion, allowing the server to perform implementation-

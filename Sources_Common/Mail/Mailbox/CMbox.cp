@@ -435,6 +435,8 @@ void CMbox::UpdateStatus(const CMbox* copy)
 	SetNumberUnseen(copy->GetNumberUnseen());
 	if (copy->GetHighestModSeq() > GetHighestModSeq())
 		SetHighestModSeq(copy->GetHighestModSeq());
+	if (!copy->GetMailboxId().empty())
+		SetMailboxId(copy->GetMailboxId());
 }
 
 // Are there any new messages

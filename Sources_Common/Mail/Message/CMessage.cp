@@ -162,6 +162,8 @@ CMessage::CMessage(const CMessage &copy)
 	mNumber = copy.mNumber;
 	mUID = copy.mUID;
 	mModSeq = copy.mModSeq;
+	mEmailId = copy.mEmailId;
+	mThreadId = copy.mThreadId;
 	mFlags = copy.mFlags;
 
 	if (copy.mCache)

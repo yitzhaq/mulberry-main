@@ -153,6 +153,8 @@ void CSearchItem::_copy(const CSearchItem& copy)
 	case eText:
 	case eUnkeyword:
 	case eNamedStyle:
+	case eEmailId:
+	case eThreadId:
 		mData = (copy.mData ? new cdstring(*reinterpret_cast<cdstring*>(copy.mData)) : NULL);
 		break;
 
@@ -207,6 +209,8 @@ void CSearchItem::_tidy()
 	case eCorrespondent:
 	case eSender:
 	case eNamedStyle:
+	case eEmailId:
+	case eThreadId:
 		delete reinterpret_cast<cdstring*>(mData);
 		break;
 
@@ -633,6 +637,18 @@ void CSearchItem::GenerateItems(cdstrboolvect& items, bool expand_me) const
 		}
 		break;
 	  }
+
+	case eEmailId:		// cdstring* (RFC 8474)
+		items.push_back(cdstrbool(cEMAILID, true));
+		temp = (GetData() ? *reinterpret_cast<const cdstring*>(GetData()) : cdstring::null_str);
+		items.push_back(cdstrbool(temp, true));
+		break;
+
+	case eThreadId:		// cdstring* (RFC 8474)
+		items.push_back(cdstrbool(cTHREADID, true));
+		temp = (GetData() ? *reinterpret_cast<const cdstring*>(GetData()) : cdstring::null_str);
+		items.push_back(cdstrbool(temp, true));
+		break;
 
 	case eRecipient:	// cdstring*
 		if (expand_me)
@@ -1307,6 +1323,12 @@ CSearchItem* CSearchItem::ParseItem(char_stream& txt, bool convert)
 
 		else if (::strcmp(str, cSEARCH_FUZZY) == 0)			// CSearchItem* (RFC 6203)
 			return new CSearchItem(eFuzzy, ParseItem(txt, convert), match);
+
+		else if (::strcmp(str, cEMAILID) == 0)				// cdstring* (RFC 8474)
+			return new CSearchItem(eEmailId, cdstring(txt.get()), match);
+
+		else if (::strcmp(str, cTHREADID) == 0)				// cdstring* (RFC 8474)
+			return new CSearchItem(eThreadId, cdstring(txt.get()), match);
 
 		else if (::strcmp(str, cSEARCH_SMALLER) == 0)		// long
 			return new CSearchItem(eSmaller, ::atol(txt.get()), match);

@@ -88,6 +88,8 @@ public:
 		eSavedSince,	// date (RFC 8514)
 		eSavedDateSupported,	// - (RFC 8514)
 		eFuzzy,			// CSearchItem* (RFC 6203)
+		eEmailId,		// cdstring* (RFC 8474)
+		eThreadId,		// cdstring* (RFC 8474)
 
 		// These are local items that expand to something else on the server
 		eRecipient,		// cdstring*

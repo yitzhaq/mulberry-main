@@ -31,6 +31,7 @@ extern const char* cTRYCREATE;
 extern const char* cTOOBIG;
 extern const char* cUIDVALIDITY;
 extern const char* cUIDNEXT;
+extern const char* cMAILBOXID;
 extern const char* cUNSEEN;
 extern const char* cNOSUCHMAILBOX;
 extern const int cNOSUCHMAILBOX_LENGTH;
@@ -91,6 +92,7 @@ extern const char* cIMAP_I18NLEVEL2;
 extern const char* cIMAP_UTF8_ACCEPT;
 extern const char* cIMAP_UTF8_ONLY;
 extern const char* cIMAP_NOTIFY;
+extern const char* cIMAP_OBJECTID;
 
 // Commands
 extern const char* cIDLE;
@@ -165,6 +167,8 @@ extern const char* cBODYTEXT_OUT;
 extern const char* cINTERNALDATE;
 extern const char* cUID;
 extern const char* cMODSEQ;
+extern const char* cEMAILID;
+extern const char* cTHREADID;
 extern const char* cNOMODSEQ;
 extern const char* cCHANGEDSINCE;
 extern const char* cUNCHANGEDSINCE;
@@ -237,6 +241,7 @@ extern const char* cSTATUS_HIGHESTMODSEQ;
 extern const char* cSTATUS_APPENDLIMIT;
 extern const char* cSTATUS_SIZE;
 extern const char* cSTATUS_DELETED;
+extern const char* cSTATUS_MAILBOXID;
 
 extern const char* cFLAGJUNK;
 extern const char* cFLAGNOTJUNK;
