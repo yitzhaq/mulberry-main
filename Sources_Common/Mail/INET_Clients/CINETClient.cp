@@ -2030,6 +2030,25 @@ void CINETClient::INETParseResponse(char** txt, CINETClientResponse* response)
 	else if (::stradvtokcmp(txt,cPLUS)==0)
 		response->code = cPlusLabel;
 
+	// Stale tagged response from a previous command whose INETProcess
+	// was interrupted by an exception before consuming the tagged OK.
+	// Discard and let the do-while loop continue waiting for our tag.
+	else if (mUseTag && **txt == cTAG_CHAR)
+	{
+		const char* p = *txt + 1;
+		while (*p >= '0' && *p <= '9')
+			p++;
+		if (p > *txt + 1 && *p == ' ')
+		{
+			mLog.LogEntry("Discarding stale tagged response from previous command");
+		}
+		else
+		{
+			CLOG_LOGTHROW(CINETException, CINETException::err_BadParse);
+			throw CINETException(CINETException::err_BadParse);
+		}
+	}
+
 	// Anything else is an error
 	else
 	{

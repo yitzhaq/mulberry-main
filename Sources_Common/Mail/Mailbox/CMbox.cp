@@ -3324,9 +3324,15 @@ CMessage* CMbox::GetMessage(unsigned long msg_num, bool sorted)
 	if (IsFullOpen())
 	{
 		if (sorted)
-			theMsg = mOpenInfo->mSortedMessages->at(msg_num - 1);
+		{
+			if (msg_num > 0 && msg_num <= mOpenInfo->mSortedMessages->size())
+				theMsg = mOpenInfo->mSortedMessages->at(msg_num - 1);
+		}
 		else
-			theMsg = mOpenInfo->mMessages->at(msg_num - 1);
+		{
+			if (msg_num > 0 && msg_num <= mOpenInfo->mMessages->size())
+				theMsg = mOpenInfo->mMessages->at(msg_num - 1);
+		}
 	}
 	return theMsg;
 
