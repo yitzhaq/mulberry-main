@@ -40,6 +40,7 @@
 #define MAILFROM			"MAIL FROM:<"
 #define RCPTTO				"RCPT TO:<"
 #define DATA				"DATA"
+#define BDAT				"BDAT "
 #define QUIT				"QUIT"
 #define RANGLE_CRLF			">\r\n"
 #define CR					"\r"
@@ -59,7 +60,11 @@
 #define ESMTP_SIZE			"SIZE"
 #define ESMTP_8BITMIME		"8BITMIME"
 #define ESMTP_PIPELINING	"PIPELINING"
+#define ESMTP_CHUNKING		"CHUNKING"
+#define ESMTP_BINARYMIME	"BINARYMIME"
 #define ESMTP_ENHANCEDSTATUS "ENHANCEDSTATUSCODES"
+
+#define kSMTPBdatChunkSize	1048576
 
 // Response code chars
 #define OK_RESPONSE			'2'

@@ -21,6 +21,8 @@
 
 #include "CAddress.h"
 #include "CAddressList.h"
+#include "CAttachment.h"
+#include "CAttachmentList.h"
 #include "CAuthPlugin.h"
 #include "CCertificateManager.h"
 #include "CINETAccount.h"
@@ -86,6 +88,9 @@ CSMTPSender::CSMTPSender(CINETAccount* account)
 	mPipelining = false;
 	mEnhancedStatus = false;
 	mDSN = false;
+	mChunking = false;
+	mBinaryMIME = false;
+	mUseBinaryCTE = false;
 
 	mUseQueue = false;
 	mQueueMbox = NULL;
@@ -554,6 +559,11 @@ void CSMTPSender::SMTPSendMessage(CMessage* theMsg)
 	mCcCtr = 0;
 	mBccCtr = 0;
 
+	// Determine binary CTE usage for this transaction (RFC 3030)
+	bool is_queued = mMessage->GetMbox() && (mMessage->GetMbox() == mQueueMbox);
+	mUseBinaryCTE = mBinaryMIME && mChunking && !is_queued &&
+		mMessage->GetBody() && SMTPHasBase64Parts(mMessage->GetBody());
+
 	// Clear any previous response
 	try
 	{
@@ -676,26 +686,30 @@ void CSMTPSender::SMTPSendMessage(CMessage* theMsg)
 			}
 		}
 
-// -- DATA
-		// Send data
-		mMailState = cSMTPSendingDataCmd;
-		SMTPSendDataCmd();
-
-		// Get response
-		mMailState = cSMTPWaitingDataCmdResponse;
-		SMTPReceiveData(DATA_RESPONSE);
-
-// -- data
-		// Set Status
+// -- DATA or BDAT (RFC 3030)
 		SMTPSetStatus("Status::SMTP::Sending");
 
-		// Send data
-		mMailState = cSMTPSendingData;
-		SMTPSendData();
+		if (mChunking)
+		{
+			// BDAT path — message sent as length-prefixed chunks
+			mMailState = cSMTPSendingBdat;
+			SMTPSendBdat();
+		}
+		else
+		{
+			// Traditional DATA path
+			mMailState = cSMTPSendingDataCmd;
+			SMTPSendDataCmd();
 
-		// Get response
-		mMailState = cSMTPWaitingDataResponse;
-		SMTPReceiveData();
+			mMailState = cSMTPWaitingDataCmdResponse;
+			SMTPReceiveData(DATA_RESPONSE);
+
+			mMailState = cSMTPSendingData;
+			SMTPSendData();
+
+			mMailState = cSMTPWaitingDataResponse;
+			SMTPReceiveData();
+		}
 	}
 	catch (CGeneralException& ex)
 	{
@@ -1226,6 +1240,8 @@ void CSMTPSender::SMTPInitCapability()
 	mSTARTTLS = false;
 	mSize = false;
 	mSizeLimit = -1;
+	mChunking = false;
+	mBinaryMIME = false;
 }
 
 // Receive capability data - handle continuations
@@ -1272,6 +1288,10 @@ void CSMTPSender::SMTPReceiveCapability(char code)
 				m8BitMIME = true;
 			else if (::strcmp(p, ESMTP_PIPELINING) == 0)
 				mPipelining = true;
+			else if (::strcmp(p, ESMTP_CHUNKING) == 0)
+				mChunking = true;
+			else if (::strcmp(p, ESMTP_BINARYMIME) == 0)
+				mBinaryMIME = true;
 			else if (::strcmp(p, ESMTP_ENHANCEDSTATUS) == 0)
 				mEnhancedStatus = true;
 			else if (::strncmp(p, ESMTP_SIZE, 4) == 0)
@@ -1482,6 +1502,7 @@ void CSMTPSender::SMTPMapErrorStr(const char*& syserr_id, const char*& protobad_
 
 		case cSMTPSendingToRcpt:
 		case cSMTPSendingCCRcpt:
+		case cSMTPSendingBCCRcpt:
 		case cSMTPWaitingRcptResponse:
 			syserr_id = "Error::SMTP::OSErrRcpt";
 			protobad_id = "Error::SMTP::NoBadRcpt";
@@ -1491,6 +1512,8 @@ void CSMTPSender::SMTPMapErrorStr(const char*& syserr_id, const char*& protobad_
 		case cSMTPWaitingDataCmdResponse:
 		case cSMTPSendingData:
 		case cSMTPWaitingDataResponse:
+		case cSMTPSendingBdat:
+		case cSMTPWaitingBdatResponse:
 			syserr_id = "Error::SMTP::OSErrData";
 			protobad_id = "Error::SMTP::NoBadData";
 			break;
@@ -1914,8 +1937,15 @@ void CSMTPSender::SMTPSendMail()
 	if (mLog.DoLog())
 		*mLog.GetLog() << MAILFROM << theTxt << '>';
 
-	// Declare 8BITMIME body type when server supports it (RFC 6152)
-	if (m8BitMIME)
+	// Declare body type: BINARYMIME (RFC 3030) takes precedence over 8BITMIME (RFC 6152)
+	if (mUseBinaryCTE)
+	{
+		mStream << " BODY=BINARYMIME";
+
+		if (mLog.DoLog())
+			*mLog.GetLog() << " BODY=BINARYMIME";
+	}
+	else if (m8BitMIME)
 	{
 		mStream << " BODY=8BITMIME";
 
@@ -2135,6 +2165,243 @@ void CSMTPSender::SMTPSendData()
 	// Write to log file
 	if (mLog.DoLog())
 		*mLog.GetLog() << os_endl << "." << os_endl << std::flush;
+}
+
+// Send message via BDAT (RFC 3030 CHUNKING)
+void CSMTPSender::SMTPSendBdat()
+{
+	// Temporarily switch non-text parts to binary encoding if BINARYMIME available
+	if (mUseBinaryCTE)
+		SMTPSetBinaryEncodings(mMessage->GetBody());
+
+	// Serialize entire message to buffer — no dot-stuffing needed for BDAT
+	std::string data;
+	{
+		std::ostringstream buf;
+		try
+		{
+			costream stream_out(&buf, eEndl_CRLF);
+
+			// Write header with CRLF conversion
+			const char* hdr = mMessage->GetHeader();
+			if (stream_out.IsLocalType())
+			{
+				buf.write(hdr, ::strlen(hdr));
+			}
+			else
+			{
+				CStreamFilter filter(new crlf_filterbuf(stream_out.GetEndlType()), static_cast<std::ostream*>(&buf));
+				filter.write(hdr, ::strlen(hdr));
+			}
+
+			if (mLog.DoLog())
+				*mLog.GetLog() << hdr;
+
+			// Write body
+			if (mMessage->GetBody())
+			{
+				CSMTPAttachProgress progress;
+				progress.SetTotal(mMessage->GetBody()->CountParts());
+				unsigned long level = 0;
+
+				if (mMessage->GetMbox() && (mMessage->GetMbox() == mQueueMbox))
+				{
+					buf << CRLF;
+					if (mLog.DoLog())
+						*mLog.GetLog() << os_endl;
+
+					mQueueMbox->CopyAttachment(mMessage, mMessage->GetBody(), &stream_out);
+
+					if (mLog.DoLog())
+					{
+						costream log_out(mLog.GetLog(), lendl);
+						mQueueMbox->CopyAttachment(mMessage, mMessage->GetBody(), &log_out);
+					}
+				}
+				else
+				{
+					mMessage->GetBody()->WriteToStream(stream_out, level, false, &progress);
+					if (mLog.DoLog())
+					{
+						costream log_out(mLog.GetLog(), lendl);
+						mMessage->GetBody()->WriteToStream(log_out, level, false, NULL);
+					}
+				}
+			}
+		}
+		catch(...)
+		{
+			CLOG_LOGCATCH(...);
+
+			if (mUseBinaryCTE)
+				SMTPRestoreEncodings();
+
+			CLOG_LOGRETHROW;
+			throw;
+		}
+
+		// Restore original encodings now that serialization is complete
+		if (mUseBinaryCTE)
+			SMTPRestoreEncodings();
+
+		data = buf.str();
+	}
+
+	unsigned long total_size = data.size();
+
+	// Send BDAT chunks — pipelined when supported, single BDAT LAST otherwise
+	if (mPipelining && (total_size > kSMTPBdatChunkSize))
+	{
+		// Pipeline multiple BDAT chunks
+		unsigned long offset = 0;
+		unsigned long chunk_count = 0;
+		while(offset < total_size)
+		{
+			unsigned long remaining = total_size - offset;
+			unsigned long chunk_size = (remaining > kSMTPBdatChunkSize) ? kSMTPBdatChunkSize : remaining;
+			bool is_last = (offset + chunk_size >= total_size);
+
+			if (is_last)
+				mStream << BDAT << chunk_size << " LAST" << CRLF;
+			else
+				mStream << BDAT << chunk_size << CRLF;
+
+			if (mLog.DoLog())
+			{
+				if (is_last)
+					*mLog.GetLog() << os_endl << BDAT << chunk_size << " LAST" << os_endl;
+				else
+					*mLog.GetLog() << os_endl << BDAT << chunk_size << os_endl;
+			}
+
+			mStream.write(data.data() + offset, chunk_size);
+			offset += chunk_size;
+			chunk_count++;
+		}
+		mStream << std::flush;
+
+		if (mLog.DoLog())
+			*mLog.GetLog() << std::flush;
+
+		// Read all pipelined BDAT responses — drain on failure then RSET (RFC 3030)
+		mMailState = cSMTPWaitingBdatResponse;
+		for(unsigned long i = 0; i < chunk_count; i++)
+		{
+			try
+			{
+				SMTPReceiveData();
+			}
+			catch(CSMTPException&)
+			{
+				CLOG_LOGCATCH(CSMTPException&);
+
+				// Drain remaining pipelined BDAT responses
+				for(unsigned long j = i + 1; j < chunk_count; j++)
+				{
+					try
+					{
+						mStream.qgetline(mLineData, cSMTPBufferLen);
+						while (SMTPContinuation())
+							mStream.qgetline(mLineData, cSMTPBufferLen);
+					}
+					catch(...) {}
+				}
+
+				// RSET to clear indeterminate transaction state (RFC 3030 §2)
+				try
+				{
+					SMTPSendRset();
+					SMTPReceiveData();
+				}
+				catch(...) {}
+
+				CLOG_LOGRETHROW;
+				throw;
+			}
+		}
+	}
+	else
+	{
+		// Single BDAT LAST
+		mStream << BDAT << total_size << " LAST" << CRLF;
+
+		if (mLog.DoLog())
+			*mLog.GetLog() << os_endl << BDAT << total_size << " LAST" << os_endl;
+
+		mStream.write(data.data(), total_size);
+		mStream << std::flush;
+
+		if (mLog.DoLog())
+			*mLog.GetLog() << std::flush;
+
+		// Read single BDAT response
+		mMailState = cSMTPWaitingBdatResponse;
+		SMTPReceiveData();
+	}
+}
+
+// Set binary encoding on non-text parts for BINARYMIME (RFC 3030)
+void CSMTPSender::SMTPSetBinaryEncodings(CAttachment* attach)
+{
+	if (!attach)
+		return;
+
+	// Never modify CTE inside signed or encrypted envelopes —
+	// the signature was computed over the original encoding
+	if (attach->IsSigned() || attach->IsEncrypted())
+		return;
+
+	// Recurse into multipart children
+	if (attach->GetParts())
+	{
+		for(CAttachmentList::iterator iter = attach->GetParts()->begin();
+			iter != attach->GetParts()->end(); iter++)
+		{
+			SMTPSetBinaryEncodings(*iter);
+		}
+	}
+	else if (!attach->IsText() &&
+		(attach->GetContent().GetTransferEncoding() == eBase64Encoding))
+	{
+		// Save original encoding and switch to binary
+		mSavedEncodings.push_back(CSavedEncoding(attach, eBase64Encoding));
+		attach->GetContent().SetTransferEncoding(eBinaryEncoding);
+	}
+}
+
+// Restore original encodings after BDAT serialization
+void CSMTPSender::SMTPRestoreEncodings()
+{
+	for(std::vector<CSavedEncoding>::iterator iter = mSavedEncodings.begin();
+		iter != mSavedEncodings.end(); iter++)
+	{
+		iter->first->GetContent().SetTransferEncoding(iter->second);
+	}
+	mSavedEncodings.clear();
+}
+
+// Check if message body has any non-text parts with base64 encoding
+bool CSMTPSender::SMTPHasBase64Parts(const CAttachment* attach) const
+{
+	if (!attach)
+		return false;
+
+	if (attach->GetParts())
+	{
+		for(CAttachmentList::const_iterator iter = attach->GetParts()->begin();
+			iter != attach->GetParts()->end(); iter++)
+		{
+			if (SMTPHasBase64Parts(*iter))
+				return true;
+		}
+	}
+	else if (!attach->IsText() &&
+		(attach->GetContent().GetTransferEncoding() == eBase64Encoding))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 // Send 'QUIT' to receiver

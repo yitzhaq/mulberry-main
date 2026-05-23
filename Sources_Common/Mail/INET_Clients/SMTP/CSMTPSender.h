@@ -28,8 +28,13 @@
 #include "CSMTPCommon.h"
 
 #include "CDSN.h"
+#include "CMIMETypes.h"
 
 #include "cdstring.h"
+
+#include <sstream>
+#include <utility>
+#include <vector>
 
 #include <stdio.h>
 
@@ -64,6 +69,8 @@ enum SMTPSenderState
 	cSMTPWaitingDataCmdResponse,
 	cSMTPSendingData,
 	cSMTPWaitingDataResponse,
+	cSMTPSendingBdat,
+	cSMTPWaitingBdatResponse,
 	cSMTPSendingQuit,
 	cSMTPWaitingQuitResponse,
 	cSMTPClosing,
@@ -72,6 +79,7 @@ enum SMTPSenderState
 	cSMTPErrorNoTLS
 };
 
+class CAttachment;
 class CMbox;
 class CMessage;
 class CINETAccount;
@@ -116,6 +124,12 @@ private:
 	bool				mEnhancedStatus;				// ENHANCEDSTATUSCODES (RFC 2034)
 	bool				mDSN;							// Does DSNs
 	CDSN				mMsgDSN;						// DSN requested for message
+	bool				mChunking;						// CHUNKING supported (RFC 3030)
+	bool				mBinaryMIME;					// BINARYMIME supported (RFC 3030)
+	bool				mUseBinaryCTE;					// Use binary CTE for this transaction
+
+	typedef std::pair<CAttachment*, EContentTransferEncoding> CSavedEncoding;
+	std::vector<CSavedEncoding>	mSavedEncodings;		// Saved encodings for restore after BDAT
 	
 	// Async items
 	bool				mUseQueue;						// Uses queue for sending
@@ -203,6 +217,10 @@ private:
 	void SMTPSendBCCRcpt();
 	void SMTPSendDataCmd();
 	void SMTPSendData();
+	void SMTPSendBdat();
+	void SMTPSetBinaryEncodings(CAttachment* attach);
+	void SMTPRestoreEncodings();
+	bool SMTPHasBase64Parts(const CAttachment* attach) const;
 	void SMTPSendQuit();
 
 	// U T I L I T I E S
