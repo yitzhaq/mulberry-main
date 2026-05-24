@@ -424,6 +424,13 @@ void CRFC822::CreateHeader(CMessage* theMsg,
 		cdstring id_name = identity->GetIdentity();
 		TextTo1522(id_name, false);
 		out << cHDR_XMULBERRY_IDENTITY << id_name << os_endl;
+
+		if (identity->UseCopyTo() && (flags & eAddXMulberry))
+		{
+			cdstring copy_to = identity->GetCopyTo();
+			if (!copy_to.empty())
+				out << cHDR_XMULBERRY_COPYTO << copy_to << os_endl;
+		}
 	}
 	
 	// Only do DSN for outgoing queueand not reject

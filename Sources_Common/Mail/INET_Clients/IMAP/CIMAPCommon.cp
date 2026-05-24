@@ -90,6 +90,7 @@ const char* cIMAP_UTF8_ACCEPT =			"UTF8=ACCEPT";
 const char* cIMAP_UTF8_ONLY =				"UTF8=ONLY";
 const char* cIMAP_NOTIFY =				"NOTIFY";
 const char* cIMAP_OBJECTID =			"OBJECTID";
+const char* cIMAP_CATENATE =			"CATENATE";
 
 // Commands
 const char* cIDLE =						"IDLE";
@@ -250,6 +251,8 @@ const char* cSTATUS_MAILBOXID =			"MAILBOXID";
 const char* cFLAGJUNK =				"$Junk";
 const char* cFLAGNOTJUNK =				"$NotJunk";
 const char* cFLAGPHISHING =			"$Phishing";
+const char* cFLAGSUBMITPENDING =	"$SubmitPending";
+const char* cFLAGSUBMITTED =		"$Submitted";
 
 // SEARCH criteria
 const char* cSEARCH_CHARSET =			"CHARSET";
@@ -384,3 +387,7 @@ const char* cRESETKEY =					"RESETKEY";
 
 // Response codes
 const char* cURLMECH =					"[URLMECH ";
+
+// CATENATE (RFC 4469)
+const char* cCATENATE =					"CATENATE";
+const char* cBADURL =					"[BADURL ";

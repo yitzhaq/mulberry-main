@@ -713,6 +713,7 @@
 -prefix ../Sources_Common/Mail/Protocols/
 .cp CINETProtocol
 .cp CMboxProtocol
+.cp CForwardWithoutDownload
 .cp COptionsProtocol
 .cp CAdbkProtocol
 .cp CFilterProtocol

@@ -25,11 +25,14 @@
 #include "CAttachmentList.h"
 #include "CAuthPlugin.h"
 #include "CCertificateManager.h"
+#include "CIMAPUrl.h"
 #include "CINETAccount.h"
 #include "CINETClient.h"
 #include "CINETCommon.h"
+#include "CMailAccountManager.h"
 #include "CMailControl.h"
 #include "CMbox.h"
+#include "CMboxProtocol.h"
 #include "CMessage.h"
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 #include "CMulberryCommon.h"
@@ -90,6 +93,8 @@ CSMTPSender::CSMTPSender(CINETAccount* account)
 	mDSN = false;
 	mChunking = false;
 	mBinaryMIME = false;
+	mBurl = false;
+	mBurlImap = false;
 	mUseBinaryCTE = false;
 
 	mUseQueue = false;
@@ -180,16 +185,105 @@ bool CSMTPSender::SMTPNextAsync(bool reset)
 		if (found)
 		{
 			bool sent = false;
+			bool tried_burl = false;
 			try
 			{
 				found->ChangeFlags(NMessage::eSendingNow, true);
 
+				// Check for BURL optimization: fcc APPEND + BURL at drain time
+				ClearBurlUrl();
+				unsigned long drain_fcc_uid = 0;
+				CMbox* drain_fcc_mbox = NULL;
+				if (mBurl && mBurlImap)
+				{
+					char* hdr = found->GetHeader();
+					if (hdr)
+					{
+						const char* copyto = ::strstr(hdr, cHDR_XMULBERRY_COPYTO);
+						if (copyto)
+						{
+							copyto += sizeof(cHDR_XMULBERRY_COPYTO) - 1;
+							const char* end = copyto;
+							while (*end && *end != '\r' && *end != '\n') end++;
+							cdstring fcc_name(copyto, end - copyto);
+
+							if (!fcc_name.empty() && CMailAccountManager::sMailAccountManager)
+							{
+								drain_fcc_mbox = CMailAccountManager::sMailAccountManager->FindMboxAccount(fcc_name);
+								if (drain_fcc_mbox && drain_fcc_mbox != (CMbox*) -1 &&
+									drain_fcc_mbox->GetProtocol()->IsLoggedOn() &&
+									drain_fcc_mbox->GetProtocol()->HasUrlAuth())
+								{
+									try
+									{
+										found->GetFlags().Set(NMessage::eSubmitPending, true);
+										drain_fcc_mbox->AppendMessage(found, drain_fcc_uid);
+										found->GetFlags().Set(NMessage::eSubmitPending, false);
+
+										if (drain_fcc_uid != 0)
+										{
+											const CINETAccount* acct = drain_fcc_mbox->GetProtocol()->GetAccount();
+											CIMAPUrl url;
+											url.SetServer(acct->GetServerIP());
+											url.SetUser(acct->GetAuthenticatorUserPswd()->GetUID());
+											url.SetMailbox(drain_fcc_mbox->GetName());
+											url.SetUIDValidity(drain_fcc_mbox->GetUIDValidity());
+											url.SetUID(drain_fcc_uid);
+											url.SetAccess(eIMAPUrlAccessSubmit,
+												acct->GetAuthenticatorUserPswd()->GetUID());
+
+											cdstrvect rump_urls;
+											rump_urls.push_back(url.ToRumpUrl());
+											cdstrvect auth_results;
+											drain_fcc_mbox->GetProtocol()->GenUrlAuth(
+												rump_urls, "INTERNAL", auth_results);
+
+											if (!auth_results.empty())
+											{
+												SetBurlUrl(auth_results[0]);
+
+												ulvector uids;
+												uids.push_back(drain_fcc_uid);
+												try {
+													drain_fcc_mbox->SetFlagMessage(
+														uids, true, NMessage::eSubmitted, true);
+												} catch (...) { CLOG_LOGCATCH(...); }
+											}
+										}
+									}
+									catch (...)
+									{
+										CLOG_LOGCATCH(...);
+										ClearBurlUrl();
+										drain_fcc_uid = 0;
+										drain_fcc_mbox = NULL;
+									}
+								}
+								else
+									drain_fcc_mbox = NULL;
+							}
+						}
+					}
+				}
+
+				tried_burl = !mBurlUrl.empty();
+
 				// Must recreate send header - don't use the one in the message
 				CRFC822::SendHeader(found, mMsgDSN, true);
 
-				// Send it
+				// Send it (uses BURL if mBurlUrl was set above)
 				SMTPSendMessage(found);
 				sent = true;
+
+				if (drain_fcc_uid != 0 && drain_fcc_mbox)
+				{
+					ulvector uids;
+					uids.push_back(drain_fcc_uid);
+					try {
+						drain_fcc_mbox->SetFlagMessage(
+							uids, true, NMessage::eSubmitPending, false);
+					} catch (...) { CLOG_LOGCATCH(...); }
+				}
 
 				// UID expunge it
 				ulvector nums;
@@ -210,10 +304,33 @@ bool CSMTPSender::SMTPNextAsync(bool reset)
 			{
 				CLOG_LOGCATCH(CSMTPException&);
 
-				found->ChangeFlags(NMessage::eSendingNow, false);
-				found->ChangeFlags(NMessage::eSendError, true);
-				if (smtp_ex.IsPermanent())
-					found->ChangeFlags(NMessage::eHold, true);
+				if (tried_burl)
+				{
+					// BURL failed or SMTP connection died — reconnect and retry with DATA
+					ClearBurlUrl();
+					try
+					{
+						try { SMTPClose(); } catch (...) { CLOG_LOGCATCH(...); }
+						CRFC822::SendHeader(found, mMsgDSN, true);
+						SMTPBegin();
+						SMTPSendMessage(found);
+						sent = true;
+					}
+					catch (...)
+					{
+						CLOG_LOGCATCH(...);
+						found->ChangeFlags(NMessage::eSendingNow, false);
+						found->ChangeFlags(NMessage::eSendError, true);
+						found->ChangeFlags(NMessage::eHold, true);
+					}
+				}
+				else
+				{
+					found->ChangeFlags(NMessage::eSendingNow, false);
+					found->ChangeFlags(NMessage::eSendError, true);
+					if (smtp_ex.IsPermanent())
+						found->ChangeFlags(NMessage::eHold, true);
+				}
 			}
 			catch (...)
 			{
@@ -269,13 +386,130 @@ CMessage* CSMTPSender::SMTPAsyncMessage()
 }
 
 // Send mail with specified information
-void CSMTPSender::SMTPSend(CMessage* theMsg, bool async)
+void CSMTPSender::SMTPSend(CMessage* theMsg, bool async, CMbox* fcc_mbox, bool* fcc_done)
 {
+	ClearBurlUrl();
+	if (fcc_done)
+		*fcc_done = false;
+
 	// Must recreate send header - don't use the one in the message
 	CRFC822::SendHeader(theMsg, mMsgDSN, false);
 
 	SMTPBegin();
-	SMTPSendMessage(theMsg);
+
+	// BURL optimization (RFC 5550 §8.6): if server supports BURL and
+	// fcc mailbox supports URLAUTH, APPEND to fcc first, then submit
+	// via BURL URL reference — one upload instead of two.
+	bool fcc_appended = false;
+	bool burl_ready = false;
+	unsigned long fcc_uid = 0;
+	bool has_bcc = theMsg->GetEnvelope()->GetBcc()->size() > 0;
+
+	if (mBurl && mBurlImap && !has_bcc &&
+		fcc_mbox && fcc_mbox != (CMbox*) -1 &&
+		fcc_mbox->GetProtocol()->IsLoggedOn() &&
+		fcc_mbox->GetProtocol()->HasUrlAuth())
+	{
+		try
+		{
+			theMsg->GetFlags().Set(NMessage::eSubmitPending, true);
+			fcc_mbox->AppendMessage(theMsg, fcc_uid);
+			theMsg->GetFlags().Set(NMessage::eSubmitPending, false);
+			if (fcc_uid != 0)
+				fcc_appended = true;
+		}
+		catch (...)
+		{
+			CLOG_LOGCATCH(...);
+			fcc_uid = 0;
+		}
+
+		if (fcc_appended)
+		{
+			try
+			{
+				const CINETAccount* acct = fcc_mbox->GetProtocol()->GetAccount();
+				CIMAPUrl url;
+				url.SetServer(acct->GetServerIP());
+				url.SetUser(acct->GetAuthenticatorUserPswd()->GetUID());
+				url.SetMailbox(fcc_mbox->GetName());
+				url.SetUIDValidity(fcc_mbox->GetUIDValidity());
+				url.SetUID(fcc_uid);
+				url.SetAccess(eIMAPUrlAccessSubmit,
+					acct->GetAuthenticatorUserPswd()->GetUID());
+
+				cdstrvect rump_urls;
+				rump_urls.push_back(url.ToRumpUrl());
+				cdstrvect auth_results;
+				fcc_mbox->GetProtocol()->GenUrlAuth(rump_urls, "INTERNAL", auth_results);
+
+				if (!auth_results.empty())
+				{
+					SetBurlUrl(auth_results[0]);
+					burl_ready = true;
+
+					ulvector uids;
+					uids.push_back(fcc_uid);
+					try {
+						fcc_mbox->SetFlagMessage(uids, true, NMessage::eSubmitted, true);
+					} catch (...) { CLOG_LOGCATCH(...); }
+				}
+			}
+			catch (...)
+			{
+				CLOG_LOGCATCH(...);
+				ClearBurlUrl();
+				burl_ready = false;
+			}
+		}
+	}
+
+	try
+	{
+		SMTPSendMessage(theMsg);
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+
+		if (burl_ready)
+		{
+			// BURL failed or SMTP connection died during IMAP work.
+			// Reconnect and retry with DATA/BDAT.
+			ClearBurlUrl();
+			try
+			{
+				try { SMTPClose(); } catch (...) { CLOG_LOGCATCH(...); }
+				CRFC822::SendHeader(theMsg, mMsgDSN, false);
+				SMTPBegin();
+				SMTPSendMessage(theMsg);
+			}
+			catch (...)
+			{
+				CLOG_LOGCATCH(...);
+				try { SMTPClose(); } catch (...) { CLOG_LOGCATCH(...); }
+				throw;
+			}
+		}
+		else
+		{
+			try { SMTPEnd(); } catch (...) { CLOG_LOGCATCH(...); }
+			throw;
+		}
+	}
+
+	if (fcc_appended && fcc_uid != 0 && fcc_mbox)
+	{
+		ulvector uids;
+		uids.push_back(fcc_uid);
+		try {
+			fcc_mbox->SetFlagMessage(uids, true, NMessage::eSubmitPending, false);
+		} catch (...) { CLOG_LOGCATCH(...); }
+	}
+
+	if (fcc_done)
+		*fcc_done = fcc_appended;
+
 	SMTPEnd();
 }
 
@@ -686,12 +920,19 @@ void CSMTPSender::SMTPSendMessage(CMessage* theMsg)
 			}
 		}
 
-// -- DATA or BDAT (RFC 3030)
+// -- BURL, BDAT, or DATA
 		SMTPSetStatus("Status::SMTP::Sending");
 
-		if (mChunking)
+		if (!mBurlUrl.empty() && mBurl && mBurlImap)
 		{
-			// BDAT path — message sent as length-prefixed chunks
+			// BURL path (RFC 4468) — message already on IMAP, submit via URL
+			cdstring url = mBurlUrl;
+			mBurlUrl = cdstring::null_str;
+			SMTPSendBurl(url, true);
+		}
+		else if (mChunking)
+		{
+			// BDAT path (RFC 3030) — message sent as length-prefixed chunks
 			mMailState = cSMTPSendingBdat;
 			SMTPSendBdat();
 		}
@@ -1242,6 +1483,8 @@ void CSMTPSender::SMTPInitCapability()
 	mSizeLimit = -1;
 	mChunking = false;
 	mBinaryMIME = false;
+	mBurl = false;
+	mBurlImap = false;
 }
 
 // Receive capability data - handle continuations
@@ -1294,6 +1537,22 @@ void CSMTPSender::SMTPReceiveCapability(char code)
 				mBinaryMIME = true;
 			else if (::strcmp(p, ESMTP_ENHANCEDSTATUS) == 0)
 				mEnhancedStatus = true;
+			else if (::strncmp(p, ESMTP_BURL, 4) == 0)
+			{
+				mBurl = true;
+				const char* q = p + 4;
+				while (*q == ' ')
+					q++;
+				while (*q)
+				{
+					if (::strncmp(q, "imap", 4) == 0 && (q[4] == '\0' || q[4] == ' '))
+						mBurlImap = true;
+					while (*q && *q != ' ')
+						q++;
+					while (*q == ' ')
+						q++;
+				}
+			}
 			else if (::strncmp(p, ESMTP_SIZE, 4) == 0)
 			{
 				mSize = true;
@@ -1514,6 +1773,8 @@ void CSMTPSender::SMTPMapErrorStr(const char*& syserr_id, const char*& protobad_
 		case cSMTPWaitingDataResponse:
 		case cSMTPSendingBdat:
 		case cSMTPWaitingBdatResponse:
+		case cSMTPSendingBurl:
+		case cSMTPWaitingBurlResponse:
 			syserr_id = "Error::SMTP::OSErrData";
 			protobad_id = "Error::SMTP::NoBadData";
 			break;
@@ -2337,6 +2598,38 @@ void CSMTPSender::SMTPSendBdat()
 		// Read single BDAT response
 		mMailState = cSMTPWaitingBdatResponse;
 		SMTPReceiveData();
+	}
+}
+
+// Send BURL command (RFC 4468)
+void CSMTPSender::SMTPSendBurl(const cdstring& url, bool last)
+{
+	mMailState = cSMTPSendingBurl;
+
+	mStream << BURL_CMD << url;
+	if (last)
+		mStream << BURL_LAST;
+	mStream << CRLF << std::flush;
+
+	if (mAllowLog && mLog.DoLog())
+	{
+		*mLog.GetLog() << BURL_CMD << url;
+		if (last)
+			*mLog.GetLog() << BURL_LAST;
+		*mLog.GetLog() << os_endl << std::flush;
+	}
+
+	mMailState = cSMTPWaitingBurlResponse;
+	SMTPReceiveData();
+}
+
+// Send one or more BURL commands for message submission (RFC 4468)
+void CSMTPSender::SMTPSendBurlMessage(const cdstrvect& urls)
+{
+	for (size_t i = 0; i < urls.size(); i++)
+	{
+		bool is_last = (i == urls.size() - 1);
+		SMTPSendBurl(urls[i], is_last);
 	}
 }
 

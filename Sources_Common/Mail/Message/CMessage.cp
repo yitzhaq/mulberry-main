@@ -732,6 +732,16 @@ bool CMessage::IsPhishing() const
 	return (GetOwner() ? GetOwner()->IsPhishing() : GetFlags().IsSet(ePhishing));
 }
 
+bool CMessage::IsSubmitPending() const
+{
+	return (GetOwner() ? GetOwner()->IsSubmitPending() : GetFlags().IsSet(eSubmitPending));
+}
+
+bool CMessage::IsSubmitted() const
+{
+	return (GetOwner() ? GetOwner()->IsSubmitted() : GetFlags().IsSet(eSubmitted));
+}
+
 // Check Partial flag (cannot be inline because of recursion)
 bool CMessage::IsPartial() const
 {

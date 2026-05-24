@@ -78,13 +78,17 @@ namespace NMessage
 		eNotJunk =			1ULL << 33,
 		ePhishing =			1ULL << 34,
 
+		// RFC 5788 §3.4.3-3.4.4 submission keywords
+		eSubmitPending =	1ULL << 35,
+		eSubmitted =		1ULL << 36,
+
 		// Bitmask combinations
 		eUserFlags = eAnswered | eFlagged | eDeleted | eSeen | eDraft,
 		eLabels = eLabel1 | eLabel2 | eLabel3 | eLabel4 | eLabel5 | eLabel6 | eLabel7 | eLabel8,
-		eIMAPFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | eLabels,
-		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
-		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eError | eLabels,
-		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | ePartial | eLabels,
+		eIMAPFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | eSubmitPending | eSubmitted | eLabels,
+		eLocalFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | eSubmitPending | eSubmitted | ePartial | eError | eLabels,
+		eServerFlags = eRecent | eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | eSubmitPending | eSubmitted | ePartial | eError | eLabels,
+		eAllPermanent = eAnswered | eFlagged | eDeleted | eSeen | eDraft | eMDNSent | eForwarded | eImportant | eJunk | eNotJunk | ePhishing | eSubmitPending | eSubmitted | ePartial | eLabels,
 
 		// SMTP Flags
 		eSendingNow =		eAnswered,

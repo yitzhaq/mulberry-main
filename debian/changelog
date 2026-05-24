@@ -79,7 +79,11 @@ mulberry (4.2.0a1) unstable; urgency=medium
     URLAUTH (4467) + IMAP URL (5092) + URLAUTH=BINARY (5524) +
     URL Access Identifiers (5593) + URL-PARTIAL (5550),
     SAVEDATE (8514), SEARCH=FUZZY (6203),
-    SMTP CHUNKING+BINARYMIME (3030)
+    SMTP CHUNKING+BINARYMIME (3030),
+    SMTP BURL (4468), IMAP CATENATE (4469),
+    $SubmitPending/$Submitted keywords (5788),
+    Lemonade profile complete (5550) — all 27 extensions,
+    fcc-via-BURL single-upload optimization (5550 §8.6)
   * PRECIS username/password normalization (RFC 8265) for internationalized
     credentials. New dependency: libunistring-dev
   * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux

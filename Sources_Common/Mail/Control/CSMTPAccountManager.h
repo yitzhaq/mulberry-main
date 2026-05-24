@@ -49,7 +49,8 @@ public:
 	// Sending
 	bool CanSendDisconnected() const;
 	bool CanSendDisconnected(const CIdentity& identity) const;
-	bool SendMessage(CMessage* msg, const CIdentity& identity, bool bouncing);
+	bool SendMessage(CMessage* msg, const CIdentity& identity, bool bouncing,
+					 CMbox* fcc_mbox = NULL, bool* fcc_done = NULL);
 
 	// Connection
 	bool GetConnected() const

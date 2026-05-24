@@ -586,6 +586,7 @@
     <ClInclude Include="..\sources_common\mail\protocols\CFilterProtocol.h" />
     <ClInclude Include="..\sources_common\mail\protocols\CINETProtocol.h" />
     <ClInclude Include="..\sources_common\mail\protocols\CMboxACLProtocol.h" />
+    <ClInclude Include="..\sources_common\mail\protocols\CForwardWithoutDownload.h" />
     <ClInclude Include="..\sources_common\mail\protocols\CMboxProtocol.h" />
     <ClInclude Include="..\sources_common\mail\protocols\COptionsProtocol.h" />
     <ClInclude Include="..\sources_common\mail\protocols\CQuotaProtocol.h" />
@@ -1760,6 +1761,7 @@
     <None Include="..\sources_common\mail\protocols\CFilterProtocol.cp" />
     <None Include="..\sources_common\mail\protocols\CINETProtocol.cp" />
     <None Include="..\sources_common\mail\protocols\CMboxACLProtocol.cp" />
+    <None Include="..\sources_common\mail\protocols\CForwardWithoutDownload.cp" />
     <None Include="..\sources_common\mail\protocols\CMboxProtocol.cp" />
     <None Include="..\sources_common\mail\protocols\COptionsProtocol.cp" />
     <None Include="..\sources_common\mail\protocols\CQuotaProtocol.cp" />

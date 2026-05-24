@@ -2355,6 +2355,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\sources_common\mail\protocols\CForwardWithoutDownload.h"
+				>
+			</File>
+			<File
 				RelativePath="..\sources_common\mail\protocols\CMboxProtocol.h"
 				>
 			</File>
@@ -7700,6 +7704,10 @@
 			</File>
 			<File
 				RelativePath="..\sources_common\mail\mailbox\CMboxList.cp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\protocols\CForwardWithoutDownload.cp"
 				>
 			</File>
 			<File

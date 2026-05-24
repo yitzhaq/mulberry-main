@@ -178,6 +178,7 @@ void CIMAPClient::InitIMAPClient()
 	mHasUrlAuth = false;
 	mHasUrlAuthBinary = false;
 	mHasUrlPartial = false;
+	mHasCatenate = false;
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendMbox = NULL;
@@ -264,6 +265,7 @@ void CIMAPClient::_InitCapability()
 	mHasUrlAuth = false;
 	mHasUrlAuthBinary = false;
 	mHasUrlPartial = false;
+	mHasCatenate = false;
 	mActiveLanguage.clear();
 	mActiveComparator.clear();
 	mSearchSaved = false;
@@ -371,6 +373,7 @@ void CIMAPClient::_ProcessCapability()
 	mHasUrlAuth = mLastResponse.CheckUntagged(cIMAP_URLAUTH, true);
 	mHasUrlAuthBinary = mLastResponse.CheckUntagged(cIMAP_URLAUTH_BINARY, true);
 	mHasUrlPartial = mLastResponse.CheckUntagged(cIMAP_URL_PARTIAL, true);
+	mHasCatenate = mLastResponse.CheckUntagged(cIMAP_CATENATE, true);
 
 	// APPENDLIMIT (RFC 7889) — "APPENDLIMIT=nnn" or bare "APPENDLIMIT"
 	{
@@ -606,8 +609,14 @@ void CIMAPClient::_PostProcess()
 				else if (CheckStrAdv(&p,cFLAGPHISHING))
 					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::ePhishing);
 
+				else if (CheckStrAdv(&p,cFLAGSUBMITPENDING))
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eSubmitPending);
+
+				else if (CheckStrAdv(&p,cFLAGSUBMITTED))
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eSubmitted);
+
 				else if (CheckStrAdv(&p,cFLAGKEYWORDS))
-					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent | NMessage::eForwarded | NMessage::eImportant | NMessage::eJunk | NMessage::eNotJunk | NMessage::ePhishing);
+					new_flags = static_cast<NMessage::EFlags>(new_flags | NMessage::eLabels | NMessage::eMDNSent | NMessage::eForwarded | NMessage::eImportant | NMessage::eJunk | NMessage::eNotJunk | NMessage::ePhishing | NMessage::eSubmitPending | NMessage::eSubmitted);
 
 				else
 				{
@@ -1978,6 +1987,18 @@ void CIMAPClient::BuildAppendFlags(CMessage* theMsg, cdstring& flags)
 		flags += cFLAGPHISHING;
 		added = true;
 	}
+	if (theMsg->IsSubmitPending())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGSUBMITPENDING;
+		added = true;
+	}
+	if (theMsg->IsSubmitted())
+	{
+		if (added) flags += SPACE;
+		flags += cFLAGSUBMITTED;
+		added = true;
+	}
 	for(unsigned long i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		if (theMsg->HasLabel(i))
@@ -2161,6 +2182,112 @@ void CIMAPClient::_AppendMbox(CMbox* mbox, CMessage* theMsg, unsigned long& new_
 	}
 
 } // CIMAPClient::_AppendMbox
+
+// Append via CATENATE (RFC 4469)
+void CIMAPClient::_AppendCatenate(CMbox* mbox,
+								   const cdstring& flags,
+								   const cdstring& internaldate,
+								   const SCatenatePartList& parts,
+								   unsigned long& new_uid)
+{
+	new_uid = 0;
+	unsigned long repeat = 2;
+	while(repeat--)
+	{
+		try
+		{
+			cdstring wd_name = mbox->GetName();
+			EncodeMailboxName(wd_name);
+
+			INETStartSend("Status::IMAP::Appending", "Error::IMAP::OSErrAppend",
+						  "Error::IMAP::NoBadAppend", mbox->GetName());
+			INETSendString(cAPPEND, eQueueNoFlags);
+			INETSendString(cSpace, eQueueNoFlags);
+			INETSendString(wd_name, eQueueProcess);
+
+			if (flags.length())
+			{
+				INETSendString(cSpace, eQueueNoFlags);
+				INETSendString(flags, eQueueNoFlags);
+			}
+			if (internaldate.length())
+			{
+				INETSendString(cSpace, eQueueNoFlags);
+				INETSendString(internaldate, eQueueNoFlags);
+			}
+
+			INETSendString(" CATENATE (", eQueueNoFlags);
+
+			for (size_t i = 0; i < parts.size(); i++)
+			{
+				if (i > 0)
+					INETSendString(cSpace, eQueueNoFlags);
+
+				if (parts[i].mIsUrl)
+				{
+					cdstring url_part = "URL ";
+					url_part += "\"";
+					url_part += parts[i].mData;
+					url_part += "\"";
+					INETSendString(url_part, eQueueNoFlags);
+				}
+				else
+				{
+					INETSendString("TEXT ", eQueueNoFlags);
+					INETSendString(parts[i].mData, eQueueLiteral);
+				}
+			}
+
+			INETSendString(")", eQueueNoFlags);
+			INETFinishSend();
+
+			if (mLastResponse.FindTagged(cAPPENDUID))
+			{
+				cdstring temp = mLastResponse.GetTagged();
+				char* p = ::strstrnocase(temp.c_str(), cAPPENDUID);
+				if (p)
+				{
+					p += ::strlen(cAPPENDUID);
+
+					unsigned long uidv = ::strtoul(p, &p, 10);
+					unsigned long uid = ::strtoul(p, &p, 10);
+
+					if (mbox->HasStatus() &&
+						mbox->GetUIDValidity() != 0 &&
+						mbox->GetUIDValidity() != uidv)
+						new_uid = 0;
+					else
+						new_uid = uid;
+				}
+			}
+
+			repeat = 0;
+		}
+		catch (CINETException& ex)
+		{
+			CLOG_LOGCATCH(CINETException&);
+			if (mLastResponse.FindTagged(cBADURL))
+			{
+				repeat = 0;
+				CLOG_LOGRETHROW;
+				throw;
+			}
+			if (repeat && HandleTryCreate(mbox))
+				continue;
+			CLOG_LOGRETHROW;
+			throw;
+		}
+		catch(CNetworkException& ex)
+		{
+			CLOG_LOGCATCH(CNetworkException&);
+			if (!ex.reconnected() || !repeat)
+			{
+				CLOG_LOGRETHROW;
+				throw;
+			}
+		}
+	}
+}
 
 // Atomic message replacement (RFC 8508)
 void CIMAPClient::_ReplaceMessage(unsigned long old_uid, CMbox* mbox, CMessage* theMsg, unsigned long& new_uid, bool dummy_files)
@@ -3230,6 +3357,28 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 		if (got_one)
 			flag += ' ';
 		flag += cFLAGPHISHING;
+		got_one = true;
+
+		status_strid = "Status::IMAP::MarkingLabel";
+		oserr_strid = "Error::IMAP::OSErrLabelMsg";
+		nobad_strid = "Error::IMAP::NoBadLabelMsg";
+	}
+	if ((flags & NMessage::eSubmitPending) && (mVersion != eIMAP2bis))
+	{
+		if (got_one)
+			flag += ' ';
+		flag += cFLAGSUBMITPENDING;
+		got_one = true;
+
+		status_strid = "Status::IMAP::MarkingLabel";
+		oserr_strid = "Error::IMAP::OSErrLabelMsg";
+		nobad_strid = "Error::IMAP::NoBadLabelMsg";
+	}
+	if ((flags & NMessage::eSubmitted) && (mVersion != eIMAP2bis))
+	{
+		if (got_one)
+			flag += ' ';
+		flag += cFLAGSUBMITTED;
 		got_one = true;
 
 		status_strid = "Status::IMAP::MarkingLabel";
@@ -6244,6 +6393,12 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 
 		else if (CheckStrAdv(&p,cFLAGPHISHING))
 			new_flags.Set(NMessage::ePhishing);
+
+		else if (CheckStrAdv(&p,cFLAGSUBMITPENDING))
+			new_flags.Set(NMessage::eSubmitPending);
+
+		else if (CheckStrAdv(&p,cFLAGSUBMITTED))
+			new_flags.Set(NMessage::eSubmitted);
 
 		else
 		{

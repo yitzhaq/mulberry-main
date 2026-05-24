@@ -295,6 +295,17 @@ public:
 			bool	HasUrlAuth() const;						// Does server support URLAUTH?
 			bool	HasUrlAuthBinary() const;				// Does server support URLAUTH=BINARY?
 			bool	HasUrlPartial() const;					// Does server support URL-PARTIAL?
+			bool	HasCatenate() const;					// Does server support CATENATE?
+			void	AppendCatenate(CMbox* mbox,
+								   const cdstring& flags,
+								   const cdstring& internaldate,
+								   const SCatenatePartList& parts,
+								   unsigned long& new_uid);
+
+			void	MarkSubmitPending(CMbox* mbox,
+									  const ulvector& uids);
+			void	ClearSubmitPending(CMbox* mbox,
+									   const ulvector& uids);
 			void	FetchChangedFlags(uint64_t modseq);		// Fetch flags changed since modseq
 
 			void	GenUrlAuth(const cdstrvect& rump_urls,

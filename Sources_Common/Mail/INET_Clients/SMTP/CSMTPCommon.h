@@ -41,6 +41,8 @@
 #define RCPTTO				"RCPT TO:<"
 #define DATA				"DATA"
 #define BDAT				"BDAT "
+#define BURL_CMD			"BURL "
+#define BURL_LAST			" LAST"
 #define QUIT				"QUIT"
 #define RANGLE_CRLF			">\r\n"
 #define CR					"\r"
@@ -62,6 +64,7 @@
 #define ESMTP_PIPELINING	"PIPELINING"
 #define ESMTP_CHUNKING		"CHUNKING"
 #define ESMTP_BINARYMIME	"BINARYMIME"
+#define ESMTP_BURL			"BURL"
 #define ESMTP_ENHANCEDSTATUS "ENHANCEDSTATUSCODES"
 
 #define kSMTPBdatChunkSize	1048576

@@ -2921,6 +2921,35 @@ bool CMboxProtocol::HasUrlPartial() const
 	return mClient->_HasUrlPartial();
 }
 
+bool CMboxProtocol::HasCatenate() const
+{
+	return mClient->_HasCatenate();
+}
+
+void CMboxProtocol::AppendCatenate(CMbox* mbox,
+								    const cdstring& flags,
+								    const cdstring& internaldate,
+								    const SCatenatePartList& parts,
+								    unsigned long& new_uid)
+{
+	cdmutex::lock_cdmutex _lock(_mutex);
+
+	if (!IsLoggedOn())
+		return;
+
+	mClient->_AppendCatenate(mbox, flags, internaldate, parts, new_uid);
+}
+
+void CMboxProtocol::MarkSubmitPending(CMbox* mbox, const ulvector& uids)
+{
+	SetFlagMessage(mbox, uids, true, NMessage::eSubmitPending, true);
+}
+
+void CMboxProtocol::ClearSubmitPending(CMbox* mbox, const ulvector& uids)
+{
+	SetFlagMessage(mbox, uids, true, NMessage::eSubmitPending, false);
+}
+
 void CMboxProtocol::GenUrlAuth(const cdstrvect& rump_urls,
 							   const cdstring& mechanism,
 							   cdstrvect& results)

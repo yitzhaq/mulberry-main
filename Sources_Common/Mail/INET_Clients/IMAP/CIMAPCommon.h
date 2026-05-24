@@ -93,6 +93,7 @@ extern const char* cIMAP_UTF8_ACCEPT;
 extern const char* cIMAP_UTF8_ONLY;
 extern const char* cIMAP_NOTIFY;
 extern const char* cIMAP_OBJECTID;
+extern const char* cIMAP_CATENATE;
 
 // Commands
 extern const char* cIDLE;
@@ -246,6 +247,8 @@ extern const char* cSTATUS_MAILBOXID;
 extern const char* cFLAGJUNK;
 extern const char* cFLAGNOTJUNK;
 extern const char* cFLAGPHISHING;
+extern const char* cFLAGSUBMITPENDING;
+extern const char* cFLAGSUBMITTED;
 
 // SEARCH criteria
 extern const char* cSEARCH_CHARSET;
@@ -381,5 +384,13 @@ extern const char* cRESETKEY;
 
 // Response codes
 extern const char* cURLMECH;
+
+// CATENATE (RFC 4469)
+
+// Capability response
+extern const char* cCATENATE;
+
+// Response codes
+extern const char* cBADURL;
 
 #endif

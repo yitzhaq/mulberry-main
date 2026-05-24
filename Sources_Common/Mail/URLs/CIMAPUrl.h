@@ -36,6 +36,14 @@ enum EIMAPUrlAccess
 	eIMAPUrlAccessApplication
 };
 
+// CATENATE part (RFC 4469)
+struct SCatenatePart
+{
+	bool		mIsUrl;
+	cdstring	mData;
+};
+typedef std::vector<SCatenatePart> SCatenatePartList;
+
 // URLFETCH result item (RFC 4467, RFC 5524)
 struct SUrlFetchItem
 {

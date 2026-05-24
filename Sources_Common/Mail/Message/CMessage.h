@@ -277,6 +277,8 @@ public:
 	bool IsJunk() const;
 	bool IsNotJunk() const;
 	bool IsPhishing() const;
+	bool IsSubmitPending() const;
+	bool IsSubmitted() const;
 	bool IsPartial() const;										// Check for partial message
 	bool IsError() const;										// Check for error message
 	bool HasLabel(unsigned long index) const;					// Check for label

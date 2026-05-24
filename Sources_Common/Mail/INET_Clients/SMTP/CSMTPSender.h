@@ -71,6 +71,8 @@ enum SMTPSenderState
 	cSMTPWaitingDataResponse,
 	cSMTPSendingBdat,
 	cSMTPWaitingBdatResponse,
+	cSMTPSendingBurl,
+	cSMTPWaitingBurlResponse,
 	cSMTPSendingQuit,
 	cSMTPWaitingQuitResponse,
 	cSMTPClosing,
@@ -126,6 +128,9 @@ private:
 	CDSN				mMsgDSN;						// DSN requested for message
 	bool				mChunking;						// CHUNKING supported (RFC 3030)
 	bool				mBinaryMIME;					// BINARYMIME supported (RFC 3030)
+	bool				mBurl;							// BURL supported (RFC 4468)
+	bool				mBurlImap;						// BURL imap option present
+	cdstring			mBurlUrl;						// BURL URL for current transaction (empty = use DATA/BDAT)
 	bool				mUseBinaryCTE;					// Use binary CTE for this transaction
 
 	typedef std::pair<CAttachment*, EContentTransferEncoding> CSavedEncoding;
@@ -163,7 +168,15 @@ public:
 
 	virtual bool	IsSecure() const;
 
-	void SMTPSend(CMessage* theMsg, bool async);						// Send message
+	bool	HasBurl() const { return mBurl; }
+	bool	HasBurlImap() const { return mBurlImap; }
+	bool	HasChunking() const { return mChunking; }
+
+	void	SetBurlUrl(const cdstring& url) { mBurlUrl = url; }
+	void	ClearBurlUrl() { mBurlUrl = cdstring::null_str; }
+
+	void SMTPSend(CMessage* theMsg, bool async,
+				  CMbox* fcc_mbox = NULL, bool* fcc_done = NULL);	// Send message
 
 	bool SMTPVerifyAddress(const cdstring& addr, cdstring& result);
 
@@ -218,6 +231,8 @@ private:
 	void SMTPSendDataCmd();
 	void SMTPSendData();
 	void SMTPSendBdat();
+	void SMTPSendBurl(const cdstring& url, bool last);
+	void SMTPSendBurlMessage(const cdstrvect& urls);
 	void SMTPSetBinaryEncodings(CAttachment* attach);
 	void SMTPRestoreEncodings();
 	bool SMTPHasBase64Parts(const CAttachment* attach) const;

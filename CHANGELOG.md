@@ -197,6 +197,36 @@ X11 bitmap fonts).
   skipping base64 encoding. Multiple BDAT chunks pipelined when
   the server also supports PIPELINING (RFC 2920). Falls back to
   traditional DATA on servers without CHUNKING support.
+- SMTP BURL extension (RFC 4468). Forward-without-download
+  submission: detect BURL capability with "imap" argument in EHLO
+  response, send BURL command with IMAP URL and LAST marker,
+  interleave with BDAT when CHUNKING is available. Completes the
+  SMTP side of the Lemonade profile.
+- IMAP CATENATE extension (RFC 4469). Server-side message assembly
+  via extended APPEND command with URL and TEXT parts. Enables
+  composing messages on the IMAP server from existing message parts
+  without downloading them. Handles BADURL, TOOBIG, and TRYCREATE
+  response codes. APPENDUID parsing for the catenated result.
+- IMAP $SubmitPending and $Submitted keywords (RFC 5788 §3.4.3-
+  3.4.4, RFC 5550 §5.10). Track message submission state: awaiting
+  ($SubmitPending), being submitted ($SubmitPending + $Submitted),
+  submitted ($Submitted). Atomic state transitions via CONDSTORE
+  UNCHANGEDSINCE. Completes all seven RFC 5788 registered keywords.
+- Lemonade Profile (RFC 5550). All 27 mandatory extensions now
+  implemented (IMAP: CATENATE, URLAUTH, URL-PARTIAL, BINARY,
+  CONDSTORE, QRESYNC, ENABLE, COMPRESS, SORT, ESEARCH, ESORT,
+  CONTEXT, IDLE, NOTIFY, NAMESPACE, UIDPLUS, LITERAL+, SASL-IR,
+  I18NLEVEL, STARTTLS; SMTP: BURL, 8BITMIME, PIPELINING, CHUNKING,
+  BINARYMIME, SIZE, DSN, ENHANCEDSTATUSCODES, AUTH, STARTTLS;
+  keywords: $Forwarded, $SubmitPending, $Submitted).
+  fcc-via-BURL optimization (RFC 5550 §8.6): when the SMTP server
+  supports BURL and the IMAP server supports URLAUTH, sent messages
+  are uploaded once to the Sent folder and submitted via BURL URL
+  reference, eliminating the traditional double upload. Automatic
+  transparent fallback to DATA/BDAT if BURL fails. $SubmitPending
+  and $Submitted flags track submission state on the fcc copy per
+  RFC 5550 §5.10. Queue drain path also uses BURL when IMAP is
+  available at drain time. Forward-without-download UI deferred.
 - SMTP Enhanced Status Codes (RFC 2034/3463). Parse x.y.z status
   codes from SMTP responses for detailed error diagnostics with
   full RFC 3463 status code registry.

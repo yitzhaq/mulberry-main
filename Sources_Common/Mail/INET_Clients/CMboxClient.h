@@ -114,6 +114,12 @@ public:
 	virtual bool	_HasUrlAuth() const { return false; }
 	virtual bool	_HasUrlAuthBinary() const { return false; }
 	virtual bool	_HasUrlPartial() const { return false; }
+	virtual bool	_HasCatenate() const { return false; }
+	virtual void	_AppendCatenate(CMbox* /*mbox*/,
+									const cdstring& /*flags*/,
+									const cdstring& /*internaldate*/,
+									const SCatenatePartList& /*parts*/,
+									unsigned long& /*new_uid*/) {}
 	virtual void	_FindAllSubsMbox(CMboxList* mboxes) = 0;		// Do find subscribed mboxes
 	virtual void	_FindAllMbox(CMboxList* mboxes) = 0;			// Do find all mboxes
 	virtual void	_StartAppend(CMbox* mbox) = 0;			// Starting multiple append

@@ -114,6 +114,7 @@ private:
 	bool			mHasUrlAuth;					// Supports URLAUTH (RFC 4467)
 	bool			mHasUrlAuthBinary;				// Supports URLAUTH=BINARY (RFC 5524)
 	bool			mHasUrlPartial;					// Supports URL-PARTIAL (RFC 5550)
+	bool			mHasCatenate;					// Supports CATENATE (RFC 4469)
 	cdstring		mActiveLanguage;				// Active language tag
 	cdstring		mActiveComparator;				// Active comparator
 	bool			mSearchSaved;					// SEARCH RETURN (SAVE) issued this session
@@ -481,6 +482,14 @@ protected:
 	bool	_HasUrlAuth() const { return mHasUrlAuth; }
 	bool	_HasUrlAuthBinary() const { return mHasUrlAuthBinary; }
 	bool	_HasUrlPartial() const { return mHasUrlPartial; }
+	bool	_HasCatenate() const { return mHasCatenate; }
+
+	// CATENATE (RFC 4469)
+	void	_AppendCatenate(CMbox* mbox,
+							const cdstring& flags,
+							const cdstring& internaldate,
+							const ::SCatenatePartList& parts,
+							unsigned long& new_uid);
 	const cdstrvect& _GetUrlMechanisms() const { return mUrlMechanisms; }
 
 	void	IMAPParseUrlMech();							// Parse [URLMECH ...] from tagged OK

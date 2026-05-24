@@ -117,9 +117,13 @@ bool CSMTPAccountManager::CanSendDisconnected(const CIdentity& identity) const
 	return smtp->GetUseQueue();
 }
 
-bool CSMTPAccountManager::SendMessage(CMessage* msg, const CIdentity& id, bool bouncing)
+bool CSMTPAccountManager::SendMessage(CMessage* msg, const CIdentity& id, bool bouncing,
+									   CMbox* fcc_mbox, bool* fcc_done)
 {
 	bool held = false;
+
+	if (fcc_done)
+		*fcc_done = false;
 
 	// Get matching sender
 	cdstring acct_name = id.GetSMTPAccount(true);
@@ -163,8 +167,8 @@ bool CSMTPAccountManager::SendMessage(CMessage* msg, const CIdentity& id, bool b
 			held = ItemsHeld();
 	}
 	else
-		smtp->SMTPSend(msg, false);
-		
+		smtp->SMTPSend(msg, false, fcc_mbox, fcc_done);
+
 	return held;
 }
 

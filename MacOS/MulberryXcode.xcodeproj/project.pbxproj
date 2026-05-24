@@ -961,6 +961,7 @@
 		AFCDE3910AE176E300E30447 /* CAddressBookManager.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF600AE176DD00E30447 /* CAddressBookManager.cp */; };
 		AFCDE3920AE176E300E30447 /* CAttachmentManager.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF620AE176DD00E30447 /* CAttachmentManager.cp */; };
 		AFCDE3930AE176E300E30447 /* CINETProtocol.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF650AE176DD00E30447 /* CINETProtocol.cp */; };
+		872B09DCAF40A14A10CD79EB /* CForwardWithoutDownload.cp in Sources */ = {isa = PBXBuildFile; fileRef = 63CCF94FBC2884F3D0162E0E /* CForwardWithoutDownload.cp */; };
 		AFCDE3940AE176E300E30447 /* CMboxProtocol.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF670AE176DE00E30447 /* CMboxProtocol.cp */; };
 		AFCDE3950AE176E300E30447 /* COptionsProtocol.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF690AE176DE00E30447 /* COptionsProtocol.cp */; };
 		AFCDE3960AE176E300E30447 /* CAdbkProtocol.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFCDDF6B0AE176DE00E30447 /* CAdbkProtocol.cp */; };
@@ -3422,6 +3423,8 @@
 		AFCDDF620AE176DD00E30447 /* CAttachmentManager.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CAttachmentManager.cp; path = ../Sources_Common/Mail/Control/CAttachmentManager.cp; sourceTree = SOURCE_ROOT; };
 		AFCDDF640AE176DD00E30447 /* CINETProtocol.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CINETProtocol.h; path = ../Sources_Common/Mail/Protocols/CINETProtocol.h; sourceTree = SOURCE_ROOT; };
 		AFCDDF650AE176DD00E30447 /* CINETProtocol.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CINETProtocol.cp; path = ../Sources_Common/Mail/Protocols/CINETProtocol.cp; sourceTree = SOURCE_ROOT; };
+		AFBF2BF799590F49FC38566D /* CForwardWithoutDownload.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CForwardWithoutDownload.h; path = ../Sources_Common/Mail/Protocols/CForwardWithoutDownload.h; sourceTree = SOURCE_ROOT; };
+		63CCF94FBC2884F3D0162E0E /* CForwardWithoutDownload.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CForwardWithoutDownload.cp; path = ../Sources_Common/Mail/Protocols/CForwardWithoutDownload.cp; sourceTree = SOURCE_ROOT; };
 		AFCDDF660AE176DD00E30447 /* CMboxProtocol.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CMboxProtocol.h; path = ../Sources_Common/Mail/Protocols/CMboxProtocol.h; sourceTree = SOURCE_ROOT; };
 		AFCDDF670AE176DE00E30447 /* CMboxProtocol.cp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CMboxProtocol.cp; path = ../Sources_Common/Mail/Protocols/CMboxProtocol.cp; sourceTree = SOURCE_ROOT; };
 		AFCDDF680AE176DE00E30447 /* COptionsProtocol.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = COptionsProtocol.h; path = ../Sources_Common/Mail/Protocols/COptionsProtocol.h; sourceTree = SOURCE_ROOT; };
@@ -7140,6 +7143,8 @@
 			children = (
 				AFCDDF640AE176DD00E30447 /* CINETProtocol.h */,
 				AFCDDF650AE176DD00E30447 /* CINETProtocol.cp */,
+				AFBF2BF799590F49FC38566D /* CForwardWithoutDownload.h */,
+				63CCF94FBC2884F3D0162E0E /* CForwardWithoutDownload.cp */,
 				AFCDDF660AE176DD00E30447 /* CMboxProtocol.h */,
 				AFCDDF670AE176DE00E30447 /* CMboxProtocol.cp */,
 				AFCDDF680AE176DE00E30447 /* COptionsProtocol.h */,
@@ -9090,6 +9095,7 @@
 				AFCDE3910AE176E300E30447 /* CAddressBookManager.cp in Sources */,
 				AFCDE3920AE176E300E30447 /* CAttachmentManager.cp in Sources */,
 				AFCDE3930AE176E300E30447 /* CINETProtocol.cp in Sources */,
+				872B09DCAF40A14A10CD79EB /* CForwardWithoutDownload.cp in Sources */,
 				AFCDE3940AE176E300E30447 /* CMboxProtocol.cp in Sources */,
 				AFCDE3950AE176E300E30447 /* COptionsProtocol.cp in Sources */,
 				AFCDE3960AE176E300E30447 /* CAdbkProtocol.cp in Sources */,

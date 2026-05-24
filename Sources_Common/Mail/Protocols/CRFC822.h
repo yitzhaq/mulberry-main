@@ -79,6 +79,7 @@ const char cHDR_XMULBERRY_MAIL_FROM[] = "X-Mulberry-Mail-From: ";
 const char cHDR_XMULBERRY_RCPT_TO[] = "X-Mulberry-Rcpt-To: ";
 const char cHDR_XMULBERRY_RCPT_CC[] = "X-Mulberry-Rcpt-cc: ";
 const char cHDR_XMULBERRY_RCPT_BCC[] = "X-Mulberry-Rcpt-Bcc: ";
+const char cHDR_XMULBERRY_COPYTO[] = "X-Mulberry-CopyTo: ";
 
 const char cHDR_FILES[] = "Files: ";
 const char cHDR_COPYTO[] = "CopyTo: ";

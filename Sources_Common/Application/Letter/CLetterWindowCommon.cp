@@ -892,6 +892,13 @@ void CLetterWindow::OnDraftSendMail()
 		// Identity to use
 		const CIdentity* id = GetIdentity();
 
+		// Determine fcc mailbox for BURL optimization (RFC 5550 §8.6).
+		// Pass to SendMessage — the SMTP layer decides whether to use BURL
+		// based on server capabilities discovered during EHLO.
+		bool burl_fcc_done = false;
+		CMbox* burl_fcc_mbox = (!mReject && append_mbox && append_mbox != (CMbox*) -1)
+			? append_mbox : NULL;
+
 		// Look for separate BCC and strip header for first send (non-bcc)
 		if (CPreferences::sPrefs->mSeparateBCC.GetValue() && mail_msg->GetEnvelope()->GetBcc()->size())
 		{
@@ -904,7 +911,7 @@ void CLetterWindow::OnDraftSendMail()
 					flags = static_cast<CRFC822::ECreateHeaderFlags>(flags | CRFC822::eRejectDSN);
 				CRFC822::CreateHeader(mail_msg, flags, id, &mDSN, mBounceHeader);
 
-				// Send it
+				// Send it — no fcc via BURL for separate BCC sends
 				smtp_hold = CSMTPAccountManager::sSMTPAccountManager->SendMessage(mail_msg, *id, mBounceHeader != NULL);
 			}
 
@@ -921,8 +928,10 @@ void CLetterWindow::OnDraftSendMail()
 			smtp_hold = CSMTPAccountManager::sSMTPAccountManager->SendMessage(mail_msg_bcc.get(), *id, mBounceHeader != NULL);
 		}
 		else
-			// Send it
-			smtp_hold = CSMTPAccountManager::sSMTPAccountManager->SendMessage(mail_msg, *id, mBounceHeader != NULL);
+		{
+			// Send it — SMTP layer handles BURL optimization if fcc mbox provided
+			smtp_hold = CSMTPAccountManager::sSMTPAccountManager->SendMessage(mail_msg, *id, mBounceHeader != NULL, burl_fcc_mbox, &burl_fcc_done);
+		}
 
 		// Delete temporary
 		static_cast<CLetterDoc*>(GetDocument())->DeleteTemporary();
@@ -1095,16 +1104,19 @@ void CLetterWindow::OnDraftSendMail()
 				// Do not allow failure to copy replied to cause the append operation to fail
 			}
 
-			// Reset message header
-			// Create header for appending (i.e. bcc, no identity, no x-mulberries)
-			CRFC822::ECreateHeaderFlags flags = CRFC822::eAddBcc;
-			if (mReject)
-				flags = static_cast<CRFC822::ECreateHeaderFlags>(flags | CRFC822::eRejectDSN);
-			CRFC822::CreateHeader(mail_msg, flags, id, &mDSN, mBounceHeader);
+			if (!burl_fcc_done)
+			{
+				// Reset message header
+				// Create header for appending (i.e. bcc, no identity, no x-mulberries)
+				CRFC822::ECreateHeaderFlags flags = CRFC822::eAddBcc;
+				if (mReject)
+					flags = static_cast<CRFC822::ECreateHeaderFlags>(flags | CRFC822::eRejectDSN);
+				CRFC822::CreateHeader(mail_msg, flags, id, &mDSN, mBounceHeader);
 
-			// Do append (does not acquire message)
-			unsigned long new_uid = 0;
-			append_mbox->AppendMessage(mail_msg, new_uid);
+				// Do append (does not acquire message)
+				unsigned long new_uid = 0;
+				append_mbox->AppendMessage(mail_msg, new_uid);
+			}
 
 			// Update corresponding window if it exists
 			CMailboxView* aView = CMailboxView::FindView(append_mbox);
