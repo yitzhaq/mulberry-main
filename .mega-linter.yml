@@ -1,0 +1,17 @@
+ENABLE_LINTERS:
+  - C_CPPCHECK
+  - CPP_CPPCHECK
+
+APPLY_FIXES: none
+SHOW_ELAPSED_TIME: true
+SARIF_REPORTER: true
+
+# Mulberry uses .cp as the primary C++ extension
+CPP_FILTER_REGEX_INCLUDE: '\.(cpp|cp|cxx|cc|hpp|hxx|h)$'
+C_FILTER_REGEX_INCLUDE: '\.(c|h)$'
+
+# Exclude third-party libraries
+FILTER_REGEX_EXCLUDE: 'Libraries/(JX|open-powerplant|MoreFiles|MoreFilesX|vendor|vzic|include)/'
+
+CPP_CPPCHECK_ARGUMENTS: '--enable=all --suppress=missingIncludeSystem --language=c++'
+C_CPPCHECK_ARGUMENTS: '--enable=all --suppress=missingIncludeSystem'
