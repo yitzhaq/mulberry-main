@@ -599,7 +599,7 @@ CAdbkIOPluginDLL::SAdbkIOPluginAddress* CEudora4AdbkIOPluginDLL::AddressListPars
 	SAdbkIOPluginAddress* list = nil;
 	long list_num = 0;
 
-	// Check each character - need to balance "�" & (�)
+	// Check each character - need to balance "..." & (...)
 	while(more)
 	{
 		switch (*p)

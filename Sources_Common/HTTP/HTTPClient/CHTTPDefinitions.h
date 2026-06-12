@@ -29,7 +29,7 @@ namespace http {
 extern const unsigned short cHTTPServerPort;
 extern const unsigned short cHTTPServerPort_SSL;
 
-// RFC2616 �5.1.1 - Request Methods
+// RFC2616 §5.1.1 - Request Methods
 
 extern const char* cRequestOPTIONS;
 extern const char* cRequestGET;
@@ -44,7 +44,7 @@ extern const char* cRequestCONNECT;
 
 extern const char* cHeaderDelimiter;
 
-// RFC2616 �4.5 - General Header fields (only the ones we need)
+// RFC2616 §4.5 - General Header fields (only the ones we need)
 
 extern const char* cHeaderConnection;
 	extern const char* cHeaderConnectionClose;
@@ -52,7 +52,7 @@ extern const char* cHeaderDate;
 extern const char* cHeaderTransferEncoding;
 	extern const char* cHeaderTransferEncodingChunked;
 
-// RFC2616 �5.3 - Request Header fields (only the ones we need)
+// RFC2616 §5.3 - Request Header fields (only the ones we need)
 
 extern const char* cHeaderAuthorization;
 extern const char* cHeaderHost;
@@ -60,14 +60,14 @@ extern const char* cHeaderIfMatch;
 extern const char* cHeaderIfNoneMatch;
 extern const char* cHeaderUserAgent;
 
-// RFC2616 �6.2 - Response Header fields (only the ones we need)
+// RFC2616 §6.2 - Response Header fields (only the ones we need)
 
 extern const char* cHeaderETag;
 extern const char* cHeaderLocation;
 extern const char* cHeaderServer;
 extern const char* cHeaderWWWAuthenticate;
 
-// RFC2616 �7.1 - Entity Header fields (only the ones we need)
+// RFC2616 §7.1 - Entity Header fields (only the ones we need)
 
 extern const char* cHeaderAcceptEncoding;
 extern const char* cHeaderAllow;
@@ -75,7 +75,7 @@ extern const char* cHeaderContentEncoding;
 extern const char* cHeaderContentLength;
 extern const char* cHeaderContentType;
 
-// RFC2616 �6.1.1 Status Code and Reason Phrase
+// RFC2616 §6.1.1 Status Code and Reason Phrase
 
 enum
 {
@@ -126,7 +126,7 @@ enum
 namespace webdav 
 {
 
-// RFC2518 � - WebDAV Request Methods
+// RFC2518 § - WebDAV Request Methods
 
 extern const char*	cRequestMKCOL;
 extern const char*	cRequestMOVE;
@@ -138,7 +138,7 @@ extern const char*	cRequestUNLOCK;
 extern const char*	cRequestREPORT;		// RFC3253
 extern const char*	cRequestACL;		// RFC3744
 
-// RFC2518 �9 - Request Header fields (only the ones we need)
+// RFC2518 §9 - Request Header fields (only the ones we need)
 
 extern const char* cHeaderDAV;
 	extern const char* cHeaderDAV1;
@@ -166,7 +166,7 @@ extern const char* cHeaderTimeout;
 	extern const char* cHeaderTimeoutSeconds;
 	extern const char* cHeaderTimeoutInfinite;
 
-// RFC2518 �10 Status Code and Reason Phrase
+// RFC2518 §10 Status Code and Reason Phrase
 
 enum
 {
@@ -184,11 +184,11 @@ enum
 namespace caldav 
 {
 
-// draft-caldav � - CalDAV Request Methods
+// draft-caldav § - CalDAV Request Methods
 
 extern const char*	cRequestMKCALENDAR;
 
-// draft-caldav � - Request Header fields (only the ones we need)
+// draft-caldav § - Request Header fields (only the ones we need)
 
 	extern const char* cHeaderCalendarAccess;
 	extern const char* cHeaderCalendarSchedule;
@@ -199,11 +199,11 @@ extern const char*	cRequestMKCALENDAR;
 namespace carddav 
 {
 
-// draft-carddav � - CardDAV Request Methods
+// draft-carddav § - CardDAV Request Methods
 
 extern const char*	cRequestMKADBK;
 
-// draft-carddav � - Request Header fields (only the ones we need)
+// draft-carddav § - Request Header fields (only the ones we need)
 
 	extern const char* cHeaderAddressBook;
 

@@ -1931,7 +1931,7 @@ bool CMailControl::ProcessBusy(const CBusyContext* busy, bool allow_cancel)
 	{
 		CLOG_LOGCATCH(...);
 
-		// �and do nothing
+		// ...and do nothing
 	}
 
 	return cancel;

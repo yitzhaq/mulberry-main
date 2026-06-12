@@ -3,6 +3,7 @@
 *.dd
 *.so
 *.so.ltrans*
+.rnd
 Build/Makefile
 Libraries/Makefile
 Libraries/CICalendar/Makefile

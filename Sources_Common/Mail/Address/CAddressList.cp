@@ -112,7 +112,7 @@ CAddressList::CAddressList(const char* txt, long txt_length, unsigned long capac
 	char* adl = NULL;
 	bool more = true;
 
-	// Check each character - need to balance "�" & (�)
+	// Check each character - need to balance "..." & (...)
 	while(more) {
 		switch (*p) {
 
