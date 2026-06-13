@@ -74,12 +74,14 @@ jobs:
           libx11-dev libxext-dev libxft-dev libxpm-dev libzstd-dev
 
     - name: Download compilation database
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: compilation-database
 
-    - name: Create generated symlinks required for header resolution
+    - name: Create header symlinks required for analysis
       run: |
+        mkdir -p Linux/Includes
+        cd Linux && bash links.sh && cd ..
         ln -sf config-linux.h Libraries/JX/ACE/ACE_wrappers/ace/config.h
         ln -sf ../include/make/sys/Linux-Intel-x86_64-gcc3 Libraries/JX/include/make/jx_config
 
@@ -87,7 +89,6 @@ jobs:
       run: |
         python3 -c "
         import json
-        # Exclude third-party libraries; keep our own (CICalendar, vCard, XMLLib)
         EXCLUDE = ['/Libraries/JX/', '/Libraries/vendor/']
         db = json.load(open('compile_commands.json'))
         filtered = [e for e in db if not any(x in e.get('file', '') for x in EXCLUDE)]
@@ -99,6 +100,7 @@ jobs:
       uses: whisperity/codechecker-analysis-action@v1
       id: codechecker
       with:
+        config: ${{ github.workspace }}/.codechecker/config.json
         logfile: ${{ github.workspace }}/compile_commands.json
         ctu: true
         llvm-version: latest
@@ -107,6 +109,7 @@ jobs:
     - name: Convert results to SARIF
       if: always()
       run: |
+        export PATH="$HOME/.local/bin:$PATH"
         codechecker parse \
           ${{ steps.codechecker.outputs.analyze-output }} \
           --export sarif \
@@ -180,7 +183,7 @@ jobs:
 
     - name: Download compilation database
       if: steps.check-creds.outputs.skip != 'true'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: compilation-database
 
@@ -221,7 +224,7 @@ jobs:
         fetch-depth: 0
 
     - name: Download compilation database
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: compilation-database
 
@@ -245,7 +248,7 @@ jobs:
         "
 
     - name: SonarCloud scan
-      uses: SonarSource/sonarqube-scan-action@v7
+      uses: SonarSource/sonarqube-scan-action@v8
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:

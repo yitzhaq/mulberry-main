@@ -1,0 +1,6 @@
+{
+  "analyze": [
+    "-i",
+    ".codechecker/skipfile"
+  ]
+}

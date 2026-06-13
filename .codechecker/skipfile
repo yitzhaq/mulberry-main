@@ -1,0 +1,5 @@
+-/usr/include/*
+-/usr/lib/*
+-*/Libraries/JX/*
+-*/Libraries/vendor/*
++*
