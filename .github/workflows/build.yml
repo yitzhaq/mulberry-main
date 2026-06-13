@@ -1,4 +1,4 @@
-name: "Build"
+name: "Build & Analyze"
 
 on:
   push:
@@ -7,8 +7,11 @@ on:
     branches: [ master ]
 
 jobs:
+  # ============================================================
+  # Compilability check + shared compilation database for SAST
+  # ============================================================
   build:
-    name: Build (Linux x86_64)
+    name: Build + Compilation Database
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +24,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          bear \
           build-essential autoconf \
           libaspell-dev libbrotli-dev libfl-dev libfontconfig-dev \
           libfreetype-dev libglib2.0-dev libkrb5-dev libldap-dev \
@@ -33,13 +37,25 @@ jobs:
         autoconf
         ./configure
 
-    - name: Build
-      run: make -j$(nproc)
+    - name: Build and generate compilation database
+      run: bear -- make -j$(nproc)
 
-  analyze:
-    name: Static Analysis (GCC -fanalyzer)
+    - name: Upload compilation database
+      uses: actions/upload-artifact@v7
+      with:
+        name: compilation-database
+        path: compile_commands.json
+
+  # ============================================================
+  # CodeChecker: Clang SA + Clang-Tidy + cppcheck + GCC -fanalyzer + Infer
+  # ============================================================
+  codechecker:
+    name: Static Analysis (CodeChecker)
+    needs: build
     runs-on: ubuntu-latest
     continue-on-error: true
+    permissions:
+      security-events: write
 
     steps:
     - name: Checkout repository
@@ -51,42 +67,183 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          build-essential autoconf \
           libaspell-dev libbrotli-dev libfl-dev libfontconfig-dev \
           libfreetype-dev libglib2.0-dev libkrb5-dev libldap-dev \
           libpcre3-dev libsodium-dev libssl-dev libunistring-dev libxml2-dev \
-          libx11-dev libxext-dev libxft-dev libxpm-dev libzstd-dev \
-          pkg-config python3 unicode-cldr-core zlib1g-dev
+          libx11-dev libxext-dev libxft-dev libxpm-dev libzstd-dev
 
-    - name: Configure with -fanalyzer
-      run: |
-        autoconf
-        CFLAGS="-g -O2 -fanalyzer" CXXFLAGS="-g -O2 -fanalyzer" ./configure
+    - name: Download compilation database
+      uses: actions/download-artifact@v4
+      with:
+        name: compilation-database
 
-    - name: Build and capture warnings
-      run: make -j$(nproc) 2>&1 | tee build-fanalyzer.log
+    - name: Run CodeChecker analysis
+      uses: whisperity/codechecker-analysis-action@v1
+      id: codechecker
+      with:
+        logfile: ${{ github.workspace }}/compile_commands.json
+        ctu: true
+        llvm-version: latest
+        ignore-analyze-crashes: true
 
-    - name: Extract analyzer warnings
+    - name: Convert results to SARIF
       if: always()
-      run: grep -E '\[-Wanalyzer-' build-fanalyzer.log > fanalyzer-warnings.txt || true
-
-    - name: Summarize findings
-      if: always()
       run: |
-        count=$(wc -l < fanalyzer-warnings.txt)
-        echo "### GCC -fanalyzer: $count warning(s)" >> $GITHUB_STEP_SUMMARY
-        if [ "$count" -gt 0 ]; then
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          head -50 fanalyzer-warnings.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          if [ "$count" -gt 50 ]; then
-            echo "_... and $((count - 50)) more (see artifact)_" >> $GITHUB_STEP_SUMMARY
-          fi
-        fi
+        codechecker parse \
+          ${{ steps.codechecker.outputs.analyze-output }} \
+          --export sarif \
+          --output ${{ github.workspace }}/codechecker.sarif \
+          || true
 
-    - name: Upload analyzer results
+    - name: Upload SARIF to GitHub Security
+      if: always()
+      uses: github/codeql-action/upload-sarif@v4
+      with:
+        sarif_file: codechecker.sarif
+        category: codechecker
+      continue-on-error: true
+
+    - name: Upload HTML reports
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: fanalyzer-warnings
-        path: fanalyzer-warnings.txt
+        name: codechecker-reports
+        path: ${{ steps.codechecker.outputs.result-html-dir }}
+        if-no-files-found: ignore
+
+  # ============================================================
+  # PVS-Studio: deep C++ logic analysis (FOSS license)
+  # ============================================================
+  pvs-studio:
+    name: Static Analysis (PVS-Studio)
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      security-events: write
+
+    steps:
+    - name: Check for credentials
+      id: check-creds
+      run: |
+        if [ -z "${{ secrets.PVS_STUDIO_CREDENTIALS }}" ]; then
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          echo "::notice::PVS-Studio skipped — PVS_STUDIO_CREDENTIALS secret not set"
+        else
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Checkout repository
+      if: steps.check-creds.outputs.skip != 'true'
+      uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Install dependencies
+      if: steps.check-creds.outputs.skip != 'true'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libaspell-dev libbrotli-dev libfl-dev libfontconfig-dev \
+          libfreetype-dev libglib2.0-dev libkrb5-dev libldap-dev \
+          libpcre3-dev libsodium-dev libssl-dev libunistring-dev libxml2-dev \
+          libx11-dev libxext-dev libxft-dev libxpm-dev libzstd-dev
+
+    - name: Install PVS-Studio
+      if: steps.check-creds.outputs.skip != 'true'
+      run: |
+        wget -q -O - https://files.pvs-studio.com/etc/pubkey.txt \
+          | sudo apt-key add -
+        sudo wget -O /etc/apt/sources.list.d/viva64.list \
+          https://files.pvs-studio.com/etc/viva64.list
+        sudo apt-get update
+        sudo apt-get install -y pvs-studio
+        pvs-studio-analyzer credentials ${{ secrets.PVS_STUDIO_CREDENTIALS }}
+
+    - name: Download compilation database
+      if: steps.check-creds.outputs.skip != 'true'
+      uses: actions/download-artifact@v4
+      with:
+        name: compilation-database
+
+    - name: Run PVS-Studio analysis
+      if: steps.check-creds.outputs.skip != 'true'
+      run: pvs-studio-analyzer analyze -f compile_commands.json -j
+
+    - name: Convert results to SARIF
+      if: steps.check-creds.outputs.skip != 'true'
+      run: |
+        plog-converter PVS-Studio.log \
+          -t json -n relative -R toRelative -r "$PWD"
+        plog-converter relative.json \
+          -t sarif -n pvs-report -r file://
+
+    - name: Upload SARIF to GitHub Security
+      if: steps.check-creds.outputs.skip != 'true'
+      uses: github/codeql-action/upload-sarif@v4
+      with:
+        sarif_file: pvs-report.sarif
+        category: PVS-Studio
+      continue-on-error: true
+
+  # ============================================================
+  # SonarCloud: technical debt and quality tracking
+  # ============================================================
+  sonarcloud:
+    name: Analyze (SonarCloud)
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Download compilation database
+      uses: actions/download-artifact@v4
+      with:
+        name: compilation-database
+
+    - name: Normalize compilation database paths
+      run: |
+        python3 -c "
+        import json, os
+        db = json.load(open('compile_commands.json'))
+        changed = 0
+        for entry in db:
+            d = entry.get('directory', '')
+            f = entry.get('file', '')
+            resolved = os.path.normpath(os.path.join(d, f))
+            if resolved != f:
+                changed += 1
+                entry['file'] = resolved
+            if d:
+                entry['directory'] = os.path.normpath(d)
+        json.dump(db, open('compile_commands.json', 'w'), indent=2)
+        print(f'Normalized {len(db)} entries ({changed} paths resolved)')
+        "
+
+    - name: SonarCloud scan
+      uses: SonarSource/sonarqube-scan-action@v7
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          --define sonar.cfamily.compile-commands=compile_commands.json
+
+  # ============================================================
+  # OSV-Scanner: dependency CVE scanning (git submodules)
+  # ============================================================
+  osv-scanner:
+    name: Dependency CVE Scan (OSV)
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.3.8
+    permissions:
+      contents: read
+      security-events: write
+    with:
+      scan-args: "-r ./"
+      checkout-submodules: true
+      fail-on-vuln: false

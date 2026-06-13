@@ -112,15 +112,17 @@ platform's native toolkit.
 
 This codebase is regularly analyzed with the following tools:
 
-- [Cppcheck](https://cppcheck.sourceforge.io) - a tool for static C/C++ code analysis
-- [CodeQL](https://codeql.github.com/) - discover vulnerabilities across a codebase
 - [Clang-Tidy](https://clang.llvm.org/extra/clang-tidy/) - a clang-based C++ linter tool
+- [CodeChecker](https://codechecker.readthedocs.io/) - an analyzer tooling, defect database and viewer extension for static and dynamic analyzer tools
+- [CodeQL](https://codeql.github.com/) - discover vulnerabilities across a codebase
 - [Coverity Scan](https://www.blackduck.com/static-analysis-tools-sast/coverity.html) - find code quality defects in large-scale, complex software
+- [Cppcheck](https://cppcheck.sourceforge.io) - a tool for static C/C++ code analysis
+- GCC extended warnings
+- [GCC Static Analyzer](https://gcc.gnu.org/wiki/StaticAnalyzer) - static analysis of program flow which looks for "interesting" interprocedural paths through the code
 - [Infer](https://fbinfer.com/) - a tool to detect bugs in Java and C/C++/Objective-C code
-- [SonarQube Cloud](https://www.sonarsource.com/products/sonarqube/cloud/) - automated code quality and security reviews for high velocity software development
+- [OSV-Scanner](https://google.github.io/osv-scanner/) - vulnerability scanner which uses the data provided by osv.dev
 - [PVS-Studio](https://pvs-studio.com/en/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code
-- [MegaLinter](https://megalinter.io/) - an open-source tool for CI/CD workflows that analyzes the consistency of your code
-- GCC extended warnings and GCC -fanalyzer
+- [SonarQube Cloud](https://www.sonarsource.com/products/sonarqube/cloud/) - automated code quality and security reviews for high velocity software development
 
 ## License
 
