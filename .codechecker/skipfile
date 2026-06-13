@@ -2,4 +2,7 @@
 -/usr/lib/*
 -*/Libraries/JX/*
 -*/Libraries/vendor/*
+-*/Libraries/vzic/*
+-*/Libraries/include/*
+-*/Libraries/openssl/*
 +*

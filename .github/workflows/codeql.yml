@@ -37,6 +37,13 @@ jobs:
       with:
         languages: c-cpp
         build-mode: manual
+        config: |
+          paths-ignore:
+            - Libraries/JX
+            - Libraries/vendor
+            - Libraries/vzic
+            - Libraries/include
+            - Libraries/openssl
 
     - name: Build
       run: |

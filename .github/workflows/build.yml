@@ -92,11 +92,11 @@ jobs:
 
         # JX include dirs (populated by JX build, not tracked in git)
         mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore Libraries/JX/include/jximage
-        for h in Libraries/JX/libjx/code/*.h; do
-          ln -sf "../../libjx/code/$(basename "$h")" "Libraries/JX/include/jx/$(basename "$h")"
+        for f in Libraries/JX/libjx/code/*; do
+          ln -sf "../../libjx/code/$(basename "$f")" "Libraries/JX/include/jx/$(basename "$f")"
         done
-        for h in Libraries/JX/libjcore/code/*.h; do
-          ln -sf "../../libjcore/code/$(basename "$h")" "Libraries/JX/include/jcore/$(basename "$h")"
+        for f in Libraries/JX/libjcore/code/*; do
+          ln -sf "../../libjcore/code/$(basename "$f")" "Libraries/JX/include/jcore/$(basename "$f")"
         done
         for f in Libraries/JX/libjx/image/*; do
           ln -sf "../../libjx/image/$(basename "$f")" "Libraries/JX/include/jximage/$(basename "$f")"
@@ -106,13 +106,17 @@ jobs:
         ln -sf config-linux.h Libraries/JX/ACE/ACE_wrappers/ace/config.h
         ln -sf ../include/make/sys/Linux-Intel-x86_64-gcc3 Libraries/JX/include/make/jx_config
 
+        # Prefix header path: compilation DB has -include Sources/Mulberry_Prefix.h
+        # relative to Linux/, but CodeChecker resolves from workspace root
+        ln -sf Linux/Sources Sources
+
         echo "Symlinks: $(find Linux/Includes -type l | wc -l) Mulberry, $(ls Libraries/JX/include/jx/*.h | wc -l) jx, $(ls Libraries/JX/include/jcore/*.h | wc -l) jcore"
 
     - name: Filter compilation database to exclude third-party libraries
       run: |
         python3 -c "
         import json
-        EXCLUDE = ['/Libraries/JX/', '/Libraries/vendor/']
+        EXCLUDE = ['/Libraries/JX/', '/Libraries/vendor/', '/Libraries/vzic/', '/Libraries/include/', '/Libraries/openssl/']
         db = json.load(open('compile_commands.json'))
         filtered = [e for e in db if not any(x in e.get('file', '') for x in EXCLUDE)]
         json.dump(filtered, open('compile_commands.json', 'w'), indent=2)
@@ -225,11 +229,11 @@ jobs:
         mkdir -p Linux/Includes
         cd Linux && bash links.sh && cd ..
         mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore Libraries/JX/include/jximage
-        for h in Libraries/JX/libjx/code/*.h; do
-          ln -sf "../../libjx/code/$(basename "$h")" "Libraries/JX/include/jx/$(basename "$h")"
+        for f in Libraries/JX/libjx/code/*; do
+          ln -sf "../../libjx/code/$(basename "$f")" "Libraries/JX/include/jx/$(basename "$f")"
         done
-        for h in Libraries/JX/libjcore/code/*.h; do
-          ln -sf "../../libjcore/code/$(basename "$h")" "Libraries/JX/include/jcore/$(basename "$h")"
+        for f in Libraries/JX/libjcore/code/*; do
+          ln -sf "../../libjcore/code/$(basename "$f")" "Libraries/JX/include/jcore/$(basename "$f")"
         done
         for f in Libraries/JX/libjx/image/*; do
           ln -sf "../../libjx/image/$(basename "$f")" "Libraries/JX/include/jximage/$(basename "$f")"
@@ -239,7 +243,13 @@ jobs:
 
     - name: Run PVS-Studio analysis
       if: steps.check-creds.outputs.skip != 'true'
-      run: pvs-studio-analyzer analyze -f compile_commands.json -j
+      run: |
+        pvs-studio-analyzer analyze -f compile_commands.json -j \
+          -e Libraries/JX/ \
+          -e Libraries/vendor/ \
+          -e Libraries/vzic/ \
+          -e Libraries/include/ \
+          -e Libraries/openssl/
 
     - name: Convert results to SARIF
       if: steps.check-creds.outputs.skip != 'true'
