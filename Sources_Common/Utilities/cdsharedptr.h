@@ -83,7 +83,6 @@ public:
 		if (--*_ref == 0)
 		{
 			delete _ptr;
-			ptr = NULL;
 		}
 		else
 		{

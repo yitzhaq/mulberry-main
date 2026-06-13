@@ -31,6 +31,8 @@ public:
 	CIMAPUTF7()
 	{
 		mEncoding = false;
+		mAtomPos = 0;
+		mEncoder.base256[0] = mEncoder.base256[1] = mEncoder.base256[2] = 0;
 	}
 	virtual ~CIMAPUTF7() {}
 

@@ -26,7 +26,7 @@ class mimefilterbuf : public filterbuf
 {
 public:
 	mimefilterbuf(bool encodeit, bool for_network)
-		: filterbuf(encodeit)
+		: filterbuf(encodeit), mForNetwork(for_network)
 		{}
 	virtual ~mimefilterbuf()
 		{}
@@ -74,7 +74,7 @@ class mime_qp_filterbuf : public mimefilterbuf
 {
 public:
 	mime_qp_filterbuf(bool encodeit, bool for_network = false) : mimefilterbuf(encodeit, for_network)
-		{ mDecodeState = eDecodeNormal; }
+		{ mDecodeState = eDecodeNormal; mQuotedChar = 0; mEndlLast = 0; }
 	virtual ~mime_qp_filterbuf() {}
 
 protected:
@@ -97,7 +97,7 @@ class mime_base64_filterbuf : public mimefilterbuf
 {
 public:
 	mime_base64_filterbuf(bool encodeit, bool for_network = false) : mimefilterbuf(encodeit, for_network)
-		{ mAtomPos = 0; mEncodeLength = 0; }
+		{ mAtomPos = 0; mEncodeLength = 0; mAtom.base256[0] = mAtom.base256[1] = mAtom.base256[2] = 0; }
 	virtual ~mime_base64_filterbuf() {}
 
     virtual int sync ()		// Must output any remaining partial atom if encoding

@@ -375,8 +375,8 @@ basic_cdfilebuf<charT, traits>::overflow(int_type c)
 	// Check for change in read-write state
 	if (rw_ != eWrite)
 	{
-		// Check for previous write
-		if (rw_ == eWrite)
+		// Check for previous read
+		if (rw_ == eRead)
 		{
 			// Clear get area
 			this->setg(NULL, NULL, NULL);

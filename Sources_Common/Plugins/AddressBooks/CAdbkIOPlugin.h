@@ -70,7 +70,7 @@ public:
 	// Actual plug-in class
 
 	CAdbkIOPlugin(fspec file_spec) :
-		CPlugin(file_spec) {}
+		CPlugin(file_spec) { ::memset(&mAdbkIOInfo, 0, sizeof(mAdbkIOInfo)); }
 	virtual ~CAdbkIOPlugin() {}
 
 	// Initialisation

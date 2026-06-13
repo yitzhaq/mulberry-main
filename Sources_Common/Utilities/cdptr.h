@@ -26,7 +26,7 @@ public:
 	cdptr()
 		{ _ptr = nil; _ref_ctr = 0; }
 	cdptr(T* ptr)
-		{ _ptr = ptr; _ref_ctr++; }
+		{ _ptr = ptr; _ref_ctr = 1; }
 	~cdptr()
 		{ _ref_ctr--; if (!_ref_ctr) delete _ptr; _ptr = nil; }
 private:

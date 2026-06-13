@@ -37,7 +37,7 @@ namespace NSSL
 		inline StSSLObject(const StSSLObject<T>& a)
 			: mObj(a.release()) {}
 		inline StSSLObject& operator=(const StSSLObject<T>& a)
-			{ reset(a.release()); }
+			{ reset(a.release()); return *this; }
 		inline ~StSSLObject()
 			{ if (mObj) delete_obj(); }
 

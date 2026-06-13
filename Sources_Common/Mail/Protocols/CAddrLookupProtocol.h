@@ -32,7 +32,7 @@ class CAddressList;
 class CAddrLookupProtocol
 {
 public:
-			CAddrLookupProtocol() {}
+			CAddrLookupProtocol() : mAccount(NULL) {}
 	virtual ~CAddrLookupProtocol() {}
 		
 	virtual const CAddressAccount* GetAccount() const
