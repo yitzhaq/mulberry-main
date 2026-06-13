@@ -950,7 +950,7 @@ DEPENDS = $(OBJS:$O=.dd)
 $(PROGRAM): $(OBJS) $(LIBS)
 	$(CXX) -o $(PROGRAM) $^ $(LDFLAGS)
 
-Sources/Support/HResourceMap.o: Sources/Support/HResourceMap.cp Resources/xpms.res Resources/xpms.cp
+Sources/Support/HResourceMap.o: Sources/Support/HResourceMap.cpp Resources/xpms.res Resources/xpms.cpp
 
 ../Plug-ins/CRAM-MD5/sources/md5/md5c.o: ../Plug-ins/CRAM-MD5/sources/md5/md5c.c ../Plug-ins/CRAM-MD5/sources/md5/md5.h
 	 $(CC) -c -o $@ $<
@@ -975,7 +975,7 @@ $(LIBS):
 #
 # Automatic targets and rules:
 #
-%$O: %.cp
+%$O: %.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 
@@ -985,7 +985,7 @@ $(LIBS):
 %$O: %.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
-%.dd: %.cp
+%.dd: %.cpp
 	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 

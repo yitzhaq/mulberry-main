@@ -41,7 +41,7 @@
 #include <stdlib.h>
 #include <strstream>
 
-#include "CACAPCommon.cp"
+#include "CACAPCommon.cpp"
 
 #pragma mark -
 

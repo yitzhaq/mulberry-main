@@ -48,7 +48,7 @@ using namespace i18n;
 #include "CUTF8.h"
 #include "CUTF16.h"
 
-#include "CCharsetData.cp"
+#include "CCharsetData.cpp"
 
 #include <memory>
 #include <strstream>

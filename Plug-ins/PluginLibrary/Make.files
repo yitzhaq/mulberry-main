@@ -1,4 +1,4 @@
--suffix .cp
+-suffix .cpp
 
 @PluginLib.a
 -prefix ../Common/

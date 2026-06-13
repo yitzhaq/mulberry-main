@@ -119,16 +119,16 @@ distclean:
 %$O: %.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-%$O: %.cp
+%$O: %.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 %_plugin$O: %.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-%_plugin$O: %.cp
+%_plugin$O: %.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-%.dd: %.cp
+%.dd: %.cpp
 	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
@@ -140,7 +140,7 @@ distclean:
 	@$(SHELL) -ec '$(CC) -MM -MT "$*.o" -MF $@ $(CFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
-%_plugin.dd: %.cp
+%_plugin.dd: %.cpp
 	@$(SHELL) -ec '$(CXX) -MM -MT "$*_plugin.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 

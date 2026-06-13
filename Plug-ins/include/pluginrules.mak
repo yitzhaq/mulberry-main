@@ -36,7 +36,7 @@ distclean:
 	-$(MAKE) clean
 	-rm -f config.cache config.status config.log Makefile
 
-PluginDLLmain$O: ../Common/PluginDLLmain.cp sources/PluginDLLmain.h
+PluginDLLmain$O: ../Common/PluginDLLmain.cpp sources/PluginDLLmain.h
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 #
@@ -45,13 +45,7 @@ PluginDLLmain$O: ../Common/PluginDLLmain.cp sources/PluginDLLmain.h
 %$O: %.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-%$O: %.cp
-	$(CXX) -c $(CXXFLAGS) $< -o $@
-
 %_plugin$O: %.cpp
-	$(CXX) -c $(CXXFLAGS) $< -o $@
-
-%_plugin$O: %.cp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 %$O: %.c
@@ -60,20 +54,12 @@ PluginDLLmain$O: ../Common/PluginDLLmain.cp sources/PluginDLLmain.h
 %_plugin$O: %.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
-%.dd: %.cp
-	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
-	[ -s $@ ] || rm -f $@'
-
 %.dd: %.cpp
 	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %.dd: %.c
 	@$(SHELL) -ec '$(CC) -MM -MT "$*.o" -MF $@ $(CFLAGS) $<; \
-	[ -s $@ ] || rm -f $@'
-
-%_plugin.dd: %.cp
-	@$(SHELL) -ec '$(CXX) -MM -MT "$*_plugin.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 
 %_plugin.dd: %.cpp

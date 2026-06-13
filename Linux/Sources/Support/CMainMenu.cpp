@@ -34,8 +34,8 @@ struct SMenuBuilder
 	const char* cmd;
 };
 
-#include "CMainMenuBuild.cp"
-#include "CMainMenuContext.cp"
+#include "CMainMenuBuild.cpp"
+#include "CMainMenuContext.cpp"
 
 CMainMenu* CMainMenu::sMMenu = new CMainMenu;
 

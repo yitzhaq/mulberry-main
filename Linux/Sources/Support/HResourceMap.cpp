@@ -42,9 +42,9 @@ HResourceMap::HResourceMap()
 
 HPredefResourceMap::HPredefResourceMap()
 {
-	#include "icos.cp"
-	#include "xpms.cp"
-	#include "stringinit.cp"
+	#include "icos.cpp"
+	#include "xpms.cpp"
+	#include "stringinit.cpp"
 }
 
 HPredefResourceMap globalMap;

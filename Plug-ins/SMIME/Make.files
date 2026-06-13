@@ -1,4 +1,4 @@
--suffix .cp
+-suffix .cpp
 
 @SMIMEPlugin.so
 -prefix sources/

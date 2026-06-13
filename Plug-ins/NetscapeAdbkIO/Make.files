@@ -1,4 +1,4 @@
--suffix .cp
+-suffix .cpp
 
 @NetscapeAdbkIOPlugin.so
 -prefix sources/
