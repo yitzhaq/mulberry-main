@@ -50,12 +50,18 @@ jobs:
         python3 -c "
         import json, os
         db = json.load(open('${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json'))
+        changed = 0
         for entry in db:
-            for key in ('file', 'directory'):
-                if key in entry:
-                    entry[key] = os.path.normpath(entry[key])
+            d = entry.get('directory', '')
+            f = entry.get('file', '')
+            resolved = os.path.normpath(os.path.join(d, f))
+            if resolved != f:
+                changed += 1
+                entry['file'] = resolved
+            if d:
+                entry['directory'] = os.path.normpath(d)
         json.dump(db, open('${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json', 'w'), indent=2)
-        print(f'Normalized {len(db)} entries')
+        print(f'Normalized {len(db)} entries ({changed} paths resolved)')
         "
 
     - name: SonarCloud scan
