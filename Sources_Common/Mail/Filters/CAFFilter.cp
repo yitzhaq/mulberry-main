@@ -167,7 +167,7 @@ ExceptionCode CAFFilter::GetBytes(void* outBuffer, long& inByteCount)
 	char* p = (char*) outBuffer;
 
 	unsigned long len;
-	unsigned long max;
+	long max;
 
 	// Update progress at start
 	if (mProgress && (GetMarker() == 0))
