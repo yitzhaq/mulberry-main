@@ -80,90 +80,24 @@ jobs:
 
     - name: Create header symlinks required for analysis
       run: |
-        echo "=== Creating Mulberry header symlinks ==="
+        # Mulberry header symlinks (same as build process)
         mkdir -p Linux/Includes
-        cd Linux && bash links.sh
-        symcount=$(ls Includes/ | wc -l)
-        echo "Created $symcount symlinks in Linux/Includes/"
-        ls Includes/ | head -10
-        echo "---"
-        echo "Checking specific headers via symlinks:"
-        ls -la Includes/CMulberryApp.h 2>&1 || echo "MISSING: CMulberryApp.h"
-        ls -la Includes/CEmojiTable.h 2>&1 || echo "MISSING: CEmojiTable.h"
-        echo "Symlink target resolution:"
-        readlink -f Includes/CMulberryApp.h 2>&1 || echo "BROKEN: CMulberryApp.h"
-        readlink -f Includes/CEmojiTable.h 2>&1 || echo "BROKEN: CEmojiTable.h"
-        cd ..
+        cd Linux && bash links.sh && cd ..
 
-        echo "=== Creating JX/ACE config symlinks ==="
+        # JX include dirs (populated by JX build, not tracked in git)
+        mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore
+        for h in Libraries/JX/libjx/code/*.h; do
+          ln -sf "../../libjx/code/$(basename "$h")" "Libraries/JX/include/jx/$(basename "$h")"
+        done
+        for h in Libraries/JX/libjcore/code/*.h; do
+          ln -sf "../../libjcore/code/$(basename "$h")" "Libraries/JX/include/jcore/$(basename "$h")"
+        done
+
+        # JX/ACE config symlinks (created by configure)
         ln -sf config-linux.h Libraries/JX/ACE/ACE_wrappers/ace/config.h
         ln -sf ../include/make/sys/Linux-Intel-x86_64-gcc3 Libraries/JX/include/make/jx_config
-        ls -la Libraries/JX/ACE/ACE_wrappers/ace/config.h
-        readlink -f Libraries/JX/ACE/ACE_wrappers/ace/config.h
 
-        echo "=== JX include directories ==="
-        echo "Libraries/JX/include/:"
-        ls Libraries/JX/include/ 2>&1 || echo "MISSING: Libraries/JX/include/"
-        echo "---"
-        echo "Libraries/JX/include/jx/ (first 20):"
-        ls Libraries/JX/include/jx/ 2>/dev/null | head -20 || echo "MISSING or EMPTY"
-        echo "Total: $(ls Libraries/JX/include/jx/ 2>/dev/null | wc -l) entries"
-        echo "---"
-        echo "Libraries/JX/include/jcore/ (first 20):"
-        ls Libraries/JX/include/jcore/ 2>/dev/null | head -20 || echo "MISSING or EMPTY"
-        echo "Total: $(ls Libraries/JX/include/jcore/ 2>/dev/null | wc -l) entries"
-        echo "---"
-        echo "Libraries/JX/ACE/ACE_wrappers/ace/ (first 10):"
-        ls Libraries/JX/ACE/ACE_wrappers/ace/ 2>/dev/null | head -10 || echo "MISSING or EMPTY"
-
-        echo "=== Checking compilation database paths ==="
-        python3 -c "
-        import json, os
-        db = json.load(open('compile_commands.json'))
-        entry = next(e for e in db if 'CRemotePrefsSets' in e.get('file', ''))
-        d = entry['directory']
-        print(f'directory field: {d}')
-        print(f'directory exists: {os.path.isdir(d)}')
-        args = entry.get('arguments', [])
-        for a in args:
-            if a.startswith('-I'):
-                path = a[2:]
-                if not os.path.isabs(path):
-                    path = os.path.join(d, path)
-                exists = os.path.isdir(path)
-                if 'JX' in a or 'Includes' in a or not exists:
-                    print(f'  {a} -> {path} (exists={exists})')
-        "
-
-        echo "=== Clang default search paths ==="
-        /usr/lib/llvm-*/bin/clang -v -x c++ /dev/null -fsyntax-only 2>&1 | grep -A20 '#include.*search' || echo "Could not determine Clang search paths"
-
-        echo "=== Test: can Clang find JX headers with our -I paths? ==="
-        echo '#include <JXApplication.h>' > /tmp/test_include.cpp
-        /usr/lib/llvm-*/bin/clang -fsyntax-only -x c++ \
-          -I${{ github.workspace }}/Libraries/JX/include/jx \
-          -I${{ github.workspace }}/Libraries/JX/include/jcore \
-          -I${{ github.workspace }}/Libraries/JX/ACE/ACE_wrappers \
-          /tmp/test_include.cpp 2>&1 | head -5 || echo "Test compile exited $?"
-
-        echo "=== Mulberry_Prefix.h includes ==="
-        head -30 Linux/Sources/Mulberry_Prefix.h 2>&1 || echo "MISSING"
-
-        echo "=== Autoconf-generated files ==="
-        ls -la config.h config.status Makefile 2>&1 || echo "No autoconf outputs (expected)"
-        ls -la Linux/Makefile 2>&1 || echo "No Linux/Makefile (expected)"
-
-        echo "=== Symlink integrity check ==="
-        broken=$(find Linux/Includes/ -type l ! -exec test -e {} \; -print 2>/dev/null | wc -l)
-        total=$(find Linux/Includes/ -type l 2>/dev/null | wc -l)
-        echo "Linux/Includes/: $total symlinks, $broken broken"
-        if [ "$broken" -gt 0 ]; then
-          echo "First 10 broken symlinks:"
-          find Linux/Includes/ -type l ! -exec test -e {} \; -print 2>/dev/null | head -10
-        fi
-
-        echo "=== Working directory ==="
-        pwd
+        echo "Symlinks: $(find Linux/Includes -type l | wc -l) Mulberry, $(ls Libraries/JX/include/jx/*.h | wc -l) jx, $(ls Libraries/JX/include/jcore/*.h | wc -l) jcore"
 
     - name: Filter compilation database to exclude third-party libraries
       run: |
