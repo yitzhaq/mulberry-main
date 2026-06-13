@@ -67,7 +67,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          cppcheck \
+          cppcheck python3 unicode-cldr-core \
           libaspell-dev libbrotli-dev libfl-dev libfontconfig-dev \
           libfreetype-dev libglib2.0-dev libkrb5-dev libldap-dev \
           libpcre3-dev libsodium-dev libssl-dev libunistring-dev libxml2-dev \
@@ -78,8 +78,14 @@ jobs:
       with:
         name: compilation-database
 
-    - name: Create header symlinks required for analysis
+    - name: Generate build artifacts required for analysis
       run: |
+        # Emoji table (generated from CLDR data at build time, gitignored)
+        python3 scripts/generate-emoji-table.py \
+          Sources_Common/i18n/Charsets/CEmojiTable.h \
+          /usr/share/unicode/cldr/common/annotations/en.xml \
+          /usr/share/unicode/cldr/common/annotationsDerived/en.xml
+
         # Mulberry header symlinks (same as build process)
         mkdir -p Linux/Includes
         cd Linux && bash links.sh && cd ..
@@ -91,6 +97,9 @@ jobs:
         done
         for h in Libraries/JX/libjcore/code/*.h; do
           ln -sf "../../libjcore/code/$(basename "$h")" "Libraries/JX/include/jcore/$(basename "$h")"
+        done
+        for f in Libraries/JX/libjx/image/*; do
+          ln -sf "../../libjx/image/$(basename "$f")" "Libraries/JX/include/jximage/$(basename "$f")"
         done
 
         # JX/ACE config symlinks (created by configure)
@@ -123,12 +132,16 @@ jobs:
     - name: Convert results to SARIF
       if: always()
       run: |
-        export PATH="$HOME/.local/bin:$PATH"
-        codechecker parse \
-          ${{ steps.codechecker.outputs.analyze-output }} \
-          --export sarif \
-          --output ${{ github.workspace }}/codechecker.sarif \
-          || true
+        CC=$(find /home/runner -name codechecker -type f -executable 2>/dev/null | head -1)
+        echo "Found codechecker at: $CC"
+        if [ -n "$CC" ]; then
+          "$CC" parse \
+            ${{ steps.codechecker.outputs.analyze-output }} \
+            --export sarif \
+            --output ${{ github.workspace }}/codechecker.sarif
+        else
+          echo "::warning::codechecker binary not found, skipping SARIF export"
+        fi
 
     - name: Upload SARIF to GitHub Security
       if: always()
@@ -179,6 +192,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          python3 unicode-cldr-core \
           libaspell-dev libbrotli-dev libfl-dev libfontconfig-dev \
           libfreetype-dev libglib2.0-dev libkrb5-dev libldap-dev \
           libpcre3-dev libsodium-dev libssl-dev libunistring-dev libxml2-dev \
@@ -200,6 +214,28 @@ jobs:
       uses: actions/download-artifact@v8
       with:
         name: compilation-database
+
+    - name: Generate build artifacts required for analysis
+      if: steps.check-creds.outputs.skip != 'true'
+      run: |
+        python3 scripts/generate-emoji-table.py \
+          Sources_Common/i18n/Charsets/CEmojiTable.h \
+          /usr/share/unicode/cldr/common/annotations/en.xml \
+          /usr/share/unicode/cldr/common/annotationsDerived/en.xml
+        mkdir -p Linux/Includes
+        cd Linux && bash links.sh && cd ..
+        mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore
+        for h in Libraries/JX/libjx/code/*.h; do
+          ln -sf "../../libjx/code/$(basename "$h")" "Libraries/JX/include/jx/$(basename "$h")"
+        done
+        for h in Libraries/JX/libjcore/code/*.h; do
+          ln -sf "../../libjcore/code/$(basename "$h")" "Libraries/JX/include/jcore/$(basename "$h")"
+        done
+        for f in Libraries/JX/libjx/image/*; do
+          ln -sf "../../libjx/image/$(basename "$f")" "Libraries/JX/include/jximage/$(basename "$f")"
+        done
+        ln -sf config-linux.h Libraries/JX/ACE/ACE_wrappers/ace/config.h
+        ln -sf ../include/make/sys/Linux-Intel-x86_64-gcc3 Libraries/JX/include/make/jx_config
 
     - name: Run PVS-Studio analysis
       if: steps.check-creds.outputs.skip != 'true'
