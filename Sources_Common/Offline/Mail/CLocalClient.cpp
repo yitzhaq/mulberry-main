@@ -3312,7 +3312,7 @@ void CLocalClient::ReadIndex(cdfstream& in, SIndexHeader& header, SIndexList& in
 	in.seekg(mDiskHeaderSize);
 
 	std::streampos expected_size = static_cast<std::streampos>(mDiskHeaderSize) +
-		static_cast<std::streampos>(header.IndexSize()) * mDiskRecordSize;
+		static_cast<std::streamoff>(header.IndexSize() * mDiskRecordSize);
 
 	// Allow some tolerance for file system overhead, but reject grossly mismatched sizes
 	if (file_size < expected_size || file_size > expected_size + static_cast<std::streamoff>(4096))

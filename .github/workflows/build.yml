@@ -73,6 +73,17 @@ jobs:
           libpcre3-dev libsodium-dev libssl-dev libunistring-dev libxml2-dev \
           libx11-dev libxext-dev libxft-dev libxpm-dev libzstd-dev
 
+    - name: Install Infer
+      run: |
+        INFER_VERSION=$(curl -sL https://api.github.com/repos/facebook/infer/releases/latest \
+          | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'])")
+        echo "Installing Infer ${INFER_VERSION}"
+        curl -sL "https://github.com/facebook/infer/releases/download/${INFER_VERSION}/infer-linux-x86_64-${INFER_VERSION}.tar.xz" \
+          | sudo tar xJ -C /opt
+        sudo mv "/opt/infer-linux-x86_64-${INFER_VERSION}" /opt/infer
+        sudo ln -sf /opt/infer/bin/infer /usr/local/bin/infer
+        infer --version
+
     - name: Download compilation database
       uses: actions/download-artifact@v8
       with:
@@ -106,9 +117,6 @@ jobs:
         ln -sf config-linux.h Libraries/JX/ACE/ACE_wrappers/ace/config.h
         ln -sf ../include/make/sys/Linux-Intel-x86_64-gcc3 Libraries/JX/include/make/jx_config
 
-        # Prefix header path: compilation DB has -include Sources/Mulberry_Prefix.h
-        # relative to Linux/, but CodeChecker resolves from workspace root
-        ln -sf Linux/Sources Sources
 
         echo "Symlinks: $(find Linux/Includes -type l | wc -l) Mulberry, $(ls Libraries/JX/include/jx/*.h | wc -l) jx, $(ls Libraries/JX/include/jcore/*.h | wc -l) jcore"
 
@@ -136,16 +144,11 @@ jobs:
     - name: Convert results to SARIF
       if: always()
       run: |
-        CC=$(find /home/runner -name codechecker -type f -executable 2>/dev/null | head -1)
-        echo "Found codechecker at: $CC"
-        if [ -n "$CC" ]; then
-          "$CC" parse \
-            ${{ steps.codechecker.outputs.analyze-output }} \
-            --export sarif \
-            --output ${{ github.workspace }}/codechecker.sarif
-        else
-          echo "::warning::codechecker binary not found, skipping SARIF export"
-        fi
+        /home/runner/.local/bin/codechecker parse \
+          ${{ steps.codechecker.outputs.analyze-output }} \
+          --export sarif \
+          --output ${{ github.workspace }}/codechecker.sarif \
+          || true
 
     - name: Upload SARIF to GitHub Security
       if: always()
