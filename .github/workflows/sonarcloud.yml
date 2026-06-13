@@ -45,6 +45,19 @@ jobs:
       run: |
         build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} make -j$(nproc)
 
+    - name: Normalize compilation database paths
+      run: |
+        python3 -c "
+        import json, os
+        db = json.load(open('${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json'))
+        for entry in db:
+            for key in ('file', 'directory'):
+                if key in entry:
+                    entry[key] = os.path.normpath(entry[key])
+        json.dump(db, open('${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json', 'w'), indent=2)
+        print(f'Normalized {len(db)} entries')
+        "
+
     - name: SonarCloud scan
       uses: SonarSource/sonarqube-scan-action@v7
       env:
