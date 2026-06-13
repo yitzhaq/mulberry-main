@@ -32,9 +32,7 @@ server-side attachment decoding, SPECIAL-USE, MULTIAPPEND,
 LIST-EXTENDED, LIST-STATUS, SEARCHRES, ESEARCH/ESORT, APPENDLIMIT,
 STATUS=SIZE, SORT=DISPLAY, and WITHIN extensions — completing all
 15 mandatory IMAP4rev2 extensions. It includes comprehensive
-bug fixes found through static analysis with seven tools (cppcheck,
-clang-tidy, Facebook Infer, GCC extended warnings, GCC -fanalyzer,
-CodeQL, and Coverity),
+bug fixes found through extensive [static analysis](#static-analysis),
 improved RFC 3676 format=flowed compliance, Unicode clipboard
 support, automatic recovery from network connection drops, and
 recovery of sixteen patches from the original developer's SVN
@@ -109,6 +107,20 @@ protocol clients (IMAP, SMTP, POP3, CalDAV, CardDAV), the message
 model, address books, calendars, preferences, and text processing.
 Platform-specific directories provide the GUI layer using each
 platform's native toolkit.
+
+## Static Analysis
+
+This codebase is regularly analyzed with the following tools:
+
+- [Cppcheck](https://cppcheck.sourceforge.io) - a tool for static C/C++ code analysis
+- [CodeQL](https://codeql.github.com/) - discover vulnerabilities across a codebase
+- [Clang-Tidy](https://clang.llvm.org/extra/clang-tidy/) - a clang-based C++ linter tool
+- [Coverity Scan](https://www.blackduck.com/static-analysis-tools-sast/coverity.html) - find code quality defects in large-scale, complex software
+- [Infer](https://fbinfer.com/) - a tool to detect bugs in Java and C/C++/Objective-C code
+- [SonarQube Cloud](https://www.sonarsource.com/products/sonarqube/cloud/) - automated code quality and security reviews for high velocity software development
+- [PVS-Studio](https://pvs-studio.com/en/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code
+- [MegaLinter](https://megalinter.io/) - an open-source tool for CI/CD workflows that analyzes the consistency of your code
+- GCC extended warnings and GCC -fanalyzer
 
 ## License
 
