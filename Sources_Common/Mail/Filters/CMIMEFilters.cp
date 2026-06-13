@@ -222,12 +222,12 @@ ExceptionCode C8bitFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 		case eLineBuild:
 			{
 				// Read more if current is less than one line
-				if (mBufferLength <= prefs_wrap)
+				if (static_cast<unsigned long>(mBufferLength) <= prefs_wrap)
 				{
 					// Copy remaining to start of buffer
 					if (mBufferLength)
 						::memmove(mBuffer, mBufferPos, mBufferLength);
-					
+
 					// Read from input into buffer
 					SInt32 read_len = cMaxBuffer - mBufferLength;
 					OSErr err = mStream->GetBytes(mBuffer + mBufferLength, read_len);
@@ -239,19 +239,19 @@ ExceptionCode C8bitFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 					mBufferLength += read_len;
 					mBufferPos = mBuffer;
 				}
-				
+
 				// Is any data left to process
 				if (mBufferLength < 1)
 				{
 					done = true;
 					break;
 				}
-				
+
 				// Now fill a line
 				long lastSpace = -1;
-				long count = 0;
+				unsigned long count = 0;
 				const unsigned char* endLine = mBufferPos;
-				
+
 				// Punt over \n if \r was last
 				if (mCRLast && (*endLine == '\n'))
 				{
@@ -264,15 +264,15 @@ ExceptionCode C8bitFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 
 				// Loop while waiting for line break or exceed of wrap length
 				while ((*endLine != '\r') && (*endLine != '\n') &&
-							 ((count <= prefs_wrap) || (lastSpace == -1) && (count <= mLineBufferLength)) &&
-							 (mBufferLength - count > 0))
+							 ((count <= prefs_wrap) || ((lastSpace == -1) && (count <= static_cast<unsigned long>(mLineBufferLength)))) &&
+							 (count < static_cast<unsigned long>(mBufferLength)))
 				{
 					if (*endLine==' ')
 						lastSpace = count;
 					endLine++;
 					count++;
 				}
-				
+
 				// Check break state
 				if ((*endLine != '\r') && (*endLine != '\n') && (count > prefs_wrap))
 				{
@@ -305,23 +305,23 @@ ExceptionCode C8bitFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 				else
 				{
 					// Check whether at end of text
-					if (mBufferLength - count > 0)
+					if (count < static_cast<unsigned long>(mBufferLength))
 					{
 						// Copy line to buffer
 						::memcpy(mLineBuffer, mBufferPos, count);
 						mLineLength = count;				// Adjust count to last char
-						
+
 						// Add line end
 						mLineBuffer[mLineLength++] = ::get_endl(mOutEndl)[0];
 						if (::get_endl_len(mOutEndl) == 2)
 							mLineBuffer[mLineLength++] = ::get_endl(mOutEndl)[1];
-						
+
 						// Punt line end
 						mCRLast = false;
 						if (*endLine == '\r')
 						{
 							count++;
-							if (mBufferLength - count > 0)
+							if (count < static_cast<unsigned long>(mBufferLength))
 							{
 								if (endLine[1] == '\n')
 									count++;
@@ -480,12 +480,12 @@ ExceptionCode CQPFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 		case eLineBuild:
 		{
 			// Read more if current is less than one line
-			if (mBufferLength <= prefs_wrap)
+			if (static_cast<unsigned long>(mBufferLength) <= prefs_wrap)
 			{
 				// Copy remaining to start of buffer
 				if (mBufferLength)
 					::memmove(mBuffer, mBufferPos, mBufferLength);
-				
+
 				// Read from input into buffer
 				SInt32 read_len = cMaxBuffer - mBufferLength;
 				OSErr err = mStream->GetBytes(mBuffer + mBufferLength, read_len);
@@ -497,28 +497,28 @@ ExceptionCode CQPFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 				mBufferLength += read_len;
 				mBufferPos = mBuffer;
 			}
-			
+
 			// Is any data left to process
 			if (mBufferLength < 1)
 			{
 				done = true;
 				break;
 			}
-			
+
 			// Now fill a line
 			long lastSpace = -1;
 			long tempSpace = -1;
-			long count = 0;
+			unsigned long count = 0;
 			long temp_count = 0;
 			bool hard_break = false;
 			mLineLength = 0;
 			const unsigned char* endLine = mBufferPos;
 			unsigned char* tempLine = mTempBuffer;
-			
+
 			// Loop while waiting for line break or exceed of wrap length
 			while (!hard_break &&
-						 (mLineLength <= prefs_wrap - 1) &&
-						 (mBufferLength - count > 0))
+						 (static_cast<unsigned long>(mLineLength) <= prefs_wrap - 1) &&
+						 (count < static_cast<unsigned long>(mBufferLength)))
 			{
 				if (*endLine==' ')
 				{
@@ -566,7 +566,7 @@ ExceptionCode CQPFilter::GetBytes(void* outBuffer, SInt32& inByteCount)
 			}
 			
 			// Check break state
-			if ((mLineLength > prefs_wrap - 1) && !hard_break)
+			if ((static_cast<unsigned long>(mLineLength) > prefs_wrap - 1) && !hard_break)
 			{
 				// Exceed wrap - check for spaces
 				if (lastSpace > 0)

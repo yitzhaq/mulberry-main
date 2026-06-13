@@ -122,8 +122,8 @@ void CServerBrowseTable::DoSelectionChanged()
 	// Create only if hierarchy selected
 	if (!mOpenMode)
 	{
-		if (TestSelectionAnd((TestSelectionPP) &CServerBrowseTable::TestSelectionInferiors) && IsSingleSelection() ||
-			mSingle && GetSingleServer()->FlatWD())
+		if ((TestSelectionAnd((TestSelectionPP) &CServerBrowseTable::TestSelectionInferiors) && IsSingleSelection()) ||
+			(mSingle && GetSingleServer()->FlatWD()))
 			mCreateButton->Activate();
 		else
 			mCreateButton->Deactivate();

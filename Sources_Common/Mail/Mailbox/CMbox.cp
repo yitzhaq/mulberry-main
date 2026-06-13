@@ -478,7 +478,7 @@ bool CMbox::AnyNew() const
 void CMbox::CheckMyRights()
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	// Force status info
@@ -507,7 +507,7 @@ void CMbox::CheckMyRights()
 void CMbox::AddACL(const CMboxACL* acl)
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	InitStatusInfo();
@@ -527,7 +527,7 @@ void CMbox::AddACL(const CMboxACL* acl)
 void CMbox::SetACL(CMboxACL* acl)
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	InitStatusInfo();
@@ -566,7 +566,7 @@ void CMbox::SetACL(CMboxACL* acl)
 void CMbox::DeleteACL(CMboxACL* acl)
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	InitStatusInfo();
@@ -598,7 +598,7 @@ void CMbox::DeleteACL(CMboxACL* acl)
 void CMbox::ResetACLs(const CMboxACLList* acls)
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	InitStatusInfo();
@@ -631,7 +631,7 @@ void CMbox::ResetACLs(const CMboxACLList* acls)
 void CMbox::CheckACLs()
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	InitStatusInfo();
@@ -670,7 +670,7 @@ void CMbox::CheckACLs()
 void CMbox::AddQuotaRoot(const char* txt)
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	if (!mStatusInfo)
@@ -696,7 +696,7 @@ CQuotaRootList* CMbox::GetQuotas()
 	CQuotaRootList* list = new CQuotaRootList;
 
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return list;
 
 	if (mStatusInfo && mStatusInfo->mQuotas)
@@ -717,7 +717,7 @@ CQuotaRootList* CMbox::GetQuotas()
 void CMbox::CheckQuotas()
 {
 	// If its local then it must be cached, and must have logged in protocol
-	if (IsLocalMbox() && !IsCachedMbox() || !mMailer->IsLoggedOn())
+	if ((IsLocalMbox() && !IsCachedMbox()) || !mMailer->IsLoggedOn())
 		return;
 
 	// Force status info

@@ -839,7 +839,7 @@ void CActionItem::GenerateSIEVEScript(std::ostream& out) const
         else if (flags & NMessage::eLabels)
         {
             // Scan over all labels and add each
-            for(int i = 0; i < NMessage::eMaxLabels; i++)
+            for(unsigned long i = 0; i < NMessage::eMaxLabels; i++)
             {
                 if (flags & (NMessage::eLabel1 << i))
                 {

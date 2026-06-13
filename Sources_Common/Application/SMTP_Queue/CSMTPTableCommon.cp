@@ -136,7 +136,7 @@ bool CSMTPTable::OpenMailMessage(TableIndexT row, bool* option_key)
 		theMsg->ChangeFlags(NMessage::eHold, true);
 
 	// Don't display if its deleted or being sent
-	if (theMsg->IsSendNow() || theMsg->IsDeleted() && !CPreferences::sPrefs->mOpenDeleted.GetValue())
+	if (theMsg->IsSendNow() || (theMsg->IsDeleted() && !CPreferences::sPrefs->mOpenDeleted.GetValue()))
 	{
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 		::SysBeep(1);

@@ -108,7 +108,7 @@ const char* CTextEngine::WrapLines(const char* text, unsigned long length, unsig
 		
 		// Now allow lines without spaces upto 500 characters long to prevent wrapping
 		// of long URLs
-		else if ((count >= wrap_len) && (lastSpace > 0) || (count > 500))
+		else if ((((unsigned long)count >= wrap_len) && (lastSpace > 0)) || (count > 500))
 		{
 			// Output upto last space
 			if (lastSpace > 0)
@@ -358,7 +358,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 				break;
 
 			// Check distance between last CRLF and this and force rewrap off if it might be end of para
-			if (lastCRLF - remaining < wrap_len - 10)
+			if ((unsigned long)(lastCRLF - remaining) < wrap_len - 10)
 				rewrap = false;
 			lastCRLF = remaining;
 
@@ -380,7 +380,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 				AddPrefix(out, prefix, prefix_length, 1, prefix_depth, prefixed);
 
 				// Adjust prefix counter length for prefixes longer than wrap length
-				if (prefixed >= wrap_len)
+				if ((unsigned long)prefixed >= wrap_len)
 					prefixed = wrap_len - 16;
 
 				crlf_run = (*text == lendl1);
@@ -398,7 +398,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 					AddPrefix(out, prefix, prefix_length, 1, prefix_depth, prefixed);
 
 					// Adjust prefix counter length for prefixes longer than wrap length
-					if (prefixed >= wrap_len)
+					if ((unsigned long)prefixed >= wrap_len)
 						prefixed = wrap_len - 16;
 
 					crlf_run = true;
@@ -414,7 +414,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 					AddPrefix(out, prefix, prefix_length, 1, prefix_depth, prefixed);
 
 					// Adjust prefix counter length for prefixes longer than wrap length
-					if (prefixed >= wrap_len)
+					if ((unsigned long)prefixed >= wrap_len)
 						prefixed = wrap_len - 16;
 
 					crlf_run = false;
@@ -440,7 +440,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 			lastSpace = -1;
 			first = false;
 		}
-		else if (prefixed + partial_line + count >= wrap_len)
+		else if ((unsigned long)(prefixed + partial_line + count) >= wrap_len)
 		{
 			// Output upto last space
 			if ((lastSpace > 0) || partial_line)
@@ -508,7 +508,7 @@ const char* CTextEngine::QuoteLines(const char* text, unsigned long length,
 				AddPrefix(out, prefix, prefix_length, 1, prefix_depth, prefixed);
 
 				// Adjust prefix counter length for prefixes longer than wrap length
-				if (prefixed >= wrap_len)
+				if ((unsigned long)prefixed >= wrap_len)
 					prefixed = wrap_len - 16;
 			}
 		}

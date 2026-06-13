@@ -223,7 +223,7 @@ void CPrefsAccount::Receive(JBroadcaster* sender, const Message& message)
 				break;
 			default:
 				// Update existing account
-				if ((mAccountValue >= 0) && (mAccountValue != index - eMailAccountPopup))
+				if ((mAccountValue >= 0) && ((JIndex) mAccountValue != index - eMailAccountPopup))
 					UpdateAccount();
 				
 				// Set new value

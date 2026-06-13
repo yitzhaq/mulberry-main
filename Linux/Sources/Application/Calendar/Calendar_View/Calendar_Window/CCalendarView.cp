@@ -632,6 +632,9 @@ void CCalendarView::ResetState(bool force)
 	case NCalendarView::eViewSummary:
 		OnSummaryBtn();
 		break;
+	case NCalendarView::eViewFreeBusy:
+		ResetView(NCalendarView::eViewFreeBusy);
+		break;
 	}
 
 	// If forced reset, save it

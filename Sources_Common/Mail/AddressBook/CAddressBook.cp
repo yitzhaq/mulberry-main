@@ -60,7 +60,7 @@ CAddressBook::CAddressBook()
 	SetFlags(eIsProtocol, true);
 	SetFlags(eIsDirectory, true);
 	SetFlags(eHasExpanded, true);
-	mSize = ULONG_MAX;
+	mSize = 0xFFFFFFFF;
 	mLastSync = 0;
 	mACLs = NULL;
 	mRefCount = 0;
@@ -79,7 +79,7 @@ CAddressBook::CAddressBook(CAdbkProtocol* proto)
 	mName = proto->GetAddressAccount()->GetBaseRURL();;
 	mShortName = mName;
 	mDisplayName = proto->GetAccountName();
-	mSize = ULONG_MAX;
+	mSize = 0xFFFFFFFF;
 	mLastSync = 0;
 	mACLs = NULL;
 	mRefCount = 0;
@@ -95,7 +95,7 @@ CAddressBook::CAddressBook(CAdbkProtocol* proto, CAddressBook* parent, bool is_a
 	SetFlags(eIsAdbk, is_adbk);
 	SetFlags(eIsDirectory, is_dir);
 	mName = name;
-	mSize = ULONG_MAX;
+	mSize = 0xFFFFFFFF;
 	mLastSync = 0;
 	mACLs = NULL;
 	mRefCount = 0;

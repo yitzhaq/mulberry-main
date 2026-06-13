@@ -999,8 +999,8 @@ void InsertPathIntoStringWithQuotes(cdstring& result, const cdstring& cmd, const
 	}
 	
 	// Check whether %s already surrounded by quotes
-	bool quoted = (p[-1] == '\"') && (p[2] == '\"') ||
-					(p[-1] == '\'') && (p[2] == '\'');
+	bool quoted = ((p[-1] == '\"') && (p[2] == '\"')) ||
+					((p[-1] == '\'') && (p[2] == '\''));
 	
 	// Force path to be quoted if quotes not around %s
 	cdstring actual_path(path);

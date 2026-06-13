@@ -1089,7 +1089,7 @@ void C3PaneWindow::OptionsSetView()
 	mSplitter2->SetRelativeSplitPos(options.GetSplit2Pos());
 	
 	// Set visibility (force at least list to be on - sanity check)
-	ShowList(options.GetListVisible() || !options.GetItemsVisible() && !options.GetPreviewVisible());
+	ShowList(options.GetListVisible() || (!options.GetItemsVisible() && !options.GetPreviewVisible()));
 	ShowItems(options.GetItemsVisible());
 	ShowPreview(options.GetPreviewVisible());
 	
@@ -1154,12 +1154,12 @@ void C3PaneWindow::OptionsSaveView()
 	}
 	
 	// Set the splits
-	if (options.GetSplit1Pos() != mSplitter1->GetRelativeSplitPos())
+	if (options.GetSplit1Pos() != static_cast<unsigned long>(mSplitter1->GetRelativeSplitPos()))
 	{
 		options.SetSplit1Pos(mSplitter1->GetRelativeSplitPos());
 		dirty = true;
 	}
-	if (options.GetSplit2Pos() != mSplitter2->GetRelativeSplitPos())
+	if (options.GetSplit2Pos() != static_cast<unsigned long>(mSplitter2->GetRelativeSplitPos()))
 	{
 		options.SetSplit2Pos(mSplitter2->GetRelativeSplitPos());
 		dirty = true;

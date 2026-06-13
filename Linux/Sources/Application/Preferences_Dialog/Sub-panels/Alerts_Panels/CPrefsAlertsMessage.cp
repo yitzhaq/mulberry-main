@@ -189,7 +189,7 @@ void CPrefsAlertsMessage::Receive(JBroadcaster* sender, const Message& message)
 				break;
 			default:
 				// Update existing style
-				if ((mStyleValue >= 0) && (mStyleValue != index - eStyleFirst))
+				if ((mStyleValue >= 0) && ((JIndex) mStyleValue != index - eStyleFirst))
 					UpdateNotifaction();
 
 				// Set new style

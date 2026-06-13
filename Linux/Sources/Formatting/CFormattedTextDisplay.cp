@@ -290,7 +290,7 @@ const unichar_t* CFormattedTextDisplay::ParseBody(const unichar_t* body, EConten
 						{
 							std::unique_ptr<CParserPlain> PParser(new CParserPlain(data.get(), mOverrideList, mClickList));
 						
-							for(int j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
+							for(size_t j = 0; j < CPreferences::sPrefs->mRecognizeURLs.GetValue().size(); j++)
 								PParser->AddURL(CPreferences::sPrefs->mRecognizeURLs.GetValue()[j].c_str());
 							PParser->LookForURLs(mText.length());
 						}

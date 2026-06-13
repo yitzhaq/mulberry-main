@@ -448,7 +448,7 @@ void CServerTable::GetLogonState(bool& enabled, bool& pushed)
 	if (mManager)
 	{
 		// Logon button must have single server selected
-		if (mSingle || TestSelectionAnd((TestSelectionPP) &CServerTable::TestSelectionServer) && IsSingleSelection())
+		if (mSingle || (TestSelectionAnd((TestSelectionPP) &CServerTable::TestSelectionServer) && IsSingleSelection()))
 		{
 			CMboxProtocol* proto = NULL;
 

@@ -914,7 +914,7 @@ void CMailboxView::ChangedMessage(const CMessage* aMsg)
 	if (!mbox)
 		return;
 
-	long msg_index = mbox->GetMessageIndex(aMsg, true);
+	unsigned long msg_index = mbox->GetMessageIndex(aMsg, true);
 
 	// NB May have an index > number of rows during filtering as table
 	// has not yet been updated to account for new messages being filtered

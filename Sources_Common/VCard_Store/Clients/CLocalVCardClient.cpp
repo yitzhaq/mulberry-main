@@ -1032,6 +1032,11 @@ void CLocalVCardClient::SearchAddressBook(CAddressBook* adbk, const cdstring& pa
 		case CAdbkAddress::eNotes:
 			prop_names.push_back(vCard::cVCardProperty_NOTE);
 			break;
+		case CAdbkAddress::eCalendar:
+			prop_names.push_back(vCard::cVCardProperty_CALENDAR_ADDRESS);
+			break;
+		default:
+			break;
 		}
 	}
 

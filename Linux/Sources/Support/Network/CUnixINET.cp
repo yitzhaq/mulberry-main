@@ -166,7 +166,7 @@ bool CUnixINET::GetInterfaceIPs(unsigned long*& ips)
 			return false;
 		}
 
-		if (ifc.ifc_len == sizeof(struct ifreq) * numreqs)
+		if (static_cast<unsigned long>(ifc.ifc_len) == sizeof(struct ifreq) * numreqs)
 		{
 		    /* assume it overflowed and try again */
 		    numreqs += 10;
@@ -281,7 +281,7 @@ bool CUnixINET::InterfaceTest(EInterfaceTest test)
 			return false;
 		}
 
-		if (ifc.ifc_len == sizeof(struct ifreq) * numreqs)
+		if (static_cast<unsigned long>(ifc.ifc_len) == sizeof(struct ifreq) * numreqs)
 		{
 		    /* assume it overflowed and try again */
 		    numreqs += 10;

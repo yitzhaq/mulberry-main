@@ -245,7 +245,7 @@ CToolbarItem::SToolbarItem sItems[] =
 	// Window
 	{ CToolbarItem::ePushButton, CToolbarManager::eToolbar_CollapseHeader, false, IDI_COLLAPSEHEADER, false, IDC_TOOLBARWINDOWCOLLAPSEHEADERBTN, 0, 0, 0, 0 }, 				// Collapse Header
 
-	{ CToolbarItem::eNone, 0, 0, 0, 0, 0, 0, 0 }, 																															// Last item
+	{ CToolbarItem::eNone, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 																														// Last item
 
 #elif __dest_os == __linux_os
 
@@ -345,7 +345,7 @@ CToolbarItem::SToolbarItem sItems[] =
 	// Window
 	{ CToolbarItem::ePushButton, CToolbarManager::eToolbar_CollapseHeader, false, IDI_COLLAPSEHEADER, false, CCommand::eToolbarWindowsExpandHeaderBtn, 0, 0, 0, 0 }, 			// Collapse Header
 
-	{ CToolbarItem::eNone, 0, 0, 0, 0, 0, 0, 0 }, 																															// Last item
+	{ CToolbarItem::eNone, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 																														// Last item
 
 #endif
 

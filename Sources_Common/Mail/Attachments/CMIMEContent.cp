@@ -632,8 +632,9 @@ void CMIMEContent::SetContentParameter(const char* param1, const char* param2)
 		SetMappedName(name_param);
 	}
 	else
+	{
 		// Ignore others for now
-		;
+	}
 }
 
 // Remove a parameter
@@ -801,8 +802,9 @@ void CMIMEContent::SetContentDispositionParameter(const char* param1, const char
 		SetMappedName(name_param);
 	}
 	else
+	{
 		// Ignore others for now
-		;
+	}
 }
 
 

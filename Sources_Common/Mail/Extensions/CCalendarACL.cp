@@ -363,12 +363,12 @@ void CCalendarACL::GenerateACE(xmllib::XMLDocument* xmldoc, xmllib::XMLNode* acl
 	
 	// Special check for "DAV:all"
 	if (AllRights() ||
-		HasRight(CCalendarACL::eCalACL_Read) &&
+		(HasRight(CCalendarACL::eCalACL_Read) &&
 		HasRight(CCalendarACL::eCalACL_Write) &&
 		HasRight(CCalendarACL::eCalACL_Schedule) &&
 		HasRight(CCalendarACL::eCalACL_Create) &&
 		HasRight(CCalendarACL::eCalACL_Delete) &&
-		HasRight(CCalendarACL::eCalACL_Admin))
+		HasRight(CCalendarACL::eCalACL_Admin)))
 		new xmllib::XMLNode(xmldoc, new xmllib::XMLNode(xmldoc, grant, http::webdav::cProperty_privilege), http::webdav::cProperty_privilege_all);
 	else
 	{

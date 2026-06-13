@@ -191,7 +191,7 @@ void CRulesActionLocal::OnCreate(CRulesDialog* dlog)
 void CRulesActionLocal::InitLabelNames()
 {
 	// Change name of labels
-	for(short i = eRules_Flag_Label1; i < eRules_Flag_Label1 + NMessage::eMaxLabels; i++)
+	for(int i = eRules_Flag_Label1; i < eRules_Flag_Label1 + static_cast<int>(NMessage::eMaxLabels); i++)
 	{
 		cdstring labelName(CPreferences::sPrefs->mLabels.GetValue()[i - eRules_Flag_Label1]->name);
 		mPopup2->SetItemText(i, labelName);

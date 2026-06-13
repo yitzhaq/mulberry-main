@@ -1023,7 +1023,7 @@ void CMailboxTable::ResetTable(bool scroll_new)
 		// Prevent screen updates because of multi-thread access
 		StValueChanger<bool> _change(mListChanging, true);
 
-		long num_msgs = (GetMbox() ? GetMbox()->GetNumberMessages() : 0);
+		unsigned long num_msgs = (GetMbox() ? GetMbox()->GetNumberMessages() : 0);
 
 		TableIndexT	old_rows;
 		TableIndexT	old_cols;

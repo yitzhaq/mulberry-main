@@ -302,7 +302,7 @@ void CAdbkProtocol::CreateClient()
 	case CINETAccount::eIMSP:
 	case CINETAccount::eACAP:
 	case CINETAccount::eCardDAVAdbk:
-		if (CConnectionManager::sConnectionManager.IsConnected() && !IsForceDisconnect() || !CanDisconnect())
+		if ((CConnectionManager::sConnectionManager.IsConnected() && !IsForceDisconnect()) || !CanDisconnect())
 		{
 			SetFlags(eIsOffline, false);
 			SetFlags(eDisconnected, false);

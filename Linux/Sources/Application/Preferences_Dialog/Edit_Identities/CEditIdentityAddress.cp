@@ -352,8 +352,8 @@ void CEditIdentityAddress::SetItemData(bool active, const cdstring& address)
 		CAddressList addr_list(address.c_str(), address.length());
 
 		// Truncate to single address for sender
-		if (mSender && (addr_list.size() > 1) ||
-			mFrom && CAdminLock::sAdminLock.mLockReturnAddress)
+		if ((mSender && (addr_list.size() > 1)) ||
+			(mFrom && CAdminLock::sAdminLock.mLockReturnAddress))
 			addr_list.erase(addr_list.begin() + 1, addr_list.end());
 
 		if (addr_list.size() > 1)

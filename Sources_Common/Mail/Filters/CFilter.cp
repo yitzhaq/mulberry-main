@@ -54,12 +54,12 @@ CFilter::~CFilter()
 
 bool CFilter::Complete() const
 {
-	return (GetMarker() == mStream->GetLength());
+	return (static_cast<UInt32>(GetMarker()) == mStream->GetLength());
 }
 
 bool CFilter::CheckBuffer(bool force, SInt32& written)
 {
-	if ((mBufferLength == cMaxBuffer) || force && mBufferLength)
+	if ((mBufferLength == cMaxBuffer) || (force && mBufferLength))
 {
 		// Flush buffer to stream and reset to start
 		SInt32 write_len = mBufferLength;
@@ -155,7 +155,7 @@ ExceptionCode CFilterEndls::GetBytes(void* outBuffer, SInt32& inByteCount)
 		case eLineBuild:
 			{
 				// Read more if current is less than one line
-				if (mBufferLength <= prefs_wrap)
+				if (static_cast<unsigned long>(mBufferLength) <= prefs_wrap)
 					{
 						// Copy remaining to start of buffer
 						if (mBufferLength)
@@ -182,13 +182,13 @@ ExceptionCode CFilterEndls::GetBytes(void* outBuffer, SInt32& inByteCount)
 				
 				// Now fill a line
 				long lastSpace = -1;
-				long count = 0;
+				unsigned long count = 0;
 				const unsigned char* endLine = mBufferPos;
 				
 				// Loop while waiting for line break or exceed of wrap length
 				while ((*endLine!=lendl1) &&
 							 (count <= prefs_wrap) &&
-							 (mBufferLength - count > 0))
+							 (count < static_cast<unsigned long>(mBufferLength)))
 					{
 						if (*endLine==' ')
 							lastSpace = count;
@@ -225,7 +225,7 @@ ExceptionCode CFilterEndls::GetBytes(void* outBuffer, SInt32& inByteCount)
 					{
 						// Check for CRLF and bump past pair
 						// Check whether at end of text
-						if (mBufferLength - count > 0)
+						if (count < static_cast<unsigned long>(mBufferLength))
 							{
 								// Copy line to buffer without line end
 								::memcpy(mLineBuffer, mBufferPos, count);

@@ -194,8 +194,8 @@ void CMailboxPopup::SetSelectedMbox(const cdstring& mbox_name, bool none, bool c
 		// Try forced MRU
 		if (set_item < 1)
 		{
-			if (mCopyTo && CCopyToMenu::sUseCopyToCabinet ||
-				!mCopyTo && CCopyToMenu::sUseAppendToCabinet)
+			if ((mCopyTo && CCopyToMenu::sUseCopyToCabinet) ||
+				(!mCopyTo && CCopyToMenu::sUseAppendToCabinet))
 			{
 				// Try to find mailbox
 				CMbox* mbox = CMailAccountManager::sMailAccountManager->FindMboxAccount(mbox_name);

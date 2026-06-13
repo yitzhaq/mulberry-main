@@ -77,8 +77,8 @@ const CMboxRef* CSearchEngine::GetCurrentTargetMbox() const
 
 long CSearchEngine::NextTarget()
 {
-	while((++mCurrentTarget < mTargetHits.size()) && (mTargetHits.at(mCurrentTarget) != eSearchHit)) {}
-	if (mCurrentTarget >= mTargetHits.size())
+	while(((size_t)++mCurrentTarget < mTargetHits.size()) && (mTargetHits.at(mCurrentTarget) != eSearchHit)) {}
+	if ((size_t)mCurrentTarget >= mTargetHits.size())
 		mCurrentTarget = -1;
 
 	return mCurrentTarget;

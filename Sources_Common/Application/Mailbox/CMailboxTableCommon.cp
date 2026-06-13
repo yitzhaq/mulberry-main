@@ -274,7 +274,7 @@ void CMailboxTable::PreviewMessage(bool clear)
 		}
 
 		// Check whether different (also check to see whether preview currently empty) and indicate a change
-		if ((new_uid != mPreviewUID) || msg && !mTableView->GetPreview()->GetMessage())
+		if ((new_uid != mPreviewUID) || (msg && !mTableView->GetPreview()->GetMessage()))
 		{
 			// Remember the one being previewed
 			mPreviewUID = new_uid;
@@ -1055,8 +1055,8 @@ void CMailboxTable::ScrollForNewMessages()
 	TableIndexT visible_bottom = GetLastFullyVisibleCell().row;
 	
 	// If already max scrolled, ignore
-	if (ascending && (visible_bottom == mRows) ||
-		!ascending && (visible_top == 1))
+	if ((ascending && (visible_bottom == mRows)) ||
+		(!ascending && (visible_top == 1)))
 	{
 		return;
 	}

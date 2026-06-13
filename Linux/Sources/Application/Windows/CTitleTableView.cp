@@ -364,7 +364,7 @@ CTitleTableView::InDragRegion
 		GetImageCellBounds(cell, cellRect);
 		
 		// See if mouse is close to the left or right edges
-		if ((pt.x < cellRect.left + cDragRegionHalfWidth) && (cell.col > 1) ||
+		if (((pt.x < cellRect.left + cDragRegionHalfWidth) && (cell.col > 1)) ||
 			(pt.x > cellRect.right - cDragRegionHalfWidth))
 		{
 			// If on left side, adjust to previous cell
@@ -493,7 +493,7 @@ void CTitleTableView::DrawItem(JPainter* p, SColumnInfo& col_info, const JRect &
 // Draw text
 void CTitleTableView::DrawText(JPainter* p, SColumnInfo& col_info, const JRect &cellRect)
 {
-	if ((col_info.column_type >= 1) && (col_info.column_type <= mTitles.size()))
+	if ((col_info.column_type >= 1) && (static_cast<size_t>(col_info.column_type) <= mTitles.size()))
 	{
 		::DrawClippedStringUTF8(p, mTitles[col_info.column_type - 1], JPoint(cellRect.left + 6, cellRect.top + 1), cellRect,
 							RightJustify(col_info.column_type) ? eDrawString_Right : eDrawString_Left);

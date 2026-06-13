@@ -638,7 +638,7 @@ void CSearchCriteriaLocal::OnSetMethod(long item)
 void CSearchCriteriaLocal::InitLabelNames()
 {
 	// Change name of labels
-	for(short i = eCriteria_Label1; i < eCriteria_Label1 + NMessage::eMaxLabels; i++)
+	for(int i = eCriteria_Label1; i < eCriteria_Label1 + static_cast<int>(NMessage::eMaxLabels); i++)
 	{
 		cdstring labelName(CPreferences::sPrefs->mLabels.GetValue()[i - eCriteria_Label1]->name);
 		mPopup1->SetItemText(i, labelName);

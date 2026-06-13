@@ -484,7 +484,7 @@ void CServerTable::OnUpdateProperties(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(TestSelectionAnd((TestSelectionPP) &CServerTable::TestSelectionServer) ||
 					TestSelectionAnd((TestSelectionPP) &CServerTable::TestSelectionMboxAll) ||
-					mSingle && !IsSelectionValid());
+					(mSingle && !IsSelectionValid()));
 }
 
 // Update command
@@ -584,7 +584,7 @@ void CServerTable::OnFileNewDraft(void)
 void CServerTable::OnEditProperties(void)
 {
 	if (TestSelectionAnd((TestSelectionPP) &CServerTable::TestSelectionServer) ||
-				mSingle && !IsSelectionValid())
+				(mSingle && !IsSelectionValid()))
 		DoServerProperties();
 	else if (TestSelectionAnd((TestSelectionPP) &CServerTable::TestSelectionMboxAll))
 		DoMailboxProperties();

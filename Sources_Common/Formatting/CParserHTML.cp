@@ -179,7 +179,7 @@ ETag CParserHTML::GetTag(unichar_t* format, long &offset)
 			offset++;
 		return E_FONT;
 	}
-	else if(!::unistrcmp(lformat, "a") || (*lformat.c_str() == 'a') && isuspace(*(lformat.c_str() + 1)))
+	else if(!::unistrcmp(lformat, "a") || ((*lformat.c_str() == 'a') && isuspace(*(lformat.c_str() + 1))))
 	{
 		offset = 1;
 		while(isuspace(*(format + offset)))
@@ -1360,9 +1360,9 @@ bool CParserHTML::ParseURL(unichar_t* param, cdustring &outScheme, cdustring &ou
 				// Short circuit the common ones
 				if (!::unistrncmpnocase(outScheme, "http:", 5) ||
 					!::unistrncmpnocase(outScheme, "ftp:", 4) ||
-					::unistrncmpnocase(outScheme, "mailto:", 7) &&
+					(::unistrncmpnocase(outScheme, "mailto:", 7) &&
 					::unistrncmpnocase(outScheme, "mid:", 4) &&
-					::unistrncmpnocase(outScheme, "cid:", 4))
+					::unistrncmpnocase(outScheme, "cid:", 4)))
 				{
 					// Add base location
 					outLocation = mBaseLocation + outLocation;

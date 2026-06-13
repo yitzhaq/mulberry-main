@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <time.h>
 
-const unsigned long aquire_timeout_s = 30;	// 30 second aquire timeout
+const time_t aquire_timeout_s = 30;	// 30 second aquire timeout
 const unsigned long aquire_timeout_ms = aquire_timeout_s * 1000;
 
 #pragma mark ____________________________cdmutex

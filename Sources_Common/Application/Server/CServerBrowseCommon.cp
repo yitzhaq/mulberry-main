@@ -345,7 +345,7 @@ CServerBrowse::EServerBrowseDataType CServerBrowse::GetCellDataType(TableIndexT 
 // Get mbox
 CMbox* CServerBrowse::GetCellMbox(TableIndexT woRow) const
 {
-	long index = mData.at(woRow - 1).mType;
+	unsigned long index = mData.at(woRow - 1).mType;
 	if ((index & eServerBrowseMask) == eServerBrowseINBOX)
 		return ((CMboxProtocol*) mData.at(woRow - 1).mData)->GetINBOX();
 	else
@@ -1596,7 +1596,7 @@ void CServerBrowse::AddServer(CMboxProtocol* proto)
 {
 	// If its the last one add to end, but only do when more than two
 	if ((CMailAccountManager::sMailAccountManager->GetProtocolCount() > 2 ) &&
-		(CMailAccountManager::sMailAccountManager->GetProtocolIndex(proto) ==
+		((unsigned long) CMailAccountManager::sMailAccountManager->GetProtocolIndex(proto) ==
 		 CMailAccountManager::sMailAccountManager->GetProtocolCount() - 1))
 	{
 		// Start cursor for busy operation

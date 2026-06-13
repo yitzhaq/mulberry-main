@@ -381,7 +381,7 @@ void CTreeNodeList::RemoveNode(CTreeNode* node, bool delete_it)
 				CTreeNode* prev = at(pos - 1);
 				if (prev->GetWDLevel() < level)
 				{
-					if ((pos < size()) && (at(pos)->GetWDLevel() != level) || (pos == size()))
+					if (((pos < size()) && (at(pos)->GetWDLevel() != level)) || (pos == size()))
 						prev->SetHasInferiors(false);
 				}
 
@@ -405,7 +405,7 @@ void CTreeNodeList::RemoveNode(CTreeNode* node, bool delete_it)
 						prev = at(pos - 1);
 						if (prev->GetWDLevel() < level)
 						{
-							if ((pos < size()) && (at(pos)->GetWDLevel() != level) || (pos == size()))
+							if (((pos < size()) && (at(pos)->GetWDLevel() != level)) || (pos == size()))
 								prev->SetHasInferiors(false);
 						}
 					}

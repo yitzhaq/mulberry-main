@@ -213,7 +213,7 @@ struct SStyleTraits
 	short			style;
 	RGBColor		color;
 
-	SStyleTraits() : style(0) { memset(&color, 0, sizeof(color)); }
+	SStyleTraits() : style(0), color() {}
 
 	// Compare with another
 	int operator==(const SStyleTraits& traits) const
@@ -240,8 +240,7 @@ struct SStyleTraits2
 	bool			usebkgcolor;
 	cdstring		name;
 
-	SStyleTraits2() : style(0), usecolor(false), usebkgcolor(false)
-		{ memset(&color, 0, sizeof(color)); memset(&bkgcolor, 0, sizeof(bkgcolor)); }
+	SStyleTraits2() : style(0), color(), usecolor(false), bkgcolor(), usebkgcolor(false) {}
 
 	// Compare with another
 	int operator==(const SStyleTraits2& traits) const

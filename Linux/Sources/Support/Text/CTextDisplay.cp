@@ -1446,7 +1446,7 @@ void CTextDisplay::SpellInsertText(JIndex start, JSize numchars)
 
 	// Locate the end of the word around the last inserted character and terminate buffer there.
 	unsigned long j = cursor_pos - text_start;
-	while ((j < text_len) && IS_WORD_CHAR(text[j]) || (text[j] == '.') || (text[j] == '\'') || (text[j] == FANCY_APOSTROPHE))
+	while ((j < text_len) && (IS_WORD_CHAR(text[j]) || (text[j] == '.') || (text[j] == '\'') || (text[j] == FANCY_APOSTROPHE)))
 	{
 		j++;
 	}

@@ -1422,7 +1422,7 @@ bool CMailControl::CheckSizeWarning(const CAttachment* attach)
 	unsigned long size = attach->GetSize();
 	if (CPreferences::sPrefs->mDoSizeWarn.GetValue() &&
 		(CPreferences::sPrefs->warnMessageSize.GetValue() > 0) &&
-		(size > CPreferences::sPrefs->warnMessageSize.GetValue() * 1024L))
+		(size > (unsigned long)(CPreferences::sPrefs->warnMessageSize.GetValue() * 1024L)))
 	{
 		cdstring size_txt = ::GetNumericFormat(size);
 		bool dontshow = false;

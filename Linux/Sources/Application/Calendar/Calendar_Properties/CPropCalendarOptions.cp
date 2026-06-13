@@ -244,7 +244,7 @@ void CPropCalendarOptions::SetCalList(calstore::CCalendarStoreNodeList* cal_list
 
 	// Now adjust totals
 	if (subscribe)
-		subscribe = ((subscribe == mCalList->size()) ? 1 : 2);
+		subscribe = (((size_t) subscribe == mCalList->size()) ? 1 : 2);
 
 	SetListening(kFalse);
 

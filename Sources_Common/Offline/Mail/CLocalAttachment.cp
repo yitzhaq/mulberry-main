@@ -67,7 +67,7 @@ bool CLocalAttachment::RecoverCompare(const CLocalAttachment& comp) const
 	
 	// Must have the same number of parts
 	if (((GetParts() != NULL) ^ (comp.GetParts() != NULL)) ||
-		GetParts() && (GetParts()->size() != comp.GetParts()->size()))
+		(GetParts() && (GetParts()->size() != comp.GetParts()->size())))
 		return false;
 
 	// Do the same test for each child part

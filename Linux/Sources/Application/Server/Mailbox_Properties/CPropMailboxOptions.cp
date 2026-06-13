@@ -325,13 +325,13 @@ void CPropMailboxOptions::SetMboxList(CMboxList* mbox_list)
 		mAutoSync->Deactivate();
 	}
 
-	int auto_check = 0;
+	size_t auto_check = 0;
 	int first_type = -1;
-	int open_login = 0;
-	int copy_to = 0;
-	int append_to = 0;
-	int punt = 0;
-	int sync = 0;
+	size_t open_login = 0;
+	size_t copy_to = 0;
+	size_t append_to = 0;
+	size_t punt = 0;
+	size_t sync = 0;
 	int multiple_tied = 0;
 	bool first = true;
 	mAllDir = true;

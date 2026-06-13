@@ -195,7 +195,7 @@ void CFileTable::SetRowShow(CAttachment* attach)
 	GetWideOpenTableSize(rows);
 
 	// Look at each cell
-	for(int woRow = 1; woRow <= rows; woRow++)
+	for(TableIndexT woRow = 1; woRow <= rows; woRow++)
 	{
 		STableCell	woCell(woRow, 1);
 		CAttachment* row_attach = NULL;
@@ -326,7 +326,7 @@ TableIndexT CFileTable::InsertPart(TableIndexT& parentRow, CAttachment* part, bo
 {
 	TableIndexT child_insert = parentRow;
 
-	bool is_attachment = (dynamic_cast<CDataAttachment*>(part) == NULL) || !part->IsMultipart() && !part->CanEdit();
+	bool is_attachment = (dynamic_cast<CDataAttachment*>(part) == NULL) || (!part->IsMultipart() && !part->CanEdit());
 
 	// Insert this part
 	if (!mAttachmentsOnly || is_attachment)
@@ -814,7 +814,7 @@ bool CFileTable::ViewPart(TableIndexT row)
 	if ((fattach == NULL) &&
 		CPreferences::sPrefs->mDoSizeWarn.GetValue() &&
 		(CPreferences::sPrefs->warnMessageSize.GetValue() > 0) &&
-		(attach->GetSize() > CPreferences::sPrefs->warnMessageSize.GetValue() * 1024L))
+		(attach->GetSize() > (unsigned long) CPreferences::sPrefs->warnMessageSize.GetValue() * 1024UL))
 	{
 		bool dontshow = false;
 		short answer = CErrorHandler::PutCautionAlertRsrc(true, "Alerts::Message::WarnSize", 0, &dontshow);
@@ -1538,7 +1538,7 @@ bool CFileTable::RenderSelectionData(CMulSelectionData* seldata, Atom type)
 
 		// Add selected attachments at same level
 		TableIndexT parent = 0;
-		int nest_level = -1;
+		UInt32 nest_level = 0;
 		STableCell selCell(0, 0);
 		while(GetNextSelectedCell(selCell))
 		{

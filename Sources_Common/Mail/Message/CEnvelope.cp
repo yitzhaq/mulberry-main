@@ -294,26 +294,26 @@ bool CEnvelope::RecoverCompare(const CEnvelope& comp) const
 	
 	// Test each address list as well
 	if (((mFrom != NULL) ^ (comp.mFrom != NULL)) ||
-		mFrom && !(*mFrom == *comp.mFrom))
+		(mFrom && !(*mFrom == *comp.mFrom)))
 		return false;
 
 #if 0	// Can't compare these because of stupid IMAP defaulting procedure
 	if (((mSender != NULL) ^ (comp.mSender != NULL)) ||
-		mSender && (*mSender != *comp.mSender))
+		(mSender && (*mSender != *comp.mSender)))
 		return false;
 	if (((mReply_to != NULL) ^ (comp.mReply_to != NULL)) ||
-		mReply_to && (*mReply_to != *comp.mReply_to))
+		(mReply_to && (*mReply_to != *comp.mReply_to)))
 		return false;
 #endif
 
 	if (((mTo != NULL) ^ (comp.mTo != NULL)) ||
-		mTo && (*mTo != *comp.mTo))
+		(mTo && (*mTo != *comp.mTo)))
 		return false;
 	if (((mCc != NULL) ^ (comp.mCc != NULL)) ||
-		mCc && (*mCc != *comp.mCc))
+		(mCc && (*mCc != *comp.mCc)))
 		return false;
 	if (((mBcc != NULL) ^ (comp.mBcc != NULL)) ||
-		mBcc && (*mBcc != *comp.mBcc))
+		(mBcc && (*mBcc != *comp.mBcc)))
 		return false;
 
 	// Must match at this point
@@ -496,9 +496,9 @@ cdstring CEnvelope::NormaliseSubject(bool matching) const
 				}
 				
 				// sub-refwd
-				if ((!::strncmpnocase(q, "re", 2) && (q = q + 2) ||
-					 !::strncmpnocase(q, "fwd", 3) && (q = q + 3) ||
-					 !::strncmpnocase(q, "fw", 2) && (q = q + 2)))
+				if ((!::strncmpnocase(q, "re", 2) && (q = q + 2)) ||
+					 (!::strncmpnocase(q, "fwd", 3) && (q = q + 3)) ||
+					 (!::strncmpnocase(q, "fw", 2) && (q = q + 2)))
 				{
 					while(isspace((unsigned char)*q)) q++;
 					if (*q == '[')

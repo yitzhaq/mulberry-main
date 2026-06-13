@@ -571,7 +571,7 @@ void CAddressList::AddCalendarAddressToList(cdstrvect& list, bool full) const
 	for(const_iterator iter = begin(); iter != end(); iter++)
 	{
 		const CAdbkAddress* addr = dynamic_cast<const CAdbkAddress*>(*iter);
-		if (addr && (!addr->GetCalendar().empty() || !addr->GetMailAddress().empty()) ||
+		if ((addr && (!addr->GetCalendar().empty() || !addr->GetMailAddress().empty())) ||
 			!(*iter)->GetMailAddress().empty())
 		{
 			if (addr != NULL)

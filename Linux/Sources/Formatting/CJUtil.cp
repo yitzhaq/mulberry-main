@@ -23,7 +23,7 @@
 #include <functional>
 
 bool strrangecmp(const char * match, const char *piece, int start, int stop){
-	if(strlen(match) < stop - start){
+	if(strlen(match) < static_cast<size_t>(stop - start)){
 	}
 	else{
 		bool matching = true;

@@ -512,7 +512,7 @@ char* CHTMLTransformer::Transform()
 	// Must add HTML start tags
 	mOut << "<HTML>\n\n<BODY>\n\n";
 
-	for(long i = 0; i < length; i++)
+	for(size_t i = 0; i < length; i++)
 	{
 		// Look for end of A HREF before setting other tags
 		if (target && (target->getStop() == i))
@@ -680,13 +680,13 @@ void CHTMLTransformer::ExamineStack(const JTextEditor16::Font& wRunInfo)
 				tempString = mText->TEGetFontManager()->GetFontName(wRunInfo.id);
 				JRGB color = mText->TEGetColormap()->GetRGB(wRunInfo.style.color);
 				if (tempString == ((CParserHTMLFontStackElement*) currElement)->GetFont() &&
-					 wRunInfo.size == ((CParserHTMLFontStackElement*) currElement)->GetSize() &&
-					 color.red == ((CParserHTMLFontStackElement*) currElement)->GetRed() &&
-					 color.green == ((CParserHTMLFontStackElement*) currElement)->GetGreen() &&
-					 color.blue == ((CParserHTMLFontStackElement*) currElement)->GetBlue())
+					 wRunInfo.size == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetSize()) &&
+					 color.red == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetRed()) &&
+					 color.green == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetGreen()) &&
+					 color.blue == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetBlue()))
 				{
 					fonting = true;
-					mStack->push(currElement);						
+					mStack->push(currElement);
 				}
 				else
 					matched = false;
@@ -764,10 +764,10 @@ void CHTMLTransformer::ExamineStack(const JTextEditor16::Font& wRunInfo)
 				JRGB color = mText->TEGetColormap()->GetRGB(wRunInfo.style.color);
 				
 				if (tempString == ((CParserHTMLFontStackElement*) currElement)->GetFont() &&
-					size == ((CParserHTMLFontStackElement*) currElement)->GetSize() &&
-					color.red == ((CParserHTMLFontStackElement*) currElement)->GetRed() &&
-					color.green == ((CParserHTMLFontStackElement*) currElement)->GetGreen() &&
-					color.blue == ((CParserHTMLFontStackElement*) currElement)->GetBlue())
+					size == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetSize()) &&
+					color.red == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetRed()) &&
+					color.green == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetGreen()) &&
+					color.blue == static_cast<JSize>(((CParserHTMLFontStackElement*) currElement)->GetBlue()))
 				{
 					Pile.push(currElement);
 					fonting = true;
@@ -819,7 +819,7 @@ void CHTMLTransformer::ExamineStack(const JTextEditor16::Font& wRunInfo)
 		// Only add if not default
 		cdstring fname = mText->TEGetFontManager()->GetFontName(wRunInfo.id);
 				
-		if ((mDefaultFont != fname) || (mDefaultSize != size) || (wRunInfo.style.color != 0))
+		if ((mDefaultFont != fname) || (static_cast<JSize>(mDefaultSize) != size) || (wRunInfo.style.color != 0UL))
 		{
 			JRGB color = mText->TEGetColormap()->GetRGB(wRunInfo.style.color);
 			currElement = new CParserHTMLFontStackElement(E_FONT, -1, color, size, fname);

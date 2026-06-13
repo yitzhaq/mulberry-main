@@ -23,7 +23,7 @@ using namespace i18n;
 
 wchar_t CJIS_0201::c_2_w(const unsigned char*& c)
 {
-	char cp = *c++;
+	unsigned char cp = *c++;
 	if (cp < 0x80)
 	{
 		if (cp == 0x5C)

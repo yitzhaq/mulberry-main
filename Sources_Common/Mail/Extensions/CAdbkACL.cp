@@ -335,12 +335,12 @@ void CAdbkACL::GenerateACE(xmllib::XMLDocument* xmldoc, xmllib::XMLNode* aclnode
 	
 	// Special check for "DAV:all"
 	if (AllRights() ||
-		HasRight(CAdbkACL::eAdbkACL_Lookup) &&
+		(HasRight(CAdbkACL::eAdbkACL_Lookup) &&
 		HasRight(CAdbkACL::eAdbkACL_Read) &&
 		HasRight(CAdbkACL::eAdbkACL_Write) &&
 		HasRight(CAdbkACL::eAdbkACL_Create) &&
 		HasRight(CAdbkACL::eAdbkACL_Delete) &&
-		HasRight(CAdbkACL::eAdbkACL_Admin))
+		HasRight(CAdbkACL::eAdbkACL_Admin)))
 		new xmllib::XMLNode(xmldoc, new xmllib::XMLNode(xmldoc, grant, http::webdav::cProperty_privilege), http::webdav::cProperty_privilege_all);
 	else
 	{

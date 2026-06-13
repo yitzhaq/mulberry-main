@@ -990,7 +990,7 @@ void CBinHexFilter::Encode(unsigned char** outbuffer, long* total, long maxbuffe
 
 	while((mBufferLength ||
 			((mAtomPos == 3) && (mStatus1 != eTerminate)) ||
-			(mProcess != eNextChar) && (mStatus1 != eTerminate)) &&
+			((mProcess != eNextChar) && (mStatus1 != eTerminate))) &&
 			!(*total >= maxbuffer)) {
 
 		switch (mSubStatus1) {

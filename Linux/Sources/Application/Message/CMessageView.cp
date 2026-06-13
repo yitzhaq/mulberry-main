@@ -602,8 +602,8 @@ void CMessageView::SetMessage(CMessage* theMsg, bool restore)
 
 	// Now check for auto verify/decrypt - but not when restoring
 	else if (mItsMsg && !restore &&
-		(CPreferences::sPrefs->mAutoVerify.GetValue() && mItsMsg->GetBody()->IsVerifiable() ||
-		CPreferences::sPrefs->mAutoDecrypt.GetValue() && mItsMsg->GetBody()->IsDecryptable()))
+		((CPreferences::sPrefs->mAutoVerify.GetValue() && mItsMsg->GetBody()->IsVerifiable()) ||
+		(CPreferences::sPrefs->mAutoDecrypt.GetValue() && mItsMsg->GetBody()->IsDecryptable())))
 	{
 		// NULL out current part as its used in VerifyDecrypt
 		mCurrentPart = NULL;
@@ -721,7 +721,7 @@ void CMessageView::PostSetMessage(bool restore)
 		if (mShowParts)
 		{
 			// Do parts expand if no visible part or multiparts
-			if (mItsMsg && (!mCurrentPart || (mItsMsg->GetBody()->CountParts() > 1) && !mItsMsg->GetBody()->HasUniquePart()))
+			if (mItsMsg && (!mCurrentPart || ((mItsMsg->GetBody()->CountParts() > 1) && !mItsMsg->GetBody()->HasUniquePart())))
 			{
 				// Do auto expansion or expand if no parts
 				if ((!mCurrentPart || CPreferences::sPrefs->mExpandParts.GetValue()) &&
@@ -1381,15 +1381,15 @@ void CMessageView::StopSeenTimer()
 void CMessageView::OnUpdateMessageReadPrev(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(mItsMsg &&
-					(!mItsMsg->IsSubMessage() && mItsMsg->GetMbox()->GetPrevMessage(mItsMsg, true) ||
-					 mItsMsg->IsSubMessage() && mItsMsg->GetPrevDigest()));
+					((!mItsMsg->IsSubMessage() && mItsMsg->GetMbox()->GetPrevMessage(mItsMsg, true)) ||
+					 (mItsMsg->IsSubMessage() && mItsMsg->GetPrevDigest())));
 }
 
 void CMessageView::OnUpdateMessageReadNext(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(mItsMsg &&
 					(!mItsMsg->IsSubMessage() ||
-						mItsMsg->IsSubMessage() && mItsMsg->GetNextDigest()));
+						(mItsMsg->IsSubMessage() && mItsMsg->GetNextDigest())));
 }
 
 void CMessageView::OnUpdateMessageCopyNext(CCmdUI* pCmdUI)

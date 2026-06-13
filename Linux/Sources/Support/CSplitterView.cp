@@ -98,7 +98,7 @@ void CSplitterView::InitViews()
 	// Determine the gap between frames
 	// If its locked the divider might not be visible
 	long gap = 0;
-	if (!mLock1 && !mLock2 || mVisibleLock)
+	if ((!mLock1 && !mLock2) || mVisibleLock)
 		gap = cDividerWidth;
 
 	// Init subviews not already done
@@ -307,7 +307,7 @@ void CSplitterView::ChangedDividerPos(long change)
 	// Determine the gap between frames
 	// If its locked the divider might not be visible
 	long gap = 0;
-	if (!mLock1 && !mLock2 || mVisibleLock)
+	if ((!mLock1 && !mLock2) || mVisibleLock)
 		gap = cDividerWidth;
 
 	// Set new sizes
@@ -732,7 +732,7 @@ void CSplitterView::AdjustContents()
 		// Determine the gap between frames
 		// If its locked the divider might not be visible
 		long gap = 0;
-		if (!mLock1 && !mLock2 || mVisibleLock)
+		if ((!mLock1 && !mLock2) || mVisibleLock)
 			gap = cDividerWidth;
 
 		// Set new sizes

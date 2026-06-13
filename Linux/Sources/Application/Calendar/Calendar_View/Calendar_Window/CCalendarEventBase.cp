@@ -229,7 +229,7 @@ void CCalendarEventBase::Draw(JXWindowPainter& p, const JRect& rect)
 	
 	// Draw title
 	actual_rect.left += 3;
-	actual_rect.right -= (mHoriz && mAllDay || IsFreeBusy()) ? 3 : 0;
+	actual_rect.right -= ((mHoriz && mAllDay) || IsFreeBusy()) ? 3 : 0;
 	JRect cliprect(actual_rect);
 	if (cliprect.height() < 16)
 	{
@@ -370,6 +370,9 @@ void CCalendarEventBase::DrawHorizFrame(JXWindowPainter* pDC, JRect& rect)
 			break;
 		case iCal::CITIPProcessor::eIHaveNotAccepted:
 			theResID = IDI_NEEDSACTION;
+			break;
+		case iCal::CITIPProcessor::eIHaveDeclined:
+			theResID = IDI_DECLINED;
 			break;
 		}
 
@@ -617,6 +620,9 @@ void CCalendarEventBase::DrawVertFrame(JXWindowPainter* pDC, JRect& rect)
 			break;
 		case iCal::CITIPProcessor::eIHaveNotAccepted:
 			theResID = IDI_NEEDSACTION;
+			break;
+		case iCal::CITIPProcessor::eIHaveDeclined:
+			theResID = IDI_DECLINED;
 			break;
 		}
 

@@ -3388,7 +3388,7 @@ void CIMAPClient::_SetFlag(const ulvector& nums, bool uids, NMessage::EFlags fla
 	if ((flags & NMessage::eLabels) && (mVersion != eIMAP2bis))	// Only IMAP4 and above
 	{
 		// Scan over all labels and add each
-		for(int i = 0; i < NMessage::eMaxLabels; i++)
+		for(unsigned int i = 0; i < NMessage::eMaxLabels; i++)
 		{
 			if (flags & (NMessage::eLabel1 << i))
 			{
@@ -6404,7 +6404,7 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 		{
 			// Check for labels
 			bool got_label = false;
-			for(int i = 0; i < NMessage::eMaxLabels; i++)
+			for(unsigned int i = 0; i < NMessage::eMaxLabels; i++)
 			{
 				if (CheckStrAdv(&p, CPreferences::sPrefs->mIMAPLabels.GetValue()[i]))
 				{

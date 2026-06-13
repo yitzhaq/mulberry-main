@@ -214,8 +214,8 @@ void CCalendarPropDialog::SetCalList(calstore::CCalendarStoreNodeList* cal_list)
 	GetWindow()->SetTitle(title);
 
 	// Check webcal state
-	int local = 0;
-	int webcal = 0;
+	size_t local = 0;
+	size_t webcal = 0;
 	for(calstore::CCalendarStoreNodeList::const_iterator iter = mCalList->begin(); iter != mCalList->end(); iter++)
 	{
 		calstore::CCalendarStoreNode* node = *iter;

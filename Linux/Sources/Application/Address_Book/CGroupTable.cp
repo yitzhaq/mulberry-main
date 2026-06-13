@@ -1042,9 +1042,9 @@ void CGroupTable::DoKeySelection()
 	
 	// Get low bound insert pos
 	long select = mAdbk->GetGroupList()->FetchInsertIndexOf(temp);
-	
+
 	// Clip to end of list
-	if (select > mAdbk->GetGroupList()->size()) select--;
+	if (select > (long) mAdbk->GetGroupList()->size()) select--;
 
 	// Find exposed position of group
 	UInt32 pos;

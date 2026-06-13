@@ -985,7 +985,7 @@ void CPreferences::SignatureDashes(cdstring& sig) const
 		if ((*p++ != '-') ||
 			(*p++ != '-') ||
 			(*p++ != ' ') ||
-			(*p != '\r') && (*p != '\n'))
+			((*p != '\r') && (*p != '\n')))
 		{
 			cdstring temp("-- ");
 			temp += os_endl;

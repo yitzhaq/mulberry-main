@@ -31,9 +31,9 @@
 #include <iomanip>
 
 CTCPStream::CTCPStream() :
+			std::ios(0),
 			std::ostream(0),
-			std::istream(0),
-			std::ios(0)
+			std::istream(0)
 {
 	rdbuf(this);
 
@@ -42,10 +42,10 @@ CTCPStream::CTCPStream() :
 }
 
 CTCPStream::CTCPStream(const CTCPStream& copy) :
-			std::ostream(0),
-			std::istream(0),
 			std::ios(0),
-			CTCPStreamBuf(copy)
+			CTCPStreamBuf(copy),
+			std::ostream(0),
+			std::istream(0)
 {
 	rdbuf(this);
 

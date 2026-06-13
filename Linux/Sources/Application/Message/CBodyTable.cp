@@ -415,7 +415,7 @@ bool CBodyTable::ShowPart(TableIndexT row)
 	if (!attach)
 		return false;
 
-	if ((woRow != mRowShow) && attach->CanDisplay())
+	if ((woRow != (TableIndexT) mRowShow) && attach->CanDisplay())
 	{
 		bool do_show = true;
 
@@ -463,7 +463,7 @@ bool CBodyTable::ShowPart(TableIndexT row)
 		return true;
 	}
 	
-	return (woRow == mRowShow);
+	return (woRow == (TableIndexT) mRowShow);
 }
 
 void CBodyTable::OnUpdateExtractParts(CCmdUI* pCmdUI)
@@ -598,7 +598,7 @@ void CBodyTable::DrawCell(JPainter* pDC, const STableCell& inCell, const JRect& 
 			int	plot_flag = 0;
 
 			// Check for diamond type
-			if (woRow == mRowShow)
+			if (woRow == (UInt32) mRowShow)
 				plot_flag = IDI_DIAMONDTICKED;
 			else if (attach->CanDisplay())
 				plot_flag = (attach->IsSeen() ? IDI_DIAMONDHIGHLIGHT : IDI_DIAMOND);

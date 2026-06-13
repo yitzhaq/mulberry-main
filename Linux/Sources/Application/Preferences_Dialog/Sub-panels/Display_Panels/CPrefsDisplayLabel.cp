@@ -459,7 +459,7 @@ void CPrefsDisplayLabel::OnCreate()
 
 	// Get controls
 
-	for(int i = 0; i < NMessage::eMaxLabels; i++)
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		mLabels[i].mColor->SetDirector(CPreferencesDialog::sPrefsDlog);
 		mLabels[i].mBkgColor->SetDirector(CPreferencesDialog::sPrefsDlog);
@@ -478,7 +478,7 @@ void CPrefsDisplayLabel::Receive(JBroadcaster* sender, const Message& message)
 	if (message.Is(JXCheckbox::kPushed))
 	{
 		// Enable/disable colour buttons
-		for(int i = 0; i < NMessage::eMaxLabels; i++)
+		for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 		{
 			if (sender == mLabels[i].mUseColor)
 			{
@@ -510,7 +510,7 @@ void CPrefsDisplayLabel::SetData(void* data)
 	CPreferences* copyPrefs = (CPreferences*) data;
 
 	// Copy info
-	for(int i = 0; i < NMessage::eMaxLabels; i++)
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		SetStyle(mLabels[i], *copyPrefs->mLabels.GetValue()[i]);
 		mIMAPLabels.push_back(copyPrefs->mIMAPLabels.GetValue()[i]);
@@ -525,7 +525,7 @@ bool CPrefsDisplayLabel::UpdateData(void* data)
 	SStyleTraits2 traits;
 
 	// Copy info from panel into prefs
-	for(int i = 0; i < NMessage::eMaxLabels; i++)
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		*copyPrefs->mLabels.Value()[i] = GetStyle(mLabels[i], traits);
 		copyPrefs->mIMAPLabels.Value()[i] = mIMAPLabels[i];
@@ -556,7 +556,7 @@ void CPrefsDisplayLabel::OnIMAPLabels()
 {
 	// Get current names
 	cdstrvect names;
-	for(int i = 0; i < NMessage::eMaxLabels; i++)
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		names.push_back(mLabels[i].mName->GetText());
 	}

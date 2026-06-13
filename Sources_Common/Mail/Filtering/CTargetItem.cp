@@ -51,7 +51,7 @@ void CTargetItem::_tidy1()
 bool CTargetItem::Match(ESchedule schedule, const CMbox* mbox) const
 {
 	// Schedules must match (or using All schedule) and must have targets
-	if ((schedule != mSchedule) && (mSchedule != eAll) || !mTargets)
+	if (((schedule != mSchedule) && (mSchedule != eAll)) || !mTargets)
 		return false;
 	
 	// Look at each target and see if it matches mailbox

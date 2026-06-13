@@ -189,10 +189,10 @@ void CPropCalendarWebcal::SetCalList(calstore::CCalendarStoreNodeList* cal_list)
 	// Do icon state
 	mIconState->SetImage(CIconLoader::GetIcon(IDI_MAILBOX_DISCONNECTED, mIconState, 32, 0x00CCCCCC),  kFalse);
 
-	int webcal = 0;
-	int allow_changes = 0;
-	int auto_publish = 0;
-	int periodic_refresh = 0;
+	size_t webcal = 0;
+	size_t allow_changes = 0;
+	size_t auto_publish = 0;
+	size_t periodic_refresh = 0;
 	uint32_t common_refresh_interval = 0;
 	bool refresh_intervals_equal = true;
 	for(calstore::CCalendarStoreNodeList::const_iterator iter = mCalList->begin(); iter != mCalList->end(); iter++)

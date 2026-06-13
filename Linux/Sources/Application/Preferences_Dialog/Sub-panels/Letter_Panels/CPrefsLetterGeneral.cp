@@ -337,7 +337,7 @@ void CPrefsLetterGeneral::SetData(void* data)
 
 	mSaveToMailboxName->SetText(copyPrefs->mSaveMailbox.GetValue());
 
-	if (!copyPrefs->mSaveOptions.GetValue().GetValue() != eSaveDraftToMailbox)
+	if (copyPrefs->mSaveOptions.GetValue().GetValue() != eSaveDraftToMailbox)
 	{
 		mSaveToMailboxName->Deactivate();
 		mSaveToMailboxPopup->Deactivate();

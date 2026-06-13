@@ -153,7 +153,7 @@ bool C3PaneOptions::SetInfo(char_stream& txt, NumVersion vers_prefs)
 		// v3 only had up to contacts
 		num = N3Pane::eView_Contacts + 1;
 	
-	for(int i = 0; i < num; i++)
+	for(unsigned long i = 0; i < num; i++)
 		mViewOptions[i].SetInfo(txt, vers_prefs);
 
 	txt.start_sexpression();

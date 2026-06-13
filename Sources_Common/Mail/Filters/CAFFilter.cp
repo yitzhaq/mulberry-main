@@ -167,7 +167,7 @@ ExceptionCode CAFFilter::GetBytes(void* outBuffer, long& inByteCount)
 	char* p = (char*) outBuffer;
 
 	unsigned long len;
-	long max;
+	unsigned long max;
 
 	// Update progress at start
 	if (mProgress && (GetMarker() == 0))
@@ -1076,7 +1076,7 @@ void CAFFilter::CreateHeader()
 	struct stat file_status;
 	mFileStream->GetStatus(file_status);
 	//0,0,0, 1, Jan, 2000, dummy, dummy, No DST
-	tm appleRef = {0, 0, 0, 1, 0, 100, 0,0,0};
+	tm appleRef = {0, 0, 0, 1, 0, 100, 0, 0, 0, 0, 0};
 	time_t reference = mktime(&appleRef);
 	*reinterpret_cast<uint32_t*>(p) = htonl(file_status.st_ctime - reference);
 	p += sizeof(uint32_t);

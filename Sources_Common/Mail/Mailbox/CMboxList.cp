@@ -169,7 +169,7 @@ void CMboxList::FindWildcard(const cdstring& pattern, CMboxList& list, bool no_d
 		const char* p = ::strpbrk(pattern.c_str(), cWILDCARD_ALL);
 
 		// If no wildcard within root name length then do root length compare and reject
-		if (!p || (p - pattern.c_str() >= name_len))
+		if (!p || (static_cast<size_t>(p - pattern.c_str()) >= name_len))
 		{
 			// If no match then reject this entire hierarchy
 			if (::strncmp(mName.c_str(), pattern.c_str(), name_len))

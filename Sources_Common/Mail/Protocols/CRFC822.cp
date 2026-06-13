@@ -137,7 +137,7 @@ const char* CRFC822::RemoveMIMEHeaders(const char* header, bool no_subject)
 			if (beginLine &&
 			    ((::strncmpnocase(p, "MIME-Version:", 13) == 0) ||
 			     (::strncmpnocase(p, "Content", 7) == 0) ||
-			     no_subject && (::strncmpnocase(p, "Subject", 7) == 0)))
+			     (no_subject && (::strncmpnocase(p, "Subject", 7) == 0))))
 			{
 				record = false;
 			}
@@ -475,7 +475,7 @@ void CRFC822::CreateHeader(CMessage* theMsg,
 					if (os_endl[1] && (*p == os_endl[1]))
 						p++;
 				}
-				else if ((*p == os_endl[0]) || os_endl[1] && (*p == os_endl[1]))
+				else if ((*p == os_endl[0]) || (os_endl[1] && (*p == os_endl[1])))
 				{
 					got_endl = true;
 					*q++ = *p++;
@@ -958,7 +958,7 @@ void CRFC822::FoldLines(cdstring& text, bool addr_phrase, unsigned long offset, 
 		return;
 
 	// Check for exceed of wrap length
-	if (text.length() + offset < GetWrapLength())
+	if (text.length() + offset < static_cast<unsigned long>(GetWrapLength()))
 		return;
 
 	// Create stream to handle writing
@@ -971,7 +971,7 @@ void CRFC822::FoldLines(cdstring& text, bool addr_phrase, unsigned long offset, 
 	{
 		long lastSpace = -1;
 		long lastBreak = -1;
-		long count = 0;
+		unsigned long count = 0;
 		const char* endLine = p;
 
 		// Loop while waiting for line break or exceed of wrap length
@@ -979,8 +979,8 @@ void CRFC822::FoldLines(cdstring& text, bool addr_phrase, unsigned long offset, 
 		// keep going until one is found.
 		while ((*endLine != '\r') &&
 				(*endLine != '\n') &&
-				((count + offset <= GetWrapLength()) || ((breakat != 0) && (lastBreak == -1) && (lastSpace == -1))) &&
-				(remaining - count > 0))
+				((count + offset <= static_cast<unsigned long>(GetWrapLength())) || ((breakat != 0) && (lastBreak == -1) && (lastSpace == -1))) &&
+				(count < static_cast<unsigned long>(remaining)))
 		{
 			if (*endLine == ' ')
 				lastSpace = count;
@@ -991,7 +991,7 @@ void CRFC822::FoldLines(cdstring& text, bool addr_phrase, unsigned long offset, 
 		}
 
 		// Check break state
-		if (count + offset > GetWrapLength())
+		if (count + offset > static_cast<unsigned long>(GetWrapLength()))
 		{
 			// Exceed wrap - check for spaces
 			if (lastSpace > 0)
@@ -1022,14 +1022,14 @@ void CRFC822::FoldLines(cdstring& text, bool addr_phrase, unsigned long offset, 
 				out.write(p, count);
 
 			// Add FWS if more to come
-			if (remaining - count > 0)
+			if (count < static_cast<unsigned long>(remaining))
 				out << os_endl << " ";
 		}
-		
+
 		else
 		{
 			// Check whether at end of text
-			if (remaining - count > 0)
+			if (count < static_cast<unsigned long>(remaining))
 			{
 				// Copy line to buffer with trailing CR/LF
 				out.write(p, count);
@@ -1210,7 +1210,7 @@ bool CRFC822::TextTo1522(cdstring& str, bool addr_phrase, bool wrap, unsigned lo
 			}
 			
 			// Check for exceed of line length (account for possible encoding of next char if it exists)
-			if (*p && wrap && (line_length >= GetWrapLength()))
+			if (*p && wrap && (line_length >= static_cast<unsigned long>(GetWrapLength())))
 			{
 				// Must do wrap
 				out << cRFC1522_QUOTE_END << os_endl << " " << quote_start;

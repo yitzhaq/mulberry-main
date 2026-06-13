@@ -261,7 +261,7 @@ void CHTTPRequestResponse::ParseStatusLine(cdstring& line)
 		throw CHTTPResponseException("incorrect http version in status line");
 	
 	// Must have three digits followed by nothing or one space
-	if (!isdigit(p[0]) || !isdigit(p[1]) || !isdigit(p[2]) || (p[3] != ' ') && (p[3] != 0))
+	if (!isdigit(p[0]) || !isdigit(p[1]) || !isdigit(p[2]) || ((p[3] != ' ') && (p[3] != 0)))
 		throw CHTTPResponseException("invalid status response code syntax");
 	
 	// Read in the status code

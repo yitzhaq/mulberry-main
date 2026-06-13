@@ -224,7 +224,7 @@ void CParserPlain::Probe(int char_offset, int offset, char delimiter)
 	{
 		// Do comparison with element
 		int i = 0;
-		if (mStrLen - char_offset >= (*iter).length())
+		if ((size_t)(mStrLen - char_offset) >= (*iter).length())
 		{
 			if (!::unistrncmpnocase(&mTxt[char_offset], *iter, (*iter).length()))
 				i = (*iter).length();
@@ -243,7 +243,7 @@ void CParserPlain::Probe(int char_offset, int offset, char delimiter)
 			while((i + char_offset < mStrLen) &&
 					((delimiter && (mTxt[i + char_offset] != delimiter)) || !delimiter) &&		// Check delimiter first
 					((delimiter && isuspace(mTxt[i + char_offset])) ||							// Allow whtespace if looking for delimiter
-				 	 (mTxt[i + char_offset] < 0x0100) && (cURLXCharacter[(unsigned char) mTxt[i + char_offset]] == 1)))
+				 	 ((mTxt[i + char_offset] < 0x0100) && (cURLXCharacter[(unsigned char) mTxt[i + char_offset]] == 1))))
 			{
 				i++;
 			}

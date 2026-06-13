@@ -390,7 +390,7 @@ void CServerBrowse::DrawCell(JPainter* pDC, const STableCell& inCell, const JRec
 							{
 								theTxt = ::GetNumericFormat(size);
 							}
-							else if (mbox->GetProtocol()->IsLoggedOn() && !mbox->IsLocalMbox() || mbox->IsCachedMbox())
+							else if ((mbox->GetProtocol()->IsLoggedOn() && !mbox->IsLocalMbox()) || mbox->IsCachedMbox())
 							{
 								theTxt = cdstring::null_str;
 								JCoordinate left = (inLocalRect.left + inLocalRect.right)/2 - 8;

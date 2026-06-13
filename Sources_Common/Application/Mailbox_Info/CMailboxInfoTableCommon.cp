@@ -203,14 +203,14 @@ void CMailboxInfoTable::OnFileClose(void)
 	if (mInfoTableView->Is3Pane())
 	{
 		// If close allowed do it
-		if (mInfoTableView->IsOpen() && mInfoTableView->TestClose(GetMbox()) || mInfoTableView->IsClosing())
+		if ((mInfoTableView->IsOpen() && mInfoTableView->TestClose(GetMbox())) || mInfoTableView->IsClosing())
 			// Close the view  - this will close the actual window at idle time
 			mInfoTableView->DoClose(GetMbox());
 	}
 	else
 	{
 		// If close allowed do it
-		if (mInfoTableView->IsOpen() && mInfoTableView->TestClose() || mInfoTableView->IsClosing())
+		if ((mInfoTableView->IsOpen() && mInfoTableView->TestClose()) || mInfoTableView->IsClosing())
 			// Close the view  - this will close the actual window at idle time
 			mInfoTableView->DoClose();
 	}
@@ -684,8 +684,8 @@ void CMailboxInfoTable::OnApplyRuleMailboxToolbar(const char* name)
 	else
 	{
 		unsigned long index = CPreferences::sPrefs->GetFilterManager()->GetManualIndex(uid);
-		
-		if (index != -1)
+
+		if (index != (unsigned long) -1)
 			DoApplyRuleMailbox(index);
 	}
 }

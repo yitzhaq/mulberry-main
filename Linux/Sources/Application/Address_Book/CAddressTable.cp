@@ -689,9 +689,9 @@ void CAddressTable::DoKeySelection()
 	
 	// Get low bound insert pos
 	long select = mAdbk->GetAddressList()->FetchInsertIndexOf(temp);
-	
+
 	// Clip to end of list
-	if (select > mAdbk->GetAddressList()->size()) select--;
+	if (select > (long) mAdbk->GetAddressList()->size()) select--;
 
 	STableCell aCell(select, 2);
 	UnselectAllCells();

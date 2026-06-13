@@ -501,7 +501,7 @@ const char* cRecoveredDraftName = "Recovered Draft ";
 void CLetterWindow::SaveTemporary()
 {
 	// Only if allowed by preferences and admin
-	if (CAdminLock::sAdminLock.mNoLocalDrafts || (CPreferences::sPrefs != NULL) && !CPreferences::sPrefs->mAutoSaveDrafts.GetValue())
+	if (CAdminLock::sAdminLock.mNoLocalDrafts || ((CPreferences::sPrefs != NULL) && !CPreferences::sPrefs->mAutoSaveDrafts.GetValue()))
 		return;
 
 	cdstring newTemporary;
@@ -574,7 +574,7 @@ unsigned long CLetterWindow::SaveAllTemporary()
 void CLetterWindow::DeleteTemporary()
 {
 	// Only if allowed by preferences and admin
-	if (CAdminLock::sAdminLock.mNoLocalDrafts || (CPreferences::sPrefs != NULL) && !CPreferences::sPrefs->mAutoSaveDrafts.GetValue())
+	if (CAdminLock::sAdminLock.mNoLocalDrafts || ((CPreferences::sPrefs != NULL) && !CPreferences::sPrefs->mAutoSaveDrafts.GetValue()))
 		return;
 
 	try
@@ -592,7 +592,7 @@ void CLetterWindow::DeleteTemporary()
 void CLetterWindow::ReadTemporary()
 {
 	// Only if allowed by preferences and admin
-	if (CAdminLock::sAdminLock.mNoLocalDrafts || (CPreferences::sPrefs != NULL) && !CPreferences::sPrefs->mAutoSaveDrafts.GetValue())
+	if (CAdminLock::sAdminLock.mNoLocalDrafts || ((CPreferences::sPrefs != NULL) && !CPreferences::sPrefs->mAutoSaveDrafts.GetValue()))
 		return;
 
 	unsigned long ctr = 1;
@@ -941,7 +941,7 @@ void CLetterWindow::IncludeMessage(CMessage* theMsg, bool forward, int start, in
 			}
 			
 			// Quote it if available
-			if (header && msg_hdr || msg_txt)
+			if ((header && msg_hdr) || msg_txt)
 				IncludeMessageTxt(theMsg, msg_hdr, utf8, forward, attach->GetContent().GetContentSubtype(), attach->GetContent().IsFlowed());
 		}
 	}
@@ -1849,8 +1849,8 @@ void CLetterWindow::InsertSignature(const cdstring& signature)
 	// Replace existing
 	if (!char1 && CPreferences::sPrefs->mSignatureEmptyLine.GetValue())
 		replace_with = os_endl2;
-	else if (!char1 && !CPreferences::sPrefs->mSignatureEmptyLine.GetValue() ||
-			 char1 && !char2 && CPreferences::sPrefs->mSignatureEmptyLine.GetValue())
+	else if ((!char1 && !CPreferences::sPrefs->mSignatureEmptyLine.GetValue()) ||
+			 (char1 && !char2 && CPreferences::sPrefs->mSignatureEmptyLine.GetValue()))
 		replace_with = os_endl;
 	
 	// May need sigdashes before signature
@@ -2451,8 +2451,8 @@ void CLetterWindow::OnUpdateDraftSendMail(CCmdUI* pCmdUI)
 	const CIdentity* id = GetIdentity();
 	pCmdUI->Enable(!mExternalEdit &&
 					(CConnectionManager::sConnectionManager.IsConnected() ||
-						CSMTPAccountManager::sSMTPAccountManager &&
-						CSMTPAccountManager::sSMTPAccountManager->CanSendDisconnected(*id)));
+						(CSMTPAccountManager::sSMTPAccountManager &&
+						CSMTPAccountManager::sSMTPAccountManager->CanSendDisconnected(*id))));
 }
 
 void CLetterWindow::OnUpdateDraftAppend(CCmdUI* pCmdUI)

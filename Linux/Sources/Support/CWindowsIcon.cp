@@ -196,9 +196,9 @@ void CWindowsIcon::ParseData(const unsigned long* ico, unsigned long size, unsig
 
 	// decode image data
 
-	for (JCoordinate y = 0; y < size; y++)
+	for (unsigned long y = 0; y < size; y++)
 	{
-		for (JCoordinate x = 0; x < size; x++)
+		for (unsigned long x = 0; x < size; x++)
 		{
 			unsigned long pixel = *(unsigned long*)(entry + size * y + x);
 			pixel = AlphaBlend(pixel, bkgnd, 0xBAADF00D, state);

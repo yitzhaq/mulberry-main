@@ -172,7 +172,7 @@ void CIMAPLabelsDialog::OnCreate()
 
 void CIMAPLabelsDialog::SetDetails(const cdstrvect& names, const cdstrvect& labels)
 {
-	for(int i = 0; i < NMessage::eMaxLabels; i++)
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		mName[i]->SetText(names[i]);
 		mLabel[i]->SetText(labels[i]);
@@ -182,7 +182,7 @@ void CIMAPLabelsDialog::SetDetails(const cdstrvect& names, const cdstrvect& labe
 // Called during idle
 bool CIMAPLabelsDialog::GetDetails(cdstrvect& labels)
 {
-	for(int i = 0; i < NMessage::eMaxLabels; i++)
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		labels[i] = mLabel[i]->GetText();
 	}
@@ -225,7 +225,7 @@ JBoolean CIMAPLabelsDialog::OKToDeactivate()
 bool CIMAPLabelsDialog::OnOK()
 {
 	// Make sure all labels are valid
-	for(int i = 0; i < NMessage::eMaxLabels; i++)
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
 	{
 		cdstring label = mLabel[i]->GetText();
 		if (!ValidLabel(label))

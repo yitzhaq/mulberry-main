@@ -67,7 +67,7 @@ void CMenuTable::TableDrawCell(JPainter& p, const JPoint& cell, const JRect& ori
 {
 	// Paint selection colour into background
 	unsigned long bkgnd = 0x00CCCCCCC;
-	if (cell.y == itsHilightRow)
+	if (static_cast<JIndex>(cell.y) == itsHilightRow)
 	{
 		StPenState save(&p);
 
