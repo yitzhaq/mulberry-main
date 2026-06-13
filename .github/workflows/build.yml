@@ -91,7 +91,7 @@ jobs:
         cd Linux && bash links.sh && cd ..
 
         # JX include dirs (populated by JX build, not tracked in git)
-        mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore
+        mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore Libraries/JX/include/jximage
         for h in Libraries/JX/libjx/code/*.h; do
           ln -sf "../../libjx/code/$(basename "$h")" "Libraries/JX/include/jx/$(basename "$h")"
         done
@@ -224,7 +224,7 @@ jobs:
           /usr/share/unicode/cldr/common/annotationsDerived/en.xml
         mkdir -p Linux/Includes
         cd Linux && bash links.sh && cd ..
-        mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore
+        mkdir -p Libraries/JX/include/jx Libraries/JX/include/jcore Libraries/JX/include/jximage
         for h in Libraries/JX/libjx/code/*.h; do
           ln -sf "../../libjx/code/$(basename "$h")" "Libraries/JX/include/jx/$(basename "$h")"
         done
