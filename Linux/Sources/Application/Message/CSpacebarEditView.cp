@@ -221,6 +221,9 @@ JCoordinate CSpacebarEditView::GetCaptionHeight(JPagePrinter& p, const cdstring&
 	// Count lines in caption
 	unsigned long ctr = 0;
 	const char* txt = caption.c_str();
+	if (!*txt)
+		return cCaptionVertMargin;
+
 	while(*txt)
 	{
 		if ((*txt == '\n') && *(txt+1))

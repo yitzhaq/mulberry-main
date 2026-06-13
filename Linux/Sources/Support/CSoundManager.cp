@@ -59,6 +59,7 @@ CSoundManager::CSoundManager()
 		mDriver = drv;
 		return;
 	}
+	delete drv;
 }
 
 CSoundManager::~CSoundManager()

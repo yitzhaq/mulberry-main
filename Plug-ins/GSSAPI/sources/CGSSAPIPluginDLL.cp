@@ -650,11 +650,15 @@ long CGSSAPIPluginDLL::ProcessNegStepData(SAuthPluginData* info)
 
 	// Set mode to none
 	char buf[500];
+	if (!output_token.value || output_token.length < 4)
+	{
+		DisplayError(info, GSS_S_FAILURE, 0, __FILE__, __LINE__);
+		return eAuthServerError;
+	}
 	::memcpy(buf, output_token.value, 4);
 	buf[0] = SASL_PROT_NONE;
 
-	if (output_token.value)
-	    ::gss_release_buffer(&min_stat, &output_token);
+	::gss_release_buffer(&min_stat, &output_token);
 	output_token.length = 0;
 	output_token.value = NULL;
 

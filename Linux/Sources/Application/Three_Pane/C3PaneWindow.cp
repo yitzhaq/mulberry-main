@@ -921,10 +921,10 @@ void C3PaneWindow::UpdateView()
 	bool preview_visible = (mPreviewZoom | mPreviewVisible) && !mItemsZoom && !mListZoom;
 
 	// Change its state based on geometry
-	bool split11;
-	bool split12;
-	bool split21;
-	bool split22;
+	bool split11 = false;
+	bool split12 = false;
+	bool split21 = false;
+	bool split22 = false;
 	switch(mGeometry)
 	{
 	case N3Pane::eNone:

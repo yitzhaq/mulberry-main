@@ -45,7 +45,7 @@ CFilter::CFilter(LStream* aStream, CProgress* progress)
 
 CFilter::~CFilter()
 {
-	delete mBuffer;
+	delete[] mBuffer;
 	mBuffer = NULL;
 	mBufferPos = NULL;
 	mStream = NULL;

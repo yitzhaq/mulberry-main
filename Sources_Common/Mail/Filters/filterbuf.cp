@@ -47,7 +47,7 @@ filterbuf::~filterbuf()
 	mOut = NULL;
 	mLOut = NULL;
 	mBOut = NULL;
-	delete mBuffer;
+	delete[] mBuffer;
 	mBuffer = NULL;
 	mBufferNext = NULL;
 }

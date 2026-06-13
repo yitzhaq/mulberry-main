@@ -71,7 +71,7 @@ LFileStream::SetMarker(
 	SInt32		inOffset,
 	EStreamFrom	inFromWhere)
 {
-	int where;
+	int where = SEEK_SET;
 	switch(inFromWhere)
 	{
 	case streamFrom_Start:

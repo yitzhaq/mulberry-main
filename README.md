@@ -32,9 +32,9 @@ server-side attachment decoding, SPECIAL-USE, MULTIAPPEND,
 LIST-EXTENDED, LIST-STATUS, SEARCHRES, ESEARCH/ESORT, APPENDLIMIT,
 STATUS=SIZE, SORT=DISPLAY, and WITHIN extensions — completing all
 15 mandatory IMAP4rev2 extensions. It includes comprehensive
-bug fixes found through static analysis with six tools (cppcheck,
-clang-tidy, Facebook Infer, GCC extended warnings, CodeQL, and
-Coverity),
+bug fixes found through static analysis with seven tools (cppcheck,
+clang-tidy, Facebook Infer, GCC extended warnings, GCC -fanalyzer,
+CodeQL, and Coverity),
 improved RFC 3676 format=flowed compliance, Unicode clipboard
 support, automatic recovery from network connection drops, and
 recovery of sixteen patches from the original developer's SVN
