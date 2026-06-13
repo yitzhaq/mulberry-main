@@ -116,7 +116,7 @@ This codebase is regularly analyzed with the following tools:
 - [CodeChecker](https://codechecker.readthedocs.io/) - an analyzer tooling, defect database and viewer extension for static and dynamic analyzer tools
 - [CodeQL](https://codeql.github.com/) - discover vulnerabilities across a codebase
 - [Coverity Scan](https://www.blackduck.com/static-analysis-tools-sast/coverity.html) - find code quality defects in large-scale, complex software
-- [Cppcheck](https://cppcheck.sourceforge.io) - a tool for static C/C++ code analysis
+- [Cppcheck](https://cppcheck.net/) - a tool for static C/C++ code analysis
 - GCC extended warnings
 - [GCC Static Analyzer](https://gcc.gnu.org/wiki/StaticAnalyzer) - static analysis of program flow which looks for "interesting" interprocedural paths through the code
 - [Infer](https://fbinfer.com/) - a tool to detect bugs in Java and C/C++/Objective-C code

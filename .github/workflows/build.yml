@@ -67,6 +67,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          cppcheck \
           libaspell-dev libbrotli-dev libfl-dev libfontconfig-dev \
           libfreetype-dev libglib2.0-dev libkrb5-dev libldap-dev \
           libpcre3-dev libsodium-dev libssl-dev libunistring-dev libxml2-dev \
@@ -76,6 +77,23 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: compilation-database
+
+    - name: Create generated symlinks required for header resolution
+      run: |
+        ln -sf config-linux.h Libraries/JX/ACE/ACE_wrappers/ace/config.h
+        ln -sf ../include/make/sys/Linux-Intel-x86_64-gcc3 Libraries/JX/include/make/jx_config
+
+    - name: Filter compilation database to exclude third-party libraries
+      run: |
+        python3 -c "
+        import json
+        # Exclude third-party libraries; keep our own (CICalendar, vCard, XMLLib)
+        EXCLUDE = ['/Libraries/JX/', '/Libraries/vendor/']
+        db = json.load(open('compile_commands.json'))
+        filtered = [e for e in db if not any(x in e.get('file', '') for x in EXCLUDE)]
+        json.dump(filtered, open('compile_commands.json', 'w'), indent=2)
+        print(f'Filtered: {len(db)} -> {len(filtered)} entries (removed {len(db)-len(filtered)} third-party entries)')
+        "
 
     - name: Run CodeChecker analysis
       uses: whisperity/codechecker-analysis-action@v1
@@ -245,6 +263,6 @@ jobs:
       contents: read
       security-events: write
     with:
-      scan-args: "-r ./"
+      scan-args: "-r ./ --allow-no-lockfiles"
       checkout-submodules: true
       fail-on-vuln: false
