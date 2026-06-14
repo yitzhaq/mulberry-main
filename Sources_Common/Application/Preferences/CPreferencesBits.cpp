@@ -657,9 +657,7 @@ int CPreferences::operator==(const CPreferences& other) const
 	if (!((mListTextFontInfo == other.mListTextFontInfo) &&
 				(mDisplayTextFontInfo == other.mDisplayTextFontInfo) &&
 				(mPrintTextFontInfo == other.mPrintTextFontInfo) &&
-				(mCaptionTextFontInfo == other.mCaptionTextFontInfo) &&
-				(mListTextFontInfo == other.mListTextFontInfo) &&
-				(mListTextFontInfo == other.mListTextFontInfo))) 
+				(mCaptionTextFontInfo == other.mCaptionTextFontInfo)))
 		{
 			return false;
 		}

@@ -207,7 +207,7 @@ const CCertificate* CCertificateStore::FindCertificate(const cdstring& key, CCer
 		if (matches)
 		{
 			// If cert is completely valid, return it
-			if ((*iter)->IsNotBeforeValid() && (*iter)->IsNotBeforeValid())
+			if ((*iter)->IsNotBeforeValid() && (*iter)->IsNotAfterValid())
 			{
 				cert = *iter;
 				break;
