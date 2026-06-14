@@ -607,11 +607,11 @@ bool COptionsMap::ReadValue(const cdstring& key, _RGBColor& value, NumVersion ve
 		char_stream txt(all.c_str_mod());
 		if (txt.start_sexpression())
 		{
-			long red;
+			long red = 0;
 			txt.get(red);
-			long green;
+			long green = 0;
 			txt.get(green);
-			long blue;
+			long blue = 0;
 			txt.get(blue);
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x || __dest_os == __linux_os
@@ -678,11 +678,11 @@ bool COptionsMap::ReadValue(const cdstring& key, CColourList& value, NumVersion 
 		{
 			while(txt.start_sexpression())
 			{
-				long red;
+				long red = 0;
 				txt.get(red);
-				long green;
+				long green = 0;
 				txt.get(green);
-				long blue;
+				long blue = 0;
 				txt.get(blue);
 
 				RGBColor color;
