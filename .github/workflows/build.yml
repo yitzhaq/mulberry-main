@@ -117,6 +117,16 @@ jobs:
         ln -sf config-linux.h Libraries/JX/ACE/ACE_wrappers/ace/config.h
         ln -sf ../include/make/sys/Linux-Intel-x86_64-gcc3 Libraries/JX/include/make/jx_config
 
+        # Fix CodeChecker report hash path resolution — it strips directory
+        # components from the workspace path, looking for prefix headers at
+        # wrong relative paths. Create symlinks at all resolved locations.
+        sudo mkdir -p /home/runner/work/mulberry-main/Common
+        sudo ln -sf ${{ github.workspace }}/Plug-ins/Common/Mac2Linux.h /home/runner/work/mulberry-main/Common/Mac2Linux.h
+        sudo ln -sf ${{ github.workspace }}/Plug-ins/Common/Plugin_Prefix_Linux.h /home/runner/work/mulberry-main/Common/Plugin_Prefix_Linux.h
+        sudo ln -sf ${{ github.workspace }}/Plug-ins/Common/os_dep.h /home/runner/work/mulberry-main/Common/os_dep.h
+        sudo mkdir -p /home/runner/work/Linux/Sources
+        sudo ln -sf ${{ github.workspace }}/Linux/Sources/Mulberry_Prefix.h /home/runner/work/Linux/Sources/Mulberry_Prefix.h
+        ln -sf Linux/Sources Sources
 
         echo "Symlinks: $(find Linux/Includes -type l | wc -l) Mulberry, $(ls Libraries/JX/include/jx/*.h | wc -l) jx, $(ls Libraries/JX/include/jcore/*.h | wc -l) jcore"
 
@@ -144,12 +154,150 @@ jobs:
     - name: Convert results to SARIF
       if: always()
       run: |
-        pip install codechecker 2>/dev/null | tail -1
-        codechecker parse \
-          ${{ steps.codechecker.outputs.analyze-output }} \
-          --export sarif \
-          --output ${{ github.workspace }}/codechecker.sarif \
-          || true
+        echo "=========================================="
+        echo "=== FULL CODECHECKER BINARY DIAGNOSTIC ==="
+        echo "=========================================="
+
+        echo "=== 1. Environment ==="
+        echo "USER: $(whoami)"
+        echo "HOME: $HOME"
+        echo "PWD: $(pwd)"
+        echo "PATH: $PATH"
+        echo "PYTHONPATH: ${PYTHONPATH:-unset}"
+        echo "VIRTUAL_ENV: ${VIRTUAL_ENV:-unset}"
+        python3 --version
+        pip --version
+
+        echo "=== 2. Current state of ~/.local/bin ==="
+        echo "Directory exists: $(test -d ~/.local/bin && echo yes || echo no)"
+        echo "Full listing:"
+        ls -la ~/.local/bin/ 2>&1 | head -30
+        echo "Total files: $(ls ~/.local/bin/ 2>/dev/null | wc -l)"
+
+        echo "=== 3. Search for codechecker binary EVERYWHERE ==="
+        echo "which codechecker: $(which codechecker 2>&1)"
+        echo "type codechecker: $(type codechecker 2>&1)"
+        echo "command -v codechecker: $(command -v codechecker 2>&1)"
+        echo "find in ~/.local:"
+        find ~/.local -iname '*codechecker*' -ls 2>/dev/null || echo "nothing"
+        echo "find in /home/runner:"
+        find /home/runner -maxdepth 4 -iname '*codechecker*' -not -path '*/work/*' -ls 2>/dev/null || echo "nothing"
+        echo "find in /usr/local:"
+        find /usr/local -iname '*codechecker*' -ls 2>/dev/null || echo "nothing"
+        echo "find in /usr:"
+        find /usr -maxdepth 4 -iname '*codechecker*' -ls 2>/dev/null || echo "nothing"
+
+        echo "=== 4. pip package state ==="
+        echo "pip show codechecker:"
+        pip show codechecker 2>&1
+        echo "---"
+        echo "pip show --files codechecker:"
+        pip show --files codechecker 2>&1
+        echo "---"
+        echo "pip list | grep -i codechecker:"
+        pip list 2>&1 | grep -i codechecker
+        echo "---"
+        echo "Entry points file:"
+        find ~/.local -path '*/codechecker*dist-info/entry_points.txt' -exec echo "Found: {}" \; -exec cat {} \; 2>/dev/null || echo "no entry_points.txt found"
+        echo "---"
+        echo "RECORD file (installed files list):"
+        find ~/.local -path '*/codechecker*dist-info/RECORD' -exec echo "Found: {}" \; -exec grep -i 'bin/' {} \; 2>/dev/null || echo "no RECORD found"
+        echo "---"
+        echo "top_level.txt:"
+        find ~/.local -path '*/codechecker*dist-info/top_level.txt' -exec echo "Found: {}" \; -exec cat {} \; 2>/dev/null || echo "not found"
+
+        echo "=== 5. Attempt reinstall ==="
+        echo "pip install --force-reinstall --no-deps codechecker:"
+        pip install --force-reinstall --no-deps codechecker 2>&1
+        echo "Exit code: $?"
+        echo "---"
+        echo "After reinstall - which: $(which codechecker 2>&1)"
+        echo "After reinstall - ls ~/.local/bin/codechecker: $(ls -la ~/.local/bin/codechecker 2>&1)"
+        echo "After reinstall - ~/.local/bin listing:"
+        ls -la ~/.local/bin/ 2>&1 | head -30
+
+        echo "=== 6. Try alternative invocations ==="
+        echo "python3 -m codechecker_cmd:"
+        python3 -c "import codechecker; print('codechecker module path:', codechecker.__file__)" 2>&1 || echo "can't import codechecker"
+        echo "---"
+        echo "python3 -m codechecker_cmd.cmd:"
+        python3 -c "from codechecker_cmd import cmd; print('cmd module found')" 2>&1 || echo "can't import codechecker_cmd"
+        echo "---"
+        echo "Looking for CodeChecker main entry:"
+        find ~/.local -name 'cmd.py' -path '*codechecker*' -ls 2>/dev/null || echo "not found"
+        find ~/.local -name '__main__.py' -path '*codechecker*' -ls 2>/dev/null || echo "not found"
+        echo "---"
+        echo "All codechecker Python packages installed:"
+        pip list 2>&1 | grep -i code
+
+        echo "=== 7. Analyze output directory state ==="
+        echo "analyze-output variable: ${{ steps.codechecker.outputs.analyze-output }}"
+        echo "Directory exists: $(test -d '${{ steps.codechecker.outputs.analyze-output }}' && echo yes || echo no)"
+        ls -la "${{ steps.codechecker.outputs.analyze-output }}/" 2>&1 | head -10
+        echo "Plist files: $(find '${{ steps.codechecker.outputs.analyze-output }}' -name '*.plist' 2>/dev/null | wc -l)"
+        echo "Total size: $(du -sh '${{ steps.codechecker.outputs.analyze-output }}' 2>/dev/null | cut -f1)"
+
+        echo "=== 8. CODECHECKER_PATH env from action ==="
+        echo "CODECHECKER_PATH: ${CODECHECKER_PATH:-unset}"
+        if [ -n "${CODECHECKER_PATH}" ]; then
+          echo "Contents of CODECHECKER_PATH dir:"
+          ls -la "${CODECHECKER_PATH}/" 2>&1
+        fi
+
+        echo "=== 9. Attempt parse with every method ==="
+        PARSED=false
+
+        if command -v codechecker >/dev/null 2>&1; then
+          echo "METHOD 1: codechecker in PATH"
+          codechecker parse \
+            ${{ steps.codechecker.outputs.analyze-output }} \
+            --export sarif \
+            --output ${{ github.workspace }}/codechecker.sarif 2>&1 && PARSED=true
+        else
+          echo "METHOD 1: SKIP (not in PATH)"
+        fi
+
+        if [ "$PARSED" = false ] && [ -x "$HOME/.local/bin/codechecker" ]; then
+          echo "METHOD 2: direct path ~/.local/bin/codechecker"
+          "$HOME/.local/bin/codechecker" parse \
+            ${{ steps.codechecker.outputs.analyze-output }} \
+            --export sarif \
+            --output ${{ github.workspace }}/codechecker.sarif 2>&1 && PARSED=true
+        else
+          echo "METHOD 2: SKIP (not at ~/.local/bin/codechecker)"
+        fi
+
+        if [ "$PARSED" = false ]; then
+          echo "METHOD 3: python3 -m codechecker_cmd.cli parse"
+          python3 -m codechecker_cmd.cli parse \
+            ${{ steps.codechecker.outputs.analyze-output }} \
+            --export sarif \
+            --output ${{ github.workspace }}/codechecker.sarif 2>&1 && PARSED=true || echo "METHOD 3 FAILED: $?"
+        fi
+
+        if [ "$PARSED" = false ]; then
+          echo "METHOD 4: find any codechecker executable and try it"
+          CC=$(find /home/runner -name 'CodeChecker' -o -name 'codechecker' 2>/dev/null | grep -v __pycache__ | grep -v '.pyc' | head -1)
+          if [ -n "$CC" ]; then
+            echo "Found: $CC"
+            file "$CC"
+            "$CC" parse \
+              ${{ steps.codechecker.outputs.analyze-output }} \
+              --export sarif \
+              --output ${{ github.workspace }}/codechecker.sarif 2>&1 && PARSED=true || echo "METHOD 4 FAILED: $?"
+          else
+            echo "METHOD 4: SKIP (no executable found)"
+          fi
+        fi
+
+        if [ "$PARSED" = false ]; then
+          echo "::error::ALL METHODS FAILED — codechecker parse could not be executed"
+        else
+          echo "SUCCESS: codechecker.sarif generated"
+          ls -la ${{ github.workspace }}/codechecker.sarif
+          echo "File size: $(wc -c < ${{ github.workspace }}/codechecker.sarif) bytes"
+          echo "Result count: $(python3 -c "import json; d=json.load(open('${{ github.workspace }}/codechecker.sarif')); print(len(d['runs'][0]['results']))" 2>&1)"
+        fi
 
     - name: Upload SARIF to GitHub Security
       if: always()
@@ -165,6 +313,14 @@ jobs:
       with:
         name: codechecker-reports
         path: ${{ steps.codechecker.outputs.result-html-dir }}
+        if-no-files-found: ignore
+
+    - name: Upload raw analysis results (backup)
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: codechecker-raw-results
+        path: ${{ steps.codechecker.outputs.analyze-output }}
         if-no-files-found: ignore
 
   # ============================================================

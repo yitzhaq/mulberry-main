@@ -1,0 +1,57 @@
+name: "Coverity Scan"
+
+on:
+  schedule:
+    - cron: '23 5 * * 1'
+  workflow_dispatch:
+
+jobs:
+  coverity:
+    name: Analyze (Coverity Scan)
+    runs-on: ubuntu-latest
+    if: ${{ secrets.COVERITY_SCAN_TOKEN != '' }}
+
+    steps:
+    - name: Check for credentials
+      id: check-creds
+      run: |
+        if [ -z "${{ secrets.COVERITY_SCAN_TOKEN }}" ]; then
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          echo "::notice::Coverity Scan skipped — COVERITY_SCAN_TOKEN secret not set"
+        else
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Checkout repository
+      if: steps.check-creds.outputs.skip != 'true'
+      uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Install dependencies
+      if: steps.check-creds.outputs.skip != 'true'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential autoconf \
+          libaspell-dev libbrotli-dev libfl-dev libfontconfig-dev \
+          libfreetype-dev libglib2.0-dev libkrb5-dev libldap-dev \
+          libpcre3-dev libsodium-dev libssl-dev libunistring-dev libxml2-dev \
+          libx11-dev libxext-dev libxft-dev libxpm-dev libzstd-dev \
+          pkg-config python3 unicode-cldr-core zlib1g-dev
+
+    - name: Configure
+      if: steps.check-creds.outputs.skip != 'true'
+      run: |
+        autoconf
+        ./configure
+
+    - name: Run Coverity Scan
+      if: steps.check-creds.outputs.skip != 'true'
+      uses: vapier/coverity-scan-action@v1
+      with:
+        token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        email: ${{ secrets.COVERITY_SCAN_EMAIL }}
+        command: make -j$(nproc)
+        version: ${{ github.sha }}
+        description: "${{ github.event.head_commit.message }} (${{ github.ref_name }})"
