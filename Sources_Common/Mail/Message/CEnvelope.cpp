@@ -503,7 +503,8 @@ cdstring CEnvelope::NormaliseSubject(bool matching) const
 					while(isspace((unsigned char)*q)) q++;
 					if (*q == '[')
 					{
-						while(*q && (*q != '[') && (*q != ']')) q++;
+						q++;
+						while(*q && *q != ']') q++;
 						if (*q == ']')
 							q++;
 						while(isspace((unsigned char)*q)) q++;
