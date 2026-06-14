@@ -25,6 +25,12 @@
    */
 
 #include <string.h>
+#ifdef _WIN32
+#include <windows.h>
+#define secure_zero(p, n) SecureZeroMemory(p, n)
+#else
+#define secure_zero(p, n) explicit_bzero(p, n)
+#endif
 #include "md5.h"
 
 /* Constants for MD5Transform routine.
@@ -257,7 +263,7 @@ static void MD5Transform(UINT4 state[4], const unsigned char block[64])
     
     /* Zeroize sensitive information.
      */
-    memset(x, 0, sizeof (x));
+    secure_zero(x, sizeof (x));
 }
 
 /* Encodes input (UINT4) into output (unsigned char). Assumes len is

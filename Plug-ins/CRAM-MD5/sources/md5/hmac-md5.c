@@ -4,6 +4,12 @@
 
 #include <stdio.h>
 #include <string.h>
+#ifdef _WIN32
+#include <windows.h>
+#define secure_zero(p, n) SecureZeroMemory(p, n)
+#else
+#define secure_zero(p, n) explicit_bzero(p, n)
+#endif
 #include "md5.h"
 #include "hmac-md5.h"
 
@@ -66,7 +72,7 @@ void hmac_md5_init(HMAC_MD5_CTX *hmac,
     MD5Update(&hmac->octx, k_pad, BLOCK_SIZE);
     
     /* clean up workspace */
-    memset(k_pad, 0, BLOCK_SIZE);
+    secure_zero(k_pad, BLOCK_SIZE);
 }
 
 /* finish hmac from intermediate result.  Intermediate result is zeroed.

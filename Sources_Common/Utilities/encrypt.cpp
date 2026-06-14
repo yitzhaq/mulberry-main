@@ -90,9 +90,7 @@ char* encrypt_cipher(const char* value, const char* key)
 	unsigned char* result = new unsigned char[rlen];
 
 	// Get one-time key and store at start of result
-	unsigned long t;
-	randombytes_buf(&t, sizeof t);
-	*(long*) result = t;
+	randombytes_buf(result, 4);
 	result[4] = 0;
 
 	// One-time key must not contain nulls
