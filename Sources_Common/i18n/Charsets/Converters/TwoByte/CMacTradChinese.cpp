@@ -2100,12 +2100,12 @@ wchar_t CMacTradChinese::c_2_w(const unsigned char*& c)
 	else if (c1 >= cTableOffset1 && c1 < cTableMax1)
 	{
 		unsigned char c2 = *c;
-		if (c2 >= cTableOffset21 && c2 <= cTableMax21)
+		if (c2 >= cTableOffset21 && c2 < cTableMax21)
 		{
 			c++;
 			return cTableData[c1 - cTableOffset1].plane0[c2 - cTableOffset21];
 		}
-		else if (c2 >= cTableOffset22 && c2 <= cTableMax22)
+		else if (c2 >= cTableOffset22 && c2 < cTableMax22)
 		{
 			c++;
 			return cTableData[c1 - cTableOffset1].plane1[c2 - cTableOffset22];

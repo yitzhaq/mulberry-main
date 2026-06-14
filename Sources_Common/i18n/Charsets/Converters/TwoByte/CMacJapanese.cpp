@@ -1068,8 +1068,8 @@ wchar_t CMacJapanese::c_2_w(const unsigned char*& c)
 		return *c++;
 		
 	// Look for two-byte lead byte
-	else if ((*c >= cTableOffset11 && *c <= cTableMax11) &&
-			 (*c >= cTableOffset12 && *c <= cTableMax12))
+	else if ((*c >= cTableOffset11 && *c < cTableMax11) ||
+			 (*c >= cTableOffset12 && *c < cTableMax12))
 		return CCJKBase::c_2_w(c);
 	
 	// Look for KATAKANA characters
