@@ -472,7 +472,9 @@ char* CEudora4AdbkIOPluginDLL::ConvertFromCRLF(const char* str)
 {
 	// Duplicate it
 	char* text = ::strdup(str);
-	
+	if (!text)
+		return NULL;
+
 	// Convert it
 	char* p = text;
 	char* q = p;

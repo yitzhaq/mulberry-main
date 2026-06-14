@@ -151,6 +151,8 @@ void CAddress::ParseAddress(const char* txt)
 
 	// Make local copy of text for tokenising
 	char* s = ::strdup(txt);
+	if (!s)
+		return;
 
 	char* p = s;
 	while(*p == ' ') p++;

@@ -335,6 +335,8 @@ int CISpellPluginDLL::SpInitialise(void)
 		// create args
 		int argc = out.size();
 		char** argv = (char**) malloc((argc + 1) * sizeof(char*));
+		if (!argv)
+			exit(1);
 		char** p = argv;
  		for(unsigned int i = 0; i < out.size(); i++)
  			*p++ = out[i].c_str_mod();

@@ -105,6 +105,8 @@ CAddressList::CAddressList(const char* txt, long txt_length, unsigned long capac
 
 	// Make local copy of text to be tokenised
 	char* s = ::strndup(txt, txt_length);
+	if (!s)
+		return;
 
 	char* p = s;
 	while(*p == ' ') p++;
