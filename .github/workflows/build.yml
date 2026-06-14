@@ -157,7 +157,8 @@ jobs:
         ~/.local/bin/CodeChecker parse \
           ${{ steps.codechecker.outputs.analyze-output }} \
           --export sarif \
-          --output ${{ github.workspace }}/codechecker-raw.sarif
+          --output ${{ github.workspace }}/codechecker-raw.sarif \
+          || true
 
         # Fix CodeChecker SARIF bug: startColumn/endColumn of 0 violates
         # SARIF spec (must be >= 1). Clamp to 1.
