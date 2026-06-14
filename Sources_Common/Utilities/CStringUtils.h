@@ -57,6 +57,7 @@ char* strduptokenstr(char** s1,
 						const char* tokens);	// Duplicate possibly quoted string without destroying end
 
 char* strdup_new(const char* s1);				// Duplicate using new[] (for cdstring ownership)
+char* strndup_new(const char* s1, size_t n);	// Duplicate n chars using new[] (for cdstring ownership)
 
 #if !defined(__GNUC__) && !defined(__VCPP__)
 char* strdup(const char* s1);					// Duplicate a string

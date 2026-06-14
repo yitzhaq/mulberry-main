@@ -35,6 +35,17 @@ char* strdup_new(const char* s1)
 	return s2;
 }
 
+char* strndup_new(const char* s1, size_t n)
+{
+	if (!s1) return NULL;
+	size_t len = ::strlen(s1);
+	if (len > n) len = n;
+	char* s2 = new char[len + 1];
+	::memcpy(s2, s1, len);
+	s2[len] = 0;
+	return s2;
+}
+
 #if !defined(__GNUC__) && !defined(__VCPP__)
 char* strdup(const char* s1)
 {

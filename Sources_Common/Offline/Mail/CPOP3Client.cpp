@@ -957,6 +957,8 @@ void CPOP3Client::PopMessages(CMbox* mbox, const ulvector& msgs, const ulvector&
 		index_item.write(mIndex);
 		CHECK_STREAM(mIndex)
 	}
+
+	mRcvOStream = NULL;
 }
 
 void CPOP3Client::GetRecorderName(const CMbox* mbox, cdstring& record_name) const

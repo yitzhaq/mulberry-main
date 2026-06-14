@@ -474,7 +474,7 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 		SetStatus("Status::LDAP::Lookup");
 
 		// Restrict attributes returned?
-		std::unique_ptr<const char*> attrs;
+		std::unique_ptr<const char*[]> attrs;
 		cdstrvect attrlist;
 		if (!GetAccount()->GetLDAPNotes())
 		{

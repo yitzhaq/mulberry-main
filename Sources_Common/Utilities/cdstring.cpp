@@ -387,7 +387,7 @@ void cdstring::trimspace()
 		// Copy middle
 		len = q - p + 1;
 		if (len)
-			q = ::strndup(p, len);
+			q = ::strndup_new(p, len);
 		else
 			q = NULL;
 		steal(q);
@@ -811,7 +811,7 @@ bool cdstring::unquote()
 			// Strip quotes and store as new string
 			if (len > 2)
 			{
-				steal(::strndup(_str + 1, ::strlen(_str) -2));
+				steal(::strndup_new(_str + 1, ::strlen(_str) -2));
 				FilterOutEscapeChars();
 				return true;
 			}
@@ -1689,7 +1689,7 @@ unsigned long cdstring::hash(const char* str)
 	{
 		while(*p)
 		{
-			i = (int) *p;
+			i = (unsigned char) *p;
 			ret_val ^= i;
 			ret_val <<= 1;
 			p++;
