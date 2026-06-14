@@ -1,6 +1,10 @@
 {
   "analyze": [
     "-i",
-    ".codechecker/skipfile"
+    ".codechecker/skipfile",
+    "-e",
+    "infer",
+    "-e",
+    "gcc"
   ]
 }

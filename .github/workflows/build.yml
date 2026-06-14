@@ -144,7 +144,8 @@ jobs:
     - name: Convert results to SARIF
       if: always()
       run: |
-        /home/runner/.local/bin/codechecker parse \
+        pip install codechecker 2>/dev/null | tail -1
+        codechecker parse \
           ${{ steps.codechecker.outputs.analyze-output }} \
           --export sarif \
           --output ${{ github.workspace }}/codechecker.sarif \
@@ -278,6 +279,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     continue-on-error: true
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
     - name: Checkout repository
@@ -317,6 +321,19 @@ jobs:
       with:
         args: >
           --define sonar.cfamily.compile-commands=compile_commands.json
+
+    - name: Export SonarCloud issues to SARIF
+      if: success()
+      run: python3 scripts/sonarcloud-to-sarif.py
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Upload SonarCloud SARIF
+      if: success()
+      uses: github/codeql-action/upload-sarif@v4
+      with:
+        sarif_file: sonarcloud.sarif
+        category: sonarcloud
 
   # ============================================================
   # OSV-Scanner: dependency CVE scanning (git submodules)
