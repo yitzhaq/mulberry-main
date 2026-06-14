@@ -1006,7 +1006,7 @@ void CTLSSocket::TLSReceiveData(char* buf, long* len)
 	}
 
 	// Get any data present at the moment
-	int result;
+	int result = 0;
 	while(m_tls && (result = ::SSL_read(m_tls, buf, *len)) == SOCKET_ERROR)
 	{
 		// Check for failure

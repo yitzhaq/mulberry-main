@@ -355,9 +355,9 @@ void CPrefsCalendar::SetHours(CDateTimeControl* ctrl, unsigned long hours)
 
 unsigned long CPrefsCalendar::GetHours(CDateTimeControl* ctrl)
 {
-	unsigned long hours;
-	unsigned long mins;
-	unsigned long secs;
+	unsigned long hours = 0;
+	unsigned long mins = 0;
+	unsigned long secs = 0;
 	ctrl->GetTime(hours, mins, secs);
 	return hours;
 }
