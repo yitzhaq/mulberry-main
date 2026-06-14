@@ -161,3 +161,7 @@ cov-int/
 
 # Claude Code
 CLAUDE.md
+sast-coverity-remaining.tsv
+sast-codechecker-full.tsv
+all-alerts.jsonl
+sast-fp-decisions.tsv
