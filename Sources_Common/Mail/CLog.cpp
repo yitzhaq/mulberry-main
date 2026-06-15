@@ -566,7 +566,8 @@ void CLog::BeginLog(cdofstream*& log, const char* name, bool user_start)
 		*log << "--> #Logging started by Mulberry on ";
 	time_t systime = ::time(NULL);
 	cdstring atime = ::ctime(&systime);
-	atime[atime.length() - 1] = 0;
+	if (atime.length())
+		atime[atime.length() - 1] = 0;
 	*log << atime << os_endl << std::flush;
 }
 
@@ -579,7 +580,8 @@ void CLog::EndLog(cdofstream*& log, bool user_stop)
 		*log << "--> #Logging stopped by Mulberry on ";
 	time_t systime = ::time(NULL);
 	cdstring atime = ::ctime(&systime);
-	atime[atime.length() - 1] = 0;
+	if (atime.length())
+		atime[atime.length() - 1] = 0;
 	*log << atime << os_endl << std::flush;
 	log->close();
 	delete log;
@@ -648,7 +650,8 @@ void CLog::LogThrow(const char* type, int err, const char* func, const char* fil
 	{
 		time_t systime  = ::time(NULL);
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*sExceptionLog.GetLog() << os_endl << "Throw:     " << atime << os_endl
 				  << "\tTID: " << cdthread::current_tid() << " 0x" << std::hex << cdthread::current_tid() << std::dec << os_endl
 				  << "\tType: " << type << os_endl
@@ -665,7 +668,8 @@ void CLog::LogCatch(const char* type, const char* func, const char* file, int li
 	{
 		time_t systime  = ::time(NULL);
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*sExceptionLog.GetLog() << "-Catch:    " << atime << os_endl
 				  << "\tTID: " << cdthread::current_tid() << " 0x" << std::hex << cdthread::current_tid() << std::dec << os_endl
 				  << "\tType: " << type << os_endl
@@ -681,7 +685,8 @@ void CLog::LogRethrow(const char* func, const char* file, int line)
 	{
 		time_t systime  = ::time(NULL);
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*sExceptionLog.GetLog() << "--Rethrow: " << atime << os_endl
 				  << "\tTID: " << cdthread::current_tid() << " 0x" << std::hex << cdthread::current_tid() << std::dec << os_endl
 				  << "\tFunction: " << func << os_endl
@@ -696,7 +701,8 @@ void CLog::LogError(const char* func, const char* file, int line, const char* er
 	{
 		time_t systime  = ::time(NULL);
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*sExceptionLog.GetLog() << "--Error: " << atime << os_endl
 				  << "\tWhat: " << err << os_endl
 				  << "\tTID: " << cdthread::current_tid() << " 0x" << std::hex << cdthread::current_tid() << std::dec << os_endl
@@ -723,7 +729,8 @@ void CLog::StartLog(ELogType type, const char* desc)
 		cdstring session_id(GetSessionID());
 		*GetLog() << os_endl << "--> #" << session_id << logdesc;
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*GetLog() << atime;
 		if (desc)
 			*GetLog() << ": " << desc;
@@ -745,7 +752,8 @@ void CLog::StopLog()
 		cdstring session_id(GetSessionID());
 		*GetLog() << os_endl << "--> #" << session_id << desc;
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*GetLog() << atime << os_endl << std::flush;
 	}
 }
@@ -778,7 +786,8 @@ void CLog::LogEntry(const char* log)
 		time_t systime  = ::time(NULL);
 		cdstring session_id(GetSessionID());
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*GetLog() << os_endl << "--> #" << session_id << "." << cdthread::current_tid() << " " << atime << os_endl;
 		*GetLog() << log << os_endl << std::flush;
 	}
@@ -807,7 +816,8 @@ void CLog::StartPartialEntry()
 		time_t systime  = ::time(NULL);
 		cdstring session_id(GetSessionID());
 		cdstring atime = ::ctime(&systime);
-		atime[atime.length() - 1] = 0;
+		if (atime.length())
+			atime[atime.length() - 1] = 0;
 		*GetLog() << os_endl << "--> #" << session_id << "." << cdthread::current_tid() << " " << atime << os_endl << std::flush;
 	}
 }
