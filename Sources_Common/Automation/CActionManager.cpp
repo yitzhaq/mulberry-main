@@ -150,7 +150,7 @@ void CActionManager::MessageSeenChange(CMessage* msg)
 	if (CPreferences::sPrefs->mMDNOptions.GetValue().GetValue() != eMDNNeverSend)
 	{
 		// Determine whether MDN is required and do that action
-		if (!msg->IsMDNSent() && !msg->IsDraft() && msg->MDNRequested())
+		if (msg && !msg->IsMDNSent() && !msg->IsDraft() && msg->MDNRequested())
 			MDNMessage(msg);
 	}
 

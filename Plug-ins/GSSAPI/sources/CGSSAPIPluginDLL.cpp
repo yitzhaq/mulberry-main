@@ -560,7 +560,8 @@ long CGSSAPIPluginDLL::ProcessStepData(SAuthPluginData* info)
 		mLiteralLength = output_token.length;
 		::sprintf(p, "{%ld}", mLiteralLength);
 		::memcpy(mLiteralBuffer, &mLiteralLength, 4);
-		::memcpy(mLiteralBuffer + 4, output_token.value, mLiteralLength);
+		if (output_token.value)
+		    ::memcpy(mLiteralBuffer + 4, output_token.value, mLiteralLength);
 
 		// Return code to tell Mulberry to send a literal
 		mState = (mState == eStep) ? eStepLiteralSend : eNegStepLiteralSend;
@@ -747,7 +748,8 @@ long CGSSAPIPluginDLL::ProcessNegStepData(SAuthPluginData* info)
 		mLiteralLength = output_token.length;
 		::sprintf(p, "{%ld}", mLiteralLength);
 		::memcpy(mLiteralBuffer, &mLiteralLength, 4);
-		::memcpy(mLiteralBuffer + 4, output_token.value, mLiteralLength);
+		if (output_token.value)
+		    ::memcpy(mLiteralBuffer + 4, output_token.value, mLiteralLength);
 
 		// Return code to tell Mulberry to send a literal
 		mState = eTagStepLiteralSend;
