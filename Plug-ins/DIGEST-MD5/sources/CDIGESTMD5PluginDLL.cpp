@@ -433,7 +433,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 
 	// Need digest-uri-value (ignore host != serv-name)
 	std::unique_ptr<char[]> digest_uri_value(new char[
-										4 + // serv-type
+										5 + // serv-type (longest: "sieve")
 										1 + // /
 										::strlen(mServer) + // host
 										1]);
@@ -466,7 +466,7 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	char hex_h_a2_client[33];
 	{
 		std::unique_ptr<char[]> a2_data(new char[
-									12 + // AUTHENTICATE:
+									13 + // AUTHENTICATE:
 									::strlen(digest_uri_value.get()) +
 									1]);
 		::strcpy(a2_data.get(), "AUTHENTICATE:");
