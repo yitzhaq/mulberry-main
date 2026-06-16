@@ -15,7 +15,7 @@
 */
 
 
-// CMatchItem.cp - holds status of Match menu in mailbox window
+// CMatchItem.cpp - holds status of Match menu in mailbox window
 
 #include "CMatchItem.h"
 
@@ -32,6 +32,11 @@ extern const char* cSpace;
 extern const char* cValueBoolTrue;
 extern const char* cValueBoolFalse;
 
+// On-disk match-type tokens, indexed by EMatchItem. The comma after "None" repairs a
+// pre-existing bug: without it C string-literal concatenation produced "NoneNew", shifting
+// every entry from index 1 on out of alignment with the enum. Because the old table never
+// matched the enum, no correctly-aligned legacy data exists, so the repair is not version
+// gated; a match item saved by a pre-fix build may shift by one type on first load.
 const char* cMatchDescriptors[] = {"None",
 									"New",
 									"Unseen",
