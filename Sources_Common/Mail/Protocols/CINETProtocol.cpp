@@ -152,8 +152,7 @@ void CINETProtocol::DirtyAccount()
 
 bool CINETProtocol::IsConnectionAlive() const
 {
-	return IsLoggedOn() && mClient && mClient->GetStream() &&
-		mClient->GetStream()->TCPGetState() >= CTCPSocket::TCPConnected;
+	return IsLoggedOn() && mClient && mClient->IsConnectionAlive();
 }
 
 bool CINETProtocol::IsSecure() const
