@@ -611,7 +611,7 @@ void CMailRecord::Playback_Delete(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_DELETE", mbox->GetName()) == CErrorHandler::Cancel)
 			{
-				// This deletes the object so release the auto_ptr
+				// This deletes the object so release the unique_ptr
 				mbox->Remove();
 				mbox.release();
 				if (mLog)
@@ -657,7 +657,7 @@ void CMailRecord::Playback_Rename(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_RENAME", mbox->GetName()) == CErrorHandler::Cancel) 
 			{
-				// This deletes the object so release the auto_ptr
+				// This deletes the object so release the unique_ptr
 				mbox->Remove();
 				mbox.release();
 				if (mLog)
@@ -705,7 +705,7 @@ void CMailRecord::Playback_Subscribe(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_SUBSCRIBE", mbox->GetName()) == CErrorHandler::Cancel)
 			{
-				// This deletes the object so release the auto_ptr
+				// This deletes the object so release the unique_ptr
 				mbox->Remove();
 				mbox.release();
 				if (mLog)
@@ -750,7 +750,7 @@ void CMailRecord::Playback_Unsubscribe(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_UNSUBSCRIBE", mbox->GetName()) == CErrorHandler::Cancel)
 			{
-				// This deletes the object so release the auto_ptr
+				// This deletes the object so release the unique_ptr
 				mbox->Remove();
 				mbox.release();
 				if (mLog)
