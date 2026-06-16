@@ -34,7 +34,7 @@ public:
 							 const HSizingOption hSizing, const VSizingOption vSizing,
 							 const JCoordinate x, const JCoordinate y,
 							 const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) { mLogonAtStartup = NULL; mDirectorySeparator = NULL; mAutoNamespace = NULL; mDisconnected = NULL; }
 
 	virtual void OnCreate();
 

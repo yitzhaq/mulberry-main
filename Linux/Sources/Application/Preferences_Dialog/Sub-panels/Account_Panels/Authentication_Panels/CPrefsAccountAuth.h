@@ -41,7 +41,7 @@ public:
 							 const HSizingOption hSizing, const VSizingOption vSizing,
 							 const JCoordinate x, const JCoordinate y,
 							 const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) { mCurrentPanel = NULL; }
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) { mAuthPopup = NULL; mAuthSubPanel = NULL; mTLSPopupTitle = NULL; mTLSPopup = NULL; mUseTLSClientCert = NULL; mTLSClientCert = NULL; mCurrentPanel = NULL; }
 
 	virtual void OnCreate();
 

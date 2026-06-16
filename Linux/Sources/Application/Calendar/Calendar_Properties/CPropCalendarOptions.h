@@ -40,7 +40,7 @@ public:
 				 const JCoordinate x, const JCoordinate y,
 				 const JCoordinate w, const JCoordinate h)
 			: CCalendarPropPanel(enclosure, hSizing, vSizing, x, y, w, h)
-			{ }
+			{ mIconState = NULL; mSubscribe = NULL; mFreeBusySet = NULL; mTieIdentity = NULL; mIdentityPopup = NULL; }
 
 	virtual void	OnCreate();								// Do odds & ends
 	virtual void	SetCalList(calstore::CCalendarStoreNodeList* cal_list);		// Set cal list

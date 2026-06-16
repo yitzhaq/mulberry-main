@@ -34,6 +34,7 @@ C3PaneMailAccount::C3PaneMailAccount(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: C3PaneViewPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mServerView = NULL;
 }
 
 // Default destructor

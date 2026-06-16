@@ -39,7 +39,7 @@ public:
 				 const HSizingOption hSizing, const VSizingOption vSizing,
 				 const JCoordinate x, const JCoordinate y,
 				 const JCoordinate w, const JCoordinate h)
-			: JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h) {}
+			: JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h) { mCalList = NULL; }
 	virtual 		~CCalendarPropPanel() {}
 
 	virtual void	OnCreate() = 0;							// Defined in subclass

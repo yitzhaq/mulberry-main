@@ -56,6 +56,10 @@ CServerTable::CServerTable(JXScrollbarSet* scrollbarSet,
 							const JCoordinate w, const JCoordinate h)
   : CServerBrowse(scrollbarSet, enclosure, hSizing, vSizing, x,y,w,h)
 {
+	mTableView = NULL;
+	mCopyToMbox = NULL;
+	mCopyFromMbox = NULL;
+
 	SetBorderWidth(0);
 }
 

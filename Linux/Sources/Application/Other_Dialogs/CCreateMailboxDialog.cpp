@@ -55,6 +55,10 @@ CCreateMailboxDialog::CCreateMailboxDialog(JXDirector* supervisor)
 	mSubscribe = NULL;
 	mOKBtn = NULL;
 	mCancelBtn = NULL;
+	mDirectory = NULL;
+	mCreateMailbox = NULL;
+	mCreateDirectory = NULL;
+	mUseSubscribe = false;
 }
 
 

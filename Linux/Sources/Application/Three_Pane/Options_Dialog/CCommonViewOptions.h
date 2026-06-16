@@ -34,7 +34,7 @@ public:
 				const HSizingOption hSizing, const VSizingOption vSizing,
 				const JCoordinate x, const JCoordinate y,
 				const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) { mListPreview = NULL; mListFullView = NULL; mItemsPreview = NULL; mItemsFullView = NULL; }
 	virtual 		~CCommonViewOptions() {}
 
 	virtual void	SetData(void* data) {}

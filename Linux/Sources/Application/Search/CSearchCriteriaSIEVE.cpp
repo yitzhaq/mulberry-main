@@ -153,6 +153,7 @@ CSearchCriteriaSIEVE::CSearchCriteriaSIEVE(JXContainer* enclosure,
 	mText2 = NULL;
 	mText3 = NULL;
 	mPopup3 = NULL;
+	mPopup2ID = 0;
 }
 
 // Default destructor

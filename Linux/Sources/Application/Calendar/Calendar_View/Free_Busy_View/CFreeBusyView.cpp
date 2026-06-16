@@ -53,10 +53,18 @@ CFreeBusyView::CFreeBusyView(JXContainer* enclosure,
 {
 	mFreeBusyRange = CDayWeekViewTimeRange::e24Hrs;
 	mFreeBusyScale = 0;
-	
+
+	mPrevDay = NULL;
+	mNextDay = NULL;
+	mTimezonePopup = NULL;
+	mScalePopup = NULL;
+	mRangePopup = NULL;
+
 	mTitles = NULL;
 	mTable = NULL;
 	mSelectedEvent = NULL;
+
+	mCalendarRef = 0;
 }
 
 

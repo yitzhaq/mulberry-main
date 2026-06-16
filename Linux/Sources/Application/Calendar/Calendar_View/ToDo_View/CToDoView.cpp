@@ -41,6 +41,9 @@ CToDoView::CToDoView(JXContainer* enclosure,
 					const JCoordinate w, const JCoordinate h) :
 	CCalendarViewBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mShowValue = 0;
+	mShowPopup = NULL;
+	mTable = NULL;
 }
 
 

@@ -40,6 +40,12 @@ CBrowseMailboxDialog::CBrowseMailboxDialog(JXDirector* supervisor)
 	// Make sure it can be sized and placed manually
 	UseModalPlacement(kFalse);
 	mSending = false;
+	mTable = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mCreateBtn = NULL;
+	mNoneBtn = NULL;
+	mSetAsDefault = NULL;
 }
 
 CBrowseMailboxDialog::~CBrowseMailboxDialog()

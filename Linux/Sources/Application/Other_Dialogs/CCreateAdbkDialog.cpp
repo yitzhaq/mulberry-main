@@ -56,6 +56,11 @@ CCreateAdbkDialog::CCreateAdbkDialog(JXDirector* supervisor)
 	mInHierarchy = NULL;
 	mAccount = NULL;
 	mAccountPopup = NULL;
+	mOpenOnStartup = NULL;
+	mUseNicknames = NULL;
+	mUseSearch = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 // Default destructor

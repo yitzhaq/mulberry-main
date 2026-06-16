@@ -49,6 +49,8 @@ CSMTPView::CSMTPView(JXContainer* enclosure,
 							const JCoordinate w, const JCoordinate h)
 	: CMailboxView(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mSortDirectionBtn = NULL;
+	mTotal = NULL;
 	mSender = NULL;
 }
 

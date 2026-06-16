@@ -50,6 +50,11 @@ CSummaryView::CSummaryView(JXContainer* enclosure,
 {
 	mSummaryType = NCalendarView::eList;
 	mSummaryRange = NCalendarView::eMonths;
+
+	mTimezonePopup = NULL;
+	mRangePopup = NULL;
+	mTitles = NULL;
+	mTable = NULL;
 }
 
 

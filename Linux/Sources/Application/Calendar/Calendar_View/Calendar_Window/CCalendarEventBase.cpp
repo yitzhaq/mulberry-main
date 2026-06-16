@@ -64,6 +64,8 @@ CCalendarEventBase::CCalendarEventBase(JXContainer* enclosure,
 	mIsSelected = false;
 	mIsCancelled = false;
 	mIsNow = false;
+	mHasAlarm = false;
+	mAttendeeState = iCal::CITIPProcessor::eNone;
 	mHoriz = true;
 	mColumnSpan = 1;
 	mPreviousLink = NULL;

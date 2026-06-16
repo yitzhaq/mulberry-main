@@ -30,6 +30,8 @@ CNumberEdit::CNumberEdit(const JCharacter* text, JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 				: CTextInputField(text, enclosure, menu, hSizing, vSizing, x, y, w - 20, h)
 {
+	mSpinUp = NULL;
+	mSpinDown = NULL;
 	mMin = 0;
 	mMax = 100;
 	mFiller = 0;
@@ -41,6 +43,8 @@ CNumberEdit::CNumberEdit(JXContainer* enclosure,
 							const JCoordinate w, const JCoordinate h)
 				: CTextInputField(enclosure, hSizing, vSizing, x, y, w - 20, h)
 {
+	mSpinUp = NULL;
+	mSpinDown = NULL;
 	mMin = 0;
 	mMax = 100;
 	mFiller = 0;

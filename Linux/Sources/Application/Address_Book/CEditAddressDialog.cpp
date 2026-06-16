@@ -52,6 +52,9 @@ CEditAddressDialog::CEditAddressDialog(JXDirector* supervisor)
 	mFax = NULL;
 	mAddress = NULL;
 	mURL = NULL;
+	mNotes = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////

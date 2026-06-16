@@ -60,6 +60,7 @@ CNewToDoDialog::CNewToDoDialog(JXDirector* supervisor)
 	mCompleted = NULL;
 	mCompletedDateTimeZone = NULL;
 	mCompletedNow = NULL;
+	mCompletedExists = false;
 }
 
 

@@ -57,6 +57,8 @@ CCalendarPropDialog::CCalendarPropDialog(JXDirector* supervisor)
 	mAccessBtn = NULL;
 	mCards = NULL;
 	mOKBtn = NULL;
+	mCalList = NULL;
+	mCalProtocol = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

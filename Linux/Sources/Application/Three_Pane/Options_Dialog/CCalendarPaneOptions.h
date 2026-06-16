@@ -35,7 +35,7 @@ public:
 				const HSizingOption hSizing, const VSizingOption vSizing,
 				const JCoordinate x, const JCoordinate y,
 				const JCoordinate w, const JCoordinate h)
-		: CCommonViewOptions(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CCommonViewOptions(enclosure, hSizing, vSizing, x, y, w, h) { mListPreview1 = NULL; mListFullView1 = NULL; mItemsPreview1 = NULL; mItemsFullView1 = NULL; }
 	virtual 		~CCalendarPaneOptions() {}
 
 	virtual void	OnCreate();					// Do odds & ends

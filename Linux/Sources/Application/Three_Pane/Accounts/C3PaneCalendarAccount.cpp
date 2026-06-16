@@ -34,6 +34,7 @@ C3PaneCalendarAccount::C3PaneCalendarAccount(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: C3PaneViewPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mCalendarStoreView = NULL;
 }
 
 // Default destructor

@@ -49,6 +49,7 @@ CLetterTextEditView::CLetterTextEditView(JXContainer* enclosure,
 	: CEditFormattedTextDisplay(enclosure, hSizing, vSizing, x, y, w, h)
 {
 	mLtrWindow = NULL;
+	mFormatter = NULL;
 	mPrintMessage = NULL;
 	SetReadOnly(false);
 	

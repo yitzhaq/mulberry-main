@@ -43,6 +43,21 @@ CPrefsDisplayLabel::CPrefsDisplayLabel(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h) 
 	: CPrefsDisplayPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mIMAPLabelsBtn = NULL;
+
+	// Label style controls are built later in OnCreate
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
+	{
+		mLabels[i].mColor = NULL;
+		mLabels[i].mUseColor = NULL;
+		mLabels[i].mBkgColor = NULL;
+		mLabels[i].mUseBkgColor = NULL;
+		mLabels[i].mBold = NULL;
+		mLabels[i].mItalic = NULL;
+		mLabels[i].mStrike = NULL;
+		mLabels[i].mUnderline = NULL;
+		mLabels[i].mName = NULL;
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

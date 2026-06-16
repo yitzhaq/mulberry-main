@@ -33,7 +33,7 @@ public:
 							 const HSizingOption hSizing, const VSizingOption vSizing,
 							 const JCoordinate x, const JCoordinate y,
 							 const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) { mExpandNoNicknames = NULL; mExpandFailedNicknames = NULL; mExpandFullName = NULL; mExpandNickName = NULL; mExpandEmail = NULL; mSkipLDAP = NULL; }
 
 	virtual void OnCreate();
 

@@ -33,7 +33,7 @@ public:
 				const HSizingOption hSizing, const VSizingOption vSizing,
 				const JCoordinate x, const JCoordinate y,
 				const JCoordinate w, const JCoordinate h)
-		: JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h) { mState = 0; mTabs = NULL; mCopyPrefs = NULL; }
 
 	virtual void	OnCreate();
 	virtual void	SetState(unsigned long state)

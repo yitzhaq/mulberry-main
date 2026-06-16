@@ -47,7 +47,13 @@ CAddressPreviewAdvanced::CAddressPreviewAdvanced(JXContainer* enclosure,
 							const JCoordinate w, const JCoordinate h)
 		: CAddressPreviewBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mDescriptor = NULL;
+	mZoomBtn = NULL;
+	mScroller = NULL;
+	mScrollPane = NULL;
+	mFields = NULL;
 	mAddress = NULL;
+	m3PaneWindow = NULL;
 }
 
 // Default destructor

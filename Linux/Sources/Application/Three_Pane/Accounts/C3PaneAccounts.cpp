@@ -48,6 +48,9 @@ C3PaneAccounts::C3PaneAccounts(JXContainer* enclosure,
 						 const JCoordinate w, const JCoordinate h) 
 	: C3PaneParentPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mTabs = NULL;
+	mViewPane = NULL;
+	mZoomBtn = NULL;
 	mMailAccounts = NULL;
 	mContactsAccounts = NULL;
 	mCalendarAccounts = NULL;

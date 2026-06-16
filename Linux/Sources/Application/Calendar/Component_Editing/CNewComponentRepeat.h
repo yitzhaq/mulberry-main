@@ -51,7 +51,7 @@ public:
 						const JCoordinate x, const JCoordinate y,
 						const JCoordinate w, const JCoordinate h)
 		: CNewComponentPanel(enclosure, hSizing, vSizing, x, y, w, h)
-		{ }
+		{ mRepeats = NULL; mRepeatsTabs = NULL; mRepeatSimpleItems = NULL; mRepeatAdvancedItems = NULL; mRepeatComplexItems = NULL; }
 	virtual				~CNewComponentRepeat() {}
 
 	virtual void	OnCreate();

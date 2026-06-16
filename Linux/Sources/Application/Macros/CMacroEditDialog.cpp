@@ -365,6 +365,7 @@ CMacroEditTable::CMacroEditTable(JXScrollbarSet* scrollbarSet,
 								  const JCoordinate w, const JCoordinate h)
 		: CTextTable(scrollbarSet, enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mCopy = NULL;
 }
 
 // Default destructor

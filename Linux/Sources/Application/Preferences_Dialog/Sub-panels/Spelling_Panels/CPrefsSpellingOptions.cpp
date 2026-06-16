@@ -41,6 +41,11 @@ CPrefsSpellingOptions::CPrefsSpellingOptions(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h) 
 	: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAutoPositionDialog = NULL;
+	mSpellOnSend = NULL;
+	mSpellAsYouType = NULL;
+	mSpellColourBackground = NULL;
+	mSpellBackgroundColour = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

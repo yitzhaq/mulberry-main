@@ -54,7 +54,15 @@ CDayWeekView::CDayWeekView(JXContainer* enclosure,
 	mType = eDay;
 	mDayWeekRange = CDayWeekViewTimeRange::e24Hrs;
 	mDayWeekScale = 0;
-	
+
+	mPrevWeek = NULL;
+	mNextWeek = NULL;
+	mPrevDay = NULL;
+	mNextDay = NULL;
+	mTimezonePopup = NULL;
+	mScalePopup = NULL;
+	mRangePopup = NULL;
+
 	mTitles = NULL;
 	mTable = NULL;
 	mSelectedEvent = NULL;

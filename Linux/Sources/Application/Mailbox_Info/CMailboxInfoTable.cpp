@@ -73,6 +73,7 @@ CMailboxInfoTable::~CMailboxInfoTable()
 void CMailboxInfoTable::InitInfoTable()
 {
 	// Zero out
+	mInfoTableView = NULL;
 	mSearchResults = false;
 	mLastTyping = 0;
 	mLastChar = 0;

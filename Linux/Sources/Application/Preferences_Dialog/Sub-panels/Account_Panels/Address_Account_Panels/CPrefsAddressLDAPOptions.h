@@ -33,7 +33,7 @@ public:
 							 const HSizingOption hSizing, const VSizingOption vSizing,
 							 const JCoordinate x, const JCoordinate y,
 							 const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) { mLDAPSearch = NULL; mLDAPUseExpansion = NULL; }
 
 	virtual void OnCreate();
 

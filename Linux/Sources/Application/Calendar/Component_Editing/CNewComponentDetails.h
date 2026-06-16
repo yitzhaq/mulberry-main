@@ -43,7 +43,7 @@ public:
 						const JCoordinate x, const JCoordinate y,
 						const JCoordinate w, const JCoordinate h)
 		: CNewComponentPanel(enclosure, hSizing, vSizing, x, y, w, h)
-		{ mTimingPanel = NULL; }
+		{ mTimingView = NULL; mLocation = NULL; mDescription = NULL; mTimingPanel = NULL; }
 	virtual				~CNewComponentDetails() {}
 
 	virtual void	OnCreate();

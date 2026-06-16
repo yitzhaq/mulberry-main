@@ -60,6 +60,7 @@ CSMTPTable::~CSMTPTable()
 // Do common init
 void CSMTPTable::InitSMTPTable(void)
 {
+	mSMTPView = NULL;
 	mTestSelectionAndHold = false;
 	mTestSelectionAndPriority = false;
 }

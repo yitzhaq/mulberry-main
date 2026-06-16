@@ -38,6 +38,7 @@ CAddressFieldSubContainer::CAddressFieldSubContainer(JXContainer* enclosure,
 		const JCoordinate w, const JCoordinate h) :
 		JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mTitle = NULL;
 	mType = eTel;
     mDirty = false;
 }

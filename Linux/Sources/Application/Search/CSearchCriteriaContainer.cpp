@@ -44,6 +44,10 @@ CSearchCriteriaContainer::CSearchCriteriaContainer(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mBorder = NULL;
+	mMoreBtn = NULL;
+	mFewerBtn = NULL;
+	mClearBtn = NULL;
 	mFilterType = CFilterItem::eLocal;
 	mTopLevel = false;
 	mRules = false;

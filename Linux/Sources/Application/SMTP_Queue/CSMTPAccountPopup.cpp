@@ -39,6 +39,9 @@ CSMTPAccountPopup::CSMTPAccountPopup(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAccountsPopup = NULL;
+	mTitle = NULL;
+	mSecure = NULL;
 }
 
 // Default destructor

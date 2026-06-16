@@ -40,6 +40,11 @@ C3PaneEvent::C3PaneEvent(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: C3PaneViewPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mZoomBtn = NULL;
+	mIcon = NULL;
+	mDescriptor = NULL;
+	mViewPane = NULL;
+	mEventView = NULL;
 }
 
 // Default destructor

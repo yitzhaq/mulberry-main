@@ -53,6 +53,11 @@ bool		CStatusWindow::sChangeOnce = false;
 CStatusWindow::CStatusWindow(JXDirector* owner)
 	: JXWindowDirector(owner)
 {
+	mIMAPStatus = NULL;
+	mSMTPStatus = NULL;
+	mIMAPProgress = NULL;
+	mSMTPProgress = NULL;
+
 	sStatusWindow = this;
 }
 

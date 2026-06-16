@@ -37,6 +37,9 @@
 CProgressDialog::CProgressDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
 {
+	mCancelBtn = NULL;
+	mTitle = NULL;
+	mBarPane = NULL;
 }
 
 // Default destructor

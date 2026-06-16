@@ -37,6 +37,10 @@
 CCancelDialog::CCancelDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
 {
+	mCancelBtn = NULL;
+	mTime = NULL;
+	mDesc = NULL;
+	mBar = NULL;
 	mLastSecs = 0;
 }
 

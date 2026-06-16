@@ -46,6 +46,7 @@ CPrefsSpelling::CPrefsSpelling(JXContainer* enclosure,
 {
 	mTabs = NULL;
 	mDictionaries = NULL;
+	mHasDictionaries = false;
 }
 
 /////////////////////////////////////////////////////////////////////////////

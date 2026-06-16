@@ -44,6 +44,7 @@
 CVacationActionDialog::CVacationActionDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mDays = NULL;
 	mSubject = NULL;
 	mTextBtn = NULL;
 	mCancelBtn = NULL;

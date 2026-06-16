@@ -218,6 +218,7 @@ CSearchCriteriaLocal::CSearchCriteriaLocal(JXContainer* enclosure,
 	mPopup6 = NULL;
 	mPopup7 = NULL;
 	mPopup8 = NULL;
+	mPopup2ID = 0;
 }
 
 // Default destructor

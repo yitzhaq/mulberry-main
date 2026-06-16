@@ -38,6 +38,11 @@ CDateTimeZoneSelect::CDateTimeZoneSelect(JXContainer* enclosure,
 	JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h)
 {
 	mAllDay = false;
+
+	mDate = NULL;
+	mDateBtn = NULL;
+	mTime = NULL;
+	mZone = NULL;
 }
 
 

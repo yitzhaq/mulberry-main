@@ -42,6 +42,12 @@
 CEditMapDialog::CEditMapDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
 {
+	mOkBtn = NULL;
+	mCancelBtn = NULL;
+	mType = NULL;
+	mSubtype = NULL;
+	mSuffix = NULL;
+	mAppLaunch = NULL;
 }
 
 void CEditMapDialog::OnCreate()

@@ -38,6 +38,7 @@ C3PaneMessage::C3PaneMessage(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: C3PaneViewPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mMessageView = NULL;
 }
 
 // Default destructor

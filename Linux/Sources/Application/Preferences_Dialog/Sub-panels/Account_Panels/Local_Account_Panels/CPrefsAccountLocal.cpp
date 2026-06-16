@@ -46,6 +46,12 @@ CPrefsAccountLocal::CPrefsAccountLocal(JXContainer* enclosure,
 							 const JCoordinate w, const JCoordinate h)
 		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mLocationGroup = NULL;
+	mPath = NULL;
+	mRelativeGroup = NULL;
+	mChooseBtn = NULL;
+	mFileFormatTitle = NULL;
+	mFileFormatPopup = NULL;
 	mLocalAddress = false;
 	mDisconnected = false;
 }

@@ -32,6 +32,7 @@ C3PaneAddress::C3PaneAddress(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: C3PaneViewPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mAddressView = NULL;
 }
 
 // Default destructor

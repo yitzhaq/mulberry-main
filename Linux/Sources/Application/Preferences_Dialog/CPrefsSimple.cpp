@@ -64,6 +64,7 @@ CPrefsSimple::CPrefsSimple( JXContainer* enclosure,
 	mServerTypeGroup = NULL;
 	mSMTPip = NULL;
 	mCheckMailGroup = NULL;
+	mCheckInterval = NULL;
 	mNewMailAlert = NULL;
 	mSaveUser = NULL;
 	mSavePswd = NULL;

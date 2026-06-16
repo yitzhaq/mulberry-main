@@ -63,6 +63,12 @@ CCreateCalendarDialog::CCreateCalendarDialog(JXDirector* supervisor)
 	mInHierarchy = NULL;
 	mAccount = NULL;
 	mAccountPopup = NULL;
+	mSubscribe = NULL;
+	mCancelBtn = NULL;
+	mOKBtn = NULL;
+	mUseSubscribe = false;
+	mHasLocal = false;
+	mHasRemote = false;
 }
 
 // Default destructor

@@ -38,6 +38,13 @@ CDurationSelect::CDurationSelect(JXContainer* enclosure,
 	JXWidgetSet(enclosure, hSizing, vSizing, x, y, w, h)
 {
 	mAllDay = false;
+
+	mDurationNumber = NULL;
+	mDurationPeriod = NULL;
+	mDurationTime = NULL;
+	mDurationHours = NULL;
+	mDurationMinutes = NULL;
+	mDurationSeconds = NULL;
 }
 
 

@@ -41,6 +41,13 @@
 CIMAPLabelsDialog::CIMAPLabelsDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor, kTrue)
 {
+	mCancelBtn = NULL;
+	mOkBtn = NULL;
+	for(size_t i = 0; i < NMessage::eMaxLabels; i++)
+	{
+		mName[i] = NULL;
+		mLabel[i] = NULL;
+	}
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

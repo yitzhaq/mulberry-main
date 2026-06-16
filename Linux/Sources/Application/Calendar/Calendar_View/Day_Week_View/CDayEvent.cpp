@@ -30,6 +30,8 @@ CDayEvent::CDayEvent(JXContainer* enclosure,
 	mColumnOffset = 0;
 	mColumnTotal = 1;
 	mSpanToEdge = false;
+	mRelativeOffset = 0.0;
+	mRelativeWidth = 0.0;
 }
 
 

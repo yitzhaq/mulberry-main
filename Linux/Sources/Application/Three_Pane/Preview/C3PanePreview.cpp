@@ -46,6 +46,7 @@ C3PanePreview::C3PanePreview(JXContainer* enclosure,
 						 const JCoordinate w, const JCoordinate h) 
 	: C3PaneParentPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mViewPane = NULL;
 	mMessage = NULL;
 	mAddress = NULL;
 	mEvent = NULL;

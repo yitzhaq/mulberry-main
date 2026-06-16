@@ -35,7 +35,7 @@ public:
 				const HSizingOption hSizing, const VSizingOption vSizing,
 				const JCoordinate x, const JCoordinate y,
 				const JCoordinate w, const JCoordinate h)
-		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CTabPanel(enclosure, hSizing, vSizing, x, y, w, h) { mFullGroup = NULL; mActive = NULL; mUseDSN = NULL; mSuccess = NULL; mFailure = NULL; mDelay = NULL; }
 
 	virtual void OnCreate();
 	virtual void SetData(void* data);			// Set data

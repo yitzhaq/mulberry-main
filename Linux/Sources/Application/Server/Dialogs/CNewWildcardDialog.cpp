@@ -64,6 +64,11 @@ enum {
 CNewWildcardDialog::CNewWildcardDialog(JXDirector* supervisor)
 	: CDialogDirector(supervisor)
 {
+	mAccount = NULL;
+	mCriteria = NULL;
+	mText = NULL;
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
 }
 
 // Default destructor

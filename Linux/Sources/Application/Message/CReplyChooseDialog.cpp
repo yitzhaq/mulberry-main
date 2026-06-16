@@ -73,6 +73,17 @@ CReplyChooseDialog::CReplyChooseDialog(JXDirector* supervisor, bool reply)
 	mAddressCcBtn = NULL;
 	mAddressBccBtn = NULL;
 	mAddressNoneBtn = NULL;
+
+	mOKBtn = NULL;
+	mCancelBtn = NULL;
+	mOKBtn2 = NULL;
+	mCancelBtn2 = NULL;
+	mQuote = NULL;
+	mQuoteSelection = NULL;
+	mQuoteAll = NULL;
+	mQuoteNone = NULL;
+	mTitles = NULL;
+	mItsTable = NULL;
 }
 
 CReplyChooseDialog::~CReplyChooseDialog()

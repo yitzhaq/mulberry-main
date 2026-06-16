@@ -33,7 +33,7 @@ public:
 				 const HSizingOption hSizing, const VSizingOption vSizing,
 				 const JCoordinate x, const JCoordinate y,
 				 const JCoordinate w, const JCoordinate h)
-			: CMailboxPropPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+			: CMailboxPropPanel(enclosure, hSizing, vSizing, x, y, w, h) { mTable = NULL; }
 
 	virtual void	OnCreate();								// Do odds & ends
 	virtual void	SetMboxList(CMboxList* mbox_list);		// Set mbox list

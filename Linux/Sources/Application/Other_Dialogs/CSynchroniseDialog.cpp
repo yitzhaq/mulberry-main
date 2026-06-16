@@ -46,6 +46,7 @@ CSynchroniseDialog::CSynchroniseDialog(JXDirector* supervisor)
 	mMailboxGroup = NULL;
 	mSelected = NULL;
 	mMessageGroup = NULL;
+	mSize = NULL;
 }
 
 // O T H E R  M E T H O D S ____________________________________________________________________________

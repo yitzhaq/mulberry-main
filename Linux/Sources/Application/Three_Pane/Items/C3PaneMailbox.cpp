@@ -36,6 +36,7 @@ C3PaneMailbox::C3PaneMailbox(JXContainer* enclosure,
 								const JCoordinate w, const JCoordinate h)
 	: C3PaneViewPanel(enclosure, hSizing, vSizing, x, y, w, h)
 {
+	mMailboxView = NULL;
 	mDoneInit = false;
 	mUseSubstitute = false;
 }

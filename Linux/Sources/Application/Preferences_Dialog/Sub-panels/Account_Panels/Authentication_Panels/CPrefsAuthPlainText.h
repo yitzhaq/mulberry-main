@@ -33,7 +33,7 @@ public:
 							 const HSizingOption hSizing, const VSizingOption vSizing,
 							 const JCoordinate x, const JCoordinate y,
 							 const JCoordinate w, const JCoordinate h)
-		: CPrefsAuthPanel(enclosure, hSizing, vSizing, x, y, w, h) {}
+		: CPrefsAuthPanel(enclosure, hSizing, vSizing, x, y, w, h) { mUID = NULL; mSaveUser = NULL; mSavePswd = NULL; }
 
 	virtual void OnCreate();
 

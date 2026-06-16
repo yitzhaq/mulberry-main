@@ -40,6 +40,7 @@ CAdbkServerPopup::CAdbkServerPopup
  ) : HPopupMenu(title, enclosure, hSizing, vSizing, x, y, w, h)
 {
 	mDirty = true;
+	mType = CINETAccount::eUnknown;
 }
 
 // Default destructor

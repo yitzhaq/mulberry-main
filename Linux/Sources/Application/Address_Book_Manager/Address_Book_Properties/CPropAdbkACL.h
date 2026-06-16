@@ -41,7 +41,7 @@ public:
 				 const JCoordinate x, const JCoordinate y,
 				 const JCoordinate w, const JCoordinate h)
 			: CAdbkPropPanel(enclosure, hSizing, vSizing, x, y, w, h)
-			{ mCanChange = false; }
+			{ mNewUserBtn = NULL; mDeleteUserBtn = NULL; mACLStylePopup = NULL; mACLTitleTable = NULL; mACLTable = NULL; mCanChange = false; }
 
 	virtual void	OnCreate();								// Do odds & ends
 	virtual void	SetAdbkList(CAddressBookList* adbk_list);		// Set adbk list

@@ -44,6 +44,12 @@ CYearView::CYearView(JXContainer* enclosure,
 	CCalendarViewBase(enclosure, hSizing, vSizing, x, y, w, h)
 {
 	mLayoutValue = NCalendarView::e3x4;
+
+	mYearMinus = NULL;
+	mYear = NULL;
+	mYearPlus = NULL;
+	mLayout = NULL;
+	mTable = NULL;
 }
 
 
