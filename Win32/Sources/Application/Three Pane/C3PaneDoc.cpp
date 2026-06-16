@@ -15,7 +15,7 @@
 */
 
 
-// C3PaneDoc.cp : implementation of the C3PaneDoc class
+// C3PaneDoc.cpp : implementation of the C3PaneDoc class
 //
 
 

@@ -15,7 +15,7 @@
 */
 
 
-// prefsvector.cp - vectors of preference items
+// prefsvector.cpp - vectors of preference items
 
 #include "prefsvector.h"
 

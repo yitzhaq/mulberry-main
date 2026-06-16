@@ -15,7 +15,7 @@
 */
 
 
-//	CMessageAttachment.cp
+//	CMessageAttachment.cpp
 
 #include "CMessageAttachment.h"
 

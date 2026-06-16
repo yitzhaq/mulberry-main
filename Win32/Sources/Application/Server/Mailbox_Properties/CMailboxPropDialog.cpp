@@ -15,7 +15,7 @@
 */
 
 
-// CMailboxPropDialog.cp : implementation file
+// CMailboxPropDialog.cpp : implementation file
 //
 
 #include "CMailboxPropDialog.h"

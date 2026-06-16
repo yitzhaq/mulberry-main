@@ -15,7 +15,7 @@
 */
 
 
-// CDivider.cp - UI widget that implements a 3D divider
+// CDivider.cpp - UI widget that implements a 3D divider
 
 #include "CDivider.h"
 

@@ -15,7 +15,7 @@
 */
 
 
-//	CQuotaTable.cp
+//	CQuotaTable.cpp
 
 #include "CQuotaTable.h"
 

@@ -15,7 +15,7 @@
 */
 
 
-// CHTTPDecompress.cp — HTTP Content-Encoding decompression streambuf
+// CHTTPDecompress.cpp — HTTP Content-Encoding decompression streambuf
 
 #include "CHTTPDecompress.h"
 

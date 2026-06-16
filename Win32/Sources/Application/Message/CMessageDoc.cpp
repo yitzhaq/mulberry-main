@@ -15,7 +15,7 @@
 */
 
 
-// CMessageDoc.cp : implementation of the CMessageDoc class
+// CMessageDoc.cpp : implementation of the CMessageDoc class
 //
 
 

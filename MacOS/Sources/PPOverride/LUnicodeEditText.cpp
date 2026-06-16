@@ -1,5 +1,5 @@
 // ===========================================================================
-//	LUnicodeEditText.cp				PowerPlant 2.2.2	©1997-2001 Metrowerks Inc.
+//	LUnicodeEditText.cpp				PowerPlant 2.2.2	©1997-2001 Metrowerks Inc.
 // ===========================================================================
 //
 //	Text Editing Control

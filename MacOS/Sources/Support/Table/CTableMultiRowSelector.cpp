@@ -15,7 +15,7 @@
 */
 
 
-//	CTableMultiRowSelector.cp
+//	CTableMultiRowSelector.cpp
 
 #include "CTableMultiRowSelector.h"
 

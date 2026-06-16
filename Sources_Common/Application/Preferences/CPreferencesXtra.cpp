@@ -15,7 +15,7 @@
 */
 
 
-// CPreferencesInit.cp
+// CPreferencesInit.cpp
 
 #include "CPreferences.h"
 

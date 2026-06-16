@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CMatchOptionsDialog.cp : implementation file
+// CMatchOptionsDialog.cpp : implementation file
 //
 
 #include "CMatchOptionsDialog.h"

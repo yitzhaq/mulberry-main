@@ -15,7 +15,7 @@
 */
 
 
-// CCalendarPropDialog.cp : implementation file
+// CCalendarPropDialog.cpp : implementation file
 //
 
 #include "CCalendarPropDialog.h"

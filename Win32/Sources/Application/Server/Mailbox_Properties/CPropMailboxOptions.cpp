@@ -15,7 +15,7 @@
 */
 
 
-// CPropMailboxOptions.cp : implementation file
+// CPropMailboxOptions.cpp : implementation file
 //
 
 #include "CPropMailboxOptions.h"

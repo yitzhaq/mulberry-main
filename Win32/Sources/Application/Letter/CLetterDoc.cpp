@@ -15,7 +15,7 @@
 */
 
 
-// CLetterDoc.cp : implementation of the CLetterDoc class
+// CLetterDoc.cpp : implementation of the CLetterDoc class
 //
 
 

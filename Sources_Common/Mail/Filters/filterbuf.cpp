@@ -15,7 +15,7 @@
 */
 
 
-// filterbuf.cp
+// filterbuf.cpp
 
 #include "filterbuf.h"
 

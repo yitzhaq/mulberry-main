@@ -15,7 +15,7 @@
 */
 
 
-// CIMAPUrl.cp — IMAP URL parser/builder per RFC 5092
+// CIMAPUrl.cpp — IMAP URL parser/builder per RFC 5092
 
 #include "CIMAPUrl.h"
 

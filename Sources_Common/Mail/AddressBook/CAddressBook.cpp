@@ -15,7 +15,7 @@
 */
 
 
-// CAddressBook.cp
+// CAddressBook.cpp
 
 // Class that encapsulates address book functionality (local and remote).
 // This is an abstract base class and should be derived for each type

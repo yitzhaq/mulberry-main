@@ -15,7 +15,7 @@
 */
 
 
-// CPPRegister.cp - routine to register all PowerPlant classes
+// CPPRegister.cpp - routine to register all PowerPlant classes
 
 #include "CPPRegister.h"
 
@@ -371,7 +371,7 @@ void RegisterClasses(void)
 {
 		// Register classes for objects created from 'PPob' resources
 		// For PowerPlant classes, you can copy the necessary RegisterClass
-		// calls from PPobClasses.cp
+		// calls from PPobClasses.cpp
 		//
 		// For your own classes, you must use the same four-character ID as
 		// you specify in the 'PPob' resource (or in Constructor).

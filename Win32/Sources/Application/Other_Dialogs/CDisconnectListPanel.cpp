@@ -15,7 +15,7 @@
 */
 
 
-// CDisconnectListPanel.cp : implementation of the CDisconnectListPanel class
+// CDisconnectListPanel.cpp : implementation of the CDisconnectListPanel class
 //
 
 #include "CDisconnectListPanel.h"

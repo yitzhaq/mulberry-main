@@ -15,7 +15,7 @@
 */
 
 
-// CPropCalendarGeneral.cp : implementation file
+// CPropCalendarGeneral.cpp : implementation file
 //
 
 #include "CPropCalendarGeneral.h"

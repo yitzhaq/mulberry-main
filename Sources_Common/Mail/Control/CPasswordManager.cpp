@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CPasswordManager.cp
+// CPasswordManager.cpp
 
 #include "CPasswordManager.h"
 

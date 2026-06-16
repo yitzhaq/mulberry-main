@@ -15,7 +15,7 @@
 */
 
 // ===========================================================================
-//	PPxStaticText.cp			PowerPlantX 1.0			©2003 Metrowerks Corp.
+//	PPxStaticText.cpp			PowerPlantX 1.0			©2003 Metrowerks Corp.
 // ===========================================================================
 
 #include "CFreeBusyView.h"

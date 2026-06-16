@@ -15,7 +15,7 @@
 */
 
 
-// CRulesWindow.cp : implementation of the CRulesWindow class
+// CRulesWindow.cpp : implementation of the CRulesWindow class
 //
 
 #include "CRulesWindow.h"

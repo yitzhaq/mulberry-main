@@ -15,7 +15,7 @@
 */
 
 
-//	CAttachmentList.cp
+//	CAttachmentList.cpp
 
 #include "CAttachmentList.h"
 

@@ -16,7 +16,7 @@
 
 /*******************************************************************************\
 |																				|
-|	HCmdButtonAttachment.cp 	©1997-1998 John C. Daub.  All rights reserved.	|
+|	HCmdButtonAttachment.cpp 	©1997-1998 John C. Daub.  All rights reserved.	|
 |																				|
 |	See the file "HCmdButtonAttachment README" for full details, instructions,	|
 |	changes, licensing agreement, etc.  Due to the important information		|

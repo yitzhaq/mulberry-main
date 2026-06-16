@@ -15,7 +15,7 @@
 */
 
 
-// CSDIDoc.cp : implementation of the CSDIDoc class
+// CSDIDoc.cpp : implementation of the CSDIDoc class
 //
 
 #include "CSDIDoc.h"

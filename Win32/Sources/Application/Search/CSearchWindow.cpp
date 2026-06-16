@@ -15,7 +15,7 @@
 */
 
 
-// CSearchWindow.cp : implementation of the CSearchWindow class
+// CSearchWindow.cpp : implementation of the CSearchWindow class
 //
 
 #include "CSearchWindow.h"

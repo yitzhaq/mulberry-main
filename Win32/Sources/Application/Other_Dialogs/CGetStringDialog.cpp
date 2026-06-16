@@ -15,7 +15,7 @@
 */
 
 
-// CGetStringDialog.cp : implementation file
+// CGetStringDialog.cpp : implementation file
 //
 
 

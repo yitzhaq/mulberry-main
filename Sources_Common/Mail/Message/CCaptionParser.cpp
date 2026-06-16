@@ -15,7 +15,7 @@
 */
 
 
-// CCaptionParser.cp - parses tagged caption input by user
+// CCaptionParser.cpp - parses tagged caption input by user
 
 #include "CCaptionParser.h"
 

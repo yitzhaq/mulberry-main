@@ -15,7 +15,7 @@
 */
 
 
-// CPropMailboxServer.cp : implementation file
+// CPropMailboxServer.cpp : implementation file
 //
 
 #include "CPropMailboxServer.h"

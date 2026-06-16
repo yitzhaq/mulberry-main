@@ -15,7 +15,7 @@
 */
 
 
-// CHelpPropertySheet.cp : implementation file
+// CHelpPropertySheet.cpp : implementation file
 //
 
 #include "CHelpPropertySheet.h"

@@ -15,7 +15,7 @@
 */
 
 
-// CAdbkManagerDoc.cp : implementation of the CAdbkManagerDoc class
+// CAdbkManagerDoc.cpp : implementation of the CAdbkManagerDoc class
 //
 
 

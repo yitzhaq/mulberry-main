@@ -15,7 +15,7 @@
 */
 
 
-// CServerDoc.cp : implementation of the CServerDoc class
+// CServerDoc.cpp : implementation of the CServerDoc class
 //
 
 

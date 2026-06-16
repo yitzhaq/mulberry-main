@@ -15,7 +15,7 @@
 */
 
 
-// CAddressAccount.cp
+// CAddressAccount.cpp
 
 // Header file for class/structs that define address book accounts
 

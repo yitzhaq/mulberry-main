@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CDIGESTMD5PluginDLL.cp
+// CDIGESTMD5PluginDLL.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

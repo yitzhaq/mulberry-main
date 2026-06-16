@@ -15,7 +15,7 @@
 */
 
 
-// CSearchListPanel.cp : implementation of the CSearchListPanel class
+// CSearchListPanel.cpp : implementation of the CSearchListPanel class
 //
 
 #include "CSearchListPanel.h"

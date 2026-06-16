@@ -15,7 +15,7 @@
 */
 
 
-// CMailAccount.cp
+// CMailAccount.cpp
 
 // Header file for class/structs that define mail accounts
 

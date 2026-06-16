@@ -15,7 +15,7 @@
 */
 
 
-//	CTabber.cp
+//	CTabber.cpp
 
 #include "CTabber.h"
 

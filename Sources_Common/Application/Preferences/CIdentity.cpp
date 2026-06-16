@@ -15,7 +15,7 @@
 */
 
 
-// CIdentity.cp
+// CIdentity.cpp
 
 // Class that encapsulates a 'mail identity' used when sending messages
 

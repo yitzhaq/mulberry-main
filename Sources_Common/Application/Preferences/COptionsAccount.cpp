@@ -15,7 +15,7 @@
 */
 
 
-// COptionsAccount.cp
+// COptionsAccount.cpp
 
 // Header file for class/structs that define preference accounts
 

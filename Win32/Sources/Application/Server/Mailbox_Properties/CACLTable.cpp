@@ -15,7 +15,7 @@
 */
 
 
-//	CACLTable.cp
+//	CACLTable.cpp
 
 
 #include "CACLTable.h"

@@ -15,7 +15,7 @@
 */
 
 
-// CMessagePartProp.cp : implementation file
+// CMessagePartProp.cpp : implementation file
 //
 
 

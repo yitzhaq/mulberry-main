@@ -15,7 +15,7 @@
 */
 
 
-// CWininet.cp
+// CWininet.cpp
 
 // Basic WININET support
 

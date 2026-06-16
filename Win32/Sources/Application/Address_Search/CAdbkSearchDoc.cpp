@@ -15,7 +15,7 @@
 */
 
 
-// CAdbkSearchDoc.cp : implementation of the CAdbkSearchDoc class
+// CAdbkSearchDoc.cpp : implementation of the CAdbkSearchDoc class
 //
 
 

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CAcceptCertDialog.cp : implementation file
+// CAcceptCertDialog.cpp : implementation file
 //
 
 #include "CAcceptCertDialog.h"

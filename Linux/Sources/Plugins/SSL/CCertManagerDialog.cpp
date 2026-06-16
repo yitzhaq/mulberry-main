@@ -15,7 +15,7 @@
 */
 
 
-// CCertManagerDialog.cp : implementation file
+// CCertManagerDialog.cpp : implementation file
 //
 
 

@@ -15,7 +15,7 @@
 */
 
 // ===========================================================================
-//	CFreeBusyTable.cp			PowerPlantX 1.0			©2003 Metrowerks Corp.
+//	CFreeBusyTable.cpp			PowerPlantX 1.0			©2003 Metrowerks Corp.
 // ===========================================================================
 
 #include "CFreeBusyTable.h"

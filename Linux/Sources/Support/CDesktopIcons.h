@@ -15,7 +15,7 @@
 */
 
 
-// CDesktopIcons.cp
+// CDesktopIcons.cpp
 
 #ifndef __CDESKTOPICONS__MULBERRY__
 #define __CDESKTOPICONS__MULBERRY__

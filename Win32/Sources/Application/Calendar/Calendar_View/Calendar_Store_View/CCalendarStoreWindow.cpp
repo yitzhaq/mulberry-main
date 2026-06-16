@@ -15,7 +15,7 @@
 */
 
 
-// CCalendarStoreWindow.cp : implementation of the CCalendarStoreWindow class
+// CCalendarStoreWindow.cpp : implementation of the CCalendarStoreWindow class
 //
 
 

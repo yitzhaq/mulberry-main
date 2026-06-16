@@ -15,7 +15,7 @@
 */
 
 
-// CAcceptCertDialog.cp : implementation file
+// CAcceptCertDialog.cpp : implementation file
 //
 
 

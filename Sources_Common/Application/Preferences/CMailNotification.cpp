@@ -15,7 +15,7 @@
 */
 
 
-// CMailNotification.cp
+// CMailNotification.cpp
 
 // Class to describe a mail notification style
 

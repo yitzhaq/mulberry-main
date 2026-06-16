@@ -15,7 +15,7 @@
 */
 
 
-//	CTableColumnSelector.cp
+//	CTableColumnSelector.cpp
 
 #include "CTableColumnSelector.h"
 

@@ -15,7 +15,7 @@
 */
 
 
-// CMenuTable.cp - UI widget that implements a menu in the menu bar
+// CMenuTable.cpp - UI widget that implements a menu in the menu bar
 
 #include "CMenuTable.h"
 

@@ -1946,8 +1946,8 @@ void CMulberryApp::InitConnection(CPreferences& prefs)
 	}
 }
 
-//extern char sCrashLogDir[1024];		// Crash dump log path defined in CExceptionFix.cp
-char sCrashLogDir[1024] = {0};		// Crash dump log path defined in CExceptionFix.cp
+//extern char sCrashLogDir[1024];		// Crash dump log path defined in CExceptionFix.cpp
+char sCrashLogDir[1024] = {0};		// Crash dump log path defined in CExceptionFix.cpp
 
 // Init after prefs set
 void CMulberryApp::DoPostPrefsStartup()

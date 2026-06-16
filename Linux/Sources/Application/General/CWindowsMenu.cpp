@@ -40,7 +40,7 @@ const JCharacter CWindowsMenu::AddWindowToMenu::shortcut_keys_[][7] =
 {"Meta-1", "Meta-2", "Meta-3", "Meta-4", "Meta-5", "Meta-6", "Meta-7", 
  "Meta-8", "Meta-9", "Meta-0"};
 	
-//Not very useful to have the def'n of an inline function in the .cp file
+//Not very useful to have the def'n of an inline function in the .cpp file
 //intead of the .h file, you say?  Well here it is ok, because the only place
 //this method ever really gets called is in CWindowsMenu::UpdateMenu, so 
 //as long as this can be seen when UpdateMenu is compiled, we're in business

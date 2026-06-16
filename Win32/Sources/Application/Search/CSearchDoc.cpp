@@ -15,7 +15,7 @@
 */
 
 
-// CSearchDoc.cp : implementation of the CSearchDoc class
+// CSearchDoc.cpp : implementation of the CSearchDoc class
 //
 
 

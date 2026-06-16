@@ -30,7 +30,7 @@
 
 #include "MyCFString.h"
 
-const char* cAddressBookInfoSectionLocal = "Address Book Info";		// Also defined in CPreferences.cp
+const char* cAddressBookInfoSectionLocal = "Address Book Info";		// Also defined in CPreferences.cpp
 
 unsigned long CAddressBookDoc::sAddressBookCount = 1;
 

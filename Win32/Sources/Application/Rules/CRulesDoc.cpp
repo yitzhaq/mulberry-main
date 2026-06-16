@@ -15,7 +15,7 @@
 */
 
 
-// CRulesDoc.cp : implementation of the CRulesDoc class
+// CRulesDoc.cpp : implementation of the CRulesDoc class
 //
 
 

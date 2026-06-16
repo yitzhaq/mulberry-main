@@ -15,7 +15,7 @@
 */
 
 
-// CFocusBorder.cp - UI widget that implements a 3D divider
+// CFocusBorder.cpp - UI widget that implements a 3D divider
 
 #include "CFocusBorder.h"
 

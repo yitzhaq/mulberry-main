@@ -15,7 +15,7 @@
 */
 
 
-// CPrefsDisplay.cp : implementation file
+// CPrefsDisplay.cpp : implementation file
 //
 
 

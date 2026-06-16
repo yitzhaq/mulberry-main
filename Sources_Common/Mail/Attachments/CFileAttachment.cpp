@@ -15,7 +15,7 @@
 */
 
 
-//	CFileAttachment.cp
+//	CFileAttachment.cpp
 
 #include "CFileAttachment.h"
 

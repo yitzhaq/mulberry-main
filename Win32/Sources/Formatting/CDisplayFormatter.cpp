@@ -15,7 +15,7 @@
 */
 
 
-// CDisplayFormatter.cp : implementation file
+// CDisplayFormatter.cpp : implementation file
 //
 
 

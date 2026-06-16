@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CCertManagerDialog.cp : implementation file
+// CCertManagerDialog.cpp : implementation file
 //
 
 #include "CCertManagerDialog.h"

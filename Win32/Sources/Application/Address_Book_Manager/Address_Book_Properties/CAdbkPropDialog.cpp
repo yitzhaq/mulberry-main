@@ -15,7 +15,7 @@
 */
 
 
-// CAdbkPropDialog.cp : implementation file
+// CAdbkPropDialog.cpp : implementation file
 //
 
 #include "CAdbkPropDialog.h"

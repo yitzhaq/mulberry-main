@@ -15,7 +15,7 @@
 */
 
 
-// CChooseServersDialog.cp : implementation file
+// CChooseServersDialog.cpp : implementation file
 //
 
 

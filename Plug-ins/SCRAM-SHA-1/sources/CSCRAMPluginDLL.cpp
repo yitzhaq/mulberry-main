@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CSCRAMPluginDLL.cp
+// CSCRAMPluginDLL.cpp
 //
 // SCRAM (RFC 5802) base implementation for SCRAM-SHA-1 and SCRAM-SHA-256.
 

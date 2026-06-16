@@ -15,7 +15,7 @@
 */
 
 
-// CAddressBookDoc.cp : implementation of the CAddressBookDoc class
+// CAddressBookDoc.cpp : implementation of the CAddressBookDoc class
 //
 
 

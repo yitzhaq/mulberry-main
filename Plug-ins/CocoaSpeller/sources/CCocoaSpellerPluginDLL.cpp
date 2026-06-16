@@ -1,4 +1,4 @@
-// CCocoaSpellerPluginDLL.cp
+// CCocoaSpellerPluginDLL.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

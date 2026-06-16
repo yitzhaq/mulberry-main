@@ -72,8 +72,8 @@ PowerPlant version of CW7 or later.
 	necessary. If you made these changes, you can keep them or undo them as you see fit.
 
 1.	Add the following files to your project:
-	CScrollWheelAttachment.cp
-	LEventHandler.cp
+	CScrollWheelAttachment.cpp
+	LEventHandler.cpp
 	
 2.	In your applications's Initialize() override, call:
 	AddAttachment( new CScrollWheelAttachment );

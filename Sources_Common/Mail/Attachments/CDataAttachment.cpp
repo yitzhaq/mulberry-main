@@ -15,7 +15,7 @@
 */
 
 
-//	CDataAttachment.cp
+//	CDataAttachment.cpp
 
 #include "CDataAttachment.h"
 

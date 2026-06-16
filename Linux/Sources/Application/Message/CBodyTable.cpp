@@ -15,7 +15,7 @@
 */
 
 
-//	CBodyTable.cp
+//	CBodyTable.cpp
 
 #include "CBodyTable.h"
 

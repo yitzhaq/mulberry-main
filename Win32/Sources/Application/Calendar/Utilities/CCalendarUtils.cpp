@@ -15,7 +15,7 @@
 */
 
 /* 
-	CCalendarUtils.cp
+	CCalendarUtils.cpp
 
 	Author:			
 	Description:	<describe the CCalendarUtils class here>

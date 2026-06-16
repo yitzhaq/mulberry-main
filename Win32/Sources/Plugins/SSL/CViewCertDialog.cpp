@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CViewCertDialog.cp : implementation file
+// CViewCertDialog.cpp : implementation file
 //
 
 #include "CViewCertDialog.h"

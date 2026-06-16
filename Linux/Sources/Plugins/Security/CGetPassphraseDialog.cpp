@@ -15,7 +15,7 @@
 */
 
 
-// CGetPassphraseDialog.cp : implementation file
+// CGetPassphraseDialog.cpp : implementation file
 //
 
 

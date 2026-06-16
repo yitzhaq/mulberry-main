@@ -15,7 +15,7 @@
 */
 
 
-// CPostponeGURL.cp
+// CPostponeGURL.cpp
 
 // Class to handle a postponed GURL Apple Event at Idle time
 

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// PGPTest.cp
+// PGPTest.cpp
 
 // Test application for PGP plugin testing
 

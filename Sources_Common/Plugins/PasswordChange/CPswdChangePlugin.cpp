@@ -15,7 +15,7 @@
 */
 
 
-// CPswdChangePlugin.cp
+// CPswdChangePlugin.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

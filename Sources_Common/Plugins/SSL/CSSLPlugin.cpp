@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CSSLPlugin.cp
+// CSSLPlugin.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

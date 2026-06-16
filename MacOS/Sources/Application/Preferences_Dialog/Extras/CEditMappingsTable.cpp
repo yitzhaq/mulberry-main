@@ -15,7 +15,7 @@
 */
 
 
-//	CEditMappingsTable.cp
+//	CEditMappingsTable.cpp
 
 #include "CEditMappingsTable.h"
 

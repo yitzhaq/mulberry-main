@@ -15,7 +15,7 @@
 */
 
 
-// CPropCalendarServer.cp : implementation file
+// CPropCalendarServer.cpp : implementation file
 //
 
 #include "CPropCalendarServer.h"

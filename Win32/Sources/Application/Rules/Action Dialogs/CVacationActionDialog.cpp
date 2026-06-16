@@ -15,7 +15,7 @@
 */
 
 
-// CVacationActionDialog.cp : implementation file
+// CVacationActionDialog.cpp : implementation file
 //
 
 #include "CVacationActionDialog.h"

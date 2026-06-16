@@ -15,7 +15,7 @@
 */
 
 
-// CMailboxDoc.cp : implementation of the CMailboxDoc class
+// CMailboxDoc.cpp : implementation of the CMailboxDoc class
 //
 
 

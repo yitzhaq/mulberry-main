@@ -15,7 +15,7 @@
 */
 
 
-// CCalendarFrame.cp : implementation of the CCalendarFrame class
+// CCalendarFrame.cpp : implementation of the CCalendarFrame class
 //
 
 

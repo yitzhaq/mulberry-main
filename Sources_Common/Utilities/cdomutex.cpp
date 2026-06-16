@@ -15,7 +15,7 @@
 */
 
 
-// cdomutex.cp - handles thread locking
+// cdomutex.cpp - handles thread locking
 
 #include "cdomutex.h"
 

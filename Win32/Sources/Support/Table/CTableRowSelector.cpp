@@ -15,7 +15,7 @@
 */
 
 
-//	CTableRowSelector.cp
+//	CTableRowSelector.cpp
 
 #include "CTableRowSelector.h"
 

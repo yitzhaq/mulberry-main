@@ -15,7 +15,7 @@
 */
 
 
-// CAdbkIOPlugin.cp
+// CAdbkIOPlugin.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

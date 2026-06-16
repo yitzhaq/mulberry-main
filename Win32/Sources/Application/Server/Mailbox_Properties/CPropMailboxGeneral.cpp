@@ -15,7 +15,7 @@
 */
 
 
-// CPropMailboxGeneral.cp : implementation file
+// CPropMailboxGeneral.cpp : implementation file
 //
 
 #include "CPropMailboxGeneral.h"

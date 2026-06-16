@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CEudoraAdbkIOPluginDLL.cp
+// CEudoraAdbkIOPluginDLL.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

@@ -15,7 +15,7 @@
 */
 
 
-// CSearchBase.cp : implementation of the CSearchBase class
+// CSearchBase.cpp : implementation of the CSearchBase class
 //
 
 #include "CSearchBase.h"

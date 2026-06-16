@@ -15,7 +15,7 @@
 */
 
 
-// CSMTPAccount.cp
+// CSMTPAccount.cpp
 
 // Header file for class/structs that define mail accounts
 

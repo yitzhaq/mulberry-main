@@ -15,7 +15,7 @@
 */
 
 
-//	CAliasAttachment.cp
+//	CAliasAttachment.cpp
 
 #include "CAliasAttachment.h"
 

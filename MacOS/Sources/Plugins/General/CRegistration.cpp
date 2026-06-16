@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CRegistration.cp
+// CRegistration.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

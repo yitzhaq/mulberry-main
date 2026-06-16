@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// GPGTest.cp
+// GPGTest.cpp
 
 // Test application for GPG plugin testing
 

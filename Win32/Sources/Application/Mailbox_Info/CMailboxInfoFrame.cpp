@@ -15,7 +15,7 @@
 */
 
 
-// CMailboxInfoFrame.cp : implementation of the CMailboxInfoFrame class
+// CMailboxInfoFrame.cpp : implementation of the CMailboxInfoFrame class
 //
 
 

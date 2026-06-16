@@ -15,7 +15,7 @@
 */
 
 // ===========================================================================
-//	CWebKitControl.cp				PowerPlant 2.2.2	©1997-2001 Metrowerks Inc.
+//	CWebKitControl.cpp				PowerPlant 2.2.2	©1997-2001 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

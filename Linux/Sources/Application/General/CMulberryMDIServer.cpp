@@ -15,7 +15,7 @@
 */
 
 
-// CMulberryMDIServer.cp
+// CMulberryMDIServer.cpp
 
 #include "CMulberryMDIServer.h"
 

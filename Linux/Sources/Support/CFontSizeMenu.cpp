@@ -15,7 +15,7 @@
 */
 
 
-// CFontSizeMenu.cp : implementation file
+// CFontSizeMenu.cpp : implementation file
 //
 
 #include "CFontSizeMenu.h"

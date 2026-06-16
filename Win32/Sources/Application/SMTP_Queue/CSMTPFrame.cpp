@@ -15,7 +15,7 @@
 */
 
 
-// CSMTPFrame.cp : implementation of the CSMTPFrame class
+// CSMTPFrame.cpp : implementation of the CSMTPFrame class
 //
 
 

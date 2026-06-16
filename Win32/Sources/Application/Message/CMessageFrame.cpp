@@ -15,7 +15,7 @@
 */
 
 
-// CMessageFrame.cp : implementation of the CMessageFrame class
+// CMessageFrame.cpp : implementation of the CMessageFrame class
 //
 
 

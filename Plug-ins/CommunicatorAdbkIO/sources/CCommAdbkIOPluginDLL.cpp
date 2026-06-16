@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CCommAdbkIOPluginDLL.cp
+// CCommAdbkIOPluginDLL.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

@@ -15,7 +15,7 @@
 */
 
 
-//	CTableRowGeometry.cp
+//	CTableRowGeometry.cpp
 
 // Optimised version of LTableMultiGeometry for constant row height
 

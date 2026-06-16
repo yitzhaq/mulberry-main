@@ -15,7 +15,7 @@
 */
 
 
-// CAppLaunch.cp
+// CAppLaunch.cpp
 
 // Class that launches an app and opens a document in it
 

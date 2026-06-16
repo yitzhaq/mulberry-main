@@ -15,7 +15,7 @@
 */
 
 
-// CAdbkManagerWindow.cp : implementation of the CAdbkManagerWindow class
+// CAdbkManagerWindow.cpp : implementation of the CAdbkManagerWindow class
 //
 
 

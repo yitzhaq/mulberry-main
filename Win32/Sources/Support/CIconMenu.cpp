@@ -15,7 +15,7 @@
 */
 
 
-// CIconMenu.cp : implements an owner-draw menu with icons
+// CIconMenu.cpp : implements an owner-draw menu with icons
 
 #include "CIconMenu.h"
 

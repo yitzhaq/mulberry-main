@@ -15,7 +15,7 @@
 */
 
 
-// CAddressFieldContainer.cp : implementation of the CAddressFieldContainer class
+// CAddressFieldContainer.cpp : implementation of the CAddressFieldContainer class
 //
 
 #include "CAddressFieldContainer.h"

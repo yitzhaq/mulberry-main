@@ -15,7 +15,7 @@
 */
 
 
-// CWinRegistry.cp
+// CWinRegistry.cpp
 
 // Source file to handle access to Windows registry or .INI files
 

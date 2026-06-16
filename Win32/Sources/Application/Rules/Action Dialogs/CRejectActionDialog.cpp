@@ -15,7 +15,7 @@
 */
 
 
-// CRejectActionDialog.cp : implementation file
+// CRejectActionDialog.cpp : implementation file
 //
 
 #include "CRejectActionDialog.h"

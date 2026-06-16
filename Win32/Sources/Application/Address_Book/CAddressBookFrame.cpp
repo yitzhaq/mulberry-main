@@ -15,7 +15,7 @@
 */
 
 
-// CAddressBookFrame.cp : implementation of the CAddressBookFrame class
+// CAddressBookFrame.cpp : implementation of the CAddressBookFrame class
 //
 
 

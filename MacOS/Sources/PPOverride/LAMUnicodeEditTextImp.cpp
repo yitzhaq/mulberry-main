@@ -1,5 +1,5 @@
 // ===========================================================================
-//	LAMUnicodeEditTextImp.cp			PowerPlant 2.2.2	©1997-2001 Metrowerks Inc.
+//	LAMUnicodeEditTextImp.cpp			PowerPlant 2.2.2	©1997-2001 Metrowerks Inc.
 // ===========================================================================
 //
 //	Implementation for Appearance Manager EditText item.

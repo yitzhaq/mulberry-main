@@ -15,7 +15,7 @@
 */
 
 
-// diriterator.cp - handles scanning directory for a file
+// diriterator.cpp - handles scanning directory for a file
 
 #include "diriterator.h"
 

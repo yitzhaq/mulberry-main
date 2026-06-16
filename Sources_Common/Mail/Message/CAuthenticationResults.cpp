@@ -15,7 +15,7 @@
 */
 
 
-// CAuthenticationResults.cp — RFC 8601 Authentication-Results parser
+// CAuthenticationResults.cpp — RFC 8601 Authentication-Results parser
 
 #include "CAuthenticationResults.h"
 

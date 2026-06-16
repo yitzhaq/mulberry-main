@@ -15,7 +15,7 @@
 */
 
 
-// CDesktopIcons.cp
+// CDesktopIcons.cpp
 
 #include "CDesktopIcons.h"
 

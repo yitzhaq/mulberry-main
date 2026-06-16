@@ -15,7 +15,7 @@
 */
 
 
-// CSpeechSynthesis.cp
+// CSpeechSynthesis.cpp
 
 // Class to handle speech sythesis
 

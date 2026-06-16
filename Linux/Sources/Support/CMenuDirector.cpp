@@ -15,7 +15,7 @@
 */
 
 
-// CMenuDirector.cp - UI widget that implements a menu in the menu bar
+// CMenuDirector.cpp - UI widget that implements a menu in the menu bar
 
 #include "CMenuDirector.h"
 

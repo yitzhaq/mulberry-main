@@ -15,7 +15,7 @@
 */
 
 
-// CPropMailboxACL.cp : implementation file
+// CPropMailboxACL.cpp : implementation file
 //
 
 #include "CPropMailboxACL.h"

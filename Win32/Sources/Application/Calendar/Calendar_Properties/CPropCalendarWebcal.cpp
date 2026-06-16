@@ -15,7 +15,7 @@
 */
 
 
-// CPropCalendarWebcal.cp : implementation file
+// CPropCalendarWebcal.cpp : implementation file
 //
 
 #include "CPropCalendarWebcal.h"

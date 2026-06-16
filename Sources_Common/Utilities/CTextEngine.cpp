@@ -15,7 +15,7 @@
 */
 
 
-// CTextEngine.cp - various text processing actions
+// CTextEngine.cpp - various text processing actions
 
 #include "CTextEngine.h"
 

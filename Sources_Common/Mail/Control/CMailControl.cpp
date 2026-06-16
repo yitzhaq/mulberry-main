@@ -15,7 +15,7 @@
 */
 
 
-// CMailControl.cp
+// CMailControl.cpp
 
 /*
 	Class to handle interaction between OS independent mail classes and OS/GUI dependent

@@ -15,7 +15,7 @@
 */
 
 
-// CCalendarStoreDoc.cp : implementation of the CCalendarStoreDoc class
+// CCalendarStoreDoc.cpp : implementation of the CCalendarStoreDoc class
 //
 
 

@@ -15,7 +15,7 @@
 */
 
 
-// cdmutex.cp - handles thread locking
+// cdmutex.cpp - handles thread locking
 
 #include "cdmutex.h"
 

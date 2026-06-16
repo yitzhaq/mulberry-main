@@ -15,7 +15,7 @@
 */
 
 
-// CPrefsSpelling.cp : implementation file
+// CPrefsSpelling.cpp : implementation file
 //
 
 

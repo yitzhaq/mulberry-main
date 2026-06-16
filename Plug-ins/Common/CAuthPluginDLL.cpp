@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CAuthPluginDLL.cp
+// CAuthPluginDLL.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

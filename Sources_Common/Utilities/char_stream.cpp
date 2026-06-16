@@ -15,7 +15,7 @@
 */
 
 
-// char_stream.cp
+// char_stream.cpp
 
 // Handles parsing a stream of text typically found in preferences
 

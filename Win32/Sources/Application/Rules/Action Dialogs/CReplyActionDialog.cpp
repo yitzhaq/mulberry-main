@@ -15,7 +15,7 @@
 */
 
 
-// CReplyActionDialog.cp : implementation file
+// CReplyActionDialog.cpp : implementation file
 //
 
 #include "CReplyActionDialog.h"

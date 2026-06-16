@@ -15,7 +15,7 @@
 */
 
 
-// CMFCExtras.cp
+// CMFCExtras.cpp
 
 #ifdef __MULBERRY
 #include "CLog.h"

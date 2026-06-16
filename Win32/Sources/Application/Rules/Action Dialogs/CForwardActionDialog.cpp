@@ -15,7 +15,7 @@
 */
 
 
-// CForwardActionDialog.cp : implementation file
+// CForwardActionDialog.cpp : implementation file
 //
 
 #include "CForwardActionDialog.h"

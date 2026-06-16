@@ -15,7 +15,7 @@
 */
 
 
-// CLetterPartProp.cp : implementation file
+// CLetterPartProp.cpp : implementation file
 //
 
 

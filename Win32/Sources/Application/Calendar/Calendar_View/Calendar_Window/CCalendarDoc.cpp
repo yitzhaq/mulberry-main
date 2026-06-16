@@ -15,7 +15,7 @@
 */
 
 
-// CCalendarDoc.cp : implementation of the CCalendarDoc class
+// CCalendarDoc.cpp : implementation of the CCalendarDoc class
 //
 
 

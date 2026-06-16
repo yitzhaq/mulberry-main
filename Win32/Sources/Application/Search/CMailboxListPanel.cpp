@@ -15,7 +15,7 @@
 */
 
 
-// CMailboxListPanel.cp : implementation of the CMailboxListPanel class
+// CMailboxListPanel.cpp : implementation of the CMailboxListPanel class
 //
 
 #include "CMailboxListPanel.h"

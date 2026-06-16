@@ -15,7 +15,7 @@
 */
 
 
-//	CFileTable.cp
+//	CFileTable.cpp
 
 
 #include "CFileTable.h"

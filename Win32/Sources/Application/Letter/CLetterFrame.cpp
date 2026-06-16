@@ -15,7 +15,7 @@
 */
 
 
-// CLetterFrame.cp : implementation of the CLetterFrame class
+// CLetterFrame.cpp : implementation of the CLetterFrame class
 //
 
 

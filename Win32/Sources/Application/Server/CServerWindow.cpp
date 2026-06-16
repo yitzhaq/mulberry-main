@@ -15,7 +15,7 @@
 */
 
 
-// CServerWindow.cp : implementation of the CServerWindow class
+// CServerWindow.cpp : implementation of the CServerWindow class
 //
 
 

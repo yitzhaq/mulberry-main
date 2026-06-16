@@ -15,7 +15,7 @@
 */
 
 
-// CAdbkSearchWindow.cp : implementation of the CAdbkSearchWindow class
+// CAdbkSearchWindow.cpp : implementation of the CAdbkSearchWindow class
 //
 
 

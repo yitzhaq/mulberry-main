@@ -15,7 +15,7 @@
 */
 
 
-// CSearchCriteriaContainer.cp : implementation of the CSearchCriteriaContainer class
+// CSearchCriteriaContainer.cpp : implementation of the CSearchCriteriaContainer class
 //
 
 #include "CSearchCriteriaContainer.h"

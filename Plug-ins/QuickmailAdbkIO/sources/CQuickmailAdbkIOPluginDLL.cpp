@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CQuickmailAdbkIOPluginDLL.cp
+// CQuickmailAdbkIOPluginDLL.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //

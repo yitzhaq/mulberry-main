@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CSCRAMSHA256PluginDLL.cp
+// CSCRAMSHA256PluginDLL.cpp
 //
 // SCRAM-SHA-256 authentication plugin for Mulberry (RFC 7677).
 

@@ -15,7 +15,7 @@
 */
 
 
-//	CAttendeeTable.cp
+//	CAttendeeTable.cpp
 
 #include "CAttendeeTable.h"
 

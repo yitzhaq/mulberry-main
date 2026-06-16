@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CSCRAMSHA1PluginDLL.cp
+// CSCRAMSHA1PluginDLL.cpp
 //
 // SCRAM-SHA-1 authentication plugin for Mulberry (RFC 5802).
 

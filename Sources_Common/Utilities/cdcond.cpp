@@ -15,7 +15,7 @@
 */
 
 
-// cdcond.cp - handles thread event blocking
+// cdcond.cpp - handles thread event blocking
 
 #include "cdcond.h"
 

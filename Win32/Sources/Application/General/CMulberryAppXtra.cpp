@@ -15,7 +15,7 @@
 */
 
 
-// CMulberryAppXtra.cp
+// CMulberryAppXtra.cpp
 
 // Special file to reduce number of includes in main file
 

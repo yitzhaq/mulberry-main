@@ -15,7 +15,7 @@
 */
 
 
-// CMulberryCommon.cp
+// CMulberryCommon.cpp
 
 #include "CMulberryCommon.h"
 

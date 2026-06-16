@@ -15,7 +15,7 @@
 */
 
 
-// CPSPrinter.cp - UI widget that implements a 3D divider
+// CPSPrinter.cpp - UI widget that implements a 3D divider
 
 #include "CPSPrinter.h"
 #include "CStringUtils.h"

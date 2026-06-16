@@ -15,7 +15,7 @@
 */
 
 
-// CLocalAddressBook.cp
+// CLocalAddressBook.cpp
 
 // Class to handle remote address books
 

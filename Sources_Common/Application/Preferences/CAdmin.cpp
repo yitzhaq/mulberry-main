@@ -15,7 +15,7 @@
 */
 
 
-// CAdmin.cp
+// CAdmin.cpp
 
 // Class controls lockable items in prefs
 

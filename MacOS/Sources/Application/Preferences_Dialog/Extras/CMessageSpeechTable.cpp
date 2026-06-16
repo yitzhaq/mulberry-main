@@ -15,7 +15,7 @@
 */
 
 
-//	CMessageSpeechTable.cp
+//	CMessageSpeechTable.cpp
 
 #include "CMessageSpeechTable.h"
 

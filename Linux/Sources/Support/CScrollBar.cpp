@@ -15,7 +15,7 @@
 */
 
 
-// CScrollBar.cp - UI widget that implements a 3D divider
+// CScrollBar.cpp - UI widget that implements a 3D divider
 
 #include "CScrollBar.h"
 

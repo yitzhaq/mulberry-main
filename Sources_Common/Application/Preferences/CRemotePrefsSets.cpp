@@ -15,7 +15,7 @@
 */
 
 
-// CRemotePrefsSets.cp
+// CRemotePrefsSets.cpp
 
 // Class to handle remote sets of preferences
 

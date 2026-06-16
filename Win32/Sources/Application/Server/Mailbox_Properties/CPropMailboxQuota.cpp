@@ -15,7 +15,7 @@
 */
 
 
-// CPropMailboxQuota.cp : implementation file
+// CPropMailboxQuota.cpp : implementation file
 //
 
 #include "CPropMailboxQuota.h"

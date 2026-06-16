@@ -15,7 +15,7 @@
 */
 
 
-// CRemoteAddressBook.cp
+// CRemoteAddressBook.cpp
 
 // Class to handle remote address books
 
