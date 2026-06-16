@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LGATabsControlImp.cp		PowerPlant 2.1.1	©1996-2000 Metrowerks Inc.
+//	LGATabsControlImp.cpp		PowerPlant 2.1.1	©1996-2000 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: Robin Mair
 

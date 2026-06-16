@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LMenuBar.cp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LMenuBar.cpp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Manages a Mac menu bar. Contains a list a Menu objects.

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LUndoer.cp					PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LUndoer.cpp					PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Attachment for implementing Undo

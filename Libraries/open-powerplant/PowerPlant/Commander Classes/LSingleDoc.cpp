@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LSingleDoc.cp				PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
+//	LSingleDoc.cpp				PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Document which associates one file with one window

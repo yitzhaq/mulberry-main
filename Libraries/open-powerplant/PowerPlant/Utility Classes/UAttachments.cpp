@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UAttachments.cp				PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
+//	UAttachments.cpp				PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	An assortment of Attachment classes

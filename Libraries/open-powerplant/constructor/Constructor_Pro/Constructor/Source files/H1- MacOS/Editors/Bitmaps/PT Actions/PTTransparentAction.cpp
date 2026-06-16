@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				TransparentAction.cp
+FILE:				TransparentAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

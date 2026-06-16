@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LGrafPortView.cp			PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
+//	LGrafPortView.cpp			PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A GrafPortView is a top-level PowerPlant View (it's SuperView should be

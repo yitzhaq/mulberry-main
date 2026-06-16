@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAEditField.cp
+FILE:					LGAEditField.cpp
 
 CLASSES:				LGAEditField
 

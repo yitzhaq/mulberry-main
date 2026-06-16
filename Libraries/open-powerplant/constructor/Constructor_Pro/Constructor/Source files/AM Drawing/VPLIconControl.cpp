@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	VPLIconControl.cp				©1997 Metrowerks Inc. All rights reserved.
+//	VPLIconControl.cpp				©1997 Metrowerks Inc. All rights reserved.
 // ===========================================================================
 
 #include "VPLIconControl.h"

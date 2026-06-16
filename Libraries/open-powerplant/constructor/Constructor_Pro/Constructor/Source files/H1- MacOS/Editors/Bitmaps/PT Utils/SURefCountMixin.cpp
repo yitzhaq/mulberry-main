@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				RefCountedObject.cp
+FILE:				RefCountedObject.cpp
 
 CLASSES:			SURefCountMixin
 

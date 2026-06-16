@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LAction.cp				  	PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LAction.cpp				  	PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Abstract class for an undoable action.

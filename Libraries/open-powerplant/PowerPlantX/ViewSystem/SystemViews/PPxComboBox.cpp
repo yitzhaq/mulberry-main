@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	PPxComboBox.cp
+//	PPxComboBox.cpp
 //
 //	Copyright © 2003-2005 Metrowerks Corporation.  All rights reserved.
 //

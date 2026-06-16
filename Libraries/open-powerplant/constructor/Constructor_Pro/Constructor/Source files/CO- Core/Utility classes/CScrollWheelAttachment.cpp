@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 /*
-File:		CScrollWheelAttachment.cp
+File:		CScrollWheelAttachment.cpp
 Contact:	Richard Buckle, Sailmaker Software Ltd
 			<mailto:richardb@sailmaker.co.uk>
 			<http://www.sailmaker.co.uk/>

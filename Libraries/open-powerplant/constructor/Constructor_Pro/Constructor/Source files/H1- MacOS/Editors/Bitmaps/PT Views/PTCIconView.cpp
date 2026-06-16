@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				PaintCIconView.cp
+FILE:				PaintCIconView.cpp
 
 PROJECT:			Constructor Icon Editor
 

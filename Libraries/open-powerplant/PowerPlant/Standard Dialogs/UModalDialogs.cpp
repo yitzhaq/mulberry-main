@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UModalDialogs.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	UModalDialogs.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Utilities for handling (moveable) modal dialog boxes

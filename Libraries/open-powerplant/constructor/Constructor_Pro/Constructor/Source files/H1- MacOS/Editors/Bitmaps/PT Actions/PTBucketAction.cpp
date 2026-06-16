@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				BucketAction.cp
+FILE:				BucketAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

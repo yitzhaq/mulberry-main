@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LMailMessage.cp 			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LMailMessage.cpp 			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 // Class for dealing with Internet Style Mail Messages.
 

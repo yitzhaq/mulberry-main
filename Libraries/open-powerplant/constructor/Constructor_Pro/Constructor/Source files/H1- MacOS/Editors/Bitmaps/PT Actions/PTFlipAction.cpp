@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				FlipAction.cp
+FILE:				FlipAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

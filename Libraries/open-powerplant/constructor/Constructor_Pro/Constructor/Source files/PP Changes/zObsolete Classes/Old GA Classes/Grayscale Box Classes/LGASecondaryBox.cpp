@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGASecondaryBox.cp
+FILE:					LGASecondaryBox.cpp
 
 CLASSES:				LGASecondaryBox
 

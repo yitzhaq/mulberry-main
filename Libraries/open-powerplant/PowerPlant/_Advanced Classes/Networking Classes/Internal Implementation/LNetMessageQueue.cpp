@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LNetMessageQueue.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LNetMessageQueue.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	Queue of messages, typically generated at interrupt time, that will be
 //	broadcast to registered listeners at primary task time via a periodical.

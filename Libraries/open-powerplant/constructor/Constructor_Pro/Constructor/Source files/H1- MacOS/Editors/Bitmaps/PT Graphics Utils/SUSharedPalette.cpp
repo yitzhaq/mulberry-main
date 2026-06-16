@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				SharedPalette.cp
+FILE:				SharedPalette.cpp
 
 CLASSES:			SUSharedPalette
 

@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				SaveResFile.cp
+FILE:				SaveResFile.cpp
 
 CLASSES:			StSaveResFile
 

@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				Offscreen.cp
+FILE:				Offscreen.cpp
 
 CLASSES:			SUOffscreen, StSaveAndDraw
 

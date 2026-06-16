@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	PPxDataBrowserContent.cp
+//	PPxDataBrowserContent.cpp
 //
 //	Copyright © 2004-2005 Metrowerks Corporation.  All rights reserved.
 //

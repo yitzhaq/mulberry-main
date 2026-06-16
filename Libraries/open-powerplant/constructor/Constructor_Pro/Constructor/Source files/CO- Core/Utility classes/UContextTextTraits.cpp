@@ -5,7 +5,7 @@
 //	UContextTextTraits.cpp		© 1993-97 Metrowerks Inc. All rights reserved.
 // ===========================================================================
 //
-//	 Created: 11/15/95			(adapted from PowerPlant's UTextTraits.cp)
+//	 Created: 11/15/95			(adapted from PowerPlant's UTextTraits.cpp)
 //	   $Date: 2006/01/18 01:33:27 $
 //	$History: UContextTextTraits.cpp $
 //	

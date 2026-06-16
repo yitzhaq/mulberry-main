@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LInternetMapper.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LInternetMapper.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Encapsulates the idea of the domain name server for Internet hosts.

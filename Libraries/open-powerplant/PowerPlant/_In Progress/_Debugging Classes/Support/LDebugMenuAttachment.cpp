@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LDebugMenuAttachment.cp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LDebugMenuAttachment.cpp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: John C. Daub, MW IDE team
 //
@@ -1966,7 +1966,7 @@ LDebugMenuAttachment::IsDebugMenuCommand(
 //
 //	inStartID specifies the MENU ID (not the 'MENU' ResIDT) to start scanning
 //	from. Note however that PowerPlant does require the MENU resource ID
-//	and the MENU ID to be the same (see comments in LMenu.cp, LMenu(ResIDT)).
+//	and the MENU ID to be the same (see comments in LMenu.cpp, LMenu(ResIDT)).
 //
 //	inStopID specifies the ID we stop at (Assert_(inStartID <= inStopID))
 //

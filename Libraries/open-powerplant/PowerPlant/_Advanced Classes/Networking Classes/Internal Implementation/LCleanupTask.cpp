@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LCleanupTask.cp				PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LCleanupTask.cpp				PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Abstract base class for any operation which needs to be performed at

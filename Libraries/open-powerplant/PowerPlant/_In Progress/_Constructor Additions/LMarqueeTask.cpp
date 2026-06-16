@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LMarqueeTask.cp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LMarqueeTask.cpp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //	Adapted from:
 //		Finder Marquee by Jordan Zimmerman (c)1995 by Altura Software, Inc.

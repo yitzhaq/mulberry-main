@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGADisclosureTriangle.cp
+FILE:					LGADisclosureTriangle.cpp
 
 CLASSES:				LGADisclosureTriangle
 

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LInternetAddress.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LInternetAddress.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	This class represents both IP and DNS style Internet addresses. It will
 //	automatically map between DNS style and IP style addresses for you as

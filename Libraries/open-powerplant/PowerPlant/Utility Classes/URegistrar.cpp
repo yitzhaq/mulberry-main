@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	URegistrar.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	URegistrar.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Maintains a table of (Class ID, Creator Function Pointer) pairs that

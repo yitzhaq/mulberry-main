@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				EraserAction.cp
+FILE:				EraserAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

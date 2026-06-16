@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGABoxGroup.cp
+FILE:					LGABoxGroup.cpp
 
 CLASSES:				LGABoxGroup
 

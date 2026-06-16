@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LArrayIterator.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LArrayIterator.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Iterator for sequential traversal of LArray objects. A LArrayIterator is

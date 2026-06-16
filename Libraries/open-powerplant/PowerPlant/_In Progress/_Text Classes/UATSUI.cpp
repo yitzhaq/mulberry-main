@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UATSUI.cp					PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
+//	UATSUI.cpp					PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

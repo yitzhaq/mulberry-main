@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UCarbonEvents.cp			PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
+//	UCarbonEvents.cpp			PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Carbon Event handler functions suitable for use with LEventHandlerFunctor

@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGARadioButton.cp
+FILE:					LGARadioButton.cpp
 
 CLASSES:				LGARadioButton
 

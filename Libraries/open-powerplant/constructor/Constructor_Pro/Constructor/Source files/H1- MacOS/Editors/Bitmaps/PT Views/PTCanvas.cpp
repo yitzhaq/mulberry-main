@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< * >>----------------------------------------
 
-FILE:				PaintCanvas.cp
+FILE:				PaintCanvas.cpp
 
 PROJECT:			Constructor Icon Editor
 

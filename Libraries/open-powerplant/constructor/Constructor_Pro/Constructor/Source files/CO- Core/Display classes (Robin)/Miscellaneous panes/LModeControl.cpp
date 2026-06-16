@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LModeControl.cp
+FILE:					LModeControl.cpp
 
 CLASSES:				LModeControl
 

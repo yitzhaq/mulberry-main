@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LBevelButton.cp				PowerPlant 2.2		©1997-1999 Metrowerks Inc.
+//	LBevelButton.cpp				PowerPlant 2.2		©1997-1999 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

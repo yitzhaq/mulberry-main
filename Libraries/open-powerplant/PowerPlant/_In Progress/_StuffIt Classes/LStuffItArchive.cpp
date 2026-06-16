@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LStuffItArchive.cp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LStuffItArchive.cpp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Wrapper class for dealing with StuffIt Archives as an object. Uses low

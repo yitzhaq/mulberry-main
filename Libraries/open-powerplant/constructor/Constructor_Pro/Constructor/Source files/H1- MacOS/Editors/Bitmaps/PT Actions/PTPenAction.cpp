@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				PenAction.cp
+FILE:				PenAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

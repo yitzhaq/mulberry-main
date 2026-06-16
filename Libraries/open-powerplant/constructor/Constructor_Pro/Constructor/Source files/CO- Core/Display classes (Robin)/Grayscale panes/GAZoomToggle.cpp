@@ -5,7 +5,7 @@
 
 ---------------------------------------<< * >>-----------------------------------------
 
-FILE:					GAZoomToggle.cp
+FILE:					GAZoomToggle.cpp
 
 CLASSES:				GAZoomToggle
 

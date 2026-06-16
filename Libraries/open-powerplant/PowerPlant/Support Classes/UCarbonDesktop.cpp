@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UCarbonDesktop.cp			PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
+//	UCarbonDesktop.cpp			PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	UDesktop implementation which uses a Toolbox Window's WindowClass to

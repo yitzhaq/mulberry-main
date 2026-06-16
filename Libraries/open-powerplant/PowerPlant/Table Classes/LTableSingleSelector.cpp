@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTableSingleSelector.cp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LTableSingleSelector.cpp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Manages the selection for a TableView than can have only one selected cell

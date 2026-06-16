@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LSMTPConnection.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LSMTPConnection.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 // SMTP Connection

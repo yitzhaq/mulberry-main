@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				PTPatternView.cp
+FILE:				PTPatternView.cpp
 
 PROJECT:			Constructor Icon Editor
 

@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAIconMixin.cp
+FILE:					LGAIconMixin.cpp
 
 CLASSES:				LGAIconMixin
 

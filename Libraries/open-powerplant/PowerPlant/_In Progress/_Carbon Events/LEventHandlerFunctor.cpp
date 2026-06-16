@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LEventHandlerFunctor.cp		PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
+//	LEventHandlerFunctor.cpp		PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A Carbon Event handler where the Toolbox callback calls an ordinary

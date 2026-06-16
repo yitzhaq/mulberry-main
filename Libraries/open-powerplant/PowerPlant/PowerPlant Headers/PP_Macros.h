@@ -340,7 +340,7 @@
 		// uses too many non-Carbon routines). So, to support floating
 		// windows on this configuration, PP has its own implementation
 		// of RepositionWindow() in UWindows, which is called by
-		// UWMgr20-Desktop.cp when the Toolbox implementation isn't present.
+		// UWMgr20-Desktop.cpp when the Toolbox implementation isn't present.
 		//
 		// UWindows::RepositionWindow() brings in a lot of code, all of
 		// which is unnecessary on Mac OS 8.5 or later. So, this flag
@@ -349,7 +349,7 @@
 		// Define the flag to 1 if all the following conditions are true:
 		//		- Target is Carbon 1.0.x
 		//		- Program needs to support Mac OS 8.1
-		//		- Program uses UWMgr20Desktop.cp instead of UDesktop.cp
+		//		- Program uses UWMgr20Desktop.cpp instead of UDesktop.cpp
 		//			in order to support floating windows
 		
 #ifndef PP_Implement_RepositionWindow			// Default to ON for Carbon

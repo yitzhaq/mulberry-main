@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGATabButton.cp
+FILE:					LGATabButton.cpp
 
 CLASSES:				LGATabButton
 

@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				PaintActions.cp
+FILE:				PaintActions.cpp
 
 PROJECT:			Constructor Icon Editor
 

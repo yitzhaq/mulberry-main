@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LGASliderImp.cp				PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LGASliderImp.cpp				PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

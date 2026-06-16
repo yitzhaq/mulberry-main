@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LFileTypeList.cp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
+//	LFileTypeList.cpp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Maintains a list of file types (four-character codes). You can access

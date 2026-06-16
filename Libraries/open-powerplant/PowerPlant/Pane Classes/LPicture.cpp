@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LPicture.cp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LPicture.cpp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Displays a 'PICT' resource

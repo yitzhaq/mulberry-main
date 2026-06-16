@@ -2,17 +2,17 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UDebuggingPlus.cp			PowerPlant 2.2.5	©1997-2005 Metrowerks Inc.
+//	UDebuggingPlus.cpp			PowerPlant 2.2.5	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: John C. Daub
 //
 //	Utility functions for debugging.
 //
-//	Based upon UDebugging.cp, this file acts as a replacement implementation
-//	for UDebugging.cp (they both implement the UDebugging class and share
-//	the same header file)... akin to how UDesktop.cp and UFloatingDesktop.cp
-//	work. Ensure that EITHER UDebugging.cp and "PP DebugAlerts.rsrc" OR
-//	UDebuggingPlus.cp and "PP Debug Support.rsrc" are in your project.
+//	Based upon UDebugging.cpp, this file acts as a replacement implementation
+//	for UDebugging.cpp (they both implement the UDebugging class and share
+//	the same header file)... akin to how UDesktop.cpp and UFloatingDesktop.cpp
+//	work. Ensure that EITHER UDebugging.cpp and "PP DebugAlerts.rsrc" OR
+//	UDebuggingPlus.cpp and "PP Debug Support.rsrc" are in your project.
 //
 //	In addition to the options supported by UDebugging, this implementation
 //	supports logging the debugging information to a file.

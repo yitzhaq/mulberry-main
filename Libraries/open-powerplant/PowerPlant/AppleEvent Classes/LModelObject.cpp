@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LModelObject.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LModelObject.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Mix-in class for supporting the Apple Event Object Model. Subclasses of

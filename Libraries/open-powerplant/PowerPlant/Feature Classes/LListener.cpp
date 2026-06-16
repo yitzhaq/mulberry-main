@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LListener.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LListener.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	An abstract mix-in class that works with LBroadcaster class to implement

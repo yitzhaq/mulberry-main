@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAPrimaryBox.cp
+FILE:					LGAPrimaryBox.cpp
 
 CLASSES:				LGAPrimaryBox
 

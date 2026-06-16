@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LCFBundle.cp				PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
+//	LCFBundle.cpp				PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
 // ===========================================================================
 
 #include <LCFBundle.h>

@@ -6,7 +6,7 @@
 // ===========================================================================
 //	Original Author: Greg Bolsinga, John C. Daub
 //
-//	See LCommanderTree.cp for more information.
+//	See LCommanderTree.cpp for more information.
 
 #ifndef _H_LCommanderTree
 #define _H_LCommanderTree

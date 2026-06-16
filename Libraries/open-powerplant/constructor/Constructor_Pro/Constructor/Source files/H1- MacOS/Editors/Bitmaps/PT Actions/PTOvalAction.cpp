@@ -9,14 +9,14 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				OvalAction.cp
+FILE:				OvalAction.cpp
 
 PROJECT:			Constructor Icon Editor
 
 CLASSES:			COvalAction
 
 DESCRIPTION:		Implementation file for class
-					See also RectAction.cp
+					See also RectAction.cpp
 					
 AUTHOR:				Eric Shapiro
 

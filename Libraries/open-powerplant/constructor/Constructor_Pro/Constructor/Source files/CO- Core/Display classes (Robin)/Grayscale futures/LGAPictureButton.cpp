@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAPictureButton.cp
+FILE:					LGAPictureButton.cpp
 
 CLASSES:				LGAPictureButton
 

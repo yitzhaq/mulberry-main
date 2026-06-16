@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	VPLProgressBar.cp				©1997 Metrowerks Inc. All rights reserved.
+//	VPLProgressBar.cpp				©1997 Metrowerks Inc. All rights reserved.
 // ===========================================================================
 
 #include "VPLProgressBar.h"

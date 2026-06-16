@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LPaneTree.cp				PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LPaneTree.cpp				PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: John C. Daub. Thanks to Greg Bolsinga.
 //

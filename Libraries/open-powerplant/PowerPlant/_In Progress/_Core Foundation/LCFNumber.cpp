@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LCFNumber.cp				PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
+//	LCFNumber.cpp				PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
 // ===========================================================================
 
 #include <LCFNumber.h>

@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					GAMWBanner.cp
+FILE:					GAMWBanner.cpp
 
 CLASSES:				GAMWBanner
 

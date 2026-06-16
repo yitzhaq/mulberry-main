@@ -6,7 +6,7 @@
 // ===========================================================================
 //	Original Author: John C. Daub
 //
-//	See LTree.cp for more information
+//	See LTree.cpp for more information
 
 #ifndef _H_LTree
 #define _H_LTree

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LHeaderField.cp 			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LHeaderField.cpp 			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 // Class for creating and parsing RFC822 Style Message Header Fields.
 //

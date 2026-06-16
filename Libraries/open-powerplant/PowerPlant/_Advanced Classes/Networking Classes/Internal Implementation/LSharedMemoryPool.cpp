@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LSharedMemoryPool.cp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LSharedMemoryPool.cpp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	Implements static shared memory pool that creates/delete itself as needed.
 

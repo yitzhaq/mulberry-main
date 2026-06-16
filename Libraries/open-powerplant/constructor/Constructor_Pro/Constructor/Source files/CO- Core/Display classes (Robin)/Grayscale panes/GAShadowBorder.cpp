@@ -5,7 +5,7 @@
 
 ---------------------------------------<< * >>-----------------------------------------
 
-FILE:					GAShadowBorder.cp
+FILE:					GAShadowBorder.cpp
 
 CLASSES:				GAShadowBorder
 

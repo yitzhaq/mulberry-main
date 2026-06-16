@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UAppearance10Menus.cp		PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
+//	UAppearance10Menus.cpp		PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: John C. Daub
 //

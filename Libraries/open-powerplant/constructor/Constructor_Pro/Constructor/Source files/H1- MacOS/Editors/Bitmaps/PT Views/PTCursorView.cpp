@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				PTCursorView.cp
+FILE:				PTCursorView.cpp
 
 PROJECT:			Constructor Icon Editor
 

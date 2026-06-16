@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTableMultiRowSelector.cp	PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LTableMultiRowSelector.cpp	PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //  Original Author: Andy Dent
 

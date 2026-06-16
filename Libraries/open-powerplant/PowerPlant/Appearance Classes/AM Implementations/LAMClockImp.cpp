@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LAMClockImp.cp				PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
+//	LAMClockImp.cpp				PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
 // ===========================================================================
 //	Implementation for an AM Clock control
 

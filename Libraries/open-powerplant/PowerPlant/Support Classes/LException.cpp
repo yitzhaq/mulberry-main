@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LException.cp				PowerPlant 2.2.2	©1999-2005 Metrowerks Inc.
+//	LException.cpp				PowerPlant 2.2.2	©1999-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	PowerPlant Exception class

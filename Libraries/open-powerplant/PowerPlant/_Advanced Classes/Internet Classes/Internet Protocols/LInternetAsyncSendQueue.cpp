@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LInternetAsyncSendQueue.cp	PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LInternetAsyncSendQueue.cpp	PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Class for handling a queue of IRC messages. This object takes

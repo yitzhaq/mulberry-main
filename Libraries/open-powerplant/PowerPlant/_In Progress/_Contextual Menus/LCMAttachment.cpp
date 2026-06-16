@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LCMAttachment.cp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
+//	LCMAttachment.cpp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: John C. Daub
 //
@@ -17,8 +17,8 @@
 //
 //	-	Add the following files to your project:
 //
-//			LCMAttachment.cp
-//			UCMMUtils.cp
+//			LCMAttachment.cpp
+//			UCMMUtils.cpp
 //			PP Cursors.rsrc
 //			ContextualMenu (Mac OS system library, CFM-targets only, weak-link)
 //

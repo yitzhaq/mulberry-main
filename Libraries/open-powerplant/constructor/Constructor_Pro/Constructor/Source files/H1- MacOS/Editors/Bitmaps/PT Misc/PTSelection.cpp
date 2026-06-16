@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				DropperAction.cp
+FILE:				DropperAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LDragAndDrop.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LDragAndDrop.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Abstract class for an area of a Window which supports Drag and Drop

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UCallbackUtils.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	UCallbackUtils.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	A collection of utilities for low-level Toolbox callbacks.
 

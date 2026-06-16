@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LPreferencesFile.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LPreferencesFile.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A File that will automatically locate itself in the Preferences

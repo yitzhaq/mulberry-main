@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UExtractFromAEDesc.cp	  	PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	UExtractFromAEDesc.cpp	  	PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Functions for extracting data from AppleEvent Descriptor (AEDesc) records

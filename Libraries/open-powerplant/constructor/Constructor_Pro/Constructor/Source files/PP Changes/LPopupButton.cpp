@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LPopupButton.cp				PowerPlant 2.2		©1997-1999 Metrowerks Inc.
+//	LPopupButton.cpp				PowerPlant 2.2		©1997-1999 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

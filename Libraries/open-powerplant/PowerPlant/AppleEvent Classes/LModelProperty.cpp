@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LModelProperty.cp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LModelProperty.cpp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Class for a Property defined by the Apple Event Object Model. A Property,

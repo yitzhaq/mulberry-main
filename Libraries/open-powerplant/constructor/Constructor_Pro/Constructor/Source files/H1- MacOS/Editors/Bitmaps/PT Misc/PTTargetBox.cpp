@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:					PTTargetBox.cp
+FILE:					PTTargetBox.cpp
 
 CLASSES:				PTTargetBox
 

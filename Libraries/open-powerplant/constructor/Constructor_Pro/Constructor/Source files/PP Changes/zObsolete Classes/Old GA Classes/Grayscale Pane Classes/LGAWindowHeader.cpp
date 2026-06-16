@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAWindowHeader.cp
+FILE:					LGAWindowHeader.cpp
 
 CLASSES:				LGAWindowHeader
 

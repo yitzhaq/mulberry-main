@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LCheckBoxGroupBox.cp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LCheckBoxGroupBox.cpp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A visual group box with a check box as its title.

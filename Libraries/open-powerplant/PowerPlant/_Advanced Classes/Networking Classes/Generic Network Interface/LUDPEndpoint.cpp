@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LUDPEndpoint.cp				PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LUDPEndpoint.cpp				PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	This class represents a UPD style network connection. An
 //	instance of this class should be created as a representation of

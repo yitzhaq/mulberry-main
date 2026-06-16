@@ -87,7 +87,7 @@ LMenu*	CTEditor::sCtypMenu = nil;
 // ===========================================================================
 //		* CTYP resource format description
 // ===========================================================================
-//	Adapted from UReanimator.cp.
+//	Adapted from UReanimator.cpp.
 
 typedef	SInt32 TagID;
 

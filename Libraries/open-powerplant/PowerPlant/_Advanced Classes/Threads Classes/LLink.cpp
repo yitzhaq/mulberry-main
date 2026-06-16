@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LLink.cp					PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
+//	LLink.cpp					PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: Paul Lalonde
 

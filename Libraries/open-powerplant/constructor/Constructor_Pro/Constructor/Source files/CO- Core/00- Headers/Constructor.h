@@ -187,7 +187,7 @@
 using namespace std;
 
 #ifndef __GNUC__
-	#include <PP_ClassHeaders.cp>					// include most class definitions
+	#include <PP_ClassHeaders.cpp>					// include most class definitions
 #endif
 
 #include <fp.h>

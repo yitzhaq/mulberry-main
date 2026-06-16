@@ -173,7 +173,7 @@ const CommandT	cmd_MakeTabGroup		= 'tabg';
 // ===========================================================================
 //		* PPob resource format description
 // ===========================================================================
-//	Adapted from UReanimator.cp.
+//	Adapted from UReanimator.cpp.
 
 typedef	SInt32 TagID;
 

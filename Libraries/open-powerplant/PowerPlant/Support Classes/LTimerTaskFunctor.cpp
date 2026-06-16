@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTimerTaskFunctor.cp		PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
+//	LTimerTaskFunctor.cpp		PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A Carbon Event Loop Timer where the Toolbox callback calls an ordinary

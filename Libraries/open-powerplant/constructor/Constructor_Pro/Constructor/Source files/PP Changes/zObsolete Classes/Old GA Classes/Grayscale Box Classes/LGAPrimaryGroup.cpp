@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAPrimaryGroup.cp
+FILE:					LGAPrimaryGroup.cpp
 
 CLASSES:				LGAPrimaryGroup
 

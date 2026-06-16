@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LControl.cp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LControl.cpp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Base class for visual elements that have a numerical value, track mouse

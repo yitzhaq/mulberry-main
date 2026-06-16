@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LIconTextTable.cp				PowerPlant 2.1		©2000 Metrowerks Inc.
+//	LIconTextTable.cpp				PowerPlant 2.1		©2000 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

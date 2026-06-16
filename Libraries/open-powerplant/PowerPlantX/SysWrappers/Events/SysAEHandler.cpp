@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	SysAEHandler.cp
+//	SysAEHandler.cpp
 //
 //	Copyright © 2002-2005 Metrowerks Corporation.  All rights reserved.
 //

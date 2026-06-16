@@ -9,14 +9,14 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				RectAction.cp
+FILE:				RectAction.cpp
 
 PROJECT:			Constructor Icon Editor
 
 CLASSES:			PTRectAction
 
 DESCRIPTION:		The rectangle drawing tool code is here.
- 					See also OvalAction.cp and RoundRectAction.cp -- they use
+ 					See also OvalAction.cpp and RoundRectAction.cpp -- they use
  					  most of this code too.
 					
 AUTHOR:				Eric Shapiro

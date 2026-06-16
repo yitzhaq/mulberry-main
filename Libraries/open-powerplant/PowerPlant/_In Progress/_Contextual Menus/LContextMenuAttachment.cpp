@@ -41,9 +41,9 @@
 //
 //	-	Add the following files to your project:
 //
-//			LContextMenuAttachment.cp
-//			LContextMenuHelper.cp
-//			UCMMUtils.cp
+//			LContextMenuAttachment.cpp
+//			LContextMenuHelper.cpp
+//			UCMMUtils.cpp
 //
 //	-	Add LContextMenuAttachments to whatever objects (in your PPob's) you
 //		wish to have contextual menus, such as EditText's, Window's,

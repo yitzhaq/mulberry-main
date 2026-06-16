@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	VPLControlPane.cp				©1997 Metrowerks Inc. All rights reserved.
+//	VPLControlPane.cpp				©1997 Metrowerks Inc. All rights reserved.
 // ===========================================================================
 
 #include "VPLControlPane.h"

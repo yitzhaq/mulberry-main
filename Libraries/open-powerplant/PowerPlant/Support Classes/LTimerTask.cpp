@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTimerTask.cp				PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
+//	LTimerTask.cpp				PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
 // ===========================================================================
 //	Wrapper class for an Event Loop Timer
 

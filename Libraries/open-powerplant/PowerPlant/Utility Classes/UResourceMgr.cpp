@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UResourceMgr.cp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	UResourceMgr.cpp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Stack-based classes for manipulating resources

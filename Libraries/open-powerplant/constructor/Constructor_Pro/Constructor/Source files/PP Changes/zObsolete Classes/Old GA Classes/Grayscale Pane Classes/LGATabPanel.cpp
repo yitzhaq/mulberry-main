@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGATabPanel.cp
+FILE:					LGATabPanel.cpp
 
 CLASSES:				LGATabPanel
 

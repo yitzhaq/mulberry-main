@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTextHierTable.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LTextHierTable.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

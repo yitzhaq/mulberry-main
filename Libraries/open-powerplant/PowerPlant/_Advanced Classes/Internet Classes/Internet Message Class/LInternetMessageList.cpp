@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LInternetMessageList.cp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LInternetMessageList.cpp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Class for handling a list of mail messages. This object takes

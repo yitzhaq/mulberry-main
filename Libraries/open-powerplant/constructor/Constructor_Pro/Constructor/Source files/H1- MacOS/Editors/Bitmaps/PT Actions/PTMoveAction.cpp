@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				MoveAction.cp
+FILE:				MoveAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

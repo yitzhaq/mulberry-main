@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LCommander.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LCommander.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Mix-in class for an object that responds to menu commands and keystrokes

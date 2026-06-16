@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LDocApplication.cp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LDocApplication.cpp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 
 #ifdef PowerPlant_PCH

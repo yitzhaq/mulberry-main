@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LGACheckBoxImp.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LGACheckBoxImp.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: Robin Mair
 

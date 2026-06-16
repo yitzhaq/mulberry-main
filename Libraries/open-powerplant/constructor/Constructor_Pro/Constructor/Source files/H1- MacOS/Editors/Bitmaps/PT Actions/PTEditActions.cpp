@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				EditActions.cp
+FILE:				EditActions.cpp
 
 PROJECT:			Constructor Icon Editor
 

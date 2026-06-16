@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UClassicPrinting.cp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	UClassicPrinting.cpp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Classic implementation of UPrinting module

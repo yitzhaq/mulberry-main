@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LInternetProtocol.cp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LInternetProtocol.cpp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 // Base class for handling a typical Internet style protocols using TCP/IP.

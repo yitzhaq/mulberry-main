@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LDragTask.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LDragTask.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Class which encapsulates a single drag action initiated using the

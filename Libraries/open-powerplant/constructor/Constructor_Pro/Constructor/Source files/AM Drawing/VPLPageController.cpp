@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	VPLPageController.cp			©1997 Metrowerks Inc. All rights reserved.
+//	VPLPageController.cpp			©1997 Metrowerks Inc. All rights reserved.
 // ===========================================================================
 
 #include "VPLPageController.h"

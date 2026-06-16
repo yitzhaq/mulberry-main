@@ -217,7 +217,7 @@ PP_Begin_Namespace_PowerPlant
 		// performs a few assertions. After deleting, sets the pointer
 		// variable to nil. (the F1 and F3 values are the ZAP_UNINITIALIZED
 		// and ZAP_RELEASED values from DebugNew. Unfortunately they are
-		// defined in DebugNew.cp so those symbols cannot directly be
+		// defined in DebugNew.cpp so those symbols cannot directly be
 		// used here.
 	#define DisposeOf_(obj)													\
 		do {																\

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LOffscreenView.cp			PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
+//	LOffscreenView.cpp			PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A View whose image draws offscreen and then gets copied to the screen

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LIconPane.cp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LIconPane.cpp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Pane which draws a single icon from an icon family

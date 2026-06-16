@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LOpenTptTCPEndpoint.cp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LOpenTptTCPEndpoint.cpp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	OpenTransport version of a TCP endpoint. An instance of this class will
 //	normally be created for you by use of UNetworkFactory.

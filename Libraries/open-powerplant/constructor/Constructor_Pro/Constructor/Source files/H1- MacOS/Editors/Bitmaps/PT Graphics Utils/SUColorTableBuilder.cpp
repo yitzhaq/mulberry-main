@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				SUColorTableBuilder.cp
+FILE:				SUColorTableBuilder.cpp
 
 PROJECT:			Constructor Icon Editor
 

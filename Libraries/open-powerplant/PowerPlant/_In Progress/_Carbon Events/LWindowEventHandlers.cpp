@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LWindowEventHandlers.cp		PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
+//	LWindowEventHandlers.cpp		PowerPlant 2.2.2	©2001-2005 Metrowerks Inc.
 // ===========================================================================
 
 #include <LWindowEventHandlers.h>

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UDebugging.cp				PowerPlant 2.2.5	©1994-2005 Metrowerks Inc.
+//	UDebugging.cpp				PowerPlant 2.2.5	©1994-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Utility functions for debugging

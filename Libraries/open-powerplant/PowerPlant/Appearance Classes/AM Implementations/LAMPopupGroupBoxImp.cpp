@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LAMPopupGroupBoxImp.cp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LAMPopupGroupBoxImp.cpp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //	Implementation for an Appearance Manager PopupGroupBox control
 //

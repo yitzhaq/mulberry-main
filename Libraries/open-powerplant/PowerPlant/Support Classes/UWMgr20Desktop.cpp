@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UWMgr20Desktop.cp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	UWMgr20Desktop.cpp			PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Window manipulation routines using Window Manager 2.0, which supports
@@ -52,8 +52,8 @@
 
 #if (TARGET_OS_MAC && TARGET_CPU_68K)
 									// Window Manager 2.0 does not exist
-									//   on 68K Macs. Use UDesktop.cp or
-									//   UFloatingDesktop.cp instead.
+									//   on 68K Macs. Use UDesktop.cpp or
+									//   UFloatingDesktop.cpp instead.
 	#error UWMgr20Desktop is not supported for 68K Mac Targets
 #endif
 

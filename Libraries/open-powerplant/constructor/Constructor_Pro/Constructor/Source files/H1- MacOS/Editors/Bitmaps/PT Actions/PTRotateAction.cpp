@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				RotateAction.cp
+FILE:				RotateAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

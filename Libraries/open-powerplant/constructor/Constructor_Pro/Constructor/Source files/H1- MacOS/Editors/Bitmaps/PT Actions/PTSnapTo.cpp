@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				SnapTo.cp
+FILE:				SnapTo.cpp
 
 PROJECT:			Constructor Icon Editor
 

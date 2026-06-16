@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTableMultiGeometry.cp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LTableMultiGeometry.cpp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Manages geometry of a TableView where rows and columns may have

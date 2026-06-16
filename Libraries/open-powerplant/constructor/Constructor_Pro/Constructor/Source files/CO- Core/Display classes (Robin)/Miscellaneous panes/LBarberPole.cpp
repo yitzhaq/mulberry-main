@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LBarberPole.cp
+FILE:					LBarberPole.cpp
 
 CLASSES:				LBarberPole
 

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LControlImp.cp				PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LControlImp.cpp				PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Base class for control implementations

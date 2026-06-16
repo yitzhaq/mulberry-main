@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAIconTextButton.cp
+FILE:					LGAIconTextButton.cpp
 
 CLASSES:				LGAIconTextButton
 

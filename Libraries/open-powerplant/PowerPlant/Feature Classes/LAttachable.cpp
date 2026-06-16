@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LAttachable.cp				PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
+//	LAttachable.cpp				PowerPlant 2.2.2	©1994-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Abstract class for an object which has an associated list of Attachments

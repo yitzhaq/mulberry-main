@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UCarbonPrinting.cp			PowerPlant 2.2.2	©1999-2005 Metrowerks Inc.
+//	UCarbonPrinting.cpp			PowerPlant 2.2.2	©1999-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Implementation of UPrinting module using Carbon non-Session Print APIs

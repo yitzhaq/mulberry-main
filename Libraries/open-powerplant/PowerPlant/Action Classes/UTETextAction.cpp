@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UTETextAction.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	UTETextAction.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Undoable Actions associated with a Toolbox TextEdit record

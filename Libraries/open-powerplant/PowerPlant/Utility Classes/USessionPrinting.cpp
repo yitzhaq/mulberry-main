@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	USessionPrinting.cp			PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
+//	USessionPrinting.cpp			PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Implementation of UPrinting module using the Carbon Print Session APIs
@@ -676,7 +676,7 @@ StPrintSession::StPrintSession(
 	
 		// Check if the Print Session API exists. It won't if
 		// running on Carbon 1.0.x. To support Carbon 1.0.x, you
-		// should use UCarbonPrinting.cp.
+		// should use UCarbonPrinting.cpp.
 
 	OSStatus	status = kPMNotImplemented;
 	

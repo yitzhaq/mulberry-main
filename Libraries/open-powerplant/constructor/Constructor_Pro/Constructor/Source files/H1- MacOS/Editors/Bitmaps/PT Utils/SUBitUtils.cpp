@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:					SUBitUtils.cp
+FILE:					SUBitUtils.cpp
 
 CLASSES:				SUBitUtils
 

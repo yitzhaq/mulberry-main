@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGASeparator.cp
+FILE:					LGASeparator.cpp
 
 CLASSES:				LGASeparator
 

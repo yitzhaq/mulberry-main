@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				PTGraphicConversions.cp
+FILE:				PTGraphicConversions.cpp
 
 PROJECT:			Constructor Icon Editor
 

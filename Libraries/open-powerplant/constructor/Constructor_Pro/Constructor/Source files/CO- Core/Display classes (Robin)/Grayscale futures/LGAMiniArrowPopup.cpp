@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAMiniArrowPopup.cp
+FILE:					LGAMiniArrowPopup.cpp
 
 CLASSES:				LGAMiniArrowPopup
 

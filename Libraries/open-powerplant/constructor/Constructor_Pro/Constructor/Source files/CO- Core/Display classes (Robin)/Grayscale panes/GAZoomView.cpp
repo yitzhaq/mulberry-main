@@ -5,7 +5,7 @@
 
 ---------------------------------------<< * >>-----------------------------------------
 
-FILE:					GAZoomView.cp
+FILE:					GAZoomView.cpp
 
 CLASSES:				GAZoomView
 

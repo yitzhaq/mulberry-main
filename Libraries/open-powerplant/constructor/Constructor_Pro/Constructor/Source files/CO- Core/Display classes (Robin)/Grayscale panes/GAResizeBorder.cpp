@@ -5,7 +5,7 @@
 
 ---------------------------------------<< * >>-----------------------------------------
 
-FILE:					GAResizeBorder.cp
+FILE:					GAResizeBorder.cpp
 
 CLASSES:				GAResizeBorder
 

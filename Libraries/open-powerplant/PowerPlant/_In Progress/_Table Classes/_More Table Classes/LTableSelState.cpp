@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTableSelState.cp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LTableSelState.cpp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //  Original Author: Andy Dent
 

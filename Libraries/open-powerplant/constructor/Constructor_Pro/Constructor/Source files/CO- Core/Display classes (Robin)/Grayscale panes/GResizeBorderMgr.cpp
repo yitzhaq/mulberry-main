@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					GResizeBorderMgr.cp
+FILE:					GResizeBorderMgr.cpp
 
 CLASSES:				GResizeBorderMgr
 

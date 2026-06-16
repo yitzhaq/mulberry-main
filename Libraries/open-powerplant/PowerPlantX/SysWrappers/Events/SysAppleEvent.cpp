@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	SysAppleEvent.cp
+//	SysAppleEvent.cpp
 //
 //	Copyright © 2002-2005 Metrowerks Corporation.  All rights reserved.
 //

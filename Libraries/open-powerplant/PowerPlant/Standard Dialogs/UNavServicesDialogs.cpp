@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UNavServicesDialogs.cp		PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
+//	UNavServicesDialogs.cpp		PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Classes which use Navigation Services dialogs to prompt the user to

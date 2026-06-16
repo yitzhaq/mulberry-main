@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LAMTextGroupBoxImp.cp			PowerPlant 2.2.2©2000-2005 Metrowerks Inc.
+//	LAMTextGroupBoxImp.cpp			PowerPlant 2.2.2©2000-2005 Metrowerks Inc.
 // ===========================================================================
 //	Implementation for an Appearance Manager TextGroupBox control
 //

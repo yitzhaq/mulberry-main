@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				PopupWindow.cp
+FILE:				PopupWindow.cpp
 
 PROJECT:			Constructor Icon Editor
 

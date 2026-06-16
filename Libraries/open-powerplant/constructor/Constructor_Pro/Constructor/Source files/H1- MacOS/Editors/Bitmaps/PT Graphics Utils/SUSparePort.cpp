@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:					SUSparePort.cp
+FILE:					SUSparePort.cpp
 
 CLASSES:				SUSparePort
 

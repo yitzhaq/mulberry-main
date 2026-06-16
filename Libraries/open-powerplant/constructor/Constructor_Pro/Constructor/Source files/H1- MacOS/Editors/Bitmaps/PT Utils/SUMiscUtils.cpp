@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				SUMiscUtils.cp
+FILE:				SUMiscUtils.cpp
 
 CLASSES:			SUMiscUtils
 

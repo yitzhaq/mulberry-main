@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UReanimator.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	UReanimator.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Functions for creating objects using data from resources

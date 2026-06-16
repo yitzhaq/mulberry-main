@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGABackground.cp
+FILE:					LGABackground.cpp
 
 CLASSES:				LGABackground
 

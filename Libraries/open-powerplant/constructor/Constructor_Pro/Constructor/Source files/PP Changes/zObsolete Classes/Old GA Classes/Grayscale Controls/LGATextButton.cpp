@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGATextButton.cp
+FILE:					LGATextButton.cpp
 
 CLASSES:				LGATextButton
 

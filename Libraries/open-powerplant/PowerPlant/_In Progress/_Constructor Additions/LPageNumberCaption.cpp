@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LPageNumberCaption.cp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LPageNumberCaption.cpp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A caption that changes its contents based on the panel number.

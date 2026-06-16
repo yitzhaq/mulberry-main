@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	PPDebug_New.cp		©1997-1999 Metrowerks Inc. All rights reserved
+//	PPDebug_New.cpp		©1997-1999 Metrowerks Inc. All rights reserved
 //	Original Author: John C. Daub
 // ===========================================================================
 //	Overrides for C++ memory allocation mechanisms, to work better with
@@ -51,7 +51,7 @@ void PP_NewHandler() throw(PP_STD::bad_alloc);	// prototype
 #if PP_Debug && PP_DebugNew_Support
 	#define DEBUG_NEW_NO_GLOBAL_OPERATORS 1		// suppress DebugNew's global
 												// new/delete operators
-	#include "DebugNew.cp"
+	#include "DebugNew.cpp"
 #endif
 
 
@@ -493,11 +493,11 @@ void PP_NewHandler() throw(PP_STD::bad_alloc)
 		// DoGrowZone() should fail to return a positive value (at least
 		// until after this allocation attempt has completed). Not only
 		// does this assumption affect this function, but the method
-		// used by new to allocate memory (malloc, my_alloc (New.cp),
+		// used by new to allocate memory (malloc, my_alloc (New.cpp),
 		// NewPtr, etc.) could potentially call into the system (NewPtr)
 		// and cause the GrowZone to again trigger. However the structuring
 		// of the implementation of new (at least in the Metrowerks runtimes,
-		// see New.cp) should utimately still end up in failure and none
+		// see New.cpp) should utimately still end up in failure and none
 		// of this should truly be an issue.
 		//
 		// Besides, if you hit a situation like that, you're probably in

@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAPushButton.cp
+FILE:					LGAPushButton.cpp
 
 CLASSES:				LGAPushButton
 

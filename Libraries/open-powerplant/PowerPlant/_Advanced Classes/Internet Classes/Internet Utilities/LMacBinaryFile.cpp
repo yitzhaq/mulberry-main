@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LMacBinaryFile.cp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
+//	LMacBinaryFile.cpp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
 // ===========================================================================
 //	This object based (heavily) on the binsub routines found in NCSA Telnet
 //		for the Macintosh.

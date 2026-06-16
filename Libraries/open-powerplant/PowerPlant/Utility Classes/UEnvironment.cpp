@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UEnvironment.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	UEnvironment.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //	Maintains information about the Environment (machine and system software)
 //	in which a program is running. Usually, you will set the features

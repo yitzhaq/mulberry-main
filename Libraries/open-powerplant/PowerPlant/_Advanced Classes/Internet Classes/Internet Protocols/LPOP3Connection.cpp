@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LPOP3Connection.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LPOP3Connection.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 // POP3 Connection

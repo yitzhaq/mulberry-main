@@ -9,14 +9,14 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				SelectionAction.cp
+FILE:				SelectionAction.cpp
 
 PROJECT:			Constructor Icon Editor
 
 CLASSES:			PTSelectionAction
 
 DESCRIPTION:		Implementation file for classes
-					See also LassoAction.cp
+					See also LassoAction.cpp
 										
 AUTHOR:				Eric Shapiro
 

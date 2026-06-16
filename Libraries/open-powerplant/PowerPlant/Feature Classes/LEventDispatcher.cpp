@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LEventDispatcher.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LEventDispatcher.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Dispatches Toolbox Events to the proper objects

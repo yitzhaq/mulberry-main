@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTableArrayStorage.cp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LTableArrayStorage.cpp		PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Stores data for a TableView in an Array

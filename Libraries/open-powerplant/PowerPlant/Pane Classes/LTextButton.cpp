@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTextButton.cp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LTextButton.cpp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A button that behaves like a radio button, but displays text

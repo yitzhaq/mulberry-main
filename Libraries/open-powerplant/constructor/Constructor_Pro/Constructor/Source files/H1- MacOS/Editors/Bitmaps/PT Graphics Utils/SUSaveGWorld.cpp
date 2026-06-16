@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				SaveGWorld.cp
+FILE:				SaveGWorld.cpp
 
 CLASSES:			StSaveGWorld
 

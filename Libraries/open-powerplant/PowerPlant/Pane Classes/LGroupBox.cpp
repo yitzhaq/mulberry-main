@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LGroupBox.cp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LGroupBox.cpp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	View class for a gray box with a text title

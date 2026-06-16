@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UStuffItSupport.cp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	UStuffItSupport.cpp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Utility class for using the StuffIt Engine.

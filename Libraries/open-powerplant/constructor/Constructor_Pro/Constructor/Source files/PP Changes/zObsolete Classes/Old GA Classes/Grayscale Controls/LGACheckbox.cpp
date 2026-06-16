@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGACheckbox.cp
+FILE:					LGACheckbox.cpp
 
 CLASSES:				LGACheckbox
 

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LView.cp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LView.cpp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A Pane subclass which supports scrolling and SubPanes

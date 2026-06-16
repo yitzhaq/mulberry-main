@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:				LassoAction.cp
+FILE:				LassoAction.cpp
 
 PROJECT:			Constructor Icon Editor
 

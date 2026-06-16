@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LAMTrackActionImp.cp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LAMTrackActionImp.cpp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Implementation for Appearance Manager controls which support live

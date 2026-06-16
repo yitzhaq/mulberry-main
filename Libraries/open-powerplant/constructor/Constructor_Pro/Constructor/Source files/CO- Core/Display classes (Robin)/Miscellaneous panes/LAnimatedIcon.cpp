@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LAnimatedIcon.cp
+FILE:					LAnimatedIcon.cpp
 
 CLASSES:				LAnimatedIcon
 

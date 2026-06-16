@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTable.cp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LTable.cpp					PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A two-dimensional array of rectangular cells. All rows have the same

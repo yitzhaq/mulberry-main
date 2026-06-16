@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LTimerCaption.cp
+FILE:					LTimerCaption.cpp
 
 CLASSES:				LTimerCaption
 

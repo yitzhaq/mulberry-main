@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UException.cp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	UException.cpp				PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	The C++ standard states that the Exception Handling mechanism

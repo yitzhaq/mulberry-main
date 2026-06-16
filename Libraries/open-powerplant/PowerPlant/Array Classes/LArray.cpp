@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LArray.cp					PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LArray.cpp					PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A ordered sequence of fixed-sized items. Positions in the Array are

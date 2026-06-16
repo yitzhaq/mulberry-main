@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LInternetResponse.cp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LInternetResponse.cpp		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Base class for handling typical Internet style protocol responses which

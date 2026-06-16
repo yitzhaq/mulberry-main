@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAIconSuiteControl.cp
+FILE:					LGAIconSuiteControl.cpp
 
 CLASSES:				LGAIconSuiteControl
 

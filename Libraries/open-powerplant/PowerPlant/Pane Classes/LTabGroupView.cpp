@@ -2,11 +2,11 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTabGroupView.cp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
+//	LTabGroupView.cpp			PowerPlant 2.2.2	©1998-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original Author: John C. Daub
 //
-//	LTabGroupView implements a tab group (see LTabGroup.cp). Subpanes of this
+//	LTabGroupView implements a tab group (see LTabGroup.cpp). Subpanes of this
 //	view are considered members of the tab group.
 //
 //	This is useful over LTabGroup as it gives you a visual element to

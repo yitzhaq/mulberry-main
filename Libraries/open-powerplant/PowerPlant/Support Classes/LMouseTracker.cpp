@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LMouseTracker.cp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LMouseTracker.cpp			PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Periodical that tracks which Pane contains the mouse and calls the

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	InterruptDisableLib.cp		PowerPlant 2.2.2		©1999-2005 Metrowerks Inc.
+//	InterruptDisableLib.cpp		PowerPlant 2.2.2		©1999-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Based on Apple Sample Code written by Quinn "The Eskimo!"

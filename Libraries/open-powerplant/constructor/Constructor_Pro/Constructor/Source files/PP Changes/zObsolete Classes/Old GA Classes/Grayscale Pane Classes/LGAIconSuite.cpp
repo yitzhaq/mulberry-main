@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGAIconSuite.cp
+FILE:					LGAIconSuite.cpp
 
 CLASSES:				LGAIconSuite
 

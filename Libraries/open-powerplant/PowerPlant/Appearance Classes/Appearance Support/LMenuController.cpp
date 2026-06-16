@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LMenuController.cp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LMenuController.cpp			PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Mixin class for Controls that have an associated popup menu

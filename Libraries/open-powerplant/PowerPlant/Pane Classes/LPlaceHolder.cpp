@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LPlaceHolder.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LPlaceHolder.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A PlaceHolder temporarily holds an Occupant Pane. The Occupant Pane is

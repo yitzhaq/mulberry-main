@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LInternetMessage.cp 		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
+//	LInternetMessage.cpp 		PowerPlant 2.2.2	©1996-2005 Metrowerks Inc.
 // ===========================================================================
 //	Class for doing basic RFC822 style messages with simple Header and Message
 //	Body. See LMailMessage or LHTTPMessage for specific implimentations.

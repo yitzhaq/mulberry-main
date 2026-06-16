@@ -399,7 +399,7 @@ RFResource::SetResData(
 		if (::GetHandleSize(inResData) == ::GetHandleSize(mResData)) {
 			StHandleLocker lockNew(inResData);
 			StHandleLocker lockOld(mResData);
-			if (::BlocksAreEqual(*inResData, *mResData, ::GetHandleSize(inResData)))	// in UMemoryMgr.cp
+			if (::BlocksAreEqual(*inResData, *mResData, ::GetHandleSize(inResData)))	// in UMemoryMgr.cpp
 				return;
 		}
 		

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LVariableArray.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	LVariableArray.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	An ordered collection of variable-size items. Positions in the list are

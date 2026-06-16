@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGACaption.cp
+FILE:					LGACaption.cpp
 
 CLASSES:				LGACaption
 

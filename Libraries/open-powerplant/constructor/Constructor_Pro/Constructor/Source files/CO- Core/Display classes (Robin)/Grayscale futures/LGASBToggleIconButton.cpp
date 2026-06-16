@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGASBToggleIconButton.cp
+FILE:					LGASBToggleIconButton.cpp
 
 CLASSES:				LGASBToggleIconButton
 

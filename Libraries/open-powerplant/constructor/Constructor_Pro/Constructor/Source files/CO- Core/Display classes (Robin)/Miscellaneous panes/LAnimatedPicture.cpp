@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LAnimatedPicture.cp
+FILE:					LAnimatedPicture.cpp
 
 CLASSES:				LAnimatedPicture
 

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LTabGroup.cp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
+//	LTabGroup.cpp				PowerPlant 2.2.2	©1993-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	A TabGroup switches the Target amongst its SubCommanders in response to

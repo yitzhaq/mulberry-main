@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UScrap.cp				PowerPlant 2.2.2		©1999-2005 Metrowerks Inc.
+//	UScrap.cpp				PowerPlant 2.2.2		©1999-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	The UScrap namespace contains 5 functions for managing the Scrap, also

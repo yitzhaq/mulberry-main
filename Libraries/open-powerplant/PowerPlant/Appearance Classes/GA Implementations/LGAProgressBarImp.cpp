@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LGAProgressBarImp.cp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
+//	LGAProgressBarImp.cpp		PowerPlant 2.2.2	©1997-2005 Metrowerks Inc.
 // ===========================================================================
 //	Original author: John C. Daub
 //

@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	UPrinting.cp				PowerPlant 2.2.2	©1999-2005 Metrowerks Inc.
+//	UPrinting.cpp				PowerPlant 2.2.2	©1999-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Wrapper file for UPrinting implementation
@@ -18,7 +18,7 @@
 
 #ifdef PowerPlant_PCH
 	#include PowerPlant_PCH
-	#undef PowerPlant_PCH			// So imp .cp files don't double include
+	#undef PowerPlant_PCH			// So imp .cpp files don't double include
 #endif
 
 #include <UPrinting.h>
@@ -30,17 +30,17 @@
 
 	#if PM_USE_SESSION_APIS
 	
-		#include "USessionPrinting.cp"
+		#include "USessionPrinting.cpp"
 		
 	#else
 
-		#include "UCarbonPrinting.cp"
+		#include "UCarbonPrinting.cpp"
 		
 	#endif
 
 #else
 
-	#include <UClassicPrinting.cp>
+	#include <UClassicPrinting.cpp>
 
 #endif
 

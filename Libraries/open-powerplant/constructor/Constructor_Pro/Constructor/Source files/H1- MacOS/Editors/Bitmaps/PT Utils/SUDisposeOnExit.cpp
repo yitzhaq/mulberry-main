@@ -9,7 +9,7 @@
 		
 ---------------------------------------<< ¥ >>----------------------------------------
 
-FILE:					DisposeOnExit.cp
+FILE:					DisposeOnExit.cpp
 
 CLASSES:				StDisposeHandle
 

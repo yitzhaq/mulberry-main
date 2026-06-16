@@ -5,7 +5,7 @@
 
 ---------------------------------------<< ¥ >>-----------------------------------------
 
-FILE:					LGADialogBox.cp
+FILE:					LGADialogBox.cpp
 
 CLASSES:				LGADialogBox
 

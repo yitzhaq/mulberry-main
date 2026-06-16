@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	LCFObject.cp				PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
+//	LCFObject.cpp				PowerPlant 2.2.2	©2000-2005 Metrowerks Inc.
 // ===========================================================================
 
 #include <LCFObject.h>

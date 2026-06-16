@@ -2,7 +2,7 @@
 // Please see the License for the specific language governing rights and
 // limitations under the License.
 // ===========================================================================
-//	PP_ClassHeaders.cp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
+//	PP_ClassHeaders.cpp			PowerPlant 2.2.2	©1995-2005 Metrowerks Inc.
 // ===========================================================================
 //
 //	Source for precompiled header for PowerPlant headers
