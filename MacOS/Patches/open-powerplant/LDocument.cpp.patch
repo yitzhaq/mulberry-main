@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocument.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocument.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocument.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocument.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocument.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocument.cpp	(working copy)
 @@ -128,7 +128,7 @@
  			// same as "SaveAs"
  

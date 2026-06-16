@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\CAdbkIOPluginDLL.cp">
+    <None Include="..\Common\CAdbkIOPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CPluginDLL.cp">
+    <None Include="..\Common\CPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CQuickmailProAdbkIOPluginDLL.cp">
+    <None Include="sources\CQuickmailProAdbkIOPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\PluginDLLmain.cp">
+    <None Include="..\Common\PluginDLLmain.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -54,7 +54,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

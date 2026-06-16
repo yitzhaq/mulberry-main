@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LBevelButton.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LBevelButton.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LBevelButton.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LBevelButton.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LBevelButton.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LBevelButton.cpp	(working copy)
 @@ -27,7 +27,8 @@
  	ClassIDT	inImpID)
  

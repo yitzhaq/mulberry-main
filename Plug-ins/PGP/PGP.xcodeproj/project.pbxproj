@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF321A6D0AEAD37000237005 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A650AEAD36E00237005 /* PluginDLLmain.cp */; };
-		AF321A6E0AEAD37000237005 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A660AEAD36E00237005 /* CPluginDLL.cp */; };
-		AF321A700AEAD37000237005 /* CSecurityPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A680AEAD36E00237005 /* CSecurityPluginDLL.cp */; };
-		AF321A720AEAD37000237005 /* CPGPPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A6A0AEAD36E00237005 /* CPGPPluginDLL.cp */; };
+		AF321A6D0AEAD37000237005 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A650AEAD36E00237005 /* PluginDLLmain.cpp */; };
+		AF321A6E0AEAD37000237005 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A660AEAD36E00237005 /* CPluginDLL.cpp */; };
+		AF321A700AEAD37000237005 /* CSecurityPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A680AEAD36E00237005 /* CSecurityPluginDLL.cpp */; };
+		AF321A720AEAD37000237005 /* CPGPPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF321A6A0AEAD36E00237005 /* CPGPPluginDLL.cpp */; };
 		AF321A740AEAD37000237005 /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF321A6C0AEAD37000237005 /* libPluginLibrary.a */; };
 		AF321A880AEAD37C00237005 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF321A870AEAD37C00237005 /* Carbon.framework */; };
 		AF321A940AEAD37D00237005 /* PGP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF321A930AEAD37D00237005 /* PGP.framework */; };
@@ -20,12 +20,12 @@
 
 /* Begin PBXFileReference section */
 		AF321A600AEAD36D00237005 /* PGP8.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PGP8.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF321A650AEAD36E00237005 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF321A660AEAD36E00237005 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/Common/CPluginDLL.cp"; sourceTree = "<absolute>"; };
+		AF321A650AEAD36E00237005 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF321A660AEAD36E00237005 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/Common/CPluginDLL.cpp"; sourceTree = "<absolute>"; };
 		AF321A670AEAD36E00237005 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/Common/CPluginDLL.h"; sourceTree = "<absolute>"; };
-		AF321A680AEAD36E00237005 /* CSecurityPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSecurityPluginDLL.cp; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/Common/CSecurityPluginDLL.cp"; sourceTree = "<absolute>"; };
+		AF321A680AEAD36E00237005 /* CSecurityPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSecurityPluginDLL.cpp; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/Common/CSecurityPluginDLL.cpp"; sourceTree = "<absolute>"; };
 		AF321A690AEAD36E00237005 /* CSecurityPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CSecurityPluginDLL.h; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/Common/CSecurityPluginDLL.h"; sourceTree = "<absolute>"; };
-		AF321A6A0AEAD36E00237005 /* CPGPPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPGPPluginDLL.cp; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/PGP/sources/CPGPPluginDLL.cp"; sourceTree = "<absolute>"; };
+		AF321A6A0AEAD36E00237005 /* CPGPPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPGPPluginDLL.cpp; path = "/Development/Projects/Mulberry/Mulberry v4.0/Plug-ins/PGP/sources/CPGPPluginDLL.cpp"; sourceTree = "<absolute>"; };
 		AF321A6B0AEAD36E00237005 /* CPGPPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPGPPluginDLL.h; path = sources/CPGPPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF321A6C0AEAD37000237005 /* libPluginLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPluginLibrary.a; path = ../PluginLibrary/libPluginLibrary.a; sourceTree = SOURCE_ROOT; };
 		AF321A760AEAD37400237005 /* cdstring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cdstring.h; path = ../../Sources_Common/Utilities/cdstring.h; sourceTree = SOURCE_ROOT; };
@@ -76,13 +76,13 @@
 		AF321A640AEAD36E00237005 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF321A650AEAD36E00237005 /* PluginDLLmain.cp */,
+				AF321A650AEAD36E00237005 /* PluginDLLmain.cpp */,
 				AF321A670AEAD36E00237005 /* CPluginDLL.h */,
-				AF321A660AEAD36E00237005 /* CPluginDLL.cp */,
+				AF321A660AEAD36E00237005 /* CPluginDLL.cpp */,
 				AF321A690AEAD36E00237005 /* CSecurityPluginDLL.h */,
-				AF321A680AEAD36E00237005 /* CSecurityPluginDLL.cp */,
+				AF321A680AEAD36E00237005 /* CSecurityPluginDLL.cpp */,
 				AF321A6B0AEAD36E00237005 /* CPGPPluginDLL.h */,
-				AF321A6A0AEAD36E00237005 /* CPGPPluginDLL.cp */,
+				AF321A6A0AEAD36E00237005 /* CPGPPluginDLL.cpp */,
 				AF321B670AEAD77200237005 /* MoreFilesX.c */,
 				AF321B410AEAD5CA00237005 /* MoreFilesX.h */,
 				AF321A6C0AEAD37000237005 /* libPluginLibrary.a */,
@@ -180,10 +180,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF321A6D0AEAD37000237005 /* PluginDLLmain.cp in Sources */,
-				AF321A6E0AEAD37000237005 /* CPluginDLL.cp in Sources */,
-				AF321A700AEAD37000237005 /* CSecurityPluginDLL.cp in Sources */,
-				AF321A720AEAD37000237005 /* CPGPPluginDLL.cp in Sources */,
+				AF321A6D0AEAD37000237005 /* PluginDLLmain.cpp in Sources */,
+				AF321A6E0AEAD37000237005 /* CPluginDLL.cpp in Sources */,
+				AF321A700AEAD37000237005 /* CSecurityPluginDLL.cpp in Sources */,
+				AF321A720AEAD37000237005 /* CPGPPluginDLL.cpp in Sources */,
 				AF321B680AEAD77200237005 /* MoreFilesX.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

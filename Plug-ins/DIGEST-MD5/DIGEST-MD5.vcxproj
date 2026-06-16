@@ -200,17 +200,17 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\Common\CAuthPluginDLL.cp" />
-    <None Include="..\Common\CPluginDLL.cp" />
-    <None Include="..\Common\kbase64.cp" />
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <None Include="..\Common\CAuthPluginDLL.cpp" />
+    <None Include="..\Common\CPluginDLL.cpp" />
+    <None Include="..\Common\kbase64.cpp" />
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <None Include="..\Common\PluginDLLmain.cp" />
-    <None Include="sources\CDIGESTMD5PluginDLL.cp" />
+    <None Include="..\Common\PluginDLLmain.cpp" />
+    <None Include="sources\CDIGESTMD5PluginDLL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\CRAM-MD5\sources\md5\hmac-md5.c">

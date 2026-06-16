@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\CAuthPluginDLL.cp">
+    <None Include="..\Common\CAuthPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CCRAMMD5PluginDLL.cp">
+    <None Include="sources\CCRAMMD5PluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CPluginDLL.cp">
+    <None Include="..\Common\CPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\kbase64.cp">
+    <None Include="..\Common\kbase64.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\PluginDLLmain.cp">
+    <None Include="..\Common\PluginDLLmain.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClCompile Include="sources\md5\hmac-md5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="sources\CGPGPluginDLL.cp">
+    <None Include="sources\CGPGPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CPluginDLL.cp">
+    <None Include="..\Common\CPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CSecurityPluginDLL.cp">
+    <None Include="..\Common\CSecurityPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Win32\Sources\Support\CUnicodeStdLib.cp">
+    <None Include="..\..\Win32\Sources\Support\CUnicodeStdLib.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\PluginDLLmain.cp">
+    <None Include="..\Common\PluginDLLmain.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -60,7 +60,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

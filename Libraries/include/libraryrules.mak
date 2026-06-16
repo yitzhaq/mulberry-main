@@ -33,14 +33,7 @@ distclean:
 %$O: %.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-%$O: %.cp
-	$(CXX) -c $(CXXFLAGS) $< -o $@
-
 %.dd: %.cpp
-	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
-	[ -s $@ ] || rm -f $@'
-
-%.dd: %.cp
 	@$(SHELL) -ec '$(CXX) -MM -MT "$*.o" -MF $@ $(CXXFLAGS) $<; \
 	[ -s $@ ] || rm -f $@'
 

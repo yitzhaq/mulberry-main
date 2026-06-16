@@ -15,22 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Sources_Common\Plugins\SSL\CDLLFunctions.cp">
+    <None Include="..\..\Sources_Common\Plugins\SSL\CDLLFunctions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CPluginDLL.cp">
+    <None Include="..\Common\CPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CSecurityPluginDLL.cp">
+    <None Include="..\Common\CSecurityPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CSMIMEPluginDLL.cp">
+    <None Include="sources\CSMIMEPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Plugins\SSL\loadsslfunc.cp">
+    <None Include="..\..\Sources_Common\Plugins\SSL\loadsslfunc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\PluginDLLmain.cp">
+    <None Include="..\Common\PluginDLLmain.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -58,7 +58,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

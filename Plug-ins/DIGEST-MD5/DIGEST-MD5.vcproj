@@ -349,15 +349,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\Common\CAuthPluginDLL.cp"
+				RelativePath="..\Common\CAuthPluginDLL.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\CDIGESTMD5PluginDLL.cp"
+				RelativePath=".\sources\CDIGESTMD5PluginDLL.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Common\CPluginDLL.cp"
+				RelativePath="..\Common\CPluginDLL.cpp"
 				>
 			</File>
 			<File
@@ -397,7 +397,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Common\kbase64.cp"
+				RelativePath="..\Common\kbase64.cpp"
 				>
 			</File>
 			<File
@@ -437,7 +437,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Common\MulberryPrefixWin32.cp"
+				RelativePath="..\Common\MulberryPrefixWin32.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -477,7 +477,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Common\PluginDLLmain.cp"
+				RelativePath="..\Common\PluginDLLmain.cpp"
 				>
 			</File>
 		</Filter>

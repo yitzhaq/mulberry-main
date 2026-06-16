@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF8AAE660AE5C83700A94FD4 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE5C0AE5C83700A94FD4 /* PluginDLLmain.cp */; };
-		AF8AAE670AE5C83700A94FD4 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE5D0AE5C83700A94FD4 /* CPluginDLL.cp */; };
-		AF8AAE690AE5C83700A94FD4 /* CSecurityPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE5F0AE5C83700A94FD4 /* CSecurityPluginDLL.cp */; };
-		AF8AAE6B0AE5C83700A94FD4 /* CGPGPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE610AE5C83700A94FD4 /* CGPGPluginDLL.cp */; };
+		AF8AAE660AE5C83700A94FD4 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE5C0AE5C83700A94FD4 /* PluginDLLmain.cpp */; };
+		AF8AAE670AE5C83700A94FD4 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE5D0AE5C83700A94FD4 /* CPluginDLL.cpp */; };
+		AF8AAE690AE5C83700A94FD4 /* CSecurityPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE5F0AE5C83700A94FD4 /* CSecurityPluginDLL.cpp */; };
+		AF8AAE6B0AE5C83700A94FD4 /* CGPGPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF8AAE610AE5C83700A94FD4 /* CGPGPluginDLL.cpp */; };
 		AFECC92A176E1075006354FB /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECC929176E1075006354FB /* libPluginLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF8AAE570AE5C83600A94FD4 /* GPG.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPG.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF8AAE5C0AE5C83700A94FD4 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF8AAE5D0AE5C83700A94FD4 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF8AAE5C0AE5C83700A94FD4 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF8AAE5D0AE5C83700A94FD4 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF8AAE5E0AE5C83700A94FD4 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF8AAE5F0AE5C83700A94FD4 /* CSecurityPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSecurityPluginDLL.cp; path = ../Common/CSecurityPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF8AAE5F0AE5C83700A94FD4 /* CSecurityPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSecurityPluginDLL.cpp; path = ../Common/CSecurityPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF8AAE600AE5C83700A94FD4 /* CSecurityPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CSecurityPluginDLL.h; path = ../Common/CSecurityPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF8AAE610AE5C83700A94FD4 /* CGPGPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CGPGPluginDLL.cp; path = sources/CGPGPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF8AAE610AE5C83700A94FD4 /* CGPGPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CGPGPluginDLL.cpp; path = sources/CGPGPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF8AAE620AE5C83700A94FD4 /* CGPGPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CGPGPluginDLL.h; path = sources/CGPGPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF8AAE710AE5C83A00A94FD4 /* cdstring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cdstring.h; path = ../../Sources_Common/Utilities/cdstring.h; sourceTree = SOURCE_ROOT; };
 		AF8AAE730AE5C83B00A94FD4 /* PluginDLLmain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginDLLmain.h; path = sources/PluginDLLmain.h; sourceTree = SOURCE_ROOT; };
@@ -68,13 +68,13 @@
 		AF8AAE5B0AE5C83700A94FD4 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF8AAE5C0AE5C83700A94FD4 /* PluginDLLmain.cp */,
+				AF8AAE5C0AE5C83700A94FD4 /* PluginDLLmain.cpp */,
 				AF8AAE5E0AE5C83700A94FD4 /* CPluginDLL.h */,
-				AF8AAE5D0AE5C83700A94FD4 /* CPluginDLL.cp */,
+				AF8AAE5D0AE5C83700A94FD4 /* CPluginDLL.cpp */,
 				AF8AAE600AE5C83700A94FD4 /* CSecurityPluginDLL.h */,
-				AF8AAE5F0AE5C83700A94FD4 /* CSecurityPluginDLL.cp */,
+				AF8AAE5F0AE5C83700A94FD4 /* CSecurityPluginDLL.cpp */,
 				AF8AAE620AE5C83700A94FD4 /* CGPGPluginDLL.h */,
-				AF8AAE610AE5C83700A94FD4 /* CGPGPluginDLL.cp */,
+				AF8AAE610AE5C83700A94FD4 /* CGPGPluginDLL.cpp */,
 				AF8AAEB60AE5CB2200A94FD4 /* libPluginLibrary.a */,
 			);
 			name = Main;
@@ -181,10 +181,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF8AAE660AE5C83700A94FD4 /* PluginDLLmain.cp in Sources */,
-				AF8AAE670AE5C83700A94FD4 /* CPluginDLL.cp in Sources */,
-				AF8AAE690AE5C83700A94FD4 /* CSecurityPluginDLL.cp in Sources */,
-				AF8AAE6B0AE5C83700A94FD4 /* CGPGPluginDLL.cp in Sources */,
+				AF8AAE660AE5C83700A94FD4 /* PluginDLLmain.cpp in Sources */,
+				AF8AAE670AE5C83700A94FD4 /* CPluginDLL.cpp in Sources */,
+				AF8AAE690AE5C83700A94FD4 /* CSecurityPluginDLL.cpp in Sources */,
+				AF8AAE6B0AE5C83700A94FD4 /* CGPGPluginDLL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

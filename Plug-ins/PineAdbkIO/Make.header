@@ -25,6 +25,6 @@ VPATH := sources:\
 		../../Sources_Common/Mail/URLs:\
 		../CRAM-MD5/sources/md5
 		
-$.${BIN}/%.o %.o: %.cp
+$.${BIN}/%.o %.o: %.cpp
 	@ echo "    ---- Compiling $< (C++)"
 	 $(CPP) $(CFLAGS) -c -o $@ $<

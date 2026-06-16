@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocApplication.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocApplication.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocApplication.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocApplication.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocApplication.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LDocApplication.cpp	(working copy)
 @@ -112,15 +112,15 @@
  
  void

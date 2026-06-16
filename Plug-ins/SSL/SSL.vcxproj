@@ -210,16 +210,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\Common\CPluginDLL.cp" />
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <None Include="..\Common\CPluginDLL.cpp" />
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <None Include="..\Common\os_dep.cp" />
-    <None Include="..\Common\PluginDLLmain.cp" />
-    <None Include="sources\CSSLPluginDLL.cp" />
+    <None Include="..\Common\os_dep.cpp" />
+    <None Include="..\Common\PluginDLLmain.cpp" />
+    <None Include="sources\CSSLPluginDLL.cpp" />
     <None Include="SSL.def" />
   </ItemGroup>
   <ItemGroup>

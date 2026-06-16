@@ -7,27 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF4199080AE9A3C500E19592 /* os_dep.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199040AE9A3C400E19592 /* os_dep.cp */; };
-		AF41990A0AE9A3C500E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4198FD0AE9A3C400E19592 /* PluginDLLmain.cp */; };
-		AF41990B0AE9A3C500E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4198FE0AE9A3C400E19592 /* CPluginDLL.cp */; };
-		AF41990D0AE9A3C500E19592 /* CAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199000AE9A3C400E19592 /* CAdbkIOPluginDLL.cp */; };
-		AF41990F0AE9A3C500E19592 /* CQuickmailProAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199020AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.cp */; };
-		AF4199110AE9A3C500E19592 /* CStringUtils.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199060AE9A3C500E19592 /* CStringUtils.cp */; };
+		AF4199080AE9A3C500E19592 /* os_dep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199040AE9A3C400E19592 /* os_dep.cpp */; };
+		AF41990A0AE9A3C500E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4198FD0AE9A3C400E19592 /* PluginDLLmain.cpp */; };
+		AF41990B0AE9A3C500E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4198FE0AE9A3C400E19592 /* CPluginDLL.cpp */; };
+		AF41990D0AE9A3C500E19592 /* CAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199000AE9A3C400E19592 /* CAdbkIOPluginDLL.cpp */; };
+		AF41990F0AE9A3C500E19592 /* CQuickmailProAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199020AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.cpp */; };
+		AF4199110AE9A3C500E19592 /* CStringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199060AE9A3C500E19592 /* CStringUtils.cpp */; };
 		AF4199160AE9A3C500E19592 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF4199150AE9A3C500E19592 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF4198F80AE9A3C400E19592 /* QuickmailProAdbkIO.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickmailProAdbkIO.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF4198FD0AE9A3C400E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF4198FE0AE9A3C400E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4198FD0AE9A3C400E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF4198FE0AE9A3C400E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4198FF0AE9A3C400E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF4199000AE9A3C400E19592 /* CAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cp; path = ../Common/CAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4199000AE9A3C400E19592 /* CAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cpp; path = ../Common/CAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199010AE9A3C400E19592 /* CAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CAdbkIOPluginDLL.h; path = ../Common/CAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF4199020AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CQuickmailProAdbkIOPluginDLL.cp; path = sources/CQuickmailProAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4199020AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CQuickmailProAdbkIOPluginDLL.cpp; path = sources/CQuickmailProAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199030AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CQuickmailProAdbkIOPluginDLL.h; path = sources/CQuickmailProAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF4199040AE9A3C400E19592 /* os_dep.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = os_dep.cp; path = ../Common/os_dep.cp; sourceTree = SOURCE_ROOT; };
+		AF4199040AE9A3C400E19592 /* os_dep.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = os_dep.cpp; path = ../Common/os_dep.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199050AE9A3C400E19592 /* os_dep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = os_dep.h; path = ../Common/os_dep.h; sourceTree = SOURCE_ROOT; };
-		AF4199060AE9A3C500E19592 /* CStringUtils.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CStringUtils.cp; path = ../../Sources_Common/Utilities/CStringUtils.cp; sourceTree = SOURCE_ROOT; };
+		AF4199060AE9A3C500E19592 /* CStringUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CStringUtils.cpp; path = ../../Sources_Common/Utilities/CStringUtils.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199070AE9A3C500E19592 /* CStringUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CStringUtils.h; path = ../../Sources_Common/Utilities/CStringUtils.h; sourceTree = SOURCE_ROOT; };
 		AF4199150AE9A3C500E19592 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		AF4199170AE9A3C500E19592 /* PluginDLLmain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginDLLmain.h; path = sources/PluginDLLmain.h; sourceTree = SOURCE_ROOT; };
@@ -67,17 +67,17 @@
 		AF4198FC0AE9A3C400E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF4198FD0AE9A3C400E19592 /* PluginDLLmain.cp */,
+				AF4198FD0AE9A3C400E19592 /* PluginDLLmain.cpp */,
 				AF4198FF0AE9A3C400E19592 /* CPluginDLL.h */,
-				AF4198FE0AE9A3C400E19592 /* CPluginDLL.cp */,
+				AF4198FE0AE9A3C400E19592 /* CPluginDLL.cpp */,
 				AF4199010AE9A3C400E19592 /* CAdbkIOPluginDLL.h */,
-				AF4199000AE9A3C400E19592 /* CAdbkIOPluginDLL.cp */,
+				AF4199000AE9A3C400E19592 /* CAdbkIOPluginDLL.cpp */,
 				AF4199030AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.h */,
-				AF4199020AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.cp */,
+				AF4199020AE9A3C400E19592 /* CQuickmailProAdbkIOPluginDLL.cpp */,
 				AF4199050AE9A3C400E19592 /* os_dep.h */,
-				AF4199040AE9A3C400E19592 /* os_dep.cp */,
+				AF4199040AE9A3C400E19592 /* os_dep.cpp */,
 				AF4199070AE9A3C500E19592 /* CStringUtils.h */,
-				AF4199060AE9A3C500E19592 /* CStringUtils.cp */,
+				AF4199060AE9A3C500E19592 /* CStringUtils.cpp */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -170,12 +170,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF4199080AE9A3C500E19592 /* os_dep.cp in Sources */,
-				AF41990A0AE9A3C500E19592 /* PluginDLLmain.cp in Sources */,
-				AF41990B0AE9A3C500E19592 /* CPluginDLL.cp in Sources */,
-				AF41990D0AE9A3C500E19592 /* CAdbkIOPluginDLL.cp in Sources */,
-				AF41990F0AE9A3C500E19592 /* CQuickmailProAdbkIOPluginDLL.cp in Sources */,
-				AF4199110AE9A3C500E19592 /* CStringUtils.cp in Sources */,
+				AF4199080AE9A3C500E19592 /* os_dep.cpp in Sources */,
+				AF41990A0AE9A3C500E19592 /* PluginDLLmain.cpp in Sources */,
+				AF41990B0AE9A3C500E19592 /* CPluginDLL.cpp in Sources */,
+				AF41990D0AE9A3C500E19592 /* CAdbkIOPluginDLL.cpp in Sources */,
+				AF41990F0AE9A3C500E19592 /* CQuickmailProAdbkIOPluginDLL.cpp in Sources */,
+				AF4199110AE9A3C500E19592 /* CStringUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

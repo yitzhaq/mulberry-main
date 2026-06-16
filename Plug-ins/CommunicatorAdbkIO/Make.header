@@ -33,7 +33,7 @@ ${LDAP_INC}
 VPATH := sources:\
 		../Common:
 		
-$.${BIN}/%.o %.o: %.cp
+$.${BIN}/%.o %.o: %.cpp
 	@ echo "    ---- Compiling $< (C++)"
 	 $(CPP) $(CFLAGS) -c -o $@ $<
 

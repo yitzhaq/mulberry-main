@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/LHierarchyTable.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/LHierarchyTable.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/LHierarchyTable.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/LHierarchyTable.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/LHierarchyTable.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/LHierarchyTable.cpp	(working copy)
 @@ -688,7 +688,7 @@
  			::MacPtInRect(inMouseDown.whereLocal, &flagRect)) {
  										// Click is inside DropFlag

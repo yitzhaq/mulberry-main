@@ -7,31 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AFBD95EF0AD9CA0800DD4C86 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95D70AD9CA0800DD4C86 /* PluginDLLmain.cp */; };
-		AFBD95F00AD9CA0800DD4C86 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95D80AD9CA0800DD4C86 /* CPluginDLL.cp */; };
-		AFBD95F20AD9CA0800DD4C86 /* CAuthPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95DA0AD9CA0800DD4C86 /* CAuthPluginDLL.cp */; };
-		AFBD95F40AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95DC0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cp */; };
-		AFBD95F60AD9CA0800DD4C86 /* CStringUtils.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95E00AD9CA0800DD4C86 /* CStringUtils.cp */; };
-		AFBD95F80AD9CA0800DD4C86 /* kbase64.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95E20AD9CA0800DD4C86 /* kbase64.cp */; };
+		AFBD95EF0AD9CA0800DD4C86 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95D70AD9CA0800DD4C86 /* PluginDLLmain.cpp */; };
+		AFBD95F00AD9CA0800DD4C86 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95D80AD9CA0800DD4C86 /* CPluginDLL.cpp */; };
+		AFBD95F20AD9CA0800DD4C86 /* CAuthPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95DA0AD9CA0800DD4C86 /* CAuthPluginDLL.cpp */; };
+		AFBD95F40AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95DC0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cpp */; };
+		AFBD95F60AD9CA0800DD4C86 /* CStringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95E00AD9CA0800DD4C86 /* CStringUtils.cpp */; };
+		AFBD95F80AD9CA0800DD4C86 /* kbase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95E20AD9CA0800DD4C86 /* kbase64.cpp */; };
 		AFBD95FA0AD9CA0800DD4C86 /* hmac-md5.c in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95E50AD9CA0800DD4C86 /* hmac-md5.c */; };
 		AFBD95FC0AD9CA0800DD4C86 /* md5c.c in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95E70AD9CA0800DD4C86 /* md5c.c */; };
-		AFBD96010AD9CA0800DD4C86 /* os_dep.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95DE0AD9CA0800DD4C86 /* os_dep.cp */; };
+		AFBD96010AD9CA0800DD4C86 /* os_dep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFBD95DE0AD9CA0800DD4C86 /* os_dep.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AFBD95D20AD9CA0700DD4C86 /* CRAM-MD5.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CRAM-MD5.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFBD95D70AD9CA0800DD4C86 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AFBD95D80AD9CA0800DD4C86 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AFBD95D70AD9CA0800DD4C86 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AFBD95D80AD9CA0800DD4C86 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AFBD95D90AD9CA0800DD4C86 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AFBD95DA0AD9CA0800DD4C86 /* CAuthPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAuthPluginDLL.cp; path = ../Common/CAuthPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AFBD95DA0AD9CA0800DD4C86 /* CAuthPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAuthPluginDLL.cpp; path = ../Common/CAuthPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AFBD95DB0AD9CA0800DD4C86 /* CAuthPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CAuthPluginDLL.h; path = ../Common/CAuthPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AFBD95DC0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CCRAMMD5PluginDLL.cp; path = sources/CCRAMMD5PluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AFBD95DC0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CCRAMMD5PluginDLL.cpp; path = sources/CCRAMMD5PluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AFBD95DD0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCRAMMD5PluginDLL.h; path = sources/CCRAMMD5PluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AFBD95DE0AD9CA0800DD4C86 /* os_dep.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = os_dep.cp; path = ../Common/os_dep.cp; sourceTree = SOURCE_ROOT; };
+		AFBD95DE0AD9CA0800DD4C86 /* os_dep.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = os_dep.cpp; path = ../Common/os_dep.cpp; sourceTree = SOURCE_ROOT; };
 		AFBD95DF0AD9CA0800DD4C86 /* os_dep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = os_dep.h; path = ../Common/os_dep.h; sourceTree = SOURCE_ROOT; };
-		AFBD95E00AD9CA0800DD4C86 /* CStringUtils.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CStringUtils.cp; path = ../../Sources_Common/Utilities/CStringUtils.cp; sourceTree = SOURCE_ROOT; };
+		AFBD95E00AD9CA0800DD4C86 /* CStringUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CStringUtils.cpp; path = ../../Sources_Common/Utilities/CStringUtils.cpp; sourceTree = SOURCE_ROOT; };
 		AFBD95E10AD9CA0800DD4C86 /* CStringUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CStringUtils.h; path = ../../Sources_Common/Utilities/CStringUtils.h; sourceTree = SOURCE_ROOT; };
-		AFBD95E20AD9CA0800DD4C86 /* kbase64.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = kbase64.cp; path = ../Common/kbase64.cp; sourceTree = SOURCE_ROOT; };
+		AFBD95E20AD9CA0800DD4C86 /* kbase64.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = kbase64.cpp; path = ../Common/kbase64.cpp; sourceTree = SOURCE_ROOT; };
 		AFBD95E30AD9CA0800DD4C86 /* kbase64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kbase64.h; path = ../Common/kbase64.h; sourceTree = SOURCE_ROOT; };
 		AFBD95E50AD9CA0800DD4C86 /* hmac-md5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "hmac-md5.c"; path = "sources/md5/hmac-md5.c"; sourceTree = SOURCE_ROOT; };
 		AFBD95E60AD9CA0800DD4C86 /* hmac-md5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "hmac-md5.h"; path = "sources/md5/hmac-md5.h"; sourceTree = SOURCE_ROOT; };
@@ -73,19 +73,19 @@
 		AFBD95D60AD9CA0800DD4C86 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AFBD95D70AD9CA0800DD4C86 /* PluginDLLmain.cp */,
+				AFBD95D70AD9CA0800DD4C86 /* PluginDLLmain.cpp */,
 				AFBD95D90AD9CA0800DD4C86 /* CPluginDLL.h */,
-				AFBD95D80AD9CA0800DD4C86 /* CPluginDLL.cp */,
+				AFBD95D80AD9CA0800DD4C86 /* CPluginDLL.cpp */,
 				AFBD95DB0AD9CA0800DD4C86 /* CAuthPluginDLL.h */,
-				AFBD95DA0AD9CA0800DD4C86 /* CAuthPluginDLL.cp */,
+				AFBD95DA0AD9CA0800DD4C86 /* CAuthPluginDLL.cpp */,
 				AFBD95DD0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.h */,
-				AFBD95DC0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cp */,
+				AFBD95DC0AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cpp */,
 				AFBD95DF0AD9CA0800DD4C86 /* os_dep.h */,
-				AFBD95DE0AD9CA0800DD4C86 /* os_dep.cp */,
+				AFBD95DE0AD9CA0800DD4C86 /* os_dep.cpp */,
 				AFBD95E10AD9CA0800DD4C86 /* CStringUtils.h */,
-				AFBD95E00AD9CA0800DD4C86 /* CStringUtils.cp */,
+				AFBD95E00AD9CA0800DD4C86 /* CStringUtils.cpp */,
 				AFBD95E30AD9CA0800DD4C86 /* kbase64.h */,
-				AFBD95E20AD9CA0800DD4C86 /* kbase64.cp */,
+				AFBD95E20AD9CA0800DD4C86 /* kbase64.cpp */,
 				AFBD95E40AD9CA0800DD4C86 /* MD5 */,
 			);
 			name = Main;
@@ -189,15 +189,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFBD95EF0AD9CA0800DD4C86 /* PluginDLLmain.cp in Sources */,
-				AFBD95F00AD9CA0800DD4C86 /* CPluginDLL.cp in Sources */,
-				AFBD95F20AD9CA0800DD4C86 /* CAuthPluginDLL.cp in Sources */,
-				AFBD95F40AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cp in Sources */,
-				AFBD95F60AD9CA0800DD4C86 /* CStringUtils.cp in Sources */,
-				AFBD95F80AD9CA0800DD4C86 /* kbase64.cp in Sources */,
+				AFBD95EF0AD9CA0800DD4C86 /* PluginDLLmain.cpp in Sources */,
+				AFBD95F00AD9CA0800DD4C86 /* CPluginDLL.cpp in Sources */,
+				AFBD95F20AD9CA0800DD4C86 /* CAuthPluginDLL.cpp in Sources */,
+				AFBD95F40AD9CA0800DD4C86 /* CCRAMMD5PluginDLL.cpp in Sources */,
+				AFBD95F60AD9CA0800DD4C86 /* CStringUtils.cpp in Sources */,
+				AFBD95F80AD9CA0800DD4C86 /* kbase64.cpp in Sources */,
 				AFBD95FA0AD9CA0800DD4C86 /* hmac-md5.c in Sources */,
 				AFBD95FC0AD9CA0800DD4C86 /* md5c.c in Sources */,
-				AFBD96010AD9CA0800DD4C86 /* os_dep.cp in Sources */,
+				AFBD96010AD9CA0800DD4C86 /* os_dep.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

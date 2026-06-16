@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableMultiSelector.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableMultiSelector.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableMultiSelector.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableMultiSelector.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableMultiSelector.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableMultiSelector.cpp	(working copy)
 @@ -120,6 +120,61 @@
  	return mSelectionRgn.Bounds().top;
  }

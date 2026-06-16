@@ -164,28 +164,28 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\Sources_Common\i18n\Charsets\CCharsetManager.cp" />
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\CConverterBase.cp" />
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CASCII.cp" />
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CConverterOneByte.cp" />
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS2.cp" />
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS4.cp" />
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF16.cp" />
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF8.cp" />
-    <None Include="..\..\Sources_Common\Mail\URLs\CURL.cp" />
-    <None Include="..\..\Sources_Common\Utilities\base64.cp" />
-    <None Include="..\..\Sources_Common\Utilities\CCharSpecials.cp" />
-    <None Include="..\..\Sources_Common\Utilities\cdstring.cp" />
-    <None Include="..\..\Sources_Common\Utilities\cdustring.cp" />
-    <None Include="..\..\Sources_Common\Utilities\char_stream.cp" />
-    <None Include="..\..\Sources_Common\Utilities\CStringUtils.cp" />
-    <None Include="..\..\Sources_Common\Utilities\CUStringUtils.cp" />
-    <None Include="..\..\Sources_Common\Utilities\diriterator.cp" />
-    <None Include="..\..\Sources_Common\Utilities\encrypt.cp" />
-    <None Include="..\..\Sources_Common\Utilities\quotedprintable.cp" />
-    <None Include="..\..\Sources_Common\Utilities\strfind.cp" />
-    <None Include="..\..\Sources_Common\Utilities\ustrfind.cp" />
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\CCharsetManager.cpp" />
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\CConverterBase.cpp" />
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CASCII.cpp" />
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CConverterOneByte.cpp" />
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS2.cpp" />
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS4.cpp" />
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF16.cpp" />
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF8.cpp" />
+    <None Include="..\..\Sources_Common\Mail\URLs\CURL.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\base64.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\CCharSpecials.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\cdstring.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\cdustring.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\char_stream.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\CStringUtils.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\CUStringUtils.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\diriterator.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\encrypt.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\quotedprintable.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\strfind.cpp" />
+    <None Include="..\..\Sources_Common\Utilities\ustrfind.cpp" />
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">__VCPP__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Plugin_Prefix_Win32.h</PrecompiledHeaderFile>
@@ -199,7 +199,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Plugin_Prefix_Win32.h</PrecompiledHeaderFile>
     </ClCompile>
-    <None Include="..\Common\os_dep.cp" />
+    <None Include="..\Common\os_dep.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources_Common\i18n\Charsets\CCharsetManager.h" />

@@ -7,20 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF419C920AEA6B9E00E19592 /* os_dep.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C900AEA6B9E00E19592 /* os_dep.cp */; };
-		AF419C940AEA6B9E00E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C8B0AEA6B9E00E19592 /* PluginDLLmain.cp */; };
-		AF419C950AEA6B9E00E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C8C0AEA6B9E00E19592 /* CPluginDLL.cp */; };
-		AF419C970AEA6B9E00E19592 /* CSSLPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C8E0AEA6B9E00E19592 /* CSSLPluginDLL.cp */; };
+		AF419C920AEA6B9E00E19592 /* os_dep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C900AEA6B9E00E19592 /* os_dep.cpp */; };
+		AF419C940AEA6B9E00E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C8B0AEA6B9E00E19592 /* PluginDLLmain.cpp */; };
+		AF419C950AEA6B9E00E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C8C0AEA6B9E00E19592 /* CPluginDLL.cpp */; };
+		AF419C970AEA6B9E00E19592 /* CSSLPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419C8E0AEA6B9E00E19592 /* CSSLPluginDLL.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF419C860AEA6B9E00E19592 /* SSL.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SSL.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF419C8B0AEA6B9E00E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF419C8C0AEA6B9E00E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419C8B0AEA6B9E00E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF419C8C0AEA6B9E00E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419C8D0AEA6B9E00E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419C8E0AEA6B9E00E19592 /* CSSLPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSSLPluginDLL.cp; path = sources/CSSLPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419C8E0AEA6B9E00E19592 /* CSSLPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSSLPluginDLL.cpp; path = sources/CSSLPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419C8F0AEA6B9E00E19592 /* CSSLPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CSSLPluginDLL.h; path = sources/CSSLPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419C900AEA6B9E00E19592 /* os_dep.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = os_dep.cp; path = ../Common/os_dep.cp; sourceTree = SOURCE_ROOT; };
+		AF419C900AEA6B9E00E19592 /* os_dep.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = os_dep.cpp; path = ../Common/os_dep.cpp; sourceTree = SOURCE_ROOT; };
 		AF419C910AEA6B9E00E19592 /* os_dep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = os_dep.h; path = ../Common/os_dep.h; sourceTree = SOURCE_ROOT; };
 		AF419C9A0AEA6B9F00E19592 /* PluginDLLmain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginDLLmain.h; path = sources/PluginDLLmain.h; sourceTree = SOURCE_ROOT; };
 		AF419C9E0AEA6B9F00E19592 /* CPluginInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginInfo.h; path = ../Common/CPluginInfo.h; sourceTree = SOURCE_ROOT; };
@@ -60,13 +60,13 @@
 		AF419C8A0AEA6B9E00E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF419C8B0AEA6B9E00E19592 /* PluginDLLmain.cp */,
+				AF419C8B0AEA6B9E00E19592 /* PluginDLLmain.cpp */,
 				AF419C8D0AEA6B9E00E19592 /* CPluginDLL.h */,
-				AF419C8C0AEA6B9E00E19592 /* CPluginDLL.cp */,
+				AF419C8C0AEA6B9E00E19592 /* CPluginDLL.cpp */,
 				AF419C8F0AEA6B9E00E19592 /* CSSLPluginDLL.h */,
-				AF419C8E0AEA6B9E00E19592 /* CSSLPluginDLL.cp */,
+				AF419C8E0AEA6B9E00E19592 /* CSSLPluginDLL.cpp */,
 				AF419C910AEA6B9E00E19592 /* os_dep.h */,
-				AF419C900AEA6B9E00E19592 /* os_dep.cp */,
+				AF419C900AEA6B9E00E19592 /* os_dep.cpp */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -160,10 +160,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF419C920AEA6B9E00E19592 /* os_dep.cp in Sources */,
-				AF419C940AEA6B9E00E19592 /* PluginDLLmain.cp in Sources */,
-				AF419C950AEA6B9E00E19592 /* CPluginDLL.cp in Sources */,
-				AF419C970AEA6B9E00E19592 /* CSSLPluginDLL.cp in Sources */,
+				AF419C920AEA6B9E00E19592 /* os_dep.cpp in Sources */,
+				AF419C940AEA6B9E00E19592 /* PluginDLLmain.cpp in Sources */,
+				AF419C950AEA6B9E00E19592 /* CPluginDLL.cpp in Sources */,
+				AF419C970AEA6B9E00E19592 /* CSSLPluginDLL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

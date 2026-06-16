@@ -7,37 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF4196DC0AE6F4E000E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4196CC0AE6F4E000E19592 /* PluginDLLmain.cp */; };
-		AF4196DD0AE6F4E000E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4196CD0AE6F4E000E19592 /* CPluginDLL.cp */; };
-		AF4196DF0AE6F4E000E19592 /* CSpellPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4196CF0AE6F4E000E19592 /* CSpellPluginDLL.cp */; };
+		AF4196DC0AE6F4E000E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4196CC0AE6F4E000E19592 /* PluginDLLmain.cpp */; };
+		AF4196DD0AE6F4E000E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4196CD0AE6F4E000E19592 /* CPluginDLL.cpp */; };
+		AF4196DF0AE6F4E000E19592 /* CSpellPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4196CF0AE6F4E000E19592 /* CSpellPluginDLL.cpp */; };
 		AF4197040AE6F4E600E19592 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF4197030AE6F4E600E19592 /* Carbon.framework */; };
 		AF41974F0AE6F72200E19592 /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF41974E0AE6F72200E19592 /* libPluginLibrary.a */; };
-		AFC799530CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799520CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cp */; };
+		AFC799530CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799520CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cpp */; };
 		AFC7995C0CCBD1F600E62F0F /* CocoaSpell.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC7995B0CCBD1F600E62F0F /* CocoaSpell.m */; };
 		AFC799660CCBD98B00E62F0F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFC799650CCBD98B00E62F0F /* Cocoa.framework */; };
 		AFC799A20CCBE1BF00E62F0F /* MyCFString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799A00CCBE1BF00E62F0F /* MyCFString.cpp */; };
-		AFC799F70CCBE1F200E62F0F /* SysCFBundle.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799D40CCBE1F200E62F0F /* SysCFBundle.cp */; };
-		AFC799F80CCBE1F200E62F0F /* SysCFData.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799D60CCBE1F200E62F0F /* SysCFData.cp */; };
-		AFC799F90CCBE1F200E62F0F /* SysCFNumber.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799DA0CCBE1F200E62F0F /* SysCFNumber.cp */; };
-		AFC799FA0CCBE1F200E62F0F /* SysCFString.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799DD0CCBE1F200E62F0F /* SysCFString.cp */; };
-		AFC799FB0CCBE1F200E62F0F /* SysCFTree.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799DF0CCBE1F200E62F0F /* SysCFTree.cp */; };
-		AFC799FC0CCBE1F200E62F0F /* SysCFURL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E10CCBE1F200E62F0F /* SysCFURL.cp */; };
-		AFC799FD0CCBE1F200E62F0F /* SysCFUtils.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E30CCBE1F200E62F0F /* SysCFUtils.cp */; };
-		AFC799FE0CCBE1F200E62F0F /* SysCFXMLNode.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E50CCBE1F200E62F0F /* SysCFXMLNode.cp */; };
-		AFC799FF0CCBE1F200E62F0F /* SysCFXMLTree.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E70CCBE1F200E62F0F /* SysCFXMLTree.cp */; };
-		AFC79A1E0CCBE33C00E62F0F /* PPxConstants.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A0D0CCBE33C00E62F0F /* PPxConstants.cp */; };
+		AFC799F70CCBE1F200E62F0F /* SysCFBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799D40CCBE1F200E62F0F /* SysCFBundle.cpp */; };
+		AFC799F80CCBE1F200E62F0F /* SysCFData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799D60CCBE1F200E62F0F /* SysCFData.cpp */; };
+		AFC799F90CCBE1F200E62F0F /* SysCFNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799DA0CCBE1F200E62F0F /* SysCFNumber.cpp */; };
+		AFC799FA0CCBE1F200E62F0F /* SysCFString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799DD0CCBE1F200E62F0F /* SysCFString.cpp */; };
+		AFC799FB0CCBE1F200E62F0F /* SysCFTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799DF0CCBE1F200E62F0F /* SysCFTree.cpp */; };
+		AFC799FC0CCBE1F200E62F0F /* SysCFURL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E10CCBE1F200E62F0F /* SysCFURL.cpp */; };
+		AFC799FD0CCBE1F200E62F0F /* SysCFUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E30CCBE1F200E62F0F /* SysCFUtils.cpp */; };
+		AFC799FE0CCBE1F200E62F0F /* SysCFXMLNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E50CCBE1F200E62F0F /* SysCFXMLNode.cpp */; };
+		AFC799FF0CCBE1F200E62F0F /* SysCFXMLTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC799E70CCBE1F200E62F0F /* SysCFXMLTree.cpp */; };
+		AFC79A1E0CCBE33C00E62F0F /* PPxConstants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A0D0CCBE33C00E62F0F /* PPxConstants.cpp */; };
 		AFC79A1F0CCBE33C00E62F0F /* PPxDebugAlerts.rsrc in Rez */ = {isa = PBXBuildFile; fileRef = AFC79A140CCBE33C00E62F0F /* PPxDebugAlerts.rsrc */; };
-		AFC79A200CCBE33C00E62F0F /* PPxDebugging.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A150CCBE33C00E62F0F /* PPxDebugging.cp */; };
-		AFC79A210CCBE33C00E62F0F /* PPxExceptions.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A170CCBE33C00E62F0F /* PPxExceptions.cp */; };
-		AFC79A220CCBE33C00E62F0F /* PPxRetained.cp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A1C0CCBE33C00E62F0F /* PPxRetained.cp */; };
+		AFC79A200CCBE33C00E62F0F /* PPxDebugging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A150CCBE33C00E62F0F /* PPxDebugging.cpp */; };
+		AFC79A210CCBE33C00E62F0F /* PPxExceptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A170CCBE33C00E62F0F /* PPxExceptions.cpp */; };
+		AFC79A220CCBE33C00E62F0F /* PPxRetained.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFC79A1C0CCBE33C00E62F0F /* PPxRetained.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF4196C70AE6F4E000E19592 /* CocoaSpeller.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CocoaSpeller.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF4196CC0AE6F4E000E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF4196CD0AE6F4E000E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4196CC0AE6F4E000E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF4196CD0AE6F4E000E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4196CE0AE6F4E000E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF4196CF0AE6F4E000E19592 /* CSpellPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSpellPluginDLL.cp; path = ../Common/CSpellPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4196CF0AE6F4E000E19592 /* CSpellPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSpellPluginDLL.cpp; path = ../Common/CSpellPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4196D00AE6F4E000E19592 /* CSpellPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CSpellPluginDLL.h; path = ../Common/CSpellPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF4196EA0AE6F4E500E19592 /* cdstring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cdstring.h; path = ../../Sources_Common/Utilities/cdstring.h; sourceTree = SOURCE_ROOT; };
 		AF4196EC0AE6F4E500E19592 /* templs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = templs.h; path = ../../Sources_Common/Utilities/templs.h; sourceTree = SOURCE_ROOT; };
@@ -50,48 +50,48 @@
 		AF4197030AE6F4E600E19592 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		AF41974E0AE6F72200E19592 /* libPluginLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPluginLibrary.a; path = ../PluginLibrary/libPluginLibrary.a; sourceTree = SOURCE_ROOT; };
 		AFC799510CCBA04100E62F0F /* CCocoaSpellerPluginDLL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCocoaSpellerPluginDLL.h; path = sources/CCocoaSpellerPluginDLL.h; sourceTree = "<group>"; };
-		AFC799520CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCocoaSpellerPluginDLL.cp; path = sources/CCocoaSpellerPluginDLL.cp; sourceTree = "<group>"; };
+		AFC799520CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCocoaSpellerPluginDLL.cpp; path = sources/CCocoaSpellerPluginDLL.cpp; sourceTree = "<group>"; };
 		AFC7995A0CCBD1F600E62F0F /* CocoaSpell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CocoaSpell.h; path = sources/CocoaSpell.h; sourceTree = "<group>"; };
 		AFC7995B0CCBD1F600E62F0F /* CocoaSpell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CocoaSpell.m; path = sources/CocoaSpell.m; sourceTree = "<group>"; };
 		AFC799650CCBD98B00E62F0F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AFC799A00CCBE1BF00E62F0F /* MyCFString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MyCFString.cpp; path = ../../MacOS/Sources/Application/Calendar/Utilities/MyCFString.cpp; sourceTree = SOURCE_ROOT; };
 		AFC799A10CCBE1BF00E62F0F /* MyCFString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyCFString.h; path = ../../MacOS/Sources/Application/Calendar/Utilities/MyCFString.h; sourceTree = SOURCE_ROOT; };
 		AFC799D30CCBE1F200E62F0F /* SysCFArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFArray.h; sourceTree = "<group>"; };
-		AFC799D40CCBE1F200E62F0F /* SysCFBundle.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFBundle.cp; sourceTree = "<group>"; };
+		AFC799D40CCBE1F200E62F0F /* SysCFBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFBundle.cpp; sourceTree = "<group>"; };
 		AFC799D50CCBE1F200E62F0F /* SysCFBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFBundle.h; sourceTree = "<group>"; };
-		AFC799D60CCBE1F200E62F0F /* SysCFData.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFData.cp; sourceTree = "<group>"; };
+		AFC799D60CCBE1F200E62F0F /* SysCFData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFData.cpp; sourceTree = "<group>"; };
 		AFC799D70CCBE1F200E62F0F /* SysCFData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFData.h; sourceTree = "<group>"; };
 		AFC799D80CCBE1F200E62F0F /* SysCFDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFDictionary.h; sourceTree = "<group>"; };
 		AFC799D90CCBE1F200E62F0F /* SysCFMutableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFMutableObject.h; sourceTree = "<group>"; };
-		AFC799DA0CCBE1F200E62F0F /* SysCFNumber.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFNumber.cp; sourceTree = "<group>"; };
+		AFC799DA0CCBE1F200E62F0F /* SysCFNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFNumber.cpp; sourceTree = "<group>"; };
 		AFC799DB0CCBE1F200E62F0F /* SysCFNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFNumber.h; sourceTree = "<group>"; };
 		AFC799DC0CCBE1F200E62F0F /* SysCFObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFObject.h; sourceTree = "<group>"; };
-		AFC799DD0CCBE1F200E62F0F /* SysCFString.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFString.cp; sourceTree = "<group>"; };
+		AFC799DD0CCBE1F200E62F0F /* SysCFString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFString.cpp; sourceTree = "<group>"; };
 		AFC799DE0CCBE1F200E62F0F /* SysCFString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFString.h; sourceTree = "<group>"; };
-		AFC799DF0CCBE1F200E62F0F /* SysCFTree.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFTree.cp; sourceTree = "<group>"; };
+		AFC799DF0CCBE1F200E62F0F /* SysCFTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFTree.cpp; sourceTree = "<group>"; };
 		AFC799E00CCBE1F200E62F0F /* SysCFTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFTree.h; sourceTree = "<group>"; };
-		AFC799E10CCBE1F200E62F0F /* SysCFURL.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFURL.cp; sourceTree = "<group>"; };
+		AFC799E10CCBE1F200E62F0F /* SysCFURL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFURL.cpp; sourceTree = "<group>"; };
 		AFC799E20CCBE1F200E62F0F /* SysCFURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFURL.h; sourceTree = "<group>"; };
-		AFC799E30CCBE1F200E62F0F /* SysCFUtils.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFUtils.cp; sourceTree = "<group>"; };
+		AFC799E30CCBE1F200E62F0F /* SysCFUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFUtils.cpp; sourceTree = "<group>"; };
 		AFC799E40CCBE1F200E62F0F /* SysCFUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFUtils.h; sourceTree = "<group>"; };
-		AFC799E50CCBE1F200E62F0F /* SysCFXMLNode.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFXMLNode.cp; sourceTree = "<group>"; };
+		AFC799E50CCBE1F200E62F0F /* SysCFXMLNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFXMLNode.cpp; sourceTree = "<group>"; };
 		AFC799E60CCBE1F200E62F0F /* SysCFXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFXMLNode.h; sourceTree = "<group>"; };
-		AFC799E70CCBE1F200E62F0F /* SysCFXMLTree.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFXMLTree.cp; sourceTree = "<group>"; };
+		AFC799E70CCBE1F200E62F0F /* SysCFXMLTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysCFXMLTree.cpp; sourceTree = "<group>"; };
 		AFC799E80CCBE1F200E62F0F /* SysCFXMLTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysCFXMLTree.h; sourceTree = "<group>"; };
-		AFC79A0D0CCBE33C00E62F0F /* PPxConstants.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxConstants.cp; sourceTree = "<group>"; };
+		AFC79A0D0CCBE33C00E62F0F /* PPxConstants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxConstants.cpp; sourceTree = "<group>"; };
 		AFC79A0E0CCBE33C00E62F0F /* PPxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxConstants.h; sourceTree = "<group>"; };
 		AFC79A0F0CCBE33C00E62F0F /* PPxOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxOptions.h; sourceTree = "<group>"; };
 		AFC79A100CCBE33C00E62F0F /* PPxPrefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxPrefix.h; sourceTree = "<group>"; };
 		AFC79A110CCBE33C00E62F0F /* PPxSysTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxSysTypes.h; sourceTree = "<group>"; };
 		AFC79A120CCBE33C00E62F0F /* PPxTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxTypes.h; sourceTree = "<group>"; };
 		AFC79A140CCBE33C00E62F0F /* PPxDebugAlerts.rsrc */ = {isa = PBXFileReference; lastKnownFileType = archive.rsrc; path = PPxDebugAlerts.rsrc; sourceTree = "<group>"; };
-		AFC79A150CCBE33C00E62F0F /* PPxDebugging.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxDebugging.cp; sourceTree = "<group>"; };
+		AFC79A150CCBE33C00E62F0F /* PPxDebugging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxDebugging.cpp; sourceTree = "<group>"; };
 		AFC79A160CCBE33C00E62F0F /* PPxDebugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxDebugging.h; sourceTree = "<group>"; };
-		AFC79A170CCBE33C00E62F0F /* PPxExceptions.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxExceptions.cp; sourceTree = "<group>"; };
+		AFC79A170CCBE33C00E62F0F /* PPxExceptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxExceptions.cpp; sourceTree = "<group>"; };
 		AFC79A180CCBE33C00E62F0F /* PPxExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxExceptions.h; sourceTree = "<group>"; };
 		AFC79A1A0CCBE33C00E62F0F /* PPxMemoryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxMemoryUtils.h; sourceTree = "<group>"; };
 		AFC79A1B0CCBE33C00E62F0F /* PPxOwnedPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxOwnedPointer.h; sourceTree = "<group>"; };
-		AFC79A1C0CCBE33C00E62F0F /* PPxRetained.cp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxRetained.cp; sourceTree = "<group>"; };
+		AFC79A1C0CCBE33C00E62F0F /* PPxRetained.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPxRetained.cpp; sourceTree = "<group>"; };
 		AFC79A1D0CCBE33C00E62F0F /* PPxRetained.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPxRetained.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,13 +131,13 @@
 		AF4196CB0AE6F4E000E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF4196CC0AE6F4E000E19592 /* PluginDLLmain.cp */,
+				AF4196CC0AE6F4E000E19592 /* PluginDLLmain.cpp */,
 				AF4196CE0AE6F4E000E19592 /* CPluginDLL.h */,
-				AF4196CD0AE6F4E000E19592 /* CPluginDLL.cp */,
+				AF4196CD0AE6F4E000E19592 /* CPluginDLL.cpp */,
 				AF4196D00AE6F4E000E19592 /* CSpellPluginDLL.h */,
-				AF4196CF0AE6F4E000E19592 /* CSpellPluginDLL.cp */,
+				AF4196CF0AE6F4E000E19592 /* CSpellPluginDLL.cpp */,
 				AFC799510CCBA04100E62F0F /* CCocoaSpellerPluginDLL.h */,
-				AFC799520CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cp */,
+				AFC799520CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cpp */,
 				AFC7995A0CCBD1F600E62F0F /* CocoaSpell.h */,
 				AFC7995B0CCBD1F600E62F0F /* CocoaSpell.m */,
 				AFC799A00CCBE1BF00E62F0F /* MyCFString.cpp */,
@@ -193,26 +193,26 @@
 			isa = PBXGroup;
 			children = (
 				AFC799D30CCBE1F200E62F0F /* SysCFArray.h */,
-				AFC799D40CCBE1F200E62F0F /* SysCFBundle.cp */,
+				AFC799D40CCBE1F200E62F0F /* SysCFBundle.cpp */,
 				AFC799D50CCBE1F200E62F0F /* SysCFBundle.h */,
-				AFC799D60CCBE1F200E62F0F /* SysCFData.cp */,
+				AFC799D60CCBE1F200E62F0F /* SysCFData.cpp */,
 				AFC799D70CCBE1F200E62F0F /* SysCFData.h */,
 				AFC799D80CCBE1F200E62F0F /* SysCFDictionary.h */,
 				AFC799D90CCBE1F200E62F0F /* SysCFMutableObject.h */,
-				AFC799DA0CCBE1F200E62F0F /* SysCFNumber.cp */,
+				AFC799DA0CCBE1F200E62F0F /* SysCFNumber.cpp */,
 				AFC799DB0CCBE1F200E62F0F /* SysCFNumber.h */,
 				AFC799DC0CCBE1F200E62F0F /* SysCFObject.h */,
-				AFC799DD0CCBE1F200E62F0F /* SysCFString.cp */,
+				AFC799DD0CCBE1F200E62F0F /* SysCFString.cpp */,
 				AFC799DE0CCBE1F200E62F0F /* SysCFString.h */,
-				AFC799DF0CCBE1F200E62F0F /* SysCFTree.cp */,
+				AFC799DF0CCBE1F200E62F0F /* SysCFTree.cpp */,
 				AFC799E00CCBE1F200E62F0F /* SysCFTree.h */,
-				AFC799E10CCBE1F200E62F0F /* SysCFURL.cp */,
+				AFC799E10CCBE1F200E62F0F /* SysCFURL.cpp */,
 				AFC799E20CCBE1F200E62F0F /* SysCFURL.h */,
-				AFC799E30CCBE1F200E62F0F /* SysCFUtils.cp */,
+				AFC799E30CCBE1F200E62F0F /* SysCFUtils.cpp */,
 				AFC799E40CCBE1F200E62F0F /* SysCFUtils.h */,
-				AFC799E50CCBE1F200E62F0F /* SysCFXMLNode.cp */,
+				AFC799E50CCBE1F200E62F0F /* SysCFXMLNode.cpp */,
 				AFC799E60CCBE1F200E62F0F /* SysCFXMLNode.h */,
-				AFC799E70CCBE1F200E62F0F /* SysCFXMLTree.cp */,
+				AFC799E70CCBE1F200E62F0F /* SysCFXMLTree.cpp */,
 				AFC799E80CCBE1F200E62F0F /* SysCFXMLTree.h */,
 			);
 			path = CoreFoundation;
@@ -231,7 +231,7 @@
 		AFC79A0C0CCBE33C00E62F0F /* Declarations */ = {
 			isa = PBXGroup;
 			children = (
-				AFC79A0D0CCBE33C00E62F0F /* PPxConstants.cp */,
+				AFC79A0D0CCBE33C00E62F0F /* PPxConstants.cpp */,
 				AFC79A0E0CCBE33C00E62F0F /* PPxConstants.h */,
 				AFC79A0F0CCBE33C00E62F0F /* PPxOptions.h */,
 				AFC79A100CCBE33C00E62F0F /* PPxPrefix.h */,
@@ -245,9 +245,9 @@
 			isa = PBXGroup;
 			children = (
 				AFC79A140CCBE33C00E62F0F /* PPxDebugAlerts.rsrc */,
-				AFC79A150CCBE33C00E62F0F /* PPxDebugging.cp */,
+				AFC79A150CCBE33C00E62F0F /* PPxDebugging.cpp */,
 				AFC79A160CCBE33C00E62F0F /* PPxDebugging.h */,
-				AFC79A170CCBE33C00E62F0F /* PPxExceptions.cp */,
+				AFC79A170CCBE33C00E62F0F /* PPxExceptions.cpp */,
 				AFC79A180CCBE33C00E62F0F /* PPxExceptions.h */,
 			);
 			path = ErrorHandling;
@@ -258,7 +258,7 @@
 			children = (
 				AFC79A1A0CCBE33C00E62F0F /* PPxMemoryUtils.h */,
 				AFC79A1B0CCBE33C00E62F0F /* PPxOwnedPointer.h */,
-				AFC79A1C0CCBE33C00E62F0F /* PPxRetained.cp */,
+				AFC79A1C0CCBE33C00E62F0F /* PPxRetained.cpp */,
 				AFC79A1D0CCBE33C00E62F0F /* PPxRetained.h */,
 			);
 			path = Memory;
@@ -336,25 +336,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF4196DC0AE6F4E000E19592 /* PluginDLLmain.cp in Sources */,
-				AF4196DD0AE6F4E000E19592 /* CPluginDLL.cp in Sources */,
-				AF4196DF0AE6F4E000E19592 /* CSpellPluginDLL.cp in Sources */,
-				AFC799530CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cp in Sources */,
+				AF4196DC0AE6F4E000E19592 /* PluginDLLmain.cpp in Sources */,
+				AF4196DD0AE6F4E000E19592 /* CPluginDLL.cpp in Sources */,
+				AF4196DF0AE6F4E000E19592 /* CSpellPluginDLL.cpp in Sources */,
+				AFC799530CCBA04100E62F0F /* CCocoaSpellerPluginDLL.cpp in Sources */,
 				AFC7995C0CCBD1F600E62F0F /* CocoaSpell.m in Sources */,
 				AFC799A20CCBE1BF00E62F0F /* MyCFString.cpp in Sources */,
-				AFC799F70CCBE1F200E62F0F /* SysCFBundle.cp in Sources */,
-				AFC799F80CCBE1F200E62F0F /* SysCFData.cp in Sources */,
-				AFC799F90CCBE1F200E62F0F /* SysCFNumber.cp in Sources */,
-				AFC799FA0CCBE1F200E62F0F /* SysCFString.cp in Sources */,
-				AFC799FB0CCBE1F200E62F0F /* SysCFTree.cp in Sources */,
-				AFC799FC0CCBE1F200E62F0F /* SysCFURL.cp in Sources */,
-				AFC799FD0CCBE1F200E62F0F /* SysCFUtils.cp in Sources */,
-				AFC799FE0CCBE1F200E62F0F /* SysCFXMLNode.cp in Sources */,
-				AFC799FF0CCBE1F200E62F0F /* SysCFXMLTree.cp in Sources */,
-				AFC79A1E0CCBE33C00E62F0F /* PPxConstants.cp in Sources */,
-				AFC79A200CCBE33C00E62F0F /* PPxDebugging.cp in Sources */,
-				AFC79A210CCBE33C00E62F0F /* PPxExceptions.cp in Sources */,
-				AFC79A220CCBE33C00E62F0F /* PPxRetained.cp in Sources */,
+				AFC799F70CCBE1F200E62F0F /* SysCFBundle.cpp in Sources */,
+				AFC799F80CCBE1F200E62F0F /* SysCFData.cpp in Sources */,
+				AFC799F90CCBE1F200E62F0F /* SysCFNumber.cpp in Sources */,
+				AFC799FA0CCBE1F200E62F0F /* SysCFString.cpp in Sources */,
+				AFC799FB0CCBE1F200E62F0F /* SysCFTree.cpp in Sources */,
+				AFC799FC0CCBE1F200E62F0F /* SysCFURL.cpp in Sources */,
+				AFC799FD0CCBE1F200E62F0F /* SysCFUtils.cpp in Sources */,
+				AFC799FE0CCBE1F200E62F0F /* SysCFXMLNode.cpp in Sources */,
+				AFC799FF0CCBE1F200E62F0F /* SysCFXMLTree.cpp in Sources */,
+				AFC79A1E0CCBE33C00E62F0F /* PPxConstants.cpp in Sources */,
+				AFC79A200CCBE33C00E62F0F /* PPxDebugging.cpp in Sources */,
+				AFC79A210CCBE33C00E62F0F /* PPxExceptions.cpp in Sources */,
+				AFC79A220CCBE33C00E62F0F /* PPxRetained.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/AppleEvent Classes/UAppleEventsMgr.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/AppleEvent Classes/UAppleEventsMgr.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/AppleEvent Classes/UAppleEventsMgr.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/AppleEvent Classes/UAppleEventsMgr.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/AppleEvent Classes/UAppleEventsMgr.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/AppleEvent Classes/UAppleEventsMgr.cpp	(working copy)
 @@ -873,7 +873,14 @@
  	Assign(inFileSpec);
  }

@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LImageWell.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LImageWell.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LImageWell.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LImageWell.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LImageWell.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LImageWell.cpp	(working copy)
 @@ -23,7 +23,8 @@
  	LStream*	inStream,
  	ClassIDT	inImpID)

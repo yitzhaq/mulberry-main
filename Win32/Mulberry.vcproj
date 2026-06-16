@@ -5583,7 +5583,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\sources_common\utilities\base64.cp"
+				RelativePath="..\sources_common\utilities\base64.cpp"
 				>
 			</File>
 			<File
@@ -5623,115 +5623,115 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\accounts\C3PaneAccounts.cp"
+				RelativePath=".\sources\application\three pane\accounts\C3PaneAccounts.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneAdbkToolbar.cp"
+				RelativePath=".\sources\application\three pane\C3PaneAdbkToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\preview\C3PaneAddress.cp"
+				RelativePath=".\sources\application\three pane\preview\C3PaneAddress.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\items\C3PaneAddressBook.cp"
+				RelativePath=".\sources\application\three pane\items\C3PaneAddressBook.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\items\C3PaneCalendar.cp"
+				RelativePath=".\sources\application\three pane\items\C3PaneCalendar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\accounts\C3PaneCalendarAccount.cp"
+				RelativePath=".\sources\application\three pane\accounts\C3PaneCalendarAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneCalendarToolbar.cp"
+				RelativePath=".\sources\application\three pane\C3PaneCalendarToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\accounts\C3PaneContactsAccount.cp"
+				RelativePath=".\sources\application\three pane\accounts\C3PaneContactsAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneDoc.cp"
+				RelativePath=".\sources\application\three pane\C3PaneDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\preview\C3PaneEvent.cp"
+				RelativePath=".\sources\application\three pane\preview\C3PaneEvent.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneFrame.cp"
+				RelativePath=".\sources\application\three pane\C3PaneFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\items\C3PaneItems.cp"
+				RelativePath=".\sources\application\three pane\items\C3PaneItems.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\items\C3PaneItemsTabs.cp"
+				RelativePath=".\sources\application\three pane\items\C3PaneItemsTabs.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\accounts\C3PaneMailAccount.cp"
+				RelativePath=".\sources\application\three pane\accounts\C3PaneMailAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\items\C3PaneMailbox.cp"
+				RelativePath=".\sources\application\three pane\items\C3PaneMailbox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneMailboxToolbar.cp"
+				RelativePath=".\sources\application\three pane\C3PaneMailboxToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneMainPanel.cp"
+				RelativePath=".\sources\application\three pane\C3PaneMainPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\preview\C3PaneMessage.cp"
+				RelativePath=".\sources\application\three pane\preview\C3PaneMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\three_pane\C3PaneOptions.cp"
+				RelativePath="..\sources_common\application\three_pane\C3PaneOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PanePanel.cp"
+				RelativePath=".\sources\application\three pane\C3PanePanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneParentPanel.cp"
+				RelativePath=".\sources\application\three pane\C3PaneParentPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\preview\C3PanePreview.cp"
+				RelativePath=".\sources\application\three pane\preview\C3PanePreview.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneViewPanel.cp"
+				RelativePath=".\sources\application\three pane\C3PaneViewPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\C3PaneWindow.cp"
+				RelativePath=".\sources\application\three pane\C3PaneWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CAboutBox.cp"
+				RelativePath=".\sources\application\general\CAboutBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\general\CAboutPluginsDialog.cp"
+				RelativePath=".\sources\plugins\general\CAboutPluginsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\acap\CACAPClient.cp"
+				RelativePath="..\sources_common\mail\inet_clients\acap\CACAPClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\acap\CACAPCommon.cp"
+				RelativePath="..\sources_common\mail\inet_clients\acap\CACAPCommon.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -5767,335 +5767,335 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\ssl\CAcceptCertDialog.cp"
+				RelativePath=".\sources\plugins\ssl\CAcceptCertDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\extensions\CACL.cp"
+				RelativePath="..\sources_common\mail\extensions\CACL.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CACLStylePopup.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CACLStylePopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CACLTable.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CACLTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CACLTitleTable.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CACLTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filtering\CActionItem.cp"
+				RelativePath="..\sources_common\mail\filtering\CActionItem.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\automation\CActionManager.cp"
+				RelativePath="..\sources_common\automation\CActionManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CActionRecorder.cp"
+				RelativePath="..\sources_common\offline\recording\CActionRecorder.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\extensions\CAdbkACL.cp"
+				RelativePath="..\sources_common\mail\extensions\CAdbkACL.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CAdbkAction.cp"
+				RelativePath="..\sources_common\offline\recording\CAdbkAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\address\CAdbkAddress.cp"
+				RelativePath="..\sources_common\mail\address\CAdbkAddress.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\addressbooks\CAdbkIOPlugin.cp"
+				RelativePath="..\sources_common\plugins\addressbooks\CAdbkIOPlugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\CAdbkManagerDoc.cp"
+				RelativePath=".\sources\application\address_book_manager\CAdbkManagerDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\CAdbkManagerFrame.cp"
+				RelativePath=".\sources\application\address_book_manager\CAdbkManagerFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\CAdbkManagerTable.cp"
+				RelativePath=".\sources\application\address_book_manager\CAdbkManagerTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\address_book_manager\CAdbkManagerTableCommon.cp"
+				RelativePath="..\sources_common\application\address_book_manager\CAdbkManagerTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\CAdbkManagerTitleTable.cp"
+				RelativePath=".\sources\application\address_book_manager\CAdbkManagerTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\CAdbkManagerToolbar.cp"
+				RelativePath=".\sources\application\address_book_manager\CAdbkManagerToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\CAdbkManagerView.cp"
+				RelativePath=".\sources\application\address_book_manager\CAdbkManagerView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\address_book_manager\CAdbkManagerViewCommon.cp"
+				RelativePath="..\sources_common\application\address_book_manager\CAdbkManagerViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\CAdbkManagerWindow.cp"
+				RelativePath=".\sources\application\address_book_manager\CAdbkManagerWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\address_book_properties\CAdbkPropDialog.cp"
+				RelativePath=".\sources\application\address_book_manager\address_book_properties\CAdbkPropDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CAdbkProtocol.cp"
+				RelativePath="..\sources_common\mail\protocols\CAdbkProtocol.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CAdbkRecord.cp"
+				RelativePath="..\sources_common\offline\recording\CAdbkRecord.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_search\CAdbkSearchDoc.cp"
+				RelativePath=".\sources\application\address_search\CAdbkSearchDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_search\CAdbkSearchFrame.cp"
+				RelativePath=".\sources\application\address_search\CAdbkSearchFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_search\CAdbkSearchTable.cp"
+				RelativePath=".\sources\application\address_search\CAdbkSearchTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_search\CAdbkSearchTitleTable.cp"
+				RelativePath=".\sources\application\address_search\CAdbkSearchTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_search\CAdbkSearchWindow.cp"
+				RelativePath=".\sources\application\address_search\CAdbkSearchWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_search\CAdbkServerPopup.cp"
+				RelativePath=".\sources\application\address_search\CAdbkServerPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\address\CAddress.cp"
+				RelativePath="..\sources_common\mail\address\CAddress.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CAddressAccount.cp"
+				RelativePath="..\sources_common\application\preferences\CAddressAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\addressbook\CAddressBook.cp"
+				RelativePath="..\sources_common\mail\addressbook\CAddressBook.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressBookDoc.cp"
+				RelativePath=".\sources\application\address_book\CAddressBookDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressBookDocTemplate.cp"
+				RelativePath=".\sources\application\address_book\CAddressBookDocTemplate.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressBookFrame.cp"
+				RelativePath=".\sources\application\address_book\CAddressBookFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\addressbook\CAddressBookManager.cp"
+				RelativePath="..\sources_common\mail\addressbook\CAddressBookManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressBookTitleTable.cp"
+				RelativePath=".\sources\application\address_book\CAddressBookTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressBookToolbar.cp"
+				RelativePath=".\sources\application\address_book\CAddressBookToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressBookView.cp"
+				RelativePath=".\sources\application\address_book\CAddressBookView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\address_book\CAddressBookViewCommon.cp"
+				RelativePath="..\sources_common\application\address_book\CAddressBookViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressBookWindow.cp"
+				RelativePath=".\sources\application\address_book\CAddressBookWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\address\CAddressComparators.cp"
+				RelativePath="..\sources_common\mail\address\CAddressComparators.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressContactPanel.cp"
+				RelativePath=".\sources\application\address_book\CAddressContactPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CAddressDisplay.cp"
+				RelativePath=".\sources\application\letter\CAddressDisplay.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Address_Book\CAddressFieldBase.cp"
+				RelativePath=".\Sources\Application\Address_Book\CAddressFieldBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Address_Book\CAddressFieldContainer.cp"
+				RelativePath=".\Sources\Application\Address_Book\CAddressFieldContainer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Address_Book\CAddressFieldMultiLine.cp"
+				RelativePath=".\Sources\Application\Address_Book\CAddressFieldMultiLine.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Address_Book\CAddressFieldSubContainer.cp"
+				RelativePath=".\Sources\Application\Address_Book\CAddressFieldSubContainer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Address_Book\CAddressFieldText.cp"
+				RelativePath=".\Sources\Application\Address_Book\CAddressFieldText.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressGroupAction.cp"
+				RelativePath=".\sources\application\address_book\CAddressGroupAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\address\CAddressList.cp"
+				RelativePath="..\sources_common\mail\address\CAddressList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressNotesPanel.cp"
+				RelativePath=".\sources\application\address_book\CAddressNotesPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressPanelBase.cp"
+				RelativePath=".\sources\application\address_book\CAddressPanelBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\options dialog\CAddressPaneOptions.cp"
+				RelativePath=".\sources\application\three pane\options dialog\CAddressPaneOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressPersonalPanel.cp"
+				RelativePath=".\sources\application\address_book\CAddressPersonalPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressPreview.cp"
+				RelativePath=".\sources\application\address_book\CAddressPreview.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Address_Book\CAddressPreviewAdvanced.cp"
+				RelativePath=".\Sources\Application\Address_Book\CAddressPreviewAdvanced.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressTable.cp"
+				RelativePath=".\sources\application\address_book\CAddressTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressTableAction.cp"
+				RelativePath=".\sources\application\address_book\CAddressTableAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CAddressView.cp"
+				RelativePath=".\sources\application\address_book\CAddressView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\three_pane\CAddressViewOptions.cp"
+				RelativePath="..\sources_common\application\three_pane\CAddressViewOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CAdmin.cp"
+				RelativePath="..\sources_common\application\preferences\CAdmin.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CAdminLock.cp"
+				RelativePath="..\sources_common\application\preferences\CAdminLock.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\CAFFilter.cp"
+				RelativePath="..\sources_common\mail\filters\CAFFilter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CAliasAttachment.cp"
+				RelativePath="..\sources_common\mail\attachments\CAliasAttachment.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\CApplyRulesMenu.cp"
+				RelativePath=".\sources\application\rules\CApplyRulesMenu.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\onebyte\CASCII.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\onebyte\CASCII.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CAttachment.cp"
+				RelativePath="..\sources_common\mail\attachments\CAttachment.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CAttachmentList.cp"
+				RelativePath="..\sources_common\mail\attachments\CAttachmentList.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\control\CAttachmentManager.cp"
+				RelativePath="..\sources_common\mail\control\CAttachmentManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CAttendeeTable.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CAttendeeTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CAuthenticator.cp"
+				RelativePath="..\sources_common\application\preferences\CAuthenticator.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\authentication\CAuthPlugin.cp"
+				RelativePath="..\sources_common\plugins\authentication\CAuthPlugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\windows\CBaseView.cp"
+				RelativePath=".\sources\application\windows\CBaseView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CBig5.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CBig5.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\CBinHexFilter.cp"
+				RelativePath="..\sources_common\mail\filters\CBinHexFilter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CBlockOptionsMap.cp"
+				RelativePath="..\sources_common\application\preferences\CBlockOptionsMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CBodyTable.cp"
+				RelativePath=".\sources\application\message\CBodyTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\action dialogs\CBounceActionDialog.cp"
+				RelativePath=".\sources\application\rules\action dialogs\CBounceActionDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\CBroadcaster.cp"
+				RelativePath="..\sources_common\utilities\CBroadcaster.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\browse_dialog\CBrowseMailboxDialog.cp"
+				RelativePath=".\sources\application\server\browse_dialog\CBrowseMailboxDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CCacheMessageDialog.cp"
+				RelativePath=".\sources\application\other_dialogs\CCacheMessageDialog.cpp"
 				>
 			</File>
 			<File
@@ -6123,27 +6123,27 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CCalendarAccount.cp"
+				RelativePath="..\sources_common\application\preferences\CCalendarAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\extensions\CCalendarACL.cp"
+				RelativePath="..\sources_common\mail\extensions\CCalendarACL.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CCalendarAction.cp"
+				RelativePath="..\sources_common\offline\recording\CCalendarAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Mail\Address\CCalendarAddress.cp"
+				RelativePath="..\Sources_Common\Mail\Address\CCalendarAddress.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Calendar\Component_Editing\CCalendarAddressDisplay.cp"
+				RelativePath=".\Sources\Application\Calendar\Component_Editing\CCalendarAddressDisplay.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Mail\Control\CCalendarCheckThread.cp"
+				RelativePath="..\Sources_Common\Mail\Control\CCalendarCheckThread.cpp"
 				>
 			</File>
 			<File
@@ -6151,27 +6151,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarDoc.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarETBaseCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarETBaseCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarEventBase.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarEventBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarEventBaseCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarEventBaseCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarEventTableBase.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarEventTableBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarFrame.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarFrame.cpp"
 				>
 			</File>
 			<File
@@ -6183,15 +6183,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\options dialog\CCalendarPaneOptions.cp"
+				RelativePath=".\sources\application\three pane\options dialog\CCalendarPaneOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\utilities\CCalendarPopup.cp"
+				RelativePath=".\sources\application\calendar\utilities\CCalendarPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_properties\CCalendarPropDialog.cp"
+				RelativePath=".\sources\application\calendar\calendar_properties\CCalendarPropDialog.cpp"
 				>
 			</File>
 			<File
@@ -6199,15 +6199,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CCalendarRecord.cp"
+				RelativePath="..\sources_common\offline\recording\CCalendarRecord.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreDoc.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreFrame.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreFrame.cpp"
 				>
 			</File>
 			<File
@@ -6223,27 +6223,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTable.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTableCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTitleTable.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreToolbar.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreView.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreViewCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreViewCommon.cpp"
 				>
 			</File>
 			<File
@@ -6251,7 +6251,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreWindow.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreWindow.cpp"
 				>
 			</File>
 			<File
@@ -6259,55 +6259,55 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarTableBase.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarTableBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarToolbar.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\utilities\CCalendarUtils.cp"
+				RelativePath=".\sources\application\calendar\utilities\CCalendarUtils.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarView.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarViewBase.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarViewBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewBaseCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewBaseCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\three_pane\CCalendarViewOptions.cp"
+				RelativePath="..\sources_common\application\three_pane\CCalendarViewOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarViewPrintout.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarViewPrintout.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarWindow.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\calendar_window\CCalendarWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarWindowCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarWindowCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\status\CCancelDialog.cp"
+				RelativePath=".\sources\application\status\CCancelDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\message\CCaptionParser.cp"
+				RelativePath="..\sources_common\mail\message\CCaptionParser.cpp"
 				>
 			</File>
 			<File
@@ -6331,75 +6331,35 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\ssl\CCertificate.cp"
+				RelativePath="..\sources_common\plugins\ssl\CCertificate.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\ssl\CCertificateManager.cp"
+				RelativePath="..\sources_common\plugins\ssl\CCertificateManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\ssl\CCertificateStore.cp"
+				RelativePath="..\sources_common\plugins\ssl\CCertificateStore.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\ssl\CCertificateStoreDir.cp"
+				RelativePath="..\sources_common\plugins\ssl\CCertificateStoreDir.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\ssl\CCertManagerDialog.cp"
+				RelativePath=".\sources\plugins\ssl\CCertManagerDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CChangePswdAcctDialog.cp"
+				RelativePath=".\sources\application\other_dialogs\CChangePswdAcctDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CChangePswdDialog.cp"
+				RelativePath=".\sources\application\other_dialogs\CChangePswdDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\CCharsetData.cp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\sources_common\i18n\charsets\CCharsetManager.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\charsets\CCharSets.cp"
+				RelativePath="..\sources_common\i18n\charsets\CCharsetData.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -6435,139 +6395,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\CCharSpecials.cp"
+				RelativePath="..\sources_common\i18n\charsets\CCharsetManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\dialogs\CChooseDateDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\other_dialogs\CChooseServersDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CCJKBase.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\table\CClearNodeTree.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\formatting\CClickElement.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\formatting\CClickList.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CCmdBackground.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\text\CCmdEdit.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\text\CCmdEditView.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CColorButton.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\formatting\CColorMenu.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CCommander.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CCommanderProtect.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\three pane\options dialog\CCommonViewOptions.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\plugins\configuration\CConfigPlugin.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\control\CConnectionManager.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CContainerView.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CContainerWnd.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\CConverterBase.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\onebyte\CConverterOneByte.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\message\CCopyToMenu.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\extras\CCreateAccountDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\other_dialogs\CCreateAdbkDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\calendar\dialogs\CCreateCalendarDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\filters\CCreateFileFilter.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\dialogs\CCreateMailboxDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CCriteriaBase.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\attachments\CDataAttachment.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\automation\CDataItem.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CDateControl.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\calendar\component_editing\CDateTimeZoneSelect.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayEvent.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekPrintout.cp"
+				RelativePath="..\sources_common\mail\charsets\CCharSets.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -6603,23 +6435,191 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekTable.cp"
+				RelativePath="..\sources_common\utilities\CCharSpecials.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekTableCommon.cp"
+				RelativePath=".\sources\application\calendar\dialogs\CChooseDateDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekTitleTable.cp"
+				RelativePath=".\sources\application\other_dialogs\CChooseServersDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekView.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CCJKBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekViewCommon.cp"
+				RelativePath=".\sources\support\table\CClearNodeTree.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\formatting\CClickElement.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\formatting\CClickList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CCmdBackground.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\text\CCmdEdit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\text\CCmdEditView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CColorButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\formatting\CColorMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CCommander.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CCommanderProtect.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\three pane\options dialog\CCommonViewOptions.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\plugins\configuration\CConfigPlugin.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\control\CConnectionManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CContainerView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CContainerWnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\i18n\charsets\converters\CConverterBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\i18n\charsets\converters\onebyte\CConverterOneByte.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\message\CCopyToMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\preferences_dialog\extras\CCreateAccountDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\other_dialogs\CCreateAdbkDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\dialogs\CCreateCalendarDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filters\CCreateFileFilter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\server\dialogs\CCreateMailboxDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\search\CCriteriaBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\attachments\CDataAttachment.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\automation\CDataItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CDateControl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\component_editing\CDateTimeZoneSelect.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayEvent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekPrintout.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekTable.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekTableCommon.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekTitleTable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\day_week_view\CDayWeekView.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekViewCommon.cpp"
 				>
 			</File>
 			<File
@@ -6627,187 +6627,95 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\cdcond.cp"
+				RelativePath="..\sources_common\utilities\cdcond.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CDefaultOptionsMap.cp"
+				RelativePath="..\sources_common\application\preferences\CDefaultOptionsMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CDeleteACLStyleDialog.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CDeleteACLStyleDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CDeleteIdentityDialog.cp"
+				RelativePath=".\sources\application\letter\CDeleteIdentityDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CDesktopIcons.cp"
+				RelativePath=".\sources\support\CDesktopIcons.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\spelling\CDictionaryPageList.cp"
+				RelativePath=".\sources\plugins\spelling\CDictionaryPageList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CDisconnectDialog.cp"
+				RelativePath=".\sources\application\other_dialogs\CDisconnectDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CDisconnectListPanel.cp"
+				RelativePath=".\sources\application\other_dialogs\CDisconnectListPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\formatting\CDisplayFormatter.cp"
+				RelativePath=".\sources\formatting\CDisplayFormatter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CDisplayItem.cp"
+				RelativePath="..\sources_common\application\preferences\CDisplayItem.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\ssl\CDLLFunctions.cp"
+				RelativePath="..\sources_common\plugins\ssl\CDLLFunctions.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\cdmutex.cp"
+				RelativePath="..\sources_common\utilities\cdmutex.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\cdomutex.cp"
+				RelativePath="..\sources_common\utilities\cdomutex.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\tasks\CDragTasks.cp"
+				RelativePath="..\sources_common\tasks\CDragTasks.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CDrawUtils.cp"
+				RelativePath=".\sources\support\CDrawUtils.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CDSN.cp"
+				RelativePath="..\sources_common\application\preferences\CDSN.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\cdstring.cp"
+				RelativePath="..\sources_common\utilities\cdstring.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\cdthread.cp"
+				RelativePath="..\sources_common\utilities\cdthread.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CDurationSelect.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CDurationSelect.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\cdustring.cp"
+				RelativePath="..\sources_common\utilities\cdustring.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CDynamicMenu.cp"
+				RelativePath=".\sources\application\general\CDynamicMenu.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CEditAddressDialog.cp"
+				RelativePath=".\sources\application\address_book\CEditAddressDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\formatting\CEditFormattedTextDisplay.cp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\sources\application\address_book\CEditGroupDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentities.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityAddress.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityDSN.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityOptions.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityOutgoing.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentitySecurity.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\macros\CEditMacro.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\preferences_dialog\extras\CEditMapDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\formatting\CEnrichedTransformer.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\message\CEnvelope.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\general\CErrorDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\general\CErrorHandler.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\calendar\calendar_view\event_todo_preview\CEventPreview.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\general\CExceptionFix.cp"
+				RelativePath=".\sources\formatting\CEditFormattedTextDisplay.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -6843,67 +6751,63 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CFavouriteItem.cp"
+				RelativePath=".\sources\application\address_book\CEditGroupDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CFieldDisplay.cp"
+				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentities.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CFileAttachment.cp"
+				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityAddress.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CFileOptionsMap.cp"
+				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityDSN.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CFileTable.cp"
+				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CFileTableAction.cp"
+				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentityOutgoing.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\CFilter.cp"
+				RelativePath=".\sources\application\preferences_dialog\edit_identities\CEditIdentitySecurity.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filtering\CFilterItem.cp"
+				RelativePath=".\sources\application\macros\CEditMacro.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filtering\CFilterManager.cp"
+				RelativePath=".\sources\application\preferences_dialog\extras\CEditMapDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CFilterProtocol.cp"
+				RelativePath=".\sources\formatting\CEnrichedTransformer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filtering\CFilterSchedule.cp"
+				RelativePath="..\sources_common\mail\message\CEnvelope.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filtering\CFilterScript.cp"
+				RelativePath=".\sources\application\general\CErrorDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filtering\CFilterTarget.cp"
+				RelativePath=".\sources\application\general\CErrorHandler.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\find_replace\CFindReplaceWindow.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\event_todo_preview\CEventPreview.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CFontCache.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\charsets\CFontManager.cp"
+				RelativePath=".\sources\application\general\CExceptionFix.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -6939,7 +6843,67 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\charsets\CFontMapper.cp"
+				RelativePath="..\sources_common\application\preferences\CFavouriteItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\message\CFieldDisplay.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\attachments\CFileAttachment.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\preferences\CFileOptionsMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\letter\CFileTable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\letter\CFileTableAction.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filters\CFilter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filtering\CFilterItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filtering\CFilterManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\protocols\CFilterProtocol.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filtering\CFilterSchedule.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filtering\CFilterScript.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filtering\CFilterTarget.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\find_replace\CFindReplaceWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CFontCache.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\charsets\CFontManager.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -6975,131 +6939,167 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\formatting\CFontMenu.cp"
+				RelativePath="..\sources_common\mail\charsets\CFontMapper.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\sources\formatting\CFontMenu.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CFormatElement.cp"
+				RelativePath="..\sources_common\formatting\CFormatElement.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CFormatList.cp"
+				RelativePath="..\sources_common\formatting\CFormatList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\formatting\CFormattedTextDisplay.cp"
+				RelativePath=".\sources\formatting\CFormattedTextDisplay.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\action dialogs\CForwardActionDialog.cp"
+				RelativePath=".\sources\application\rules\action dialogs\CForwardActionDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CForwardOptionsDialog.cp"
+				RelativePath=".\sources\application\message\CForwardOptionsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTable.cp"
+				RelativePath=".\Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTableCommon.cp"
+				RelativePath="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTitleTable.cp"
+				RelativePath=".\Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyView.cp"
+				RelativePath=".\Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyViewCommon.cp"
+				RelativePath="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\CFullFileStream.cp"
+				RelativePath="..\sources_common\mail\filters\CFullFileStream.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CFutureItems.cp"
+				RelativePath="..\sources_common\application\preferences\CFutureItems.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CGB2312.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CGB2312.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\security\CGetPassphraseDialog.cp"
+				RelativePath=".\sources\plugins\security\CGetPassphraseDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CGetStringDialog.cp"
+				RelativePath=".\sources\application\other_dialogs\CGetStringDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CGrayBackground.cp"
+				RelativePath=".\sources\support\CGrayBackground.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CGrayBorder.cp"
+				RelativePath=".\sources\support\CGrayBorder.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\address\CGroup.cp"
+				RelativePath="..\sources_common\mail\address\CGroup.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\address\CGroupComparators.cp"
+				RelativePath="..\sources_common\mail\address\CGroupComparators.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\address\CGroupList.cp"
+				RelativePath="..\sources_common\mail\address\CGroupList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CGroupPreview.cp"
+				RelativePath=".\sources\application\address_book\CGroupPreview.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CGroupTable.cp"
+				RelativePath=".\sources\application\address_book\CGroupTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book\CGroupTableAction.cp"
+				RelativePath=".\sources\application\address_book\CGroupTableAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\char_stream.cp"
+				RelativePath="..\sources_common\utilities\char_stream.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CHelpDialog.cp"
+				RelativePath=".\sources\support\CHelpDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CHelpFrame.cp"
+				RelativePath=".\sources\support\CHelpFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CHelpPropertyPage.cp"
+				RelativePath=".\sources\support\CHelpPropertyPage.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CHelpPropertySheet.cp"
+				RelativePath=".\sources\support\CHelpPropertySheet.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CHierarchyTableDrag.cp"
+				RelativePath=".\sources\support\table\CHierarchyTableDrag.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CHTMLCharacterEntity.cp"
+				RelativePath="..\sources_common\formatting\CHTMLCharacterEntity.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\formatting\CHTMLTransformer.cp"
+				RelativePath=".\sources\formatting\CHTMLTransformer.cpp"
 				>
 			</File>
 			<File
@@ -7311,71 +7311,71 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CIconButton.cp"
+				RelativePath=".\sources\support\CIconButton.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CIconLoader.cp"
+				RelativePath=".\sources\support\CIconLoader.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CIconMenu.cp"
+				RelativePath=".\sources\support\CIconMenu.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CIconTextTable.cp"
+				RelativePath=".\sources\support\table\CIconTextTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CIconWnd.cp"
+				RelativePath=".\sources\support\CIconWnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CIdentity.cp"
+				RelativePath="..\sources_common\application\preferences\CIdentity.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CIdentityPopup.cp"
+				RelativePath=".\sources\application\letter\CIdentityPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\imap\CIMAPClient.cp"
+				RelativePath="..\sources_common\mail\inet_clients\imap\CIMAPClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\imap\CIMAPCommon.cp"
+				RelativePath="..\sources_common\mail\inet_clients\imap\CIMAPCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\extras\CIMAPLabelsDialog.cp"
+				RelativePath=".\sources\application\preferences_dialog\extras\CIMAPLabelsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\imsp\CIMSPClient.cp"
+				RelativePath="..\sources_common\mail\inet_clients\imsp\CIMSPClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\imsp\CIMSPCommon.cp"
+				RelativePath="..\sources_common\mail\inet_clients\imsp\CIMSPCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CINETAccount.cp"
+				RelativePath="..\sources_common\application\preferences\CINETAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\CINETClient.cp"
+				RelativePath="..\sources_common\mail\inet_clients\CINETClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\CINETCommon.cp"
+				RelativePath="..\sources_common\mail\inet_clients\CINETCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CINETProtocol.cp"
+				RelativePath="..\sources_common\mail\protocols\CINETProtocol.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\CIntlTextRun.cp"
+				RelativePath="..\sources_common\i18n\CIntlTextRun.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -7411,15 +7411,15 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_CN.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_CN.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_JP.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_JP.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_KR.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_KR.cpp"
 				>
 			</File>
 			<File
@@ -7435,79 +7435,79 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0201.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0201.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0208.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0208.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CKeyAction.cp"
+				RelativePath="..\sources_common\application\preferences\CKeyAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\options dialog\CKeyChoiceDialog.cp"
+				RelativePath=".\sources\application\three pane\options dialog\CKeyChoiceDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CKSC_5601_1987.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CKSC_5601_1987.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\ldap\CLDAPClient.cp"
+				RelativePath="..\sources_common\mail\inet_clients\ldap\CLDAPClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterDoc.cp"
+				RelativePath=".\sources\application\letter\CLetterDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterFrame.cp"
+				RelativePath=".\sources\application\letter\CLetterFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterHeaderView.cp"
+				RelativePath=".\sources\application\letter\CLetterHeaderView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterPartProp.cp"
+				RelativePath=".\sources\application\letter\CLetterPartProp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterTextEditView.cp"
+				RelativePath=".\sources\application\letter\CLetterTextEditView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterToolbar.cp"
+				RelativePath=".\sources\application\letter\CLetterToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterView.cp"
+				RelativePath=".\sources\application\letter\CLetterView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CLetterWindow.cp"
+				RelativePath=".\sources\application\letter\CLetterWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\letter\CLetterWindowCommon.cp"
+				RelativePath="..\sources_common\application\letter\CLetterWindowCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CLicenseDialog.cp"
+				RelativePath=".\sources\application\other_dialogs\CLicenseDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\CListener.cp"
+				RelativePath="..\sources_common\utilities\CListener.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\local_clients\CLocalAdbkClient.cp"
+				RelativePath="..\sources_common\mail\local_clients\CLocalAdbkClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\mail\CLocalAttachment.cp"
+				RelativePath="..\sources_common\offline\mail\CLocalAttachment.cpp"
 				>
 			</File>
 			<File
@@ -7515,19 +7515,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\mail\CLocalClient.cp"
+				RelativePath="..\sources_common\offline\mail\CLocalClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\CLocalCommon.cp"
+				RelativePath="..\sources_common\offline\CLocalCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\mail\CLocalMessage.cp"
+				RelativePath="..\sources_common\offline\mail\CLocalMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\local_clients\CLocalPrefsClient.cp"
+				RelativePath="..\sources_common\mail\local_clients\CLocalPrefsClient.cpp"
 				>
 			</File>
 			<File
@@ -7535,267 +7535,267 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\CLog.cp"
+				RelativePath="..\sources_common\mail\CLog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CLoggingOptionsDialog.cp"
+				RelativePath=".\sources\application\preferences_dialog\CLoggingOptionsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacJapanese.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacJapanese.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacKorean.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacKorean.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CMacProgressCtrl.cp"
+				RelativePath=".\sources\support\CMacProgressCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\macros\CMacroEditDialog.cp"
+				RelativePath=".\sources\application\macros\CMacroEditDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacSimpChinese.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacSimpChinese.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacTradChinese.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CMacTradChinese.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CMailAccount.cp"
+				RelativePath="..\sources_common\application\preferences\CMailAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\control\CMailAccountManager.cp"
+				RelativePath="..\sources_common\mail\control\CMailAccountManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CMailAction.cp"
+				RelativePath="..\sources_common\offline\recording\CMailAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox\CMailboxDoc.cp"
+				RelativePath=".\sources\application\mailbox\CMailboxDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CMailboxInfoFrame.cp"
+				RelativePath=".\sources\application\mailbox_info\CMailboxInfoFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CMailboxInfoTable.cp"
+				RelativePath=".\sources\application\mailbox_info\CMailboxInfoTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\mailbox_info\CMailboxInfoTableCommon.cp"
+				RelativePath="..\sources_common\application\mailbox_info\CMailboxInfoTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CMailboxInfoToolbar.cp"
+				RelativePath=".\sources\application\mailbox_info\CMailboxInfoToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CMailboxInfoView.cp"
+				RelativePath=".\sources\application\mailbox_info\CMailboxInfoView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\mailbox_info\CMailboxInfoViewCommon.cp"
+				RelativePath="..\sources_common\application\mailbox_info\CMailboxInfoViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CMailboxInfoWindow.cp"
+				RelativePath=".\sources\application\mailbox_info\CMailboxInfoWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\mailbox_info\CMailboxInfoWindowCommon.cp"
+				RelativePath="..\sources_common\application\mailbox_info\CMailboxInfoWindowCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\search\CMailboxListPanel.cp"
+				RelativePath=".\sources\application\search\CMailboxListPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CMailboxPopup.cp"
+				RelativePath=".\sources\application\letter\CMailboxPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CMailboxPropDialog.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CMailboxPropDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox\CMailboxTable.cp"
+				RelativePath=".\sources\application\mailbox\CMailboxTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\mailbox\CMailboxTableCommon.cp"
+				RelativePath="..\sources_common\application\mailbox\CMailboxTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox\CMailboxTitleTable.cp"
+				RelativePath=".\sources\application\mailbox\CMailboxTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\letter\CMailboxToolbarPopup.cp"
+				RelativePath=".\sources\application\letter\CMailboxToolbarPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox\CMailboxView.cp"
+				RelativePath=".\sources\application\mailbox\CMailboxView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\mailbox\CMailboxViewCommon.cp"
+				RelativePath="..\sources_common\application\mailbox\CMailboxViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox\CMailboxWindow.cp"
+				RelativePath=".\sources\application\mailbox\CMailboxWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\mailbox\CMailboxWindowCommon.cp"
+				RelativePath="..\sources_common\application\mailbox\CMailboxWindowCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\control\CMailCheckThread.cp"
+				RelativePath="..\sources_common\mail\control\CMailCheckThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\control\CMailControl.cp"
+				RelativePath="..\sources_common\mail\control\CMailControl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CMailNotification.cp"
+				RelativePath="..\sources_common\application\preferences\CMailNotification.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CMailRecord.cp"
+				RelativePath="..\sources_common\offline\recording\CMailRecord.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\three_pane\CMailViewOptions.cp"
+				RelativePath="..\sources_common\application\three_pane\CMailViewOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CManageSIEVEAccount.cp"
+				RelativePath="..\sources_common\application\preferences\CManageSIEVEAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CMatchItem.cp"
+				RelativePath="..\sources_common\application\preferences\CMatchItem.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CMatchOptionsDialog.cp"
+				RelativePath=".\sources\application\mailbox_info\CMatchOptionsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\mailbox\CMbox.cp"
+				RelativePath="..\sources_common\mail\mailbox\CMbox.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\extensions\CMboxACL.cp"
+				RelativePath="..\sources_common\mail\extensions\CMboxACL.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CMboxACLProtocol.cp"
+				RelativePath="..\sources_common\mail\protocols\CMboxACLProtocol.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\mailbox\CMboxList.cp"
+				RelativePath="..\sources_common\mail\mailbox\CMboxList.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CForwardWithoutDownload.cp"
+				RelativePath="..\sources_common\mail\protocols\CForwardWithoutDownload.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CMboxProtocol.cp"
+				RelativePath="..\sources_common\mail\protocols\CMboxProtocol.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\mailbox\CMboxRef.cp"
+				RelativePath="..\sources_common\mail\mailbox\CMboxRef.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\mailbox\CMboxRefList.cp"
+				RelativePath="..\sources_common\mail\mailbox\CMboxRefList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMDNPromptDialog.cp"
+				RelativePath=".\sources\application\message\CMDNPromptDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\message\CMessage.cp"
+				RelativePath="..\sources_common\mail\message\CMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CMessageAttachment.cp"
+				RelativePath="..\sources_common\mail\attachments\CMessageAttachment.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\message\CMessageComparators.cp"
+				RelativePath="..\sources_common\mail\message\CMessageComparators.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessageDoc.cp"
+				RelativePath=".\sources\application\message\CMessageDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessageFrame.cp"
+				RelativePath=".\sources\application\message\CMessageFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessageHeaderView.cp"
+				RelativePath=".\sources\application\message\CMessageHeaderView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\message\CMessageList.cp"
+				RelativePath="..\sources_common\mail\message\CMessageList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\options dialog\CMessagePaneOptions.cp"
+				RelativePath=".\sources\application\three pane\options dialog\CMessagePaneOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessagePartProp.cp"
+				RelativePath=".\sources\application\message\CMessagePartProp.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\message\CMessageRef.cp"
+				RelativePath="..\sources_common\mail\message\CMessageRef.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessageSimpleView.cp"
+				RelativePath=".\sources\application\message\CMessageSimpleView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\message\CMessageThread.cp"
+				RelativePath="..\sources_common\mail\message\CMessageThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessageToolbar.cp"
+				RelativePath=".\sources\application\message\CMessageToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessageView.cp"
+				RelativePath=".\sources\application\message\CMessageView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\message\CMessageViewCommon.cp"
+				RelativePath="..\sources_common\application\message\CMessageViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CMessageWindow.cp"
+				RelativePath=".\sources\application\message\CMessageWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\message\CMessageWindowCommon.cp"
+				RelativePath="..\sources_common\application\message\CMessageWindowCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CMFCExtras.cp"
+				RelativePath=".\sources\application\general\CMFCExtras.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -7831,43 +7831,43 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CMIMEContent.cp"
+				RelativePath="..\sources_common\mail\attachments\CMIMEContent.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\CMIMEFilters.cp"
+				RelativePath="..\sources_common\mail\filters\CMIMEFilters.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CMIMEMap.cp"
+				RelativePath="..\sources_common\application\preferences\CMIMEMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CMIMESupport.cp"
+				RelativePath="..\sources_common\mail\attachments\CMIMESupport.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\attachments\CMIMETypes.cp"
+				RelativePath="..\sources_common\mail\attachments\CMIMETypes.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CModelessDialog.cp"
+				RelativePath=".\sources\support\CModelessDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthEvent.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthEvent.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthIndicator.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthIndicator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\utilities\CMonthPopup.cp"
+				RelativePath=".\sources\application\calendar\utilities\CMonthPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthPrintout.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthPrintout.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -7903,91 +7903,91 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthTable.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\month_view\CMonthTableCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\month_view\CMonthTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthTitleTable.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthView.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\month_view\CMonthView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\month_view\CMonthViewCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\month_view\CMonthViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CMulberryApp.cp"
+				RelativePath=".\sources\application\general\CMulberryApp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CMulberryAppProtect.cp"
+				RelativePath=".\sources\application\general\CMulberryAppProtect.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CMulberryAppRegistry.cp"
+				RelativePath=".\sources\application\general\CMulberryAppRegistry.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CMulberryAppXtra.cp"
+				RelativePath=".\sources\application\general\CMulberryAppXtra.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CMulberryCommon.cp"
+				RelativePath=".\sources\application\general\CMulberryCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CMulberryWindow.cp"
+				RelativePath=".\sources\application\general\CMulberryWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CMultiUserDialog.cp"
+				RelativePath=".\sources\application\preferences_dialog\CMultiUserDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CMyStack.cp"
+				RelativePath="..\sources_common\formatting\CMyStack.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\dialogs\CNamespaceDialog.cp"
+				RelativePath=".\sources\application\server\dialogs\CNamespaceDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CNetworkResetError.cp"
+				RelativePath=".\sources\application\general\CNetworkResetError.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CNewACLDialog.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CNewACLDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CNewACLStyleDialog.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CNewACLStyleDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewAttendeeDialog.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewAttendeeDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewComponentAlarm.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewComponentAlarm.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewComponentAttendees.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewComponentAttendees.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Calendar\Component_Editing\CNewComponentDetails.cp"
+				RelativePath=".\Sources\Application\Calendar\Component_Editing\CNewComponentDetails.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Calendar\Component_Editing\CNewComponentDialog.cp"
+				RelativePath=".\Sources\Application\Calendar\Component_Editing\CNewComponentDialog.cpp"
 				>
 			</File>
 			<File
@@ -8011,339 +8011,339 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewComponentPanel.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewComponentPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Application\Calendar\Component_Editing\CNewComponentRepeat.cp"
+				RelativePath=".\Sources\Application\Calendar\Component_Editing\CNewComponentRepeat.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewEventDialog.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewEventDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewEventTiming.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewEventTiming.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\tasks\CNewMailTask.cp"
+				RelativePath="..\sources_common\tasks\CNewMailTask.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\dialogs\CNewSearchDialog.cp"
+				RelativePath=".\sources\application\server\dialogs\CNewSearchDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewTimingPanel.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewTimingPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewToDoDialog.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewToDoDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CNewToDoTiming.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CNewToDoTiming.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\dialogs\CNewWildcardDialog.cp"
+				RelativePath=".\sources\application\server\dialogs\CNewWildcardDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CNodeTree.cp"
+				RelativePath=".\sources\support\table\CNodeTree.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\hierarchy list\CNodeVectorTree.cp"
+				RelativePath=".\sources\pp_sources\hierarchy list\CNodeVectorTree.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CNoFocusButton.cp"
+				RelativePath=".\sources\support\CNoFocusButton.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CNotification.cp"
+				RelativePath="..\sources_common\application\preferences\CNotification.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\text\CNumberEdit.cp"
+				RelativePath=".\sources\support\text\CNumberEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\dialogs\COpenMailboxDialog.cp"
+				RelativePath=".\sources\application\server\dialogs\COpenMailboxDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Application\Preferences\COptionsAccount.cp"
+				RelativePath="..\Sources_Common\Application\Preferences\COptionsAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\COptionsMap.cp"
+				RelativePath="..\sources_common\application\preferences\COptionsMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\COptionsProtocol.cp"
+				RelativePath="..\sources_common\mail\protocols\COptionsProtocol.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\COSStringMap.cp"
+				RelativePath="..\sources_common\application\preferences\COSStringMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CParserEnriched.cp"
+				RelativePath="..\sources_common\formatting\CParserEnriched.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CParserEnrichedStack.cp"
+				RelativePath="..\sources_common\formatting\CParserEnrichedStack.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CParserHTML.cp"
+				RelativePath="..\sources_common\formatting\CParserHTML.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CParserHTMLStack.cp"
+				RelativePath="..\sources_common\formatting\CParserHTMLStack.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CParserPlain.cp"
+				RelativePath="..\sources_common\formatting\CParserPlain.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\formatting\CParserPlainElement.cp"
+				RelativePath="..\sources_common\formatting\CParserPlainElement.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Mail\Control\CPasswordManager.cp"
+				RelativePath="..\Sources_Common\Mail\Control\CPasswordManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Mail\Control\CPasswordManagerKeyring.cp"
+				RelativePath="..\Sources_Common\Mail\Control\CPasswordManagerKeyring.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CPeriodicCheck.cp"
+				RelativePath=".\sources\application\general\CPeriodicCheck.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\general\CPlugin.cp"
+				RelativePath="..\sources_common\plugins\general\CPlugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\general\CPluginManager.cp"
+				RelativePath="..\sources_common\plugins\general\CPluginManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\general\CPluginRegisterDialog.cp"
+				RelativePath=".\sources\plugins\general\CPluginRegisterDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\mail\CPOP3Client.cp"
+				RelativePath="..\sources_common\offline\mail\CPOP3Client.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\mail\CPOP3Common.cp"
+				RelativePath="..\sources_common\offline\mail\CPOP3Common.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CPopupButton.cp"
+				RelativePath=".\sources\support\CPopupButton.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CPreferenceEnum.cp"
+				RelativePath="..\sources_common\application\preferences\CPreferenceEnum.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CPreferenceKeys.cp"
+				RelativePath="..\sources_common\application\preferences\CPreferenceKeys.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CPreferences.cp"
+				RelativePath="..\sources_common\application\preferences\CPreferences.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CPreferencesBits.cp"
+				RelativePath="..\sources_common\application\preferences\CPreferencesBits.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPreferencesDialog.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPreferencesDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CPreferencesFile.cp"
+				RelativePath="..\sources_common\application\preferences\CPreferencesFile.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CPreferencesRW.cp"
+				RelativePath="..\sources_common\application\preferences\CPreferencesRW.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CPreferencesXtra.cp"
+				RelativePath="..\sources_common\application\preferences\CPreferencesXtra.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAccountAuth.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAccountAuth.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsAccountExtras.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsAccountExtras.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\CPrefsAccountPanel.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\CPrefsAccountPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsAccountRemoteCalendar.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsAccountRemoteCalendar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsAccounts.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsAccounts.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAdbkAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAdbkAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsAddress.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsAddress.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressCapture.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressCapture.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressExpansion.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressExpansion.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressIMSP.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressIMSP.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP1.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP1.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP2.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP2.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAPOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAPOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsAlerts.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsAlerts.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsAttachment.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsAttachment.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsMessage.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsAttachments.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsAttachments.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsReceive.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsReceive.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsSend.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsSend.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthKerberos.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthKerberos.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthPlainText.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthPlainText.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsCalendar.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsCalendar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsDisplay.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsDisplay.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayLabel.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayLabel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMailbox.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMailbox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMessage.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayQuotes.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayQuotes.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayServer.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayServer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayStyles.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayStyles.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\extras\CPrefsEditCaption.cp"
+				RelativePath=".\sources\application\preferences_dialog\extras\CPrefsEditCaption.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\edit_identities\CPrefsEditHeadFoot.cp"
+				RelativePath=".\sources\application\preferences_dialog\edit_identities\CPrefsEditHeadFoot.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\extras\CPrefsEditMappings.cp"
+				RelativePath=".\sources\application\preferences_dialog\extras\CPrefsEditMappings.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsFormatting.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsFormatting.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsIdentity.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsIdentity.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsLDAPAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsLDAPAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsLetter.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsLetter.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterGeneral.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterGeneral.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterStyled.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterStyled.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsLocalCalendarAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsLocalCalendarAccount.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -8379,275 +8379,275 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsMailbox.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsMailbox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxAdvanced.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxAdvanced.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxBasic.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxBasic.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxDisconnected.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxDisconnected.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailIMAP.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailIMAP.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsMessage.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageGeneral.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageGeneral.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsPanel.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Account.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Account.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Options.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Options.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsRemoteCalendarAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsRemoteCalendarAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteSets.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteSets.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsSecurity.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsSecurity.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\sieve_account_panels\CPrefsSIEVEAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\sieve_account_panels\CPrefsSIEVEAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsSimple.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsSimple.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPAccount.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\CPrefsSpelling.cp"
+				RelativePath=".\sources\application\preferences_dialog\CPrefsSpelling.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingOptions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingSuggestions.cp"
+				RelativePath=".\sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingSuggestions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\status\CProgress.cp"
+				RelativePath=".\sources\application\status\CProgress.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\address_book_properties\CPropAdbkACL.cp"
+				RelativePath=".\sources\application\address_book_manager\address_book_properties\CPropAdbkACL.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\address_book_manager\address_book_properties\CPropAdbkGeneral.cp"
+				RelativePath=".\sources\application\address_book_manager\address_book_properties\CPropAdbkGeneral.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarACL.cp"
+				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarACL.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarGeneral.cp"
+				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarGeneral.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarOptions.cp"
+				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarServer.cp"
+				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarServer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarWebcal.cp"
+				RelativePath=".\sources\application\calendar\calendar_properties\CPropCalendarWebcal.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxACL.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxACL.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxGeneral.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxGeneral.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxOptions.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxQuota.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxQuota.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxServer.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CPropMailboxServer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\password\CPswdChangeClient.cp"
+				RelativePath="..\sources_common\mail\inet_clients\password\CPswdChangeClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\passwordchange\CPswdChangePlugin.cp"
+				RelativePath="..\sources_common\plugins\passwordchange\CPswdChangePlugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CQuickSearchSavedPopup.cp"
+				RelativePath=".\sources\application\mailbox_info\CQuickSearchSavedPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\mailbox_info\CQuickSearchText.cp"
+				RelativePath=".\sources\application\mailbox_info\CQuickSearchText.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CQuotaProtocol.cp"
+				RelativePath="..\sources_common\mail\protocols\CQuotaProtocol.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\extensions\CQuotas.cp"
+				RelativePath="..\sources_common\mail\extensions\CQuotas.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\server\mailbox_properties\CQuotaTable.cp"
+				RelativePath=".\sources\application\server\mailbox_properties\CQuotaTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\recording\CRecordableAction.cp"
+				RelativePath="..\sources_common\offline\recording\CRecordableAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\component_editing\CRecurrenceDialog.cp"
+				RelativePath=".\sources\application\calendar\component_editing\CRecurrenceDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\general\CRegistration.cp"
+				RelativePath=".\sources\plugins\general\CRegistration.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\general\CRegistrationCommon.cp"
+				RelativePath="..\sources_common\plugins\general\CRegistrationCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CRegistrationDialog.cp"
+				RelativePath=".\sources\application\other_dialogs\CRegistrationDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\action dialogs\CRejectActionDialog.cp"
+				RelativePath=".\sources\application\rules\action dialogs\CRejectActionDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CRemoteOptionsMap.cp"
+				RelativePath="..\sources_common\application\preferences\CRemoteOptionsMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CRemotePrefsSets.cp"
+				RelativePath="..\sources_common\application\preferences\CRemotePrefsSets.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\action dialogs\CReplyActionDialog.cp"
+				RelativePath=".\sources\application\rules\action dialogs\CReplyActionDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CReplyChooseDialog.cp"
+				RelativePath=".\sources\application\message\CReplyChooseDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\protocols\CRFC822.cp"
+				RelativePath="..\sources_common\mail\protocols\CRFC822.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\mail\CRFC822Parser.cp"
+				RelativePath="..\sources_common\offline\mail\CRFC822Parser.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\dialog\CRulesAction.cp"
+				RelativePath=".\sources\application\rules\dialog\CRulesAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\dialog\CRulesActionLocal.cp"
+				RelativePath=".\sources\application\rules\dialog\CRulesActionLocal.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\dialog\CRulesActionSIEVE.cp"
+				RelativePath=".\sources\application\rules\dialog\CRulesActionSIEVE.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\dialog\CRulesDialog.cp"
+				RelativePath=".\sources\application\rules\dialog\CRulesDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\CRulesDoc.cp"
+				RelativePath=".\sources\application\rules\CRulesDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\CRulesFrame.cp"
+				RelativePath=".\sources\application\rules\CRulesFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\CRulesTable.cp"
+				RelativePath=".\sources\application\rules\CRulesTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\rules\CRulesTableCommon.cp"
+				RelativePath="..\sources_common\application\rules\CRulesTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\dialog\CRulesTarget.cp"
+				RelativePath=".\sources\application\rules\dialog\CRulesTarget.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\CRulesTitleTable.cp"
+				RelativePath=".\sources\application\rules\CRulesTitleTable.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -8683,63 +8683,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\CRulesWindow.cp"
+				RelativePath=".\sources\application\rules\CRulesWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\general\CSafetySave.cp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\sources\application\letter\CSaveDraftDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\preferences\CScreenDimensions.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\rules\CScriptsTable.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\rules\CScriptsTableCommon.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\rules\CScriptsTitleTable.cp"
+				RelativePath="..\sources_common\application\general\CSafetySave.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -8775,143 +8723,23 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\support\CSDIDoc.cp"
+				RelativePath=".\sources\application\letter\CSaveDraftDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CSDIFrame.cp"
+				RelativePath="..\sources_common\application\preferences\CScreenDimensions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\search\CSearchBase.cp"
+				RelativePath=".\sources\application\rules\CScriptsTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\search\CSearchCriteria.cp"
+				RelativePath="..\sources_common\application\rules\CScriptsTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\search\CSearchCriteriaContainer.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CSearchCriteriaLocal.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CSearchCriteriaSIEVE.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CSearchDoc.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\search\CSearchEngine.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CSearchFrame.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\search\CSearchItem.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CSearchListPanel.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CSearchOptionsDialog.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\preferences\CSearchStyle.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\search\CSearchThread.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\search\CSearchWindow.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\plugins\security\CSecurityPlugin.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\mailbox_info\CSelectPopup.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\inet_clients\imap\CSequence.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerBrowse.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\server\CServerBrowseCommon.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\browse_dialog\CServerBrowseTable.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerDoc.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerFrame.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerTable.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\server\CServerTableCommon.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerTitleTable.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerToolbar.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerView.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\server\CServerViewCommon.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerViewPopup.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\server\CServerWindow.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\text\CSetNumberEdit.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVEClient.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVECommon.cp"
+				RelativePath=".\sources\application\rules\CScriptsTitleTable.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -8947,171 +8775,143 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\windows\CSimpleTitleTable.cp"
+				RelativePath=".\sources\support\CSDIDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\formatting\CSizeMenu.cp"
+				RelativePath=".\sources\support\CSDIFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CSJIS.cp"
+				RelativePath=".\sources\application\search\CSearchBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CSMTPAccount.cp"
+				RelativePath=".\sources\application\search\CSearchCriteria.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\control\CSMTPAccountManager.cp"
+				RelativePath=".\sources\application\search\CSearchCriteriaContainer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\smtp_queue\CSMTPAccountPopup.cp"
+				RelativePath=".\sources\application\search\CSearchCriteriaLocal.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\smtp_queue\CSMTPFrame.cp"
+				RelativePath=".\sources\application\search\CSearchCriteriaSIEVE.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\inet_clients\smtp\CSMTPSender.cp"
+				RelativePath=".\sources\application\search\CSearchDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\control\CSMTPSendThread.cp"
+				RelativePath="..\sources_common\mail\search\CSearchEngine.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\smtp_queue\CSMTPTable.cp"
+				RelativePath=".\sources\application\search\CSearchFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\smtp_queue\CSMTPTableCommon.cp"
+				RelativePath="..\sources_common\mail\search\CSearchItem.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\smtp_queue\CSMTPToolbar.cp"
+				RelativePath=".\sources\application\search\CSearchListPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\smtp_queue\CSMTPView.cp"
+				RelativePath=".\sources\application\search\CSearchOptionsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\smtp_queue\CSMTPViewCommon.cp"
+				RelativePath="..\sources_common\application\preferences\CSearchStyle.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\smtp_queue\CSMTPWindow.cp"
+				RelativePath="..\sources_common\mail\search\CSearchThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\smtp_queue\CSMTPWindowCommon.cp"
+				RelativePath=".\sources\application\search\CSearchWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CSoundPopup.cp"
+				RelativePath="..\sources_common\plugins\security\CSecurityPlugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CSpacebarEdit.cp"
+				RelativePath=".\sources\application\mailbox_info\CSelectPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\message\CSpacebarEditView.cp"
+				RelativePath="..\sources_common\mail\inet_clients\imap\CSequence.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\speech\CSpeechSynthesis.cp"
+				RelativePath=".\sources\application\server\CServerBrowse.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\spelling\CSpellAddDialog.cp"
+				RelativePath="..\sources_common\application\server\CServerBrowseCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\spelling\CSpellCheckDialog.cp"
+				RelativePath=".\sources\application\server\browse_dialog\CServerBrowseTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\spelling\CSpellChooseDictDialog.cp"
+				RelativePath=".\sources\application\server\CServerDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\spelling\CSpellEditDialog.cp"
+				RelativePath=".\sources\application\server\CServerFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\spelling\CSpellOptionsDialog.cp"
+				RelativePath=".\sources\application\server\CServerTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\spelling\CSpellPlugin.cp"
+				RelativePath="..\sources_common\application\server\CServerTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\general\CSplashBox.cp"
+				RelativePath=".\sources\application\server\CServerTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CSplitter.cp"
+				RelativePath=".\sources\application\server\CServerToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CSplitterView.cp"
+				RelativePath=".\sources\application\server\CServerView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\ssl\CSSLPlugin.cp"
+				RelativePath="..\sources_common\application\server\CServerViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\plugins\ssl\CSSLUtils.cp"
+				RelativePath=".\sources\application\server\CServerViewPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\status\CStatusWindow.cp"
+				RelativePath=".\sources\application\server\CServerWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\offline\mail\CStreamAttachment.cp"
+				RelativePath=".\sources\support\text\CSetNumberEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\CStreamBuffer.cp"
+				RelativePath="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVEClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CStreamOptionsMap.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\utilities\CStreamUtils.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\preferences\CStringOptionsMap.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\utilities\CStringUtils.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\formatting\CStyleToolbar.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\support\CSubPanelController.cp"
-				>
-			</File>
-			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryEvent.cp"
-				>
-			</File>
-			<File
-				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryPrintout.cp"
+				RelativePath="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVECommon.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -9147,251 +8947,451 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryTable.cp"
+				RelativePath=".\sources\application\windows\CSimpleTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryTableCommon.cp"
+				RelativePath=".\sources\formatting\CSizeMenu.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryTitleTable.cp"
+				RelativePath="..\sources_common\i18n\charsets\converters\twobyte\CSJIS.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryView.cp"
+				RelativePath="..\sources_common\application\preferences\CSMTPAccount.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryViewCommon.cp"
+				RelativePath="..\sources_common\mail\control\CSMTPAccountManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CSynchroniseDialog.cp"
+				RelativePath=".\sources\application\smtp_queue\CSMTPAccountPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CTabber.cp"
+				RelativePath=".\sources\application\smtp_queue\CSMTPFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CTabController.cp"
+				RelativePath="..\sources_common\mail\inet_clients\smtp\CSMTPSender.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTable.cp"
+				RelativePath="..\sources_common\mail\control\CSMTPSendThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTableColumnSelector.cp"
+				RelativePath=".\sources\application\smtp_queue\CSMTPTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTableDragAndDrop.cp"
+				RelativePath="..\sources_common\application\smtp_queue\CSMTPTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTableRowGeometry.cp"
+				RelativePath=".\sources\application\smtp_queue\CSMTPToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTableRowSelector.cp"
+				RelativePath=".\sources\application\smtp_queue\CSMTPView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\windows\CTableView.cp"
+				RelativePath="..\sources_common\application\smtp_queue\CSMTPViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\windows\CTableViewWindow.cp"
+				RelativePath=".\sources\application\smtp_queue\CSMTPWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\windows\CTableWindow.cp"
+				RelativePath="..\sources_common\application\smtp_queue\CSMTPWindowCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CTabPanel.cp"
+				RelativePath=".\sources\support\CSoundPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filtering\CTargetItem.cp"
+				RelativePath=".\sources\application\message\CSpacebarEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\dialog\CTargetsDialog.cp"
+				RelativePath=".\sources\application\message\CSpacebarEditView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\tasks\CTaskClasses.cp"
+				RelativePath=".\sources\application\speech\CSpeechSynthesis.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\tasks\CTaskQueue.cp"
+				RelativePath=".\sources\plugins\spelling\CSpellAddDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\network\CTCPSocket.cp"
+				RelativePath=".\sources\plugins\spelling\CSpellCheckDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\network\CTCPStream.cp"
+				RelativePath=".\sources\plugins\spelling\CSpellChooseDictDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CTextButton.cp"
+				RelativePath=".\sources\plugins\spelling\CSpellEditDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\CTextEngine.cp"
+				RelativePath=".\sources\plugins\spelling\CSpellOptionsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTextListChoice.cp"
+				RelativePath="..\sources_common\plugins\spelling\CSpellPlugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CTextMacros.cp"
+				RelativePath=".\sources\application\general\CSplashBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTextTable.cp"
+				RelativePath=".\sources\support\CSplitter.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\utilities\CTimezonePopup.cp"
+				RelativePath=".\sources\support\CSplitterView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\windows\CTitleTable.cp"
+				RelativePath="..\sources_common\plugins\ssl\CSSLPlugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\windows\CTitleTableView.cp"
+				RelativePath="..\sources_common\plugins\ssl\CSSLUtils.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\network\CTLSSocket.cp"
+				RelativePath=".\sources\application\status\CStatusWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\todo_view\CToDoItem.cp"
+				RelativePath="..\sources_common\offline\mail\CStreamAttachment.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\todo_view\CToDoItemCommon.cp"
+				RelativePath="..\Libraries\XMLLib\Source\CStreamBuffer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\todo_view\CToDoTable.cp"
+				RelativePath="..\sources_common\application\preferences\CStreamOptionsMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\todo_view\CToDoTableCommon.cp"
+				RelativePath="..\sources_common\utilities\CStreamUtils.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\todo_view\CToDoView.cp"
+				RelativePath="..\sources_common\application\preferences\CStringOptionsMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\todo_view\CToDoViewCommon.cp"
+				RelativePath="..\sources_common\utilities\CStringUtils.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\toolbars\CToolbar.cp"
+				RelativePath=".\sources\formatting\CStyleToolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CToolbarButton.cp"
+				RelativePath=".\sources\support\CSubPanelController.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\support\toolbars\CToolbarManager.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryEvent.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CToolbarPopupButton.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryPrintout.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\toolbars\CToolbarView.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\mailbox\CTreeNode.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryTitleTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\mailbox\CTreeNodeList.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\summary_view\CSummaryView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\table\CTwister.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUCS2.cp"
+				RelativePath=".\sources\application\other_dialogs\CSynchroniseDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUCS4.cp"
+				RelativePath=".\sources\support\CTabber.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CUnicodeStdLib.cp"
+				RelativePath=".\sources\support\CTabController.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CUnicodeUtils.cp"
+				RelativePath=".\sources\support\table\CTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\dialog\CUploadScriptDialog.cp"
+				RelativePath=".\sources\support\table\CTableColumnSelector.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\urls\CURL.cp"
+				RelativePath=".\sources\support\table\CTableDragAndDrop.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\urls\CIMAPUrl.cp"
+				RelativePath=".\sources\support\table\CTableRowGeometry.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\three_pane\CUserAction.cp"
+				RelativePath=".\sources\support\table\CTableRowSelector.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\options dialog\CUserActionOptions.cp"
+				RelativePath=".\sources\application\windows\CTableView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\other_dialogs\CUserPswdDialog.cp"
+				RelativePath=".\sources\application\windows\CTableViewWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\CUStringUtils.cp"
+				RelativePath=".\sources\application\windows\CTableWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUTF16.cp"
+				RelativePath=".\sources\support\CTabPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUTF8.cp"
+				RelativePath="..\sources_common\mail\filtering\CTargetItem.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\CUtils.cp"
+				RelativePath=".\sources\application\rules\dialog\CTargetsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\CUUFilter.cp"
+				RelativePath="..\sources_common\tasks\CTaskClasses.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\rules\action dialogs\CVacationActionDialog.cp"
+				RelativePath="..\sources_common\tasks\CTaskQueue.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\network\CTCPSocket.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\network\CTCPStream.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CTextButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\utilities\CTextEngine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\table\CTextListChoice.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\preferences\CTextMacros.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\table\CTextTable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\utilities\CTimezonePopup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\windows\CTitleTable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\windows\CTitleTableView.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\network\CTLSSocket.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\todo_view\CToDoItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\calendar\calendar_view\todo_view\CToDoItemCommon.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\todo_view\CToDoTable.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\calendar\calendar_view\todo_view\CToDoTableCommon.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\calendar\calendar_view\todo_view\CToDoView.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\calendar\calendar_view\todo_view\CToDoViewCommon.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\toolbars\CToolbar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CToolbarButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\support\toolbars\CToolbarManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CToolbarPopupButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\toolbars\CToolbarView.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\mailbox\CTreeNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\mailbox\CTreeNodeList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\table\CTwister.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUCS2.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUCS4.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CUnicodeStdLib.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\support\CUnicodeUtils.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\rules\dialog\CUploadScriptDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\urls\CURL.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\urls\CIMAPUrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\application\three_pane\CUserAction.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\three pane\options dialog\CUserActionOptions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\other_dialogs\CUserPswdDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\utilities\CUStringUtils.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUTF16.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\i18n\charsets\converters\unicode\CUTF8.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\utilities\CUtils.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\sources_common\mail\filters\CUUFilter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sources\application\rules\action dialogs\CVacationActionDialog.cpp"
 				>
 			</File>
 			<File
@@ -9507,11 +9507,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\plugins\ssl\CViewCertDialog.cp"
+				RelativePath=".\sources\plugins\ssl\CViewCertDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\status\CVisualProgress.cp"
+				RelativePath=".\sources\application\status\CVisualProgress.cpp"
 				>
 			</File>
 			<File
@@ -9619,27 +9619,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\three pane\options dialog\CWindowOptionsDialog.cp"
+				RelativePath=".\sources\application\three pane\options dialog\CWindowOptionsDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CWindowStates.cp"
+				RelativePath="..\sources_common\application\preferences\CWindowStates.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\preferences\CWindowStatesXtras.cp"
+				RelativePath="..\sources_common\application\preferences\CWindowStatesXtras.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\Support\CWininet.cp"
+				RelativePath=".\Sources\Support\CWininet.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CWinRegistry.cp"
+				RelativePath=".\sources\support\CWinRegistry.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\support\CWndAligner.cp"
+				RelativePath=".\sources\support\CWndAligner.cpp"
 				>
 			</File>
 			<File
@@ -9647,11 +9647,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\utilities\CYearPopup.cp"
+				RelativePath=".\sources\application\calendar\utilities\CYearPopup.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\year_view\CYearPrintout.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\year_view\CYearPrintout.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -9687,35 +9687,35 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\year_view\CYearTable.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\year_view\CYearTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\year_view\CYearTableCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\year_view\CYearTableCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\application\calendar\calendar_view\year_view\CYearView.cp"
+				RelativePath=".\sources\application\calendar\calendar_view\year_view\CYearView.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\application\calendar\calendar_view\year_view\CYearViewCommon.cp"
+				RelativePath="..\sources_common\application\calendar\calendar_view\year_view\CYearViewCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\diriterator.cp"
+				RelativePath="..\sources_common\utilities\diriterator.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\encrypt.cp"
+				RelativePath="..\sources_common\utilities\encrypt.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\filterbuf.cp"
+				RelativePath="..\sources_common\mail\filters\filterbuf.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources_Common\Plugins\SSL\loadsslfunc.cp"
+				RelativePath="..\Sources_Common\Plugins\SSL\loadsslfunc.cpp"
 				>
 			</File>
 			<File
@@ -9755,7 +9755,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\sources_common\memdebug.cp"
+				RelativePath="..\sources_common\memdebug.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -9795,11 +9795,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\mail\filters\mimefilters.cp"
+				RelativePath="..\sources_common\mail\filters\mimefilters.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\MulberryNew.cp"
+				RelativePath=".\sources\MulberryNew.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -9835,7 +9835,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Sources\MulberryUnicode.cp"
+				RelativePath=".\Sources\MulberryUnicode.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -9879,87 +9879,87 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\sources_common\os_dep.cp"
+				RelativePath="..\sources_common\os_dep.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\prefsvector.cp"
+				RelativePath="..\sources_common\utilities\prefsvector.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\quotedprintable.cp"
+				RelativePath="..\sources_common\utilities\quotedprintable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\strfind.cp"
+				RelativePath="..\sources_common\utilities\strfind.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\sources_common\utilities\ustrfind.cp"
+				RelativePath="..\sources_common\utilities\ustrfind.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\undoable\WIN_LAction.cp"
+				RelativePath=".\sources\pp_sources\undoable\WIN_LAction.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\streams\WIN_LDataStream.cp"
+				RelativePath=".\sources\pp_sources\streams\WIN_LDataStream.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\streams\WIN_LFileStream.cp"
+				RelativePath=".\sources\pp_sources\streams\WIN_LFileStream.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\hierarchy list\WIN_LHierarchyTable.cp"
+				RelativePath=".\sources\pp_sources\hierarchy list\WIN_LHierarchyTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\streams\WIN_LMemFileStream.cp"
+				RelativePath=".\sources\pp_sources\streams\WIN_LMemFileStream.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\tables\WIN_LScrollable.cp"
+				RelativePath=".\sources\pp_sources\tables\WIN_LScrollable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\streams\WIN_LStream.cp"
+				RelativePath=".\sources\pp_sources\streams\WIN_LStream.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\tables\WIN_LTableArrayStorage.cp"
+				RelativePath=".\sources\pp_sources\tables\WIN_LTableArrayStorage.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\tables\WIN_LTableMonoGeometry.cp"
+				RelativePath=".\sources\pp_sources\tables\WIN_LTableMonoGeometry.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\tables\WIN_LTableMultiGeometry.cp"
+				RelativePath=".\sources\pp_sources\tables\WIN_LTableMultiGeometry.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\tables\WIN_LTableMultiSelector.cp"
+				RelativePath=".\sources\pp_sources\tables\WIN_LTableMultiSelector.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\tables\WIN_LTableSingleSelector.cp"
+				RelativePath=".\sources\pp_sources\tables\WIN_LTableSingleSelector.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\tables\WIN_LTableView.cp"
+				RelativePath=".\sources\pp_sources\tables\WIN_LTableView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\hierarchy list\WIN_LTextHierTable.cp"
+				RelativePath=".\sources\pp_sources\hierarchy list\WIN_LTextHierTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sources\pp_sources\undoable\WIN_LUndoer.cp"
+				RelativePath=".\sources\pp_sources\undoable\WIN_LUndoer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\XMLDocument.cp"
+				RelativePath="..\Libraries\XMLLib\Source\XMLDocument.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -9999,27 +9999,27 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\XMLName.cp"
+				RelativePath="..\Libraries\XMLLib\Source\XMLName.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\XMLNamespace.cp"
+				RelativePath="..\Libraries\XMLLib\Source\XMLNamespace.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\XMLNode.cp"
+				RelativePath="..\Libraries\XMLLib\Source\XMLNode.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\XMLObject.cp"
+				RelativePath="..\Libraries\XMLLib\Source\XMLObject.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\XMLParserSAX.cp"
+				RelativePath="..\Libraries\XMLLib\Source\XMLParserSAX.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Libraries\XMLLib\Source\XMLSAXSimple.cp"
+				RelativePath="..\Libraries\XMLLib\Source\XMLSAXSimple.cpp"
 				>
 			</File>
 		</Filter>

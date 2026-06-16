@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF0F2E9C0AE3C9960074CFEF /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E920AE3C9960074CFEF /* PluginDLLmain.cp */; };
-		AF0F2E9D0AE3C9960074CFEF /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E930AE3C9960074CFEF /* CPluginDLL.cp */; };
-		AF0F2E9F0AE3C9960074CFEF /* CAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E950AE3C9960074CFEF /* CAdbkIOPluginDLL.cp */; };
-		AF0F2EA10AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E970AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cp */; };
+		AF0F2E9C0AE3C9960074CFEF /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E920AE3C9960074CFEF /* PluginDLLmain.cpp */; };
+		AF0F2E9D0AE3C9960074CFEF /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E930AE3C9960074CFEF /* CPluginDLL.cpp */; };
+		AF0F2E9F0AE3C9960074CFEF /* CAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E950AE3C9960074CFEF /* CAdbkIOPluginDLL.cpp */; };
+		AF0F2EA10AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF0F2E970AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cpp */; };
 		AF657377136CA9B70088690F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF657376136CA9B70088690F /* Carbon.framework */; };
 		AFDD74210C403EDC00DE5877 /* line64mac.c in Sources */ = {isa = PBXBuildFile; fileRef = AFDD74200C403EDB00DE5877 /* line64mac.c */; };
 		AFECC926176E0F09006354FB /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECC925176E0F09006354FB /* libPluginLibrary.a */; };
@@ -18,12 +18,12 @@
 
 /* Begin PBXFileReference section */
 		AF0F2E8D0AE3C9950074CFEF /* CommunicatorAdbkIO.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommunicatorAdbkIO.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF0F2E920AE3C9960074CFEF /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF0F2E930AE3C9960074CFEF /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF0F2E920AE3C9960074CFEF /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF0F2E930AE3C9960074CFEF /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF0F2E940AE3C9960074CFEF /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF0F2E950AE3C9960074CFEF /* CAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cp; path = ../Common/CAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF0F2E950AE3C9960074CFEF /* CAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cpp; path = ../Common/CAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF0F2E960AE3C9960074CFEF /* CAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CAdbkIOPluginDLL.h; path = ../Common/CAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF0F2E970AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CCommAdbkIOPluginDLL.cp; path = sources/CCommAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF0F2E970AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CCommAdbkIOPluginDLL.cpp; path = sources/CCommAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF0F2E980AE3C9960074CFEF /* CCommAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCommAdbkIOPluginDLL.h; path = sources/CCommAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF0F2EA60AE3C9990074CFEF /* PluginDLLmain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginDLLmain.h; path = sources/PluginDLLmain.h; sourceTree = SOURCE_ROOT; };
 		AF0F2EA80AE3C9990074CFEF /* RegistrationBlankUnix.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = RegistrationBlankUnix.c; path = ../Common/resources/RES/RegistrationBlankUnix.c; sourceTree = SOURCE_ROOT; };
@@ -74,13 +74,13 @@
 		AF0F2E910AE3C9960074CFEF /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF0F2E920AE3C9960074CFEF /* PluginDLLmain.cp */,
+				AF0F2E920AE3C9960074CFEF /* PluginDLLmain.cpp */,
 				AF0F2E940AE3C9960074CFEF /* CPluginDLL.h */,
-				AF0F2E930AE3C9960074CFEF /* CPluginDLL.cp */,
+				AF0F2E930AE3C9960074CFEF /* CPluginDLL.cpp */,
 				AF0F2E960AE3C9960074CFEF /* CAdbkIOPluginDLL.h */,
-				AF0F2E950AE3C9960074CFEF /* CAdbkIOPluginDLL.cp */,
+				AF0F2E950AE3C9960074CFEF /* CAdbkIOPluginDLL.cpp */,
 				AF0F2E980AE3C9960074CFEF /* CCommAdbkIOPluginDLL.h */,
-				AF0F2E970AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cp */,
+				AF0F2E970AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cpp */,
 				AFDD74200C403EDB00DE5877 /* line64mac.c */,
 				AF419C540AEA6A1A00E19592 /* ldif.h */,
 				AF0F2EE40AE3CC1A0074CFEF /* libPluginLibrary.a */,
@@ -188,10 +188,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF0F2E9C0AE3C9960074CFEF /* PluginDLLmain.cp in Sources */,
-				AF0F2E9D0AE3C9960074CFEF /* CPluginDLL.cp in Sources */,
-				AF0F2E9F0AE3C9960074CFEF /* CAdbkIOPluginDLL.cp in Sources */,
-				AF0F2EA10AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cp in Sources */,
+				AF0F2E9C0AE3C9960074CFEF /* PluginDLLmain.cpp in Sources */,
+				AF0F2E9D0AE3C9960074CFEF /* CPluginDLL.cpp in Sources */,
+				AF0F2E9F0AE3C9960074CFEF /* CAdbkIOPluginDLL.cpp in Sources */,
+				AF0F2EA10AE3C9960074CFEF /* CCommAdbkIOPluginDLL.cpp in Sources */,
 				AFDD74210C403EDC00DE5877 /* line64mac.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

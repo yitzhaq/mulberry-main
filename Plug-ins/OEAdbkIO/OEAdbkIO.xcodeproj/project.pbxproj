@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF4199DA0AE9A7D000E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D20AE9A7D000E19592 /* PluginDLLmain.cp */; };
-		AF4199DB0AE9A7D000E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D30AE9A7D000E19592 /* CPluginDLL.cp */; };
-		AF4199DD0AE9A7D000E19592 /* CAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D50AE9A7D000E19592 /* CAdbkIOPluginDLL.cp */; };
-		AF4199DF0AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D70AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cp */; };
+		AF4199DA0AE9A7D000E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D20AE9A7D000E19592 /* PluginDLLmain.cpp */; };
+		AF4199DB0AE9A7D000E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D30AE9A7D000E19592 /* CPluginDLL.cpp */; };
+		AF4199DD0AE9A7D000E19592 /* CAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D50AE9A7D000E19592 /* CAdbkIOPluginDLL.cpp */; };
+		AF4199DF0AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199D70AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cpp */; };
 		AF65738F136CAB200088690F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF65738E136CAB200088690F /* Carbon.framework */; };
 		AFECC92E176E11EE006354FB /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECC92D176E11EE006354FB /* libPluginLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF4199CD0AE9A7D000E19592 /* OEAdbkIO.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OEAdbkIO.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF4199D20AE9A7D000E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF4199D30AE9A7D000E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4199D20AE9A7D000E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF4199D30AE9A7D000E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199D40AE9A7D000E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF4199D50AE9A7D000E19592 /* CAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cp; path = ../Common/CAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4199D50AE9A7D000E19592 /* CAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cpp; path = ../Common/CAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199D60AE9A7D000E19592 /* CAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CAdbkIOPluginDLL.h; path = ../Common/CAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF4199D70AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = COutlookExAdbkIOPluginDLL.cp; path = sources/COutlookExAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF4199D70AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = COutlookExAdbkIOPluginDLL.cpp; path = sources/COutlookExAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199D80AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = COutlookExAdbkIOPluginDLL.h; path = sources/COutlookExAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF4199D90AE9A7D000E19592 /* libPluginLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPluginLibrary.a; path = ../PluginLibrary/libPluginLibrary.a; sourceTree = SOURCE_ROOT; };
 		AF4199E40AE9A7D300E19592 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -70,13 +70,13 @@
 		AF4199D10AE9A7D000E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF4199D20AE9A7D000E19592 /* PluginDLLmain.cp */,
+				AF4199D20AE9A7D000E19592 /* PluginDLLmain.cpp */,
 				AF4199D40AE9A7D000E19592 /* CPluginDLL.h */,
-				AF4199D30AE9A7D000E19592 /* CPluginDLL.cp */,
+				AF4199D30AE9A7D000E19592 /* CPluginDLL.cpp */,
 				AF4199D60AE9A7D000E19592 /* CAdbkIOPluginDLL.h */,
-				AF4199D50AE9A7D000E19592 /* CAdbkIOPluginDLL.cp */,
+				AF4199D50AE9A7D000E19592 /* CAdbkIOPluginDLL.cpp */,
 				AF4199D80AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.h */,
-				AF4199D70AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cp */,
+				AF4199D70AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cpp */,
 				AF4199D90AE9A7D000E19592 /* libPluginLibrary.a */,
 			);
 			name = Main;
@@ -175,10 +175,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF4199DA0AE9A7D000E19592 /* PluginDLLmain.cp in Sources */,
-				AF4199DB0AE9A7D000E19592 /* CPluginDLL.cp in Sources */,
-				AF4199DD0AE9A7D000E19592 /* CAdbkIOPluginDLL.cp in Sources */,
-				AF4199DF0AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cp in Sources */,
+				AF4199DA0AE9A7D000E19592 /* PluginDLLmain.cpp in Sources */,
+				AF4199DB0AE9A7D000E19592 /* CPluginDLL.cpp in Sources */,
+				AF4199DD0AE9A7D000E19592 /* CAdbkIOPluginDLL.cpp in Sources */,
+				AF4199DF0AE9A7D000E19592 /* COutlookExAdbkIOPluginDLL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -297,7 +297,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\base64.cp"
+				RelativePath="..\..\Sources_Common\Utilities\base64.cpp"
 				>
 			</File>
 			<File
@@ -305,7 +305,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CASCII.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CASCII.cpp"
 				>
 			</File>
 			<File
@@ -313,7 +313,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\CCharsetManager.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\CCharsetManager.cpp"
 				>
 			</File>
 			<File
@@ -321,7 +321,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\CCharSpecials.cp"
+				RelativePath="..\..\Sources_Common\Utilities\CCharSpecials.cpp"
 				>
 			</File>
 			<File
@@ -329,7 +329,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\CConverterBase.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\CConverterBase.cpp"
 				>
 			</File>
 			<File
@@ -337,7 +337,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CConverterOneByte.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CConverterOneByte.cpp"
 				>
 			</File>
 			<File
@@ -345,7 +345,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\cdstring.cp"
+				RelativePath="..\..\Sources_Common\Utilities\cdstring.cpp"
 				>
 			</File>
 			<File
@@ -353,7 +353,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\cdustring.cp"
+				RelativePath="..\..\Sources_Common\Utilities\cdustring.cpp"
 				>
 			</File>
 			<File
@@ -361,7 +361,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\char_stream.cp"
+				RelativePath="..\..\Sources_Common\Utilities\char_stream.cpp"
 				>
 			</File>
 			<File
@@ -369,7 +369,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\CStringUtils.cp"
+				RelativePath="..\..\Sources_Common\Utilities\CStringUtils.cpp"
 				>
 			</File>
 			<File
@@ -377,7 +377,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS2.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS2.cpp"
 				>
 			</File>
 			<File
@@ -385,7 +385,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS4.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS4.cpp"
 				>
 			</File>
 			<File
@@ -393,7 +393,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Mail\URLs\CURL.cp"
+				RelativePath="..\..\Sources_Common\Mail\URLs\CURL.cpp"
 				>
 			</File>
 			<File
@@ -401,7 +401,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\CUStringUtils.cp"
+				RelativePath="..\..\Sources_Common\Utilities\CUStringUtils.cpp"
 				>
 			</File>
 			<File
@@ -409,7 +409,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF16.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF16.cpp"
 				>
 			</File>
 			<File
@@ -417,7 +417,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF8.cp"
+				RelativePath="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF8.cpp"
 				>
 			</File>
 			<File
@@ -425,7 +425,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\diriterator.cp"
+				RelativePath="..\..\Sources_Common\Utilities\diriterator.cpp"
 				>
 			</File>
 			<File
@@ -433,7 +433,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\encrypt.cp"
+				RelativePath="..\..\Sources_Common\Utilities\encrypt.cpp"
 				>
 			</File>
 			<File
@@ -485,7 +485,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Common\MulberryPrefixWin32.cp"
+				RelativePath="..\Common\MulberryPrefixWin32.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -529,7 +529,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Common\os_dep.cp"
+				RelativePath="..\Common\os_dep.cpp"
 				>
 			</File>
 			<File
@@ -541,7 +541,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\quotedprintable.cp"
+				RelativePath="..\..\Sources_Common\Utilities\quotedprintable.cpp"
 				>
 			</File>
 			<File
@@ -549,7 +549,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\strfind.cp"
+				RelativePath="..\..\Sources_Common\Utilities\strfind.cpp"
 				>
 			</File>
 			<File
@@ -557,7 +557,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Sources_Common\Utilities\ustrfind.cp"
+				RelativePath="..\..\Sources_Common\Utilities\ustrfind.cpp"
 				>
 			</File>
 			<File

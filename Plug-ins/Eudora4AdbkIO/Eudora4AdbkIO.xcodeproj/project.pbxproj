@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF419AF50AE9CB1100E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AED0AE9CB1100E19592 /* PluginDLLmain.cp */; };
-		AF419AF60AE9CB1100E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AEE0AE9CB1100E19592 /* CPluginDLL.cp */; };
-		AF419AF80AE9CB1100E19592 /* CAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AF00AE9CB1100E19592 /* CAdbkIOPluginDLL.cp */; };
-		AF419AFA0AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AF20AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cp */; };
+		AF419AF50AE9CB1100E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AED0AE9CB1100E19592 /* PluginDLLmain.cpp */; };
+		AF419AF60AE9CB1100E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AEE0AE9CB1100E19592 /* CPluginDLL.cpp */; };
+		AF419AF80AE9CB1100E19592 /* CAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AF00AE9CB1100E19592 /* CAdbkIOPluginDLL.cpp */; };
+		AF419AFA0AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419AF20AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cpp */; };
 		AF65737F136CAA600088690F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF65737E136CAA600088690F /* Carbon.framework */; };
 		AFECC928176E0FF7006354FB /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECC927176E0FF7006354FB /* libPluginLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF419AE80AE9CB1100E19592 /* Eudora4AdbkIO.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Eudora4AdbkIO.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF419AED0AE9CB1100E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF419AEE0AE9CB1100E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419AED0AE9CB1100E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF419AEE0AE9CB1100E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419AEF0AE9CB1100E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419AF00AE9CB1100E19592 /* CAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cp; path = ../Common/CAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419AF00AE9CB1100E19592 /* CAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cpp; path = ../Common/CAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419AF10AE9CB1100E19592 /* CAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CAdbkIOPluginDLL.h; path = ../Common/CAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419AF20AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CEudora4AdbkIOPluginDLL.cp; path = sources/CEudora4AdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419AF20AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CEudora4AdbkIOPluginDLL.cpp; path = sources/CEudora4AdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419AF30AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CEudora4AdbkIOPluginDLL.h; path = sources/CEudora4AdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF419AF40AE9CB1100E19592 /* libPluginLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPluginLibrary.a; path = ../PluginLibrary/libPluginLibrary.a; sourceTree = SOURCE_ROOT; };
 		AF419B010AE9CB1200E19592 /* PluginDLLmain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginDLLmain.h; path = sources/PluginDLLmain.h; sourceTree = SOURCE_ROOT; };
@@ -68,13 +68,13 @@
 		AF419AEC0AE9CB1100E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF419AED0AE9CB1100E19592 /* PluginDLLmain.cp */,
+				AF419AED0AE9CB1100E19592 /* PluginDLLmain.cpp */,
 				AF419AEF0AE9CB1100E19592 /* CPluginDLL.h */,
-				AF419AEE0AE9CB1100E19592 /* CPluginDLL.cp */,
+				AF419AEE0AE9CB1100E19592 /* CPluginDLL.cpp */,
 				AF419AF10AE9CB1100E19592 /* CAdbkIOPluginDLL.h */,
-				AF419AF00AE9CB1100E19592 /* CAdbkIOPluginDLL.cp */,
+				AF419AF00AE9CB1100E19592 /* CAdbkIOPluginDLL.cpp */,
 				AF419AF30AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.h */,
-				AF419AF20AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cp */,
+				AF419AF20AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cpp */,
 				AF419AF40AE9CB1100E19592 /* libPluginLibrary.a */,
 			);
 			name = Main;
@@ -172,10 +172,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF419AF50AE9CB1100E19592 /* PluginDLLmain.cp in Sources */,
-				AF419AF60AE9CB1100E19592 /* CPluginDLL.cp in Sources */,
-				AF419AF80AE9CB1100E19592 /* CAdbkIOPluginDLL.cp in Sources */,
-				AF419AFA0AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cp in Sources */,
+				AF419AF50AE9CB1100E19592 /* PluginDLLmain.cpp in Sources */,
+				AF419AF60AE9CB1100E19592 /* CPluginDLL.cpp in Sources */,
+				AF419AF80AE9CB1100E19592 /* CAdbkIOPluginDLL.cpp in Sources */,
+				AF419AFA0AE9CB1100E19592 /* CEudora4AdbkIOPluginDLL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

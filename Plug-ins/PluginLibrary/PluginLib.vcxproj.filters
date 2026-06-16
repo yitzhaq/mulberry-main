@@ -15,70 +15,70 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Sources_Common\Utilities\base64.cp">
+    <None Include="..\..\Sources_Common\Utilities\base64.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CASCII.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CASCII.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\CCharsetManager.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\CCharsetManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\CCharSpecials.cp">
+    <None Include="..\..\Sources_Common\Utilities\CCharSpecials.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\CConverterBase.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\CConverterBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CConverterOneByte.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\OneByte\CConverterOneByte.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\cdstring.cp">
+    <None Include="..\..\Sources_Common\Utilities\cdstring.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\cdustring.cp">
+    <None Include="..\..\Sources_Common\Utilities\cdustring.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\char_stream.cp">
+    <None Include="..\..\Sources_Common\Utilities\char_stream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\CStringUtils.cp">
+    <None Include="..\..\Sources_Common\Utilities\CStringUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS2.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS2.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS4.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUCS4.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Mail\URLs\CURL.cp">
+    <None Include="..\..\Sources_Common\Mail\URLs\CURL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\CUStringUtils.cp">
+    <None Include="..\..\Sources_Common\Utilities\CUStringUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF16.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF16.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF8.cp">
+    <None Include="..\..\Sources_Common\i18n\Charsets\Converters\Unicode\CUTF8.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\diriterator.cp">
+    <None Include="..\..\Sources_Common\Utilities\diriterator.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\encrypt.cp">
+    <None Include="..\..\Sources_Common\Utilities\encrypt.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\os_dep.cp">
+    <None Include="..\Common\os_dep.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\quotedprintable.cp">
+    <None Include="..\..\Sources_Common\Utilities\quotedprintable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\strfind.cp">
+    <None Include="..\..\Sources_Common\Utilities\strfind.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\Sources_Common\Utilities\ustrfind.cp">
+    <None Include="..\..\Sources_Common\Utilities\ustrfind.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -166,7 +166,7 @@
     <ClCompile Include="..\CRAM-MD5\sources\md5\md5c.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

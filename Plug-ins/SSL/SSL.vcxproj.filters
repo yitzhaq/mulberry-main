@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\CPluginDLL.cp">
+    <None Include="..\Common\CPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CSSLPluginDLL.cp">
+    <None Include="sources\CSSLPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\os_dep.cp">
+    <None Include="..\Common\os_dep.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\PluginDLLmain.cp">
+    <None Include="..\Common\PluginDLLmain.cpp">
       <Filter>Source Files</Filter>
     </None>
     <None Include="SSL.def">
@@ -51,7 +51,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

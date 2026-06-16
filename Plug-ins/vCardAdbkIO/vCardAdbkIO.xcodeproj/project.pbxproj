@@ -7,28 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF4199570AE9A55A00E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994A0AE9A55A00E19592 /* PluginDLLmain.cp */; };
-		AF4199580AE9A55A00E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994B0AE9A55A00E19592 /* CPluginDLL.cp */; };
-		AF41995A0AE9A55A00E19592 /* CAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994D0AE9A55A00E19592 /* CAdbkIOPluginDLL.cp */; };
-		AF41995C0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994F0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cp */; };
-		AF41995E0AE9A55A00E19592 /* CVCardEngine.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199510AE9A55A00E19592 /* CVCardEngine.cp */; };
-		AF4199610AE9A55A00E19592 /* CVCard.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199530AE9A55A00E19592 /* CVCard.cp */; };
+		AF4199570AE9A55A00E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994A0AE9A55A00E19592 /* PluginDLLmain.cpp */; };
+		AF4199580AE9A55A00E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994B0AE9A55A00E19592 /* CPluginDLL.cpp */; };
+		AF41995A0AE9A55A00E19592 /* CAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994D0AE9A55A00E19592 /* CAdbkIOPluginDLL.cpp */; };
+		AF41995C0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF41994F0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cpp */; };
+		AF41995E0AE9A55A00E19592 /* CVCardEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199510AE9A55A00E19592 /* CVCardEngine.cpp */; };
+		AF4199610AE9A55A00E19592 /* CVCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF4199530AE9A55A00E19592 /* CVCard.cpp */; };
 		AF6573A1136CAC390088690F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF6573A0136CAC390088690F /* Carbon.framework */; };
 		AFECC934176E154B006354FB /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECC933176E154B006354FB /* libPluginLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF4199450AE9A55A00E19592 /* vCardAdbkIO.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = vCardAdbkIO.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF41994A0AE9A55A00E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF41994B0AE9A55A00E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF41994A0AE9A55A00E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF41994B0AE9A55A00E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF41994C0AE9A55A00E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF41994D0AE9A55A00E19592 /* CAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cp; path = ../Common/CAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF41994D0AE9A55A00E19592 /* CAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cpp; path = ../Common/CAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF41994E0AE9A55A00E19592 /* CAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CAdbkIOPluginDLL.h; path = ../Common/CAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF41994F0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CVCardAdbkIOPluginDLL.cp; path = sources/CVCardAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF41994F0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CVCardAdbkIOPluginDLL.cpp; path = sources/CVCardAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199500AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CVCardAdbkIOPluginDLL.h; path = sources/CVCardAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF4199510AE9A55A00E19592 /* CVCardEngine.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CVCardEngine.cp; path = sources/CVCardEngine.cp; sourceTree = SOURCE_ROOT; };
+		AF4199510AE9A55A00E19592 /* CVCardEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CVCardEngine.cpp; path = sources/CVCardEngine.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199520AE9A55A00E19592 /* CVCardEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CVCardEngine.h; path = sources/CVCardEngine.h; sourceTree = SOURCE_ROOT; };
-		AF4199530AE9A55A00E19592 /* CVCard.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CVCard.cp; path = sources/CVCard.cp; sourceTree = SOURCE_ROOT; };
+		AF4199530AE9A55A00E19592 /* CVCard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CVCard.cpp; path = sources/CVCard.cpp; sourceTree = SOURCE_ROOT; };
 		AF4199540AE9A55A00E19592 /* CVCard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CVCard.h; path = sources/CVCard.h; sourceTree = SOURCE_ROOT; };
 		AF4199550AE9A55A00E19592 /* CVCardItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CVCardItem.h; path = sources/CVCardItem.h; sourceTree = SOURCE_ROOT; };
 		AF4199560AE9A55A00E19592 /* libPluginLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPluginLibrary.a; path = ../PluginLibrary/libPluginLibrary.a; sourceTree = SOURCE_ROOT; };
@@ -77,17 +77,17 @@
 		AF4199490AE9A55A00E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF41994A0AE9A55A00E19592 /* PluginDLLmain.cp */,
+				AF41994A0AE9A55A00E19592 /* PluginDLLmain.cpp */,
 				AF41994C0AE9A55A00E19592 /* CPluginDLL.h */,
-				AF41994B0AE9A55A00E19592 /* CPluginDLL.cp */,
+				AF41994B0AE9A55A00E19592 /* CPluginDLL.cpp */,
 				AF41994E0AE9A55A00E19592 /* CAdbkIOPluginDLL.h */,
-				AF41994D0AE9A55A00E19592 /* CAdbkIOPluginDLL.cp */,
+				AF41994D0AE9A55A00E19592 /* CAdbkIOPluginDLL.cpp */,
 				AF4199500AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.h */,
-				AF41994F0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cp */,
+				AF41994F0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cpp */,
 				AF4199520AE9A55A00E19592 /* CVCardEngine.h */,
-				AF4199510AE9A55A00E19592 /* CVCardEngine.cp */,
+				AF4199510AE9A55A00E19592 /* CVCardEngine.cpp */,
 				AF4199540AE9A55A00E19592 /* CVCard.h */,
-				AF4199530AE9A55A00E19592 /* CVCard.cp */,
+				AF4199530AE9A55A00E19592 /* CVCard.cpp */,
 				AF4199550AE9A55A00E19592 /* CVCardItem.h */,
 				AF4199560AE9A55A00E19592 /* libPluginLibrary.a */,
 			);
@@ -187,12 +187,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF4199570AE9A55A00E19592 /* PluginDLLmain.cp in Sources */,
-				AF4199580AE9A55A00E19592 /* CPluginDLL.cp in Sources */,
-				AF41995A0AE9A55A00E19592 /* CAdbkIOPluginDLL.cp in Sources */,
-				AF41995C0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cp in Sources */,
-				AF41995E0AE9A55A00E19592 /* CVCardEngine.cp in Sources */,
-				AF4199610AE9A55A00E19592 /* CVCard.cp in Sources */,
+				AF4199570AE9A55A00E19592 /* PluginDLLmain.cpp in Sources */,
+				AF4199580AE9A55A00E19592 /* CPluginDLL.cpp in Sources */,
+				AF41995A0AE9A55A00E19592 /* CAdbkIOPluginDLL.cpp in Sources */,
+				AF41995C0AE9A55A00E19592 /* CVCardAdbkIOPluginDLL.cpp in Sources */,
+				AF41995E0AE9A55A00E19592 /* CVCardEngine.cpp in Sources */,
+				AF4199610AE9A55A00E19592 /* CVCard.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

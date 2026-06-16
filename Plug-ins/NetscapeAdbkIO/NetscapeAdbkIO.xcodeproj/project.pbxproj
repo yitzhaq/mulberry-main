@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF419A480AE9AA5C00E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A400AE9AA5C00E19592 /* PluginDLLmain.cp */; };
-		AF419A490AE9AA5C00E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A410AE9AA5C00E19592 /* CPluginDLL.cp */; };
-		AF419A4B0AE9AA5C00E19592 /* CAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A430AE9AA5C00E19592 /* CAdbkIOPluginDLL.cp */; };
-		AF419A4D0AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A450AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cp */; };
+		AF419A480AE9AA5C00E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A400AE9AA5C00E19592 /* PluginDLLmain.cpp */; };
+		AF419A490AE9AA5C00E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A410AE9AA5C00E19592 /* CPluginDLL.cpp */; };
+		AF419A4B0AE9AA5C00E19592 /* CAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A430AE9AA5C00E19592 /* CAdbkIOPluginDLL.cpp */; };
+		AF419A4D0AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419A450AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cpp */; };
 		AF65738B136CAAFA0088690F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF65738A136CAAFA0088690F /* Carbon.framework */; };
 		AFECC92C176E117C006354FB /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECC92B176E117C006354FB /* libPluginLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AF419A3B0AE9AA5B00E19592 /* NetscapeAdbkIO.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NetscapeAdbkIO.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF419A400AE9AA5C00E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF419A410AE9AA5C00E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419A400AE9AA5C00E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF419A410AE9AA5C00E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419A420AE9AA5C00E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419A430AE9AA5C00E19592 /* CAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cp; path = ../Common/CAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419A430AE9AA5C00E19592 /* CAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CAdbkIOPluginDLL.cpp; path = ../Common/CAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419A440AE9AA5C00E19592 /* CAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CAdbkIOPluginDLL.h; path = ../Common/CAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419A450AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CNetscapeAdbkIOPluginDLL.cp; path = sources/CNetscapeAdbkIOPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419A450AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CNetscapeAdbkIOPluginDLL.cpp; path = sources/CNetscapeAdbkIOPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419A460AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CNetscapeAdbkIOPluginDLL.h; path = sources/CNetscapeAdbkIOPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF419A470AE9AA5C00E19592 /* libPluginLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPluginLibrary.a; path = ../PluginLibrary/libPluginLibrary.a; sourceTree = SOURCE_ROOT; };
 		AF419A520AE9AA5E00E19592 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -71,13 +71,13 @@
 		AF419A3F0AE9AA5C00E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF419A400AE9AA5C00E19592 /* PluginDLLmain.cp */,
+				AF419A400AE9AA5C00E19592 /* PluginDLLmain.cpp */,
 				AF419A420AE9AA5C00E19592 /* CPluginDLL.h */,
-				AF419A410AE9AA5C00E19592 /* CPluginDLL.cp */,
+				AF419A410AE9AA5C00E19592 /* CPluginDLL.cpp */,
 				AF419A440AE9AA5C00E19592 /* CAdbkIOPluginDLL.h */,
-				AF419A430AE9AA5C00E19592 /* CAdbkIOPluginDLL.cp */,
+				AF419A430AE9AA5C00E19592 /* CAdbkIOPluginDLL.cpp */,
 				AF419A460AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.h */,
-				AF419A450AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cp */,
+				AF419A450AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cpp */,
 				AF419A470AE9AA5C00E19592 /* libPluginLibrary.a */,
 			);
 			name = Main;
@@ -177,10 +177,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF419A480AE9AA5C00E19592 /* PluginDLLmain.cp in Sources */,
-				AF419A490AE9AA5C00E19592 /* CPluginDLL.cp in Sources */,
-				AF419A4B0AE9AA5C00E19592 /* CAdbkIOPluginDLL.cp in Sources */,
-				AF419A4D0AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cp in Sources */,
+				AF419A480AE9AA5C00E19592 /* PluginDLLmain.cpp in Sources */,
+				AF419A490AE9AA5C00E19592 /* CPluginDLL.cpp in Sources */,
+				AF419A4B0AE9AA5C00E19592 /* CAdbkIOPluginDLL.cpp in Sources */,
+				AF419A4D0AE9AA5C00E19592 /* CNetscapeAdbkIOPluginDLL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

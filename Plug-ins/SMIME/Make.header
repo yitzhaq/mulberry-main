@@ -36,6 +36,6 @@ VPATH := sources:\
 		../Common:\
 		../../Sources_Common/Plugins/SSL
 		
-$.${BIN}/%.o %.o: %.cp
+$.${BIN}/%.o %.o: %.cpp
 	@ echo "    ---- Compiling $< (C++)"
 	 $(CPP) $(CFLAGS) -c -o $@ $<

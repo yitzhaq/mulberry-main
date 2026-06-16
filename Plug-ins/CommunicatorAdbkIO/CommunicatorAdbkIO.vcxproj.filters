@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\CAdbkIOPluginDLL.cp">
+    <None Include="..\Common\CAdbkIOPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CCommAdbkIOPluginDLL.cp">
+    <None Include="sources\CCommAdbkIOPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CPluginDLL.cp">
+    <None Include="..\Common\CPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\PluginDLLmain.cp">
+    <None Include="..\Common\PluginDLLmain.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClCompile Include="sources\line64win.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

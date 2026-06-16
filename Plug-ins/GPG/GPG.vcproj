@@ -349,23 +349,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\sources\CGPGPluginDLL.cp"
+				RelativePath=".\sources\CGPGPluginDLL.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Common\CPluginDLL.cp"
+				RelativePath="..\Common\CPluginDLL.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Common\CSecurityPluginDLL.cp"
+				RelativePath="..\Common\CSecurityPluginDLL.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Win32\Sources\Support\CUnicodeStdLib.cp"
+				RelativePath="..\..\Win32\Sources\Support\CUnicodeStdLib.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Common\MulberryPrefixWin32.cp"
+				RelativePath="..\Common\MulberryPrefixWin32.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -401,7 +401,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Common\PluginDLLmain.cp"
+				RelativePath="..\Common\PluginDLLmain.cpp"
 				>
 			</File>
 		</Filter>

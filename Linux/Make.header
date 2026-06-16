@@ -95,13 +95,13 @@ JXLINK =	${JX_LDFLAGS} \
 
 DEPENDFLAGS = ${CFLAGS}
 MAKEMAKE = makemake
-$./%.o %.o: %.cp
+$./%.o %.o: %.cpp
 	@ echo "    ---- Compiling $< (C++)"
 	 $(CPP) $(CFLAGS) -c -o $@ $<
   
 $./%.h %.h: %.fd
 	@ echo "    ---- Generating $< from resource (jxlayout)"
-	jxlayout -cs .cp -cp $(@D) $<
+	jxlayout -cs .cpp -cp $(@D) $<
 
 MULINCS = ${JX_INC} -I./Resources \
 -I./Help \
@@ -128,13 +128,13 @@ nodebug:
 staticnodebug:
 	@${MAKE} "BUILD_STATIC=1" "BUILD_NODEBUG=1" all
 
-Sources/Support/HResourceMap.o: Sources/Support/HResourceMap.cp Resources/xpms.res Resources/xpms.cp
+Sources/Support/HResourceMap.o: Sources/Support/HResourceMap.cpp Resources/xpms.res Resources/xpms.cpp
 
 Resources/xmps.res: resources/iconlist.txt
 	Resources/makeresxpms < Resources/iconlist.txt > Resources/xpms.res
 
-Resources/xmps.cp: resources/iconlist.txt
-	Resources/makeresinitxpms < Resources/iconlist.txt > Resources/xpms.cp
+Resources/xmps.cpp: resources/iconlist.txt
+	Resources/makeresinitxpms < Resources/iconlist.txt > Resources/xpms.cpp
 
 ../Plug-ins/CRAM-MD5/sources/md5/md5c.o: ../Plug-ins/CRAM-MD5/sources/md5/md5c.c ../Plug-ins/CRAM-MD5/sources/md5/md5.h
 	 $(CC) -c -o $@ $<

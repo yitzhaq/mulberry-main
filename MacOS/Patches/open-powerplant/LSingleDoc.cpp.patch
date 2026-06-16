@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LSingleDoc.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LSingleDoc.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LSingleDoc.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LSingleDoc.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LSingleDoc.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Commander Classes/LSingleDoc.cpp	(working copy)
 @@ -23,6 +23,8 @@
  #include <AEObjects.h>
  #include <AEPackObject.h>

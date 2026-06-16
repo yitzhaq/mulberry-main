@@ -200,17 +200,17 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\Win32\Sources\Support\CUnicodeStdLib.cp" />
-    <None Include="..\Common\CPluginDLL.cp" />
-    <None Include="..\Common\CSecurityPluginDLL.cp" />
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <None Include="..\..\Win32\Sources\Support\CUnicodeStdLib.cpp" />
+    <None Include="..\Common\CPluginDLL.cpp" />
+    <None Include="..\Common\CSecurityPluginDLL.cpp" />
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <None Include="..\Common\PluginDLLmain.cp" />
-    <None Include="sources\CGPGPluginDLL.cp" />
+    <None Include="..\Common\PluginDLLmain.cpp" />
+    <None Include="sources\CGPGPluginDLL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Win32\Sources\Support\CUnicodeStdLib.h" />

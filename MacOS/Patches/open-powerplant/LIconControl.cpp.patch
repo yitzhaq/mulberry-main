@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LIconControl.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LIconControl.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LIconControl.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LIconControl.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LIconControl.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Appearance Classes/Appearance Controls/LIconControl.cpp	(working copy)
 @@ -24,7 +24,8 @@
  	LStream*	inStream,
  	ClassIDT	inImpID)

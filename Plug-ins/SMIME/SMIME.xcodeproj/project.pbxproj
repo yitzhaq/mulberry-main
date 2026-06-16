@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF419D140AEA700500E19592 /* PluginDLLmain.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D0B0AEA700500E19592 /* PluginDLLmain.cp */; };
-		AF419D150AEA700500E19592 /* CPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D0C0AEA700500E19592 /* CPluginDLL.cp */; };
-		AF419D170AEA700500E19592 /* CSecurityPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D0E0AEA700500E19592 /* CSecurityPluginDLL.cp */; };
-		AF419D190AEA700500E19592 /* CSMIMEPluginDLL.cp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D100AEA700500E19592 /* CSMIMEPluginDLL.cp */; };
+		AF419D140AEA700500E19592 /* PluginDLLmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D0B0AEA700500E19592 /* PluginDLLmain.cpp */; };
+		AF419D150AEA700500E19592 /* CPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D0C0AEA700500E19592 /* CPluginDLL.cpp */; };
+		AF419D170AEA700500E19592 /* CSecurityPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D0E0AEA700500E19592 /* CSecurityPluginDLL.cpp */; };
+		AF419D190AEA700500E19592 /* CSMIMEPluginDLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF419D100AEA700500E19592 /* CSMIMEPluginDLL.cpp */; };
 		AF65739A136CABD40088690F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF657398136CABD40088690F /* Carbon.framework */; };
 		AF65739B136CABD40088690F /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AF657399136CABD40088690F /* libcrypto.dylib */; };
 		AFECC932176E13BF006354FB /* libPluginLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECC931176E13BF006354FB /* libPluginLibrary.a */; };
@@ -18,12 +18,12 @@
 
 /* Begin PBXFileReference section */
 		AF419D060AEA700500E19592 /* SMIME.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SMIME.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF419D0B0AEA700500E19592 /* PluginDLLmain.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cp; path = ../Common/PluginDLLmain.cp; sourceTree = SOURCE_ROOT; };
-		AF419D0C0AEA700500E19592 /* CPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cp; path = ../Common/CPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419D0B0AEA700500E19592 /* PluginDLLmain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDLLmain.cpp; path = ../Common/PluginDLLmain.cpp; sourceTree = SOURCE_ROOT; };
+		AF419D0C0AEA700500E19592 /* CPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CPluginDLL.cpp; path = ../Common/CPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419D0D0AEA700500E19592 /* CPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CPluginDLL.h; path = ../Common/CPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419D0E0AEA700500E19592 /* CSecurityPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSecurityPluginDLL.cp; path = ../Common/CSecurityPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419D0E0AEA700500E19592 /* CSecurityPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSecurityPluginDLL.cpp; path = ../Common/CSecurityPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419D0F0AEA700500E19592 /* CSecurityPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CSecurityPluginDLL.h; path = ../Common/CSecurityPluginDLL.h; sourceTree = SOURCE_ROOT; };
-		AF419D100AEA700500E19592 /* CSMIMEPluginDLL.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSMIMEPluginDLL.cp; path = sources/CSMIMEPluginDLL.cp; sourceTree = SOURCE_ROOT; };
+		AF419D100AEA700500E19592 /* CSMIMEPluginDLL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CSMIMEPluginDLL.cpp; path = sources/CSMIMEPluginDLL.cpp; sourceTree = SOURCE_ROOT; };
 		AF419D110AEA700500E19592 /* CSMIMEPluginDLL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CSMIMEPluginDLL.h; path = sources/CSMIMEPluginDLL.h; sourceTree = SOURCE_ROOT; };
 		AF419D120AEA700500E19592 /* CCertificateManagerCOM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCertificateManagerCOM.h; path = ../../Sources_Common/Plugins/SSL/CCertificateManagerCOM.h; sourceTree = SOURCE_ROOT; };
 		AF419D130AEA700500E19592 /* libPluginLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPluginLibrary.a; path = ../PluginLibrary/libPluginLibrary.a; sourceTree = SOURCE_ROOT; };
@@ -75,13 +75,13 @@
 		AF419D0A0AEA700500E19592 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AF419D0B0AEA700500E19592 /* PluginDLLmain.cp */,
+				AF419D0B0AEA700500E19592 /* PluginDLLmain.cpp */,
 				AF419D0D0AEA700500E19592 /* CPluginDLL.h */,
-				AF419D0C0AEA700500E19592 /* CPluginDLL.cp */,
+				AF419D0C0AEA700500E19592 /* CPluginDLL.cpp */,
 				AF419D0F0AEA700500E19592 /* CSecurityPluginDLL.h */,
-				AF419D0E0AEA700500E19592 /* CSecurityPluginDLL.cp */,
+				AF419D0E0AEA700500E19592 /* CSecurityPluginDLL.cpp */,
 				AF419D110AEA700500E19592 /* CSMIMEPluginDLL.h */,
-				AF419D100AEA700500E19592 /* CSMIMEPluginDLL.cp */,
+				AF419D100AEA700500E19592 /* CSMIMEPluginDLL.cpp */,
 				AF419D120AEA700500E19592 /* CCertificateManagerCOM.h */,
 				AF419D130AEA700500E19592 /* libPluginLibrary.a */,
 				AF419D510AEA714900E19592 /* libcrypto.dylib */,
@@ -185,10 +185,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF419D140AEA700500E19592 /* PluginDLLmain.cp in Sources */,
-				AF419D150AEA700500E19592 /* CPluginDLL.cp in Sources */,
-				AF419D170AEA700500E19592 /* CSecurityPluginDLL.cp in Sources */,
-				AF419D190AEA700500E19592 /* CSMIMEPluginDLL.cp in Sources */,
+				AF419D140AEA700500E19592 /* PluginDLLmain.cpp in Sources */,
+				AF419D150AEA700500E19592 /* CPluginDLL.cpp in Sources */,
+				AF419D170AEA700500E19592 /* CSecurityPluginDLL.cpp in Sources */,
+				AF419D190AEA700500E19592 /* CSMIMEPluginDLL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

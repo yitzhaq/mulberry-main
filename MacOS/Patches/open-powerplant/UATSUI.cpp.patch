@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Text Classes/UATSUI.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Text Classes/UATSUI.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Text Classes/UATSUI.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Text Classes/UATSUI.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Text Classes/UATSUI.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Text Classes/UATSUI.cpp	(working copy)
 @@ -533,7 +533,7 @@
  	do {
  		lineStart = lineBreak;

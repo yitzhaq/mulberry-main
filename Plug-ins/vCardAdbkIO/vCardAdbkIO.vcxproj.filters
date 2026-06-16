@@ -15,22 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\CAdbkIOPluginDLL.cp">
+    <None Include="..\Common\CAdbkIOPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\CPluginDLL.cp">
+    <None Include="..\Common\CPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CVCard.cp">
+    <None Include="sources\CVCard.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CVCardAdbkIOPluginDLL.cp">
+    <None Include="sources\CVCardAdbkIOPluginDLL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\CVCardEngine.cp">
+    <None Include="sources\CVCardEngine.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Common\PluginDLLmain.cp">
+    <None Include="..\Common\PluginDLLmain.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -69,7 +69,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

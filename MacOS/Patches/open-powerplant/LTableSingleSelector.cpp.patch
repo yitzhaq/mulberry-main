@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableSingleSelector.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableSingleSelector.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableSingleSelector.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableSingleSelector.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableSingleSelector.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Table Classes/LTableSingleSelector.cpp	(working copy)
 @@ -80,6 +80,31 @@
  	return mSelectedCell.row;
  }

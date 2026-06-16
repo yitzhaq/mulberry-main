@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/Action Classes/LUndoer.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/Action Classes/LUndoer.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/Action Classes/LUndoer.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/Action Classes/LUndoer.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/Action Classes/LUndoer.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/Action Classes/LUndoer.cpp	(working copy)
 @@ -86,8 +86,13 @@
  			SCommandStatus *status = static_cast<SCommandStatus*> (ioParam);
  

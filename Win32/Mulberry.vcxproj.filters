@@ -3545,2254 +3545,2254 @@
     <None Include="resources\MulberryTips.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\base64.cp">
+    <None Include="..\sources_common\utilities\base64.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\accounts\C3PaneAccounts.cp">
+    <None Include="sources\application\three pane\accounts\C3PaneAccounts.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneAdbkToolbar.cp">
+    <None Include="sources\application\three pane\C3PaneAdbkToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\preview\C3PaneAddress.cp">
+    <None Include="sources\application\three pane\preview\C3PaneAddress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\items\C3PaneAddressBook.cp">
+    <None Include="sources\application\three pane\items\C3PaneAddressBook.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\items\C3PaneCalendar.cp">
+    <None Include="sources\application\three pane\items\C3PaneCalendar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\accounts\C3PaneCalendarAccount.cp">
+    <None Include="sources\application\three pane\accounts\C3PaneCalendarAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneCalendarToolbar.cp">
+    <None Include="sources\application\three pane\C3PaneCalendarToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\accounts\C3PaneContactsAccount.cp">
+    <None Include="sources\application\three pane\accounts\C3PaneContactsAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneDoc.cp">
+    <None Include="sources\application\three pane\C3PaneDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\preview\C3PaneEvent.cp">
+    <None Include="sources\application\three pane\preview\C3PaneEvent.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneFrame.cp">
+    <None Include="sources\application\three pane\C3PaneFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\items\C3PaneItems.cp">
+    <None Include="sources\application\three pane\items\C3PaneItems.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\items\C3PaneItemsTabs.cp">
+    <None Include="sources\application\three pane\items\C3PaneItemsTabs.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\accounts\C3PaneMailAccount.cp">
+    <None Include="sources\application\three pane\accounts\C3PaneMailAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\items\C3PaneMailbox.cp">
+    <None Include="sources\application\three pane\items\C3PaneMailbox.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneMailboxToolbar.cp">
+    <None Include="sources\application\three pane\C3PaneMailboxToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneMainPanel.cp">
+    <None Include="sources\application\three pane\C3PaneMainPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\preview\C3PaneMessage.cp">
+    <None Include="sources\application\three pane\preview\C3PaneMessage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\three_pane\C3PaneOptions.cp">
+    <None Include="..\sources_common\application\three_pane\C3PaneOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PanePanel.cp">
+    <None Include="sources\application\three pane\C3PanePanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneParentPanel.cp">
+    <None Include="sources\application\three pane\C3PaneParentPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\preview\C3PanePreview.cp">
+    <None Include="sources\application\three pane\preview\C3PanePreview.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneViewPanel.cp">
+    <None Include="sources\application\three pane\C3PaneViewPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\C3PaneWindow.cp">
+    <None Include="sources\application\three pane\C3PaneWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CAboutBox.cp">
+    <None Include="sources\application\general\CAboutBox.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\general\CAboutPluginsDialog.cp">
+    <None Include="sources\plugins\general\CAboutPluginsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\acap\CACAPClient.cp">
+    <None Include="..\sources_common\mail\inet_clients\acap\CACAPClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\ssl\CAcceptCertDialog.cp">
+    <None Include="sources\plugins\ssl\CAcceptCertDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\extensions\CACL.cp">
+    <None Include="..\sources_common\mail\extensions\CACL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CACLStylePopup.cp">
+    <None Include="sources\application\server\mailbox_properties\CACLStylePopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CACLTable.cp">
+    <None Include="sources\application\server\mailbox_properties\CACLTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CACLTitleTable.cp">
+    <None Include="sources\application\server\mailbox_properties\CACLTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filtering\CActionItem.cp">
+    <None Include="..\sources_common\mail\filtering\CActionItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\automation\CActionManager.cp">
+    <None Include="..\sources_common\automation\CActionManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CActionRecorder.cp">
+    <None Include="..\sources_common\offline\recording\CActionRecorder.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\extensions\CAdbkACL.cp">
+    <None Include="..\sources_common\mail\extensions\CAdbkACL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CAdbkAction.cp">
+    <None Include="..\sources_common\offline\recording\CAdbkAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\address\CAdbkAddress.cp">
+    <None Include="..\sources_common\mail\address\CAdbkAddress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\addressbooks\CAdbkIOPlugin.cp">
+    <None Include="..\sources_common\plugins\addressbooks\CAdbkIOPlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\CAdbkManagerDoc.cp">
+    <None Include="sources\application\address_book_manager\CAdbkManagerDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\CAdbkManagerFrame.cp">
+    <None Include="sources\application\address_book_manager\CAdbkManagerFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\CAdbkManagerTable.cp">
+    <None Include="sources\application\address_book_manager\CAdbkManagerTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\address_book_manager\CAdbkManagerTableCommon.cp">
+    <None Include="..\sources_common\application\address_book_manager\CAdbkManagerTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\CAdbkManagerTitleTable.cp">
+    <None Include="sources\application\address_book_manager\CAdbkManagerTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\CAdbkManagerToolbar.cp">
+    <None Include="sources\application\address_book_manager\CAdbkManagerToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\CAdbkManagerView.cp">
+    <None Include="sources\application\address_book_manager\CAdbkManagerView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\address_book_manager\CAdbkManagerViewCommon.cp">
+    <None Include="..\sources_common\application\address_book_manager\CAdbkManagerViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\CAdbkManagerWindow.cp">
+    <None Include="sources\application\address_book_manager\CAdbkManagerWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\address_book_properties\CAdbkPropDialog.cp">
+    <None Include="sources\application\address_book_manager\address_book_properties\CAdbkPropDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\CAdbkProtocol.cp">
+    <None Include="..\sources_common\mail\protocols\CAdbkProtocol.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CAdbkRecord.cp">
+    <None Include="..\sources_common\offline\recording\CAdbkRecord.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_search\CAdbkSearchDoc.cp">
+    <None Include="sources\application\address_search\CAdbkSearchDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_search\CAdbkSearchFrame.cp">
+    <None Include="sources\application\address_search\CAdbkSearchFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_search\CAdbkSearchTable.cp">
+    <None Include="sources\application\address_search\CAdbkSearchTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_search\CAdbkSearchTitleTable.cp">
+    <None Include="sources\application\address_search\CAdbkSearchTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_search\CAdbkSearchWindow.cp">
+    <None Include="sources\application\address_search\CAdbkSearchWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_search\CAdbkServerPopup.cp">
+    <None Include="sources\application\address_search\CAdbkServerPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\address\CAddress.cp">
+    <None Include="..\sources_common\mail\address\CAddress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CAddressAccount.cp">
+    <None Include="..\sources_common\application\preferences\CAddressAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\addressbook\CAddressBook.cp">
+    <None Include="..\sources_common\mail\addressbook\CAddressBook.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressBookDoc.cp">
+    <None Include="sources\application\address_book\CAddressBookDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressBookDocTemplate.cp">
+    <None Include="sources\application\address_book\CAddressBookDocTemplate.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressBookFrame.cp">
+    <None Include="sources\application\address_book\CAddressBookFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\addressbook\CAddressBookManager.cp">
+    <None Include="..\sources_common\mail\addressbook\CAddressBookManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressBookTitleTable.cp">
+    <None Include="sources\application\address_book\CAddressBookTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressBookToolbar.cp">
+    <None Include="sources\application\address_book\CAddressBookToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressBookView.cp">
+    <None Include="sources\application\address_book\CAddressBookView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\address_book\CAddressBookViewCommon.cp">
+    <None Include="..\sources_common\application\address_book\CAddressBookViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressBookWindow.cp">
+    <None Include="sources\application\address_book\CAddressBookWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\address\CAddressComparators.cp">
+    <None Include="..\sources_common\mail\address\CAddressComparators.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressContactPanel.cp">
+    <None Include="sources\application\address_book\CAddressContactPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CAddressDisplay.cp">
+    <None Include="sources\application\letter\CAddressDisplay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Address_Book\CAddressFieldBase.cp">
+    <None Include="Sources\Application\Address_Book\CAddressFieldBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Address_Book\CAddressFieldContainer.cp">
+    <None Include="Sources\Application\Address_Book\CAddressFieldContainer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Address_Book\CAddressFieldMultiLine.cp">
+    <None Include="Sources\Application\Address_Book\CAddressFieldMultiLine.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Address_Book\CAddressFieldSubContainer.cp">
+    <None Include="Sources\Application\Address_Book\CAddressFieldSubContainer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Address_Book\CAddressFieldText.cp">
+    <None Include="Sources\Application\Address_Book\CAddressFieldText.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressGroupAction.cp">
+    <None Include="sources\application\address_book\CAddressGroupAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\address\CAddressList.cp">
+    <None Include="..\sources_common\mail\address\CAddressList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressNotesPanel.cp">
+    <None Include="sources\application\address_book\CAddressNotesPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressPanelBase.cp">
+    <None Include="sources\application\address_book\CAddressPanelBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\options dialog\CAddressPaneOptions.cp">
+    <None Include="sources\application\three pane\options dialog\CAddressPaneOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressPersonalPanel.cp">
+    <None Include="sources\application\address_book\CAddressPersonalPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressPreview.cp">
+    <None Include="sources\application\address_book\CAddressPreview.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Address_Book\CAddressPreviewAdvanced.cp">
+    <None Include="Sources\Application\Address_Book\CAddressPreviewAdvanced.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressTable.cp">
+    <None Include="sources\application\address_book\CAddressTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressTableAction.cp">
+    <None Include="sources\application\address_book\CAddressTableAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CAddressView.cp">
+    <None Include="sources\application\address_book\CAddressView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\three_pane\CAddressViewOptions.cp">
+    <None Include="..\sources_common\application\three_pane\CAddressViewOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CAdmin.cp">
+    <None Include="..\sources_common\application\preferences\CAdmin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CAdminLock.cp">
+    <None Include="..\sources_common\application\preferences\CAdminLock.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\CAFFilter.cp">
+    <None Include="..\sources_common\mail\filters\CAFFilter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CAliasAttachment.cp">
+    <None Include="..\sources_common\mail\attachments\CAliasAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\CApplyRulesMenu.cp">
+    <None Include="sources\application\rules\CApplyRulesMenu.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\onebyte\CASCII.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\onebyte\CASCII.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CAttachment.cp">
+    <None Include="..\sources_common\mail\attachments\CAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CAttachmentList.cp">
+    <None Include="..\sources_common\mail\attachments\CAttachmentList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\control\CAttachmentManager.cp">
+    <None Include="..\sources_common\mail\control\CAttachmentManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CAttendeeTable.cp">
+    <None Include="sources\application\calendar\component_editing\CAttendeeTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CAuthenticator.cp">
+    <None Include="..\sources_common\application\preferences\CAuthenticator.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\authentication\CAuthPlugin.cp">
+    <None Include="..\sources_common\plugins\authentication\CAuthPlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\windows\CBaseView.cp">
+    <None Include="sources\application\windows\CBaseView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CBig5.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CBig5.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\CBinHexFilter.cp">
+    <None Include="..\sources_common\mail\filters\CBinHexFilter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CBlockOptionsMap.cp">
+    <None Include="..\sources_common\application\preferences\CBlockOptionsMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CBodyTable.cp">
+    <None Include="sources\application\message\CBodyTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\action dialogs\CBounceActionDialog.cp">
+    <None Include="sources\application\rules\action dialogs\CBounceActionDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CBroadcaster.cp">
+    <None Include="..\sources_common\utilities\CBroadcaster.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\browse_dialog\CBrowseMailboxDialog.cp">
+    <None Include="sources\application\server\browse_dialog\CBrowseMailboxDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CCacheMessageDialog.cp">
+    <None Include="sources\application\other_dialogs\CCacheMessageDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CCalendarAccount.cp">
+    <None Include="..\sources_common\application\preferences\CCalendarAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\extensions\CCalendarACL.cp">
+    <None Include="..\sources_common\mail\extensions\CCalendarACL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CCalendarAction.cp">
+    <None Include="..\sources_common\offline\recording\CCalendarAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Mail\Address\CCalendarAddress.cp">
+    <None Include="..\Sources_Common\Mail\Address\CCalendarAddress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Calendar\Component_Editing\CCalendarAddressDisplay.cp">
+    <None Include="Sources\Application\Calendar\Component_Editing\CCalendarAddressDisplay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Mail\Control\CCalendarCheckThread.cp">
+    <None Include="..\Sources_Common\Mail\Control\CCalendarCheckThread.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarDoc.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarETBaseCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarETBaseCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarEventBase.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarEventBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarEventBaseCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarEventBaseCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarEventTableBase.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarEventTableBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarFrame.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\options dialog\CCalendarPaneOptions.cp">
+    <None Include="sources\application\three pane\options dialog\CCalendarPaneOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\utilities\CCalendarPopup.cp">
+    <None Include="sources\application\calendar\utilities\CCalendarPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_properties\CCalendarPropDialog.cp">
+    <None Include="sources\application\calendar\calendar_properties\CCalendarPropDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CCalendarRecord.cp">
+    <None Include="..\sources_common\offline\recording\CCalendarRecord.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreDoc.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreFrame.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTable.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTableCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTitleTable.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreToolbar.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreView.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreViewCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\calendar_store_view\CCalendarStoreViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreWindow.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_store_view\CCalendarStoreWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarTableBase.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarTableBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarToolbar.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\utilities\CCalendarUtils.cp">
+    <None Include="sources\application\calendar\utilities\CCalendarUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarView.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarViewBase.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarViewBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewBaseCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewBaseCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\three_pane\CCalendarViewOptions.cp">
+    <None Include="..\sources_common\application\three_pane\CCalendarViewOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarViewPrintout.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarViewPrintout.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarWindow.cp">
+    <None Include="sources\application\calendar\calendar_view\calendar_window\CCalendarWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarWindowCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\calendar_window\CCalendarWindowCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\status\CCancelDialog.cp">
+    <None Include="sources\application\status\CCancelDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\message\CCaptionParser.cp">
+    <None Include="..\sources_common\mail\message\CCaptionParser.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\ssl\CCertificate.cp">
+    <None Include="..\sources_common\plugins\ssl\CCertificate.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\ssl\CCertificateManager.cp">
+    <None Include="..\sources_common\plugins\ssl\CCertificateManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\ssl\CCertificateStore.cp">
+    <None Include="..\sources_common\plugins\ssl\CCertificateStore.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\ssl\CCertificateStoreDir.cp">
+    <None Include="..\sources_common\plugins\ssl\CCertificateStoreDir.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\ssl\CCertManagerDialog.cp">
+    <None Include="sources\plugins\ssl\CCertManagerDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CChangePswdAcctDialog.cp">
+    <None Include="sources\application\other_dialogs\CChangePswdAcctDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CChangePswdDialog.cp">
+    <None Include="sources\application\other_dialogs\CChangePswdDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\CCharsetManager.cp">
+    <None Include="..\sources_common\i18n\charsets\CCharsetManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CCharSpecials.cp">
+    <None Include="..\sources_common\utilities\CCharSpecials.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\dialogs\CChooseDateDialog.cp">
+    <None Include="sources\application\calendar\dialogs\CChooseDateDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CChooseServersDialog.cp">
+    <None Include="sources\application\other_dialogs\CChooseServersDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CCJKBase.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CCJKBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CClearNodeTree.cp">
+    <None Include="sources\support\table\CClearNodeTree.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CClickElement.cp">
+    <None Include="..\sources_common\formatting\CClickElement.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CClickList.cp">
+    <None Include="..\sources_common\formatting\CClickList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CCmdBackground.cp">
+    <None Include="sources\support\CCmdBackground.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\text\CCmdEdit.cp">
+    <None Include="sources\support\text\CCmdEdit.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\text\CCmdEditView.cp">
+    <None Include="sources\support\text\CCmdEditView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CColorButton.cp">
+    <None Include="sources\support\CColorButton.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CColorMenu.cp">
+    <None Include="sources\formatting\CColorMenu.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CCommander.cp">
+    <None Include="sources\support\CCommander.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CCommanderProtect.cp">
+    <None Include="sources\support\CCommanderProtect.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\options dialog\CCommonViewOptions.cp">
+    <None Include="sources\application\three pane\options dialog\CCommonViewOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\configuration\CConfigPlugin.cp">
+    <None Include="..\sources_common\plugins\configuration\CConfigPlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\control\CConnectionManager.cp">
+    <None Include="..\sources_common\mail\control\CConnectionManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CContainerView.cp">
+    <None Include="sources\support\CContainerView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CContainerWnd.cp">
+    <None Include="sources\support\CContainerWnd.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\CConverterBase.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\CConverterBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\onebyte\CConverterOneByte.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\onebyte\CConverterOneByte.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CCopyToMenu.cp">
+    <None Include="sources\application\message\CCopyToMenu.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\extras\CCreateAccountDialog.cp">
+    <None Include="sources\application\preferences_dialog\extras\CCreateAccountDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CCreateAdbkDialog.cp">
+    <None Include="sources\application\other_dialogs\CCreateAdbkDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\dialogs\CCreateCalendarDialog.cp">
+    <None Include="sources\application\calendar\dialogs\CCreateCalendarDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\CCreateFileFilter.cp">
+    <None Include="..\sources_common\mail\filters\CCreateFileFilter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\dialogs\CCreateMailboxDialog.cp">
+    <None Include="sources\application\server\dialogs\CCreateMailboxDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CCriteriaBase.cp">
+    <None Include="sources\application\search\CCriteriaBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CDataAttachment.cp">
+    <None Include="..\sources_common\mail\attachments\CDataAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\automation\CDataItem.cp">
+    <None Include="..\sources_common\automation\CDataItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CDateControl.cp">
+    <None Include="sources\support\CDateControl.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CDateTimeZoneSelect.cp">
+    <None Include="sources\application\calendar\component_editing\CDateTimeZoneSelect.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayEvent.cp">
+    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayEvent.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekTable.cp">
+    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekTableCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekTitleTable.cp">
+    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekView.cp">
+    <None Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekViewCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\day_week_view\CDayWeekViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\cdcond.cp">
+    <None Include="..\sources_common\utilities\cdcond.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CDefaultOptionsMap.cp">
+    <None Include="..\sources_common\application\preferences\CDefaultOptionsMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CDeleteACLStyleDialog.cp">
+    <None Include="sources\application\server\mailbox_properties\CDeleteACLStyleDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CDeleteIdentityDialog.cp">
+    <None Include="sources\application\letter\CDeleteIdentityDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CDesktopIcons.cp">
+    <None Include="sources\support\CDesktopIcons.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\spelling\CDictionaryPageList.cp">
+    <None Include="sources\plugins\spelling\CDictionaryPageList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CDisconnectDialog.cp">
+    <None Include="sources\application\other_dialogs\CDisconnectDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CDisconnectListPanel.cp">
+    <None Include="sources\application\other_dialogs\CDisconnectListPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CDisplayFormatter.cp">
+    <None Include="sources\formatting\CDisplayFormatter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CDisplayItem.cp">
+    <None Include="..\sources_common\application\preferences\CDisplayItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\ssl\CDLLFunctions.cp">
+    <None Include="..\sources_common\plugins\ssl\CDLLFunctions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\cdmutex.cp">
+    <None Include="..\sources_common\utilities\cdmutex.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\cdomutex.cp">
+    <None Include="..\sources_common\utilities\cdomutex.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\tasks\CDragTasks.cp">
+    <None Include="..\sources_common\tasks\CDragTasks.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CDrawUtils.cp">
+    <None Include="sources\support\CDrawUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CDSN.cp">
+    <None Include="..\sources_common\application\preferences\CDSN.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\cdstring.cp">
+    <None Include="..\sources_common\utilities\cdstring.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\cdthread.cp">
+    <None Include="..\sources_common\utilities\cdthread.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CDurationSelect.cp">
+    <None Include="sources\application\calendar\component_editing\CDurationSelect.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\cdustring.cp">
+    <None Include="..\sources_common\utilities\cdustring.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CDynamicMenu.cp">
+    <None Include="sources\application\general\CDynamicMenu.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CEditAddressDialog.cp">
+    <None Include="sources\application\address_book\CEditAddressDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CEditGroupDialog.cp">
+    <None Include="sources\application\address_book\CEditGroupDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentities.cp">
+    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentities.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityAddress.cp">
+    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityAddress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityDSN.cp">
+    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityDSN.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityOptions.cp">
+    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityOutgoing.cp">
+    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentityOutgoing.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentitySecurity.cp">
+    <None Include="sources\application\preferences_dialog\edit_identities\CEditIdentitySecurity.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\macros\CEditMacro.cp">
+    <None Include="sources\application\macros\CEditMacro.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\extras\CEditMapDialog.cp">
+    <None Include="sources\application\preferences_dialog\extras\CEditMapDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CEnrichedTransformer.cp">
+    <None Include="sources\formatting\CEnrichedTransformer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\message\CEnvelope.cp">
+    <None Include="..\sources_common\mail\message\CEnvelope.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CErrorDialog.cp">
+    <None Include="sources\application\general\CErrorDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CErrorHandler.cp">
+    <None Include="sources\application\general\CErrorHandler.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\event_todo_preview\CEventPreview.cp">
+    <None Include="sources\application\calendar\calendar_view\event_todo_preview\CEventPreview.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CFavouriteItem.cp">
+    <None Include="..\sources_common\application\preferences\CFavouriteItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CFieldDisplay.cp">
+    <None Include="sources\application\message\CFieldDisplay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CFileAttachment.cp">
+    <None Include="..\sources_common\mail\attachments\CFileAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CFileOptionsMap.cp">
+    <None Include="..\sources_common\application\preferences\CFileOptionsMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CFileTable.cp">
+    <None Include="sources\application\letter\CFileTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CFileTableAction.cp">
+    <None Include="sources\application\letter\CFileTableAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\CFilter.cp">
+    <None Include="..\sources_common\mail\filters\CFilter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filtering\CFilterItem.cp">
+    <None Include="..\sources_common\mail\filtering\CFilterItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filtering\CFilterManager.cp">
+    <None Include="..\sources_common\mail\filtering\CFilterManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\CFilterProtocol.cp">
+    <None Include="..\sources_common\mail\protocols\CFilterProtocol.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filtering\CFilterSchedule.cp">
+    <None Include="..\sources_common\mail\filtering\CFilterSchedule.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filtering\CFilterScript.cp">
+    <None Include="..\sources_common\mail\filtering\CFilterScript.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filtering\CFilterTarget.cp">
+    <None Include="..\sources_common\mail\filtering\CFilterTarget.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\find_replace\CFindReplaceWindow.cp">
+    <None Include="sources\application\find_replace\CFindReplaceWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CFontCache.cp">
+    <None Include="sources\support\CFontCache.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CFontMenu.cp">
+    <None Include="sources\formatting\CFontMenu.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CFormatElement.cp">
+    <None Include="..\sources_common\formatting\CFormatElement.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CFormatList.cp">
+    <None Include="..\sources_common\formatting\CFormatList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CFormattedTextDisplay.cp">
+    <None Include="sources\formatting\CFormattedTextDisplay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\action dialogs\CForwardActionDialog.cp">
+    <None Include="sources\application\rules\action dialogs\CForwardActionDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CForwardOptionsDialog.cp">
+    <None Include="sources\application\message\CForwardOptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTable.cp">
+    <None Include="Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTableCommon.cp">
+    <None Include="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTitleTable.cp">
+    <None Include="Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyView.cp">
+    <None Include="Sources\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyViewCommon.cp">
+    <None Include="..\Sources_Common\Application\Calendar\Calendar_View\Free_Busy_View\CFreeBusyViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\CFullFileStream.cp">
+    <None Include="..\sources_common\mail\filters\CFullFileStream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CFutureItems.cp">
+    <None Include="..\sources_common\application\preferences\CFutureItems.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CGB2312.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CGB2312.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\security\CGetPassphraseDialog.cp">
+    <None Include="sources\plugins\security\CGetPassphraseDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CGetStringDialog.cp">
+    <None Include="sources\application\other_dialogs\CGetStringDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CGrayBackground.cp">
+    <None Include="sources\support\CGrayBackground.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CGrayBorder.cp">
+    <None Include="sources\support\CGrayBorder.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\address\CGroup.cp">
+    <None Include="..\sources_common\mail\address\CGroup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\address\CGroupComparators.cp">
+    <None Include="..\sources_common\mail\address\CGroupComparators.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\address\CGroupList.cp">
+    <None Include="..\sources_common\mail\address\CGroupList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CGroupPreview.cp">
+    <None Include="sources\application\address_book\CGroupPreview.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CGroupTable.cp">
+    <None Include="sources\application\address_book\CGroupTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book\CGroupTableAction.cp">
+    <None Include="sources\application\address_book\CGroupTableAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\char_stream.cp">
+    <None Include="..\sources_common\utilities\char_stream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CHelpDialog.cp">
+    <None Include="sources\support\CHelpDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CHelpFrame.cp">
+    <None Include="sources\support\CHelpFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CHelpPropertyPage.cp">
+    <None Include="sources\support\CHelpPropertyPage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CHelpPropertySheet.cp">
+    <None Include="sources\support\CHelpPropertySheet.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CHierarchyTableDrag.cp">
+    <None Include="sources\support\table\CHierarchyTableDrag.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CHTMLCharacterEntity.cp">
+    <None Include="..\sources_common\formatting\CHTMLCharacterEntity.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CHTMLTransformer.cp">
+    <None Include="sources\formatting\CHTMLTransformer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CIconButton.cp">
+    <None Include="sources\support\CIconButton.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CIconLoader.cp">
+    <None Include="sources\support\CIconLoader.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CIconMenu.cp">
+    <None Include="sources\support\CIconMenu.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CIconTextTable.cp">
+    <None Include="sources\support\table\CIconTextTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CIconWnd.cp">
+    <None Include="sources\support\CIconWnd.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CIdentity.cp">
+    <None Include="..\sources_common\application\preferences\CIdentity.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CIdentityPopup.cp">
+    <None Include="sources\application\letter\CIdentityPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\imap\CIMAPClient.cp">
+    <None Include="..\sources_common\mail\inet_clients\imap\CIMAPClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\imap\CIMAPCommon.cp">
+    <None Include="..\sources_common\mail\inet_clients\imap\CIMAPCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\extras\CIMAPLabelsDialog.cp">
+    <None Include="sources\application\preferences_dialog\extras\CIMAPLabelsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\imsp\CIMSPClient.cp">
+    <None Include="..\sources_common\mail\inet_clients\imsp\CIMSPClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\imsp\CIMSPCommon.cp">
+    <None Include="..\sources_common\mail\inet_clients\imsp\CIMSPCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CINETAccount.cp">
+    <None Include="..\sources_common\application\preferences\CINETAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\CINETClient.cp">
+    <None Include="..\sources_common\mail\inet_clients\CINETClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\CINETCommon.cp">
+    <None Include="..\sources_common\mail\inet_clients\CINETCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\CINETProtocol.cp">
+    <None Include="..\sources_common\mail\protocols\CINETProtocol.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_CN.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_CN.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_JP.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_JP.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_KR.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\iso2022\CISO2022_KR.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0201.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0201.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0208.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CJIS_0208.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CKeyAction.cp">
+    <None Include="..\sources_common\application\preferences\CKeyAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\options dialog\CKeyChoiceDialog.cp">
+    <None Include="sources\application\three pane\options dialog\CKeyChoiceDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CKSC_5601_1987.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CKSC_5601_1987.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\ldap\CLDAPClient.cp">
+    <None Include="..\sources_common\mail\inet_clients\ldap\CLDAPClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterDoc.cp">
+    <None Include="sources\application\letter\CLetterDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterFrame.cp">
+    <None Include="sources\application\letter\CLetterFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterHeaderView.cp">
+    <None Include="sources\application\letter\CLetterHeaderView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterPartProp.cp">
+    <None Include="sources\application\letter\CLetterPartProp.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterTextEditView.cp">
+    <None Include="sources\application\letter\CLetterTextEditView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterToolbar.cp">
+    <None Include="sources\application\letter\CLetterToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterView.cp">
+    <None Include="sources\application\letter\CLetterView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CLetterWindow.cp">
+    <None Include="sources\application\letter\CLetterWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\letter\CLetterWindowCommon.cp">
+    <None Include="..\sources_common\application\letter\CLetterWindowCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CLicenseDialog.cp">
+    <None Include="sources\application\other_dialogs\CLicenseDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CListener.cp">
+    <None Include="..\sources_common\utilities\CListener.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\local_clients\CLocalAdbkClient.cp">
+    <None Include="..\sources_common\mail\local_clients\CLocalAdbkClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\mail\CLocalAttachment.cp">
+    <None Include="..\sources_common\offline\mail\CLocalAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\mail\CLocalClient.cp">
+    <None Include="..\sources_common\offline\mail\CLocalClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\CLocalCommon.cp">
+    <None Include="..\sources_common\offline\CLocalCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\mail\CLocalMessage.cp">
+    <None Include="..\sources_common\offline\mail\CLocalMessage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\local_clients\CLocalPrefsClient.cp">
+    <None Include="..\sources_common\mail\local_clients\CLocalPrefsClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\CLog.cp">
+    <None Include="..\sources_common\mail\CLog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CLoggingOptionsDialog.cp">
+    <None Include="sources\application\preferences_dialog\CLoggingOptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacJapanese.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacJapanese.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacKorean.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacKorean.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CMacProgressCtrl.cp">
+    <None Include="sources\support\CMacProgressCtrl.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\macros\CMacroEditDialog.cp">
+    <None Include="sources\application\macros\CMacroEditDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacSimpChinese.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacSimpChinese.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacTradChinese.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CMacTradChinese.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CMailAccount.cp">
+    <None Include="..\sources_common\application\preferences\CMailAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\control\CMailAccountManager.cp">
+    <None Include="..\sources_common\mail\control\CMailAccountManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CMailAction.cp">
+    <None Include="..\sources_common\offline\recording\CMailAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox\CMailboxDoc.cp">
+    <None Include="sources\application\mailbox\CMailboxDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CMailboxInfoFrame.cp">
+    <None Include="sources\application\mailbox_info\CMailboxInfoFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CMailboxInfoTable.cp">
+    <None Include="sources\application\mailbox_info\CMailboxInfoTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\mailbox_info\CMailboxInfoTableCommon.cp">
+    <None Include="..\sources_common\application\mailbox_info\CMailboxInfoTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CMailboxInfoToolbar.cp">
+    <None Include="sources\application\mailbox_info\CMailboxInfoToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CMailboxInfoView.cp">
+    <None Include="sources\application\mailbox_info\CMailboxInfoView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\mailbox_info\CMailboxInfoViewCommon.cp">
+    <None Include="..\sources_common\application\mailbox_info\CMailboxInfoViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CMailboxInfoWindow.cp">
+    <None Include="sources\application\mailbox_info\CMailboxInfoWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\mailbox_info\CMailboxInfoWindowCommon.cp">
+    <None Include="..\sources_common\application\mailbox_info\CMailboxInfoWindowCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CMailboxListPanel.cp">
+    <None Include="sources\application\search\CMailboxListPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CMailboxPopup.cp">
+    <None Include="sources\application\letter\CMailboxPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CMailboxPropDialog.cp">
+    <None Include="sources\application\server\mailbox_properties\CMailboxPropDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox\CMailboxTable.cp">
+    <None Include="sources\application\mailbox\CMailboxTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\mailbox\CMailboxTableCommon.cp">
+    <None Include="..\sources_common\application\mailbox\CMailboxTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox\CMailboxTitleTable.cp">
+    <None Include="sources\application\mailbox\CMailboxTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CMailboxToolbarPopup.cp">
+    <None Include="sources\application\letter\CMailboxToolbarPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox\CMailboxView.cp">
+    <None Include="sources\application\mailbox\CMailboxView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\mailbox\CMailboxViewCommon.cp">
+    <None Include="..\sources_common\application\mailbox\CMailboxViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox\CMailboxWindow.cp">
+    <None Include="sources\application\mailbox\CMailboxWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\mailbox\CMailboxWindowCommon.cp">
+    <None Include="..\sources_common\application\mailbox\CMailboxWindowCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\control\CMailCheckThread.cp">
+    <None Include="..\sources_common\mail\control\CMailCheckThread.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\control\CMailControl.cp">
+    <None Include="..\sources_common\mail\control\CMailControl.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CMailNotification.cp">
+    <None Include="..\sources_common\application\preferences\CMailNotification.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CMailRecord.cp">
+    <None Include="..\sources_common\offline\recording\CMailRecord.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\three_pane\CMailViewOptions.cp">
+    <None Include="..\sources_common\application\three_pane\CMailViewOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CManageSIEVEAccount.cp">
+    <None Include="..\sources_common\application\preferences\CManageSIEVEAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CMatchItem.cp">
+    <None Include="..\sources_common\application\preferences\CMatchItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CMatchOptionsDialog.cp">
+    <None Include="sources\application\mailbox_info\CMatchOptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\mailbox\CMbox.cp">
+    <None Include="..\sources_common\mail\mailbox\CMbox.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\extensions\CMboxACL.cp">
+    <None Include="..\sources_common\mail\extensions\CMboxACL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\CMboxACLProtocol.cp">
+    <None Include="..\sources_common\mail\protocols\CMboxACLProtocol.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\mailbox\CMboxList.cp">
+    <None Include="..\sources_common\mail\mailbox\CMboxList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\CMboxProtocol.cp">
+    <None Include="..\sources_common\mail\protocols\CMboxProtocol.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\mailbox\CMboxRef.cp">
+    <None Include="..\sources_common\mail\mailbox\CMboxRef.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\mailbox\CMboxRefList.cp">
+    <None Include="..\sources_common\mail\mailbox\CMboxRefList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMDNPromptDialog.cp">
+    <None Include="sources\application\message\CMDNPromptDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\message\CMessage.cp">
+    <None Include="..\sources_common\mail\message\CMessage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CMessageAttachment.cp">
+    <None Include="..\sources_common\mail\attachments\CMessageAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\message\CMessageComparators.cp">
+    <None Include="..\sources_common\mail\message\CMessageComparators.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessageDoc.cp">
+    <None Include="sources\application\message\CMessageDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessageFrame.cp">
+    <None Include="sources\application\message\CMessageFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessageHeaderView.cp">
+    <None Include="sources\application\message\CMessageHeaderView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\message\CMessageList.cp">
+    <None Include="..\sources_common\mail\message\CMessageList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\options dialog\CMessagePaneOptions.cp">
+    <None Include="sources\application\three pane\options dialog\CMessagePaneOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessagePartProp.cp">
+    <None Include="sources\application\message\CMessagePartProp.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\message\CMessageRef.cp">
+    <None Include="..\sources_common\mail\message\CMessageRef.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessageSimpleView.cp">
+    <None Include="sources\application\message\CMessageSimpleView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\message\CMessageThread.cp">
+    <None Include="..\sources_common\mail\message\CMessageThread.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessageToolbar.cp">
+    <None Include="sources\application\message\CMessageToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessageView.cp">
+    <None Include="sources\application\message\CMessageView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\message\CMessageViewCommon.cp">
+    <None Include="..\sources_common\application\message\CMessageViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CMessageWindow.cp">
+    <None Include="sources\application\message\CMessageWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\message\CMessageWindowCommon.cp">
+    <None Include="..\sources_common\application\message\CMessageWindowCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CMIMEContent.cp">
+    <None Include="..\sources_common\mail\attachments\CMIMEContent.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\CMIMEFilters.cp">
+    <None Include="..\sources_common\mail\filters\CMIMEFilters.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CMIMEMap.cp">
+    <None Include="..\sources_common\application\preferences\CMIMEMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CMIMESupport.cp">
+    <None Include="..\sources_common\mail\attachments\CMIMESupport.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\attachments\CMIMETypes.cp">
+    <None Include="..\sources_common\mail\attachments\CMIMETypes.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CModelessDialog.cp">
+    <None Include="sources\support\CModelessDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\month_view\CMonthEvent.cp">
+    <None Include="sources\application\calendar\calendar_view\month_view\CMonthEvent.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\month_view\CMonthIndicator.cp">
+    <None Include="sources\application\calendar\calendar_view\month_view\CMonthIndicator.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\utilities\CMonthPopup.cp">
+    <None Include="sources\application\calendar\utilities\CMonthPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\month_view\CMonthTable.cp">
+    <None Include="sources\application\calendar\calendar_view\month_view\CMonthTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\month_view\CMonthTableCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\month_view\CMonthTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\month_view\CMonthTitleTable.cp">
+    <None Include="sources\application\calendar\calendar_view\month_view\CMonthTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\month_view\CMonthView.cp">
+    <None Include="sources\application\calendar\calendar_view\month_view\CMonthView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\month_view\CMonthViewCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\month_view\CMonthViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CMulberryApp.cp">
+    <None Include="sources\application\general\CMulberryApp.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CMulberryAppProtect.cp">
+    <None Include="sources\application\general\CMulberryAppProtect.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CMulberryAppRegistry.cp">
+    <None Include="sources\application\general\CMulberryAppRegistry.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CMulberryAppXtra.cp">
+    <None Include="sources\application\general\CMulberryAppXtra.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CMulberryCommon.cp">
+    <None Include="sources\application\general\CMulberryCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CMulberryWindow.cp">
+    <None Include="sources\application\general\CMulberryWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CMultiUserDialog.cp">
+    <None Include="sources\application\preferences_dialog\CMultiUserDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CMyStack.cp">
+    <None Include="..\sources_common\formatting\CMyStack.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\dialogs\CNamespaceDialog.cp">
+    <None Include="sources\application\server\dialogs\CNamespaceDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CNetworkResetError.cp">
+    <None Include="sources\application\general\CNetworkResetError.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CNewACLDialog.cp">
+    <None Include="sources\application\server\mailbox_properties\CNewACLDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CNewACLStyleDialog.cp">
+    <None Include="sources\application\server\mailbox_properties\CNewACLStyleDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewAttendeeDialog.cp">
+    <None Include="sources\application\calendar\component_editing\CNewAttendeeDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewComponentAlarm.cp">
+    <None Include="sources\application\calendar\component_editing\CNewComponentAlarm.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewComponentAttendees.cp">
+    <None Include="sources\application\calendar\component_editing\CNewComponentAttendees.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Calendar\Component_Editing\CNewComponentDetails.cp">
+    <None Include="Sources\Application\Calendar\Component_Editing\CNewComponentDetails.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Calendar\Component_Editing\CNewComponentDialog.cp">
+    <None Include="Sources\Application\Calendar\Component_Editing\CNewComponentDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewComponentPanel.cp">
+    <None Include="sources\application\calendar\component_editing\CNewComponentPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Application\Calendar\Component_Editing\CNewComponentRepeat.cp">
+    <None Include="Sources\Application\Calendar\Component_Editing\CNewComponentRepeat.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewEventDialog.cp">
+    <None Include="sources\application\calendar\component_editing\CNewEventDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewEventTiming.cp">
+    <None Include="sources\application\calendar\component_editing\CNewEventTiming.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\tasks\CNewMailTask.cp">
+    <None Include="..\sources_common\tasks\CNewMailTask.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\dialogs\CNewSearchDialog.cp">
+    <None Include="sources\application\server\dialogs\CNewSearchDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewTimingPanel.cp">
+    <None Include="sources\application\calendar\component_editing\CNewTimingPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewToDoDialog.cp">
+    <None Include="sources\application\calendar\component_editing\CNewToDoDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CNewToDoTiming.cp">
+    <None Include="sources\application\calendar\component_editing\CNewToDoTiming.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\dialogs\CNewWildcardDialog.cp">
+    <None Include="sources\application\server\dialogs\CNewWildcardDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CNodeTree.cp">
+    <None Include="sources\support\table\CNodeTree.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\hierarchy list\CNodeVectorTree.cp">
+    <None Include="sources\pp_sources\hierarchy list\CNodeVectorTree.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CNoFocusButton.cp">
+    <None Include="sources\support\CNoFocusButton.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CNotification.cp">
+    <None Include="..\sources_common\application\preferences\CNotification.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\text\CNumberEdit.cp">
+    <None Include="sources\support\text\CNumberEdit.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\dialogs\COpenMailboxDialog.cp">
+    <None Include="sources\application\server\dialogs\COpenMailboxDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Application\Preferences\COptionsAccount.cp">
+    <None Include="..\Sources_Common\Application\Preferences\COptionsAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\COptionsMap.cp">
+    <None Include="..\sources_common\application\preferences\COptionsMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\COptionsProtocol.cp">
+    <None Include="..\sources_common\mail\protocols\COptionsProtocol.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\COSStringMap.cp">
+    <None Include="..\sources_common\application\preferences\COSStringMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CParserEnriched.cp">
+    <None Include="..\sources_common\formatting\CParserEnriched.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CParserEnrichedStack.cp">
+    <None Include="..\sources_common\formatting\CParserEnrichedStack.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CParserHTML.cp">
+    <None Include="..\sources_common\formatting\CParserHTML.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CParserHTMLStack.cp">
+    <None Include="..\sources_common\formatting\CParserHTMLStack.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CParserPlain.cp">
+    <None Include="..\sources_common\formatting\CParserPlain.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\formatting\CParserPlainElement.cp">
+    <None Include="..\sources_common\formatting\CParserPlainElement.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Mail\Control\CPasswordManager.cp">
+    <None Include="..\Sources_Common\Mail\Control\CPasswordManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Mail\Control\CPasswordManagerKeyring.cp">
+    <None Include="..\Sources_Common\Mail\Control\CPasswordManagerKeyring.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CPeriodicCheck.cp">
+    <None Include="sources\application\general\CPeriodicCheck.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\general\CPlugin.cp">
+    <None Include="..\sources_common\plugins\general\CPlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\general\CPluginManager.cp">
+    <None Include="..\sources_common\plugins\general\CPluginManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\general\CPluginRegisterDialog.cp">
+    <None Include="sources\plugins\general\CPluginRegisterDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\mail\CPOP3Client.cp">
+    <None Include="..\sources_common\offline\mail\CPOP3Client.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\mail\CPOP3Common.cp">
+    <None Include="..\sources_common\offline\mail\CPOP3Common.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CPopupButton.cp">
+    <None Include="sources\support\CPopupButton.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CPreferenceEnum.cp">
+    <None Include="..\sources_common\application\preferences\CPreferenceEnum.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CPreferenceKeys.cp">
+    <None Include="..\sources_common\application\preferences\CPreferenceKeys.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CPreferences.cp">
+    <None Include="..\sources_common\application\preferences\CPreferences.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CPreferencesBits.cp">
+    <None Include="..\sources_common\application\preferences\CPreferencesBits.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPreferencesDialog.cp">
+    <None Include="sources\application\preferences_dialog\CPreferencesDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CPreferencesFile.cp">
+    <None Include="..\sources_common\application\preferences\CPreferencesFile.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CPreferencesRW.cp">
+    <None Include="..\sources_common\application\preferences\CPreferencesRW.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CPreferencesXtra.cp">
+    <None Include="..\sources_common\application\preferences\CPreferencesXtra.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAccountAuth.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAccountAuth.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsAccountExtras.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsAccountExtras.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\CPrefsAccountPanel.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\CPrefsAccountPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsAccountRemoteCalendar.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsAccountRemoteCalendar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsAccounts.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsAccounts.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAdbkAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAdbkAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsAddress.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsAddress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressCapture.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressCapture.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressExpansion.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\address_panels\CPrefsAddressExpansion.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressIMSP.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressIMSP.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP1.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP1.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP2.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAP2.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAPOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsAddressLDAPOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsAlerts.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsAlerts.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsAttachment.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsMessage.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\alerts_panels\CPrefsAlertsMessage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsAttachments.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsAttachments.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsReceive.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsReceive.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsSend.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\attachment_panels\CPrefsAttachmentsSend.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthKerberos.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthKerberos.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthPlainText.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\authentication_panels\CPrefsAuthPlainText.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsCalendar.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsCalendar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsDisplay.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsDisplay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayLabel.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayLabel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMailbox.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMailbox.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMessage.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayMessage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayQuotes.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayQuotes.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayServer.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayServer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayStyles.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\display_panels\CPrefsDisplayStyles.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\extras\CPrefsEditCaption.cp">
+    <None Include="sources\application\preferences_dialog\extras\CPrefsEditCaption.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\edit_identities\CPrefsEditHeadFoot.cp">
+    <None Include="sources\application\preferences_dialog\edit_identities\CPrefsEditHeadFoot.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\extras\CPrefsEditMappings.cp">
+    <None Include="sources\application\preferences_dialog\extras\CPrefsEditMappings.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsFormatting.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsFormatting.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsIdentity.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsIdentity.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsLDAPAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\address_account_panels\CPrefsLDAPAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsLetter.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsLetter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterGeneral.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterGeneral.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterStyled.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\letter_panels\CPrefsLetterStyled.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\local_account_panels\CPrefsLocalOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsMailbox.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsMailbox.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxAdvanced.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxAdvanced.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxBasic.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxBasic.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxDisconnected.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxDisconnected.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\mailbox_panels\CPrefsMailboxOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailIMAP.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\imap_account_panels\CPrefsMailIMAP.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsMessage.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsMessage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageGeneral.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageGeneral.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\message_panels\CPrefsMessageOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsPanel.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Account.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Account.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Options.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\pop3_account_panels\CPrefsPOP3Options.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsRemoteCalendarAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsRemoteCalendarAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteSets.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\remote_account_panels\CPrefsRemoteSets.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsSecurity.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsSecurity.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\sieve_account_panels\CPrefsSIEVEAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\sieve_account_panels\CPrefsSIEVEAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsSimple.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsSimple.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPAccount.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\account_panels\smtp_account_panels\CPrefsSMTPOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\CPrefsSpelling.cp">
+    <None Include="sources\application\preferences_dialog\CPrefsSpelling.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingOptions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingSuggestions.cp">
+    <None Include="sources\application\preferences_dialog\sub-panels\spelling_panels\CPrefsSpellingSuggestions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\status\CProgress.cp">
+    <None Include="sources\application\status\CProgress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\address_book_properties\CPropAdbkACL.cp">
+    <None Include="sources\application\address_book_manager\address_book_properties\CPropAdbkACL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\address_book_manager\address_book_properties\CPropAdbkGeneral.cp">
+    <None Include="sources\application\address_book_manager\address_book_properties\CPropAdbkGeneral.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_properties\CPropCalendarACL.cp">
+    <None Include="sources\application\calendar\calendar_properties\CPropCalendarACL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_properties\CPropCalendarGeneral.cp">
+    <None Include="sources\application\calendar\calendar_properties\CPropCalendarGeneral.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_properties\CPropCalendarOptions.cp">
+    <None Include="sources\application\calendar\calendar_properties\CPropCalendarOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_properties\CPropCalendarServer.cp">
+    <None Include="sources\application\calendar\calendar_properties\CPropCalendarServer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_properties\CPropCalendarWebcal.cp">
+    <None Include="sources\application\calendar\calendar_properties\CPropCalendarWebcal.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CPropMailboxACL.cp">
+    <None Include="sources\application\server\mailbox_properties\CPropMailboxACL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CPropMailboxGeneral.cp">
+    <None Include="sources\application\server\mailbox_properties\CPropMailboxGeneral.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CPropMailboxOptions.cp">
+    <None Include="sources\application\server\mailbox_properties\CPropMailboxOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CPropMailboxQuota.cp">
+    <None Include="sources\application\server\mailbox_properties\CPropMailboxQuota.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CPropMailboxServer.cp">
+    <None Include="sources\application\server\mailbox_properties\CPropMailboxServer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\password\CPswdChangeClient.cp">
+    <None Include="..\sources_common\mail\inet_clients\password\CPswdChangeClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\passwordchange\CPswdChangePlugin.cp">
+    <None Include="..\sources_common\plugins\passwordchange\CPswdChangePlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CQuickSearchSavedPopup.cp">
+    <None Include="sources\application\mailbox_info\CQuickSearchSavedPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CQuickSearchText.cp">
+    <None Include="sources\application\mailbox_info\CQuickSearchText.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\CQuotaProtocol.cp">
+    <None Include="..\sources_common\mail\protocols\CQuotaProtocol.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\extensions\CQuotas.cp">
+    <None Include="..\sources_common\mail\extensions\CQuotas.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\mailbox_properties\CQuotaTable.cp">
+    <None Include="sources\application\server\mailbox_properties\CQuotaTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\recording\CRecordableAction.cp">
+    <None Include="..\sources_common\offline\recording\CRecordableAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\component_editing\CRecurrenceDialog.cp">
+    <None Include="sources\application\calendar\component_editing\CRecurrenceDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\general\CRegistration.cp">
+    <None Include="sources\plugins\general\CRegistration.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\general\CRegistrationCommon.cp">
+    <None Include="..\sources_common\plugins\general\CRegistrationCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CRegistrationDialog.cp">
+    <None Include="sources\application\other_dialogs\CRegistrationDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\action dialogs\CRejectActionDialog.cp">
+    <None Include="sources\application\rules\action dialogs\CRejectActionDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CRemoteOptionsMap.cp">
+    <None Include="..\sources_common\application\preferences\CRemoteOptionsMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CRemotePrefsSets.cp">
+    <None Include="..\sources_common\application\preferences\CRemotePrefsSets.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\action dialogs\CReplyActionDialog.cp">
+    <None Include="sources\application\rules\action dialogs\CReplyActionDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CReplyChooseDialog.cp">
+    <None Include="sources\application\message\CReplyChooseDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\protocols\CRFC822.cp">
+    <None Include="..\sources_common\mail\protocols\CRFC822.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\mail\CRFC822Parser.cp">
+    <None Include="..\sources_common\offline\mail\CRFC822Parser.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\dialog\CRulesAction.cp">
+    <None Include="sources\application\rules\dialog\CRulesAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\dialog\CRulesActionLocal.cp">
+    <None Include="sources\application\rules\dialog\CRulesActionLocal.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\dialog\CRulesActionSIEVE.cp">
+    <None Include="sources\application\rules\dialog\CRulesActionSIEVE.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\dialog\CRulesDialog.cp">
+    <None Include="sources\application\rules\dialog\CRulesDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\CRulesDoc.cp">
+    <None Include="sources\application\rules\CRulesDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\CRulesFrame.cp">
+    <None Include="sources\application\rules\CRulesFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\CRulesTable.cp">
+    <None Include="sources\application\rules\CRulesTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\rules\CRulesTableCommon.cp">
+    <None Include="..\sources_common\application\rules\CRulesTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\dialog\CRulesTarget.cp">
+    <None Include="sources\application\rules\dialog\CRulesTarget.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\CRulesWindow.cp">
+    <None Include="sources\application\rules\CRulesWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\letter\CSaveDraftDialog.cp">
+    <None Include="sources\application\letter\CSaveDraftDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CScreenDimensions.cp">
+    <None Include="..\sources_common\application\preferences\CScreenDimensions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\CScriptsTable.cp">
+    <None Include="sources\application\rules\CScriptsTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\rules\CScriptsTableCommon.cp">
+    <None Include="..\sources_common\application\rules\CScriptsTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CSDIDoc.cp">
+    <None Include="sources\support\CSDIDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CSDIFrame.cp">
+    <None Include="sources\support\CSDIFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchBase.cp">
+    <None Include="sources\application\search\CSearchBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchCriteria.cp">
+    <None Include="sources\application\search\CSearchCriteria.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchCriteriaContainer.cp">
+    <None Include="sources\application\search\CSearchCriteriaContainer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchCriteriaLocal.cp">
+    <None Include="sources\application\search\CSearchCriteriaLocal.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchCriteriaSIEVE.cp">
+    <None Include="sources\application\search\CSearchCriteriaSIEVE.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchDoc.cp">
+    <None Include="sources\application\search\CSearchDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\search\CSearchEngine.cp">
+    <None Include="..\sources_common\mail\search\CSearchEngine.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchFrame.cp">
+    <None Include="sources\application\search\CSearchFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\search\CSearchItem.cp">
+    <None Include="..\sources_common\mail\search\CSearchItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchListPanel.cp">
+    <None Include="sources\application\search\CSearchListPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchOptionsDialog.cp">
+    <None Include="sources\application\search\CSearchOptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CSearchStyle.cp">
+    <None Include="..\sources_common\application\preferences\CSearchStyle.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\search\CSearchThread.cp">
+    <None Include="..\sources_common\mail\search\CSearchThread.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\search\CSearchWindow.cp">
+    <None Include="sources\application\search\CSearchWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\security\CSecurityPlugin.cp">
+    <None Include="..\sources_common\plugins\security\CSecurityPlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\mailbox_info\CSelectPopup.cp">
+    <None Include="sources\application\mailbox_info\CSelectPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\imap\CSequence.cp">
+    <None Include="..\sources_common\mail\inet_clients\imap\CSequence.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerBrowse.cp">
+    <None Include="sources\application\server\CServerBrowse.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\server\CServerBrowseCommon.cp">
+    <None Include="..\sources_common\application\server\CServerBrowseCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\browse_dialog\CServerBrowseTable.cp">
+    <None Include="sources\application\server\browse_dialog\CServerBrowseTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerDoc.cp">
+    <None Include="sources\application\server\CServerDoc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerFrame.cp">
+    <None Include="sources\application\server\CServerFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerTable.cp">
+    <None Include="sources\application\server\CServerTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\server\CServerTableCommon.cp">
+    <None Include="..\sources_common\application\server\CServerTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerTitleTable.cp">
+    <None Include="sources\application\server\CServerTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerToolbar.cp">
+    <None Include="sources\application\server\CServerToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerView.cp">
+    <None Include="sources\application\server\CServerView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\server\CServerViewCommon.cp">
+    <None Include="..\sources_common\application\server\CServerViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerViewPopup.cp">
+    <None Include="sources\application\server\CServerViewPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\server\CServerWindow.cp">
+    <None Include="sources\application\server\CServerWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\text\CSetNumberEdit.cp">
+    <None Include="sources\support\text\CSetNumberEdit.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVEClient.cp">
+    <None Include="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVEClient.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\windows\CSimpleTitleTable.cp">
+    <None Include="sources\application\windows\CSimpleTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CSizeMenu.cp">
+    <None Include="sources\formatting\CSizeMenu.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CSJIS.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\twobyte\CSJIS.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CSMTPAccount.cp">
+    <None Include="..\sources_common\application\preferences\CSMTPAccount.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\control\CSMTPAccountManager.cp">
+    <None Include="..\sources_common\mail\control\CSMTPAccountManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\smtp_queue\CSMTPAccountPopup.cp">
+    <None Include="sources\application\smtp_queue\CSMTPAccountPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\smtp_queue\CSMTPFrame.cp">
+    <None Include="sources\application\smtp_queue\CSMTPFrame.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\inet_clients\smtp\CSMTPSender.cp">
+    <None Include="..\sources_common\mail\inet_clients\smtp\CSMTPSender.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\control\CSMTPSendThread.cp">
+    <None Include="..\sources_common\mail\control\CSMTPSendThread.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\smtp_queue\CSMTPTable.cp">
+    <None Include="sources\application\smtp_queue\CSMTPTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\smtp_queue\CSMTPTableCommon.cp">
+    <None Include="..\sources_common\application\smtp_queue\CSMTPTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\smtp_queue\CSMTPToolbar.cp">
+    <None Include="sources\application\smtp_queue\CSMTPToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\smtp_queue\CSMTPView.cp">
+    <None Include="sources\application\smtp_queue\CSMTPView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\smtp_queue\CSMTPViewCommon.cp">
+    <None Include="..\sources_common\application\smtp_queue\CSMTPViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\smtp_queue\CSMTPWindow.cp">
+    <None Include="sources\application\smtp_queue\CSMTPWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\smtp_queue\CSMTPWindowCommon.cp">
+    <None Include="..\sources_common\application\smtp_queue\CSMTPWindowCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CSoundPopup.cp">
+    <None Include="sources\support\CSoundPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CSpacebarEdit.cp">
+    <None Include="sources\application\message\CSpacebarEdit.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\message\CSpacebarEditView.cp">
+    <None Include="sources\application\message\CSpacebarEditView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\speech\CSpeechSynthesis.cp">
+    <None Include="sources\application\speech\CSpeechSynthesis.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\spelling\CSpellAddDialog.cp">
+    <None Include="sources\plugins\spelling\CSpellAddDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\spelling\CSpellCheckDialog.cp">
+    <None Include="sources\plugins\spelling\CSpellCheckDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\spelling\CSpellChooseDictDialog.cp">
+    <None Include="sources\plugins\spelling\CSpellChooseDictDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\spelling\CSpellEditDialog.cp">
+    <None Include="sources\plugins\spelling\CSpellEditDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\spelling\CSpellOptionsDialog.cp">
+    <None Include="sources\plugins\spelling\CSpellOptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\spelling\CSpellPlugin.cp">
+    <None Include="..\sources_common\plugins\spelling\CSpellPlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\general\CSplashBox.cp">
+    <None Include="sources\application\general\CSplashBox.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CSplitter.cp">
+    <None Include="sources\support\CSplitter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CSplitterView.cp">
+    <None Include="sources\support\CSplitterView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\ssl\CSSLPlugin.cp">
+    <None Include="..\sources_common\plugins\ssl\CSSLPlugin.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\plugins\ssl\CSSLUtils.cp">
+    <None Include="..\sources_common\plugins\ssl\CSSLUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\status\CStatusWindow.cp">
+    <None Include="sources\application\status\CStatusWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\offline\mail\CStreamAttachment.cp">
+    <None Include="..\sources_common\offline\mail\CStreamAttachment.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Libraries\XMLLib\Source\CStreamBuffer.cp">
+    <None Include="..\Libraries\XMLLib\Source\CStreamBuffer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CStreamOptionsMap.cp">
+    <None Include="..\sources_common\application\preferences\CStreamOptionsMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CStreamUtils.cp">
+    <None Include="..\sources_common\utilities\CStreamUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CStringOptionsMap.cp">
+    <None Include="..\sources_common\application\preferences\CStringOptionsMap.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CStringUtils.cp">
+    <None Include="..\sources_common\utilities\CStringUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\formatting\CStyleToolbar.cp">
+    <None Include="sources\formatting\CStyleToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CSubPanelController.cp">
+    <None Include="sources\support\CSubPanelController.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryEvent.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryEvent.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\summary_view\CSummaryTable.cp">
+    <None Include="sources\application\calendar\calendar_view\summary_view\CSummaryTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryTableCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\summary_view\CSummaryTitleTable.cp">
+    <None Include="sources\application\calendar\calendar_view\summary_view\CSummaryTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\summary_view\CSummaryView.cp">
+    <None Include="sources\application\calendar\calendar_view\summary_view\CSummaryView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryViewCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\summary_view\CSummaryViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CSynchroniseDialog.cp">
+    <None Include="sources\application\other_dialogs\CSynchroniseDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CTabber.cp">
+    <None Include="sources\support\CTabber.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CTabController.cp">
+    <None Include="sources\support\CTabController.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTable.cp">
+    <None Include="sources\support\table\CTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTableColumnSelector.cp">
+    <None Include="sources\support\table\CTableColumnSelector.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTableDragAndDrop.cp">
+    <None Include="sources\support\table\CTableDragAndDrop.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTableRowGeometry.cp">
+    <None Include="sources\support\table\CTableRowGeometry.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTableRowSelector.cp">
+    <None Include="sources\support\table\CTableRowSelector.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\windows\CTableView.cp">
+    <None Include="sources\application\windows\CTableView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\windows\CTableViewWindow.cp">
+    <None Include="sources\application\windows\CTableViewWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\windows\CTableWindow.cp">
+    <None Include="sources\application\windows\CTableWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CTabPanel.cp">
+    <None Include="sources\support\CTabPanel.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filtering\CTargetItem.cp">
+    <None Include="..\sources_common\mail\filtering\CTargetItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\dialog\CTargetsDialog.cp">
+    <None Include="sources\application\rules\dialog\CTargetsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\tasks\CTaskClasses.cp">
+    <None Include="..\sources_common\tasks\CTaskClasses.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\tasks\CTaskQueue.cp">
+    <None Include="..\sources_common\tasks\CTaskQueue.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\network\CTCPSocket.cp">
+    <None Include="..\sources_common\mail\network\CTCPSocket.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\network\CTCPStream.cp">
+    <None Include="..\sources_common\mail\network\CTCPStream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CTextButton.cp">
+    <None Include="sources\support\CTextButton.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CTextEngine.cp">
+    <None Include="..\sources_common\utilities\CTextEngine.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTextListChoice.cp">
+    <None Include="sources\support\table\CTextListChoice.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CTextMacros.cp">
+    <None Include="..\sources_common\application\preferences\CTextMacros.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTextTable.cp">
+    <None Include="sources\support\table\CTextTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\utilities\CTimezonePopup.cp">
+    <None Include="sources\application\calendar\utilities\CTimezonePopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\windows\CTitleTable.cp">
+    <None Include="sources\application\windows\CTitleTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\windows\CTitleTableView.cp">
+    <None Include="sources\application\windows\CTitleTableView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\network\CTLSSocket.cp">
+    <None Include="..\sources_common\mail\network\CTLSSocket.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\todo_view\CToDoItem.cp">
+    <None Include="sources\application\calendar\calendar_view\todo_view\CToDoItem.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\todo_view\CToDoItemCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\todo_view\CToDoItemCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\todo_view\CToDoTable.cp">
+    <None Include="sources\application\calendar\calendar_view\todo_view\CToDoTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\todo_view\CToDoTableCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\todo_view\CToDoTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\todo_view\CToDoView.cp">
+    <None Include="sources\application\calendar\calendar_view\todo_view\CToDoView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\todo_view\CToDoViewCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\todo_view\CToDoViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\toolbars\CToolbar.cp">
+    <None Include="sources\support\toolbars\CToolbar.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CToolbarButton.cp">
+    <None Include="sources\support\CToolbarButton.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\support\toolbars\CToolbarManager.cp">
+    <None Include="..\sources_common\support\toolbars\CToolbarManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CToolbarPopupButton.cp">
+    <None Include="sources\support\CToolbarPopupButton.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\toolbars\CToolbarView.cp">
+    <None Include="sources\support\toolbars\CToolbarView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\mailbox\CTreeNode.cp">
+    <None Include="..\sources_common\mail\mailbox\CTreeNode.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\mailbox\CTreeNodeList.cp">
+    <None Include="..\sources_common\mail\mailbox\CTreeNodeList.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\table\CTwister.cp">
+    <None Include="sources\support\table\CTwister.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUCS2.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUCS2.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUCS4.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUCS4.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CUnicodeStdLib.cp">
+    <None Include="sources\support\CUnicodeStdLib.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CUnicodeUtils.cp">
+    <None Include="sources\support\CUnicodeUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\dialog\CUploadScriptDialog.cp">
+    <None Include="sources\application\rules\dialog\CUploadScriptDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\urls\CURL.cp">
+    <None Include="..\sources_common\mail\urls\CURL.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\three_pane\CUserAction.cp">
+    <None Include="..\sources_common\application\three_pane\CUserAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\options dialog\CUserActionOptions.cp">
+    <None Include="sources\application\three pane\options dialog\CUserActionOptions.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\other_dialogs\CUserPswdDialog.cp">
+    <None Include="sources\application\other_dialogs\CUserPswdDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CUStringUtils.cp">
+    <None Include="..\sources_common\utilities\CUStringUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUTF16.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUTF16.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUTF8.cp">
+    <None Include="..\sources_common\i18n\charsets\converters\unicode\CUTF8.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\CUtils.cp">
+    <None Include="..\sources_common\utilities\CUtils.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\CUUFilter.cp">
+    <None Include="..\sources_common\mail\filters\CUUFilter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\rules\action dialogs\CVacationActionDialog.cp">
+    <None Include="sources\application\rules\action dialogs\CVacationActionDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\plugins\ssl\CViewCertDialog.cp">
+    <None Include="sources\plugins\ssl\CViewCertDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\status\CVisualProgress.cp">
+    <None Include="sources\application\status\CVisualProgress.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\three pane\options dialog\CWindowOptionsDialog.cp">
+    <None Include="sources\application\three pane\options dialog\CWindowOptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CWindowStates.cp">
+    <None Include="..\sources_common\application\preferences\CWindowStates.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\preferences\CWindowStatesXtras.cp">
+    <None Include="..\sources_common\application\preferences\CWindowStatesXtras.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Sources\Support\CWininet.cp">
+    <None Include="Sources\Support\CWininet.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CWinRegistry.cp">
+    <None Include="sources\support\CWinRegistry.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\support\CWndAligner.cp">
+    <None Include="sources\support\CWndAligner.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\utilities\CYearPopup.cp">
+    <None Include="sources\application\calendar\utilities\CYearPopup.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\year_view\CYearTable.cp">
+    <None Include="sources\application\calendar\calendar_view\year_view\CYearTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\year_view\CYearTableCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\year_view\CYearTableCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\application\calendar\calendar_view\year_view\CYearView.cp">
+    <None Include="sources\application\calendar\calendar_view\year_view\CYearView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\application\calendar\calendar_view\year_view\CYearViewCommon.cp">
+    <None Include="..\sources_common\application\calendar\calendar_view\year_view\CYearViewCommon.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\diriterator.cp">
+    <None Include="..\sources_common\utilities\diriterator.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\encrypt.cp">
+    <None Include="..\sources_common\utilities\encrypt.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\filterbuf.cp">
+    <None Include="..\sources_common\mail\filters\filterbuf.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Sources_Common\Plugins\SSL\loadsslfunc.cp">
+    <None Include="..\Sources_Common\Plugins\SSL\loadsslfunc.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\mail\filters\mimefilters.cp">
+    <None Include="..\sources_common\mail\filters\mimefilters.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\os_dep.cp">
+    <None Include="..\sources_common\os_dep.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\prefsvector.cp">
+    <None Include="..\sources_common\utilities\prefsvector.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\quotedprintable.cp">
+    <None Include="..\sources_common\utilities\quotedprintable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\strfind.cp">
+    <None Include="..\sources_common\utilities\strfind.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\sources_common\utilities\ustrfind.cp">
+    <None Include="..\sources_common\utilities\ustrfind.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\undoable\WIN_LAction.cp">
+    <None Include="sources\pp_sources\undoable\WIN_LAction.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\streams\WIN_LDataStream.cp">
+    <None Include="sources\pp_sources\streams\WIN_LDataStream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\streams\WIN_LFileStream.cp">
+    <None Include="sources\pp_sources\streams\WIN_LFileStream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\hierarchy list\WIN_LHierarchyTable.cp">
+    <None Include="sources\pp_sources\hierarchy list\WIN_LHierarchyTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\streams\WIN_LMemFileStream.cp">
+    <None Include="sources\pp_sources\streams\WIN_LMemFileStream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\tables\WIN_LScrollable.cp">
+    <None Include="sources\pp_sources\tables\WIN_LScrollable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\streams\WIN_LStream.cp">
+    <None Include="sources\pp_sources\streams\WIN_LStream.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\tables\WIN_LTableArrayStorage.cp">
+    <None Include="sources\pp_sources\tables\WIN_LTableArrayStorage.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\tables\WIN_LTableMonoGeometry.cp">
+    <None Include="sources\pp_sources\tables\WIN_LTableMonoGeometry.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\tables\WIN_LTableMultiGeometry.cp">
+    <None Include="sources\pp_sources\tables\WIN_LTableMultiGeometry.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\tables\WIN_LTableMultiSelector.cp">
+    <None Include="sources\pp_sources\tables\WIN_LTableMultiSelector.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\tables\WIN_LTableSingleSelector.cp">
+    <None Include="sources\pp_sources\tables\WIN_LTableSingleSelector.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\tables\WIN_LTableView.cp">
+    <None Include="sources\pp_sources\tables\WIN_LTableView.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\hierarchy list\WIN_LTextHierTable.cp">
+    <None Include="sources\pp_sources\hierarchy list\WIN_LTextHierTable.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="sources\pp_sources\undoable\WIN_LUndoer.cp">
+    <None Include="sources\pp_sources\undoable\WIN_LUndoer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Libraries\XMLLib\Source\XMLName.cp">
+    <None Include="..\Libraries\XMLLib\Source\XMLName.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Libraries\XMLLib\Source\XMLNamespace.cp">
+    <None Include="..\Libraries\XMLLib\Source\XMLNamespace.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Libraries\XMLLib\Source\XMLNode.cp">
+    <None Include="..\Libraries\XMLLib\Source\XMLNode.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Libraries\XMLLib\Source\XMLObject.cp">
+    <None Include="..\Libraries\XMLLib\Source\XMLObject.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Libraries\XMLLib\Source\XMLParserSAX.cp">
+    <None Include="..\Libraries\XMLLib\Source\XMLParserSAX.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\Libraries\XMLLib\Source\XMLSAXSimple.cp">
+    <None Include="..\Libraries\XMLLib\Source\XMLSAXSimple.cpp">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -6208,70 +6208,70 @@
     <ClCompile Include="Sources\VCPP\mfcbits.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\mail\inet_clients\acap\CACAPCommon.cp">
+    <ClCompile Include="..\sources_common\mail\inet_clients\acap\CACAPCommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\i18n\charsets\CCharsetData.cp">
+    <ClCompile Include="..\sources_common\i18n\charsets\CCharsetData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\mail\charsets\CCharSets.cp">
+    <ClCompile Include="..\sources_common\mail\charsets\CCharSets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekPrintout.cp">
+    <ClCompile Include="sources\application\calendar\calendar_view\day_week_view\CDayWeekPrintout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\formatting\CEditFormattedTextDisplay.cp">
+    <ClCompile Include="sources\formatting\CEditFormattedTextDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\general\CExceptionFix.cp">
+    <ClCompile Include="sources\application\general\CExceptionFix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\mail\charsets\CFontManager.cp">
+    <ClCompile Include="..\sources_common\mail\charsets\CFontManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\mail\charsets\CFontMapper.cp">
+    <ClCompile Include="..\sources_common\mail\charsets\CFontMapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\i18n\CIntlTextRun.cp">
+    <ClCompile Include="..\sources_common\i18n\CIntlTextRun.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\general\CMFCExtras.cp">
+    <ClCompile Include="sources\application\general\CMFCExtras.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\calendar\calendar_view\month_view\CMonthPrintout.cp">
+    <ClCompile Include="sources\application\calendar\calendar_view\month_view\CMonthPrintout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsLocalCalendarAccount.cp">
+    <ClCompile Include="sources\application\preferences_dialog\sub-panels\account_panels\calendar_account_panels\CPrefsLocalCalendarAccount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\rules\CRulesTitleTable.cp">
+    <ClCompile Include="sources\application\rules\CRulesTitleTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\application\general\CSafetySave.cp">
+    <ClCompile Include="..\sources_common\application\general\CSafetySave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\rules\CScriptsTitleTable.cp">
+    <ClCompile Include="sources\application\rules\CScriptsTitleTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVECommon.cp">
+    <ClCompile Include="..\sources_common\mail\inet_clients\sieve\sieve\CSIEVECommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\calendar\calendar_view\summary_view\CSummaryPrintout.cp">
+    <ClCompile Include="sources\application\calendar\calendar_view\summary_view\CSummaryPrintout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\application\calendar\calendar_view\year_view\CYearPrintout.cp">
+    <ClCompile Include="sources\application\calendar\calendar_view\year_view\CYearPrintout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources_common\memdebug.cp">
+    <ClCompile Include="..\sources_common\memdebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sources\MulberryNew.cp">
+    <ClCompile Include="sources\MulberryNew.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\MulberryUnicode.cp">
+    <ClCompile Include="Sources\MulberryUnicode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Libraries\XMLLib\Source\XMLDocument.cp">
+    <ClCompile Include="..\Libraries\XMLLib\Source\XMLDocument.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

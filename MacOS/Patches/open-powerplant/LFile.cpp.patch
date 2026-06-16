@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFile.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFile.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFile.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFile.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFile.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFile.cpp	(working copy)
 @@ -36,9 +36,6 @@
  
  LFile::LFile()

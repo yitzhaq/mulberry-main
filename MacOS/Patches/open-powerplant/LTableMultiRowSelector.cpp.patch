@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/_More Table Classes/LTableMultiRowSelector.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/_More Table Classes/LTableMultiRowSelector.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/_More Table Classes/LTableMultiRowSelector.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/_More Table Classes/LTableMultiRowSelector.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/_More Table Classes/LTableMultiRowSelector.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/_In Progress/_Table Classes/_More Table Classes/LTableMultiRowSelector.cpp	(working copy)
 @@ -101,8 +101,48 @@
  	return ret;
  }

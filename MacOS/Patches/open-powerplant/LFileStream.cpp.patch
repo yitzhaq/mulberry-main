@@ -1,7 +1,7 @@
-Index: ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFileStream.cp
+Index: ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFileStream.cpp
 ===================================================================
---- ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFileStream.cp	(revision 15)
-+++ ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFileStream.cp	(working copy)
+--- ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFileStream.cpp	(revision 15)
++++ ../../Libraries/open-powerplant/PowerPlant/File and Stream Classes/LFileStream.cpp	(working copy)
 @@ -31,7 +31,7 @@
  //	Construct a FileStream from a Toolbox File System Specification
  

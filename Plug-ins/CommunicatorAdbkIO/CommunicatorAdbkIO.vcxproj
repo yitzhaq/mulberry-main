@@ -200,16 +200,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\Common\CAdbkIOPluginDLL.cp" />
-    <None Include="..\Common\CPluginDLL.cp" />
-    <ClCompile Include="..\Common\MulberryPrefixWin32.cp">
+    <None Include="..\Common\CAdbkIOPluginDLL.cpp" />
+    <None Include="..\Common\CPluginDLL.cpp" />
+    <ClCompile Include="..\Common\MulberryPrefixWin32.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <None Include="..\Common\PluginDLLmain.cp" />
-    <None Include="sources\CCommAdbkIOPluginDLL.cp" />
+    <None Include="..\Common\PluginDLLmain.cpp" />
+    <None Include="sources\CCommAdbkIOPluginDLL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\line64win.c">
