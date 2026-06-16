@@ -48,6 +48,7 @@ CSpellPreferences::CSpellPreferences()
 	mTypoSuggestions = true;
 	mSuggestSplit = false;
 	mAutoCorrect = true;
+	mSuggestLevel = eSuggest_Medium;
 	*mDictionaryName = 0;
 }
 
@@ -61,10 +62,17 @@ CSpellPreferences::~CSpellPreferences()
 CSpellPluginDLL::CSpellPluginDLL()
 {
 	mCheckTxt = NULL;
+	mCheckLength = 0;
 	mMaxPerPage = 1024;
 	mErrorCount = 0;
 	mCurrentError = 0;
 	mMaxError = 0;
+	mError.ask_user = false;
+	mError.do_replace = false;
+	mError.word = NULL;
+	mError.replacement = NULL;
+	mError.sel_start = 0;
+	mError.sel_end = 0;
 }
 
 // Destructor

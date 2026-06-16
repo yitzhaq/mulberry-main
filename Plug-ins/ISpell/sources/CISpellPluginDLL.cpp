@@ -108,6 +108,8 @@ CISpellPluginDLL::CISpellPluginDLL()
 	mData = new SData;
 	mPID = -1;
 	mSelectionAdjust = 0;
+	mCheckLength = 0;
+	mErrorIndex = 0;
 }
 
 // Destructor

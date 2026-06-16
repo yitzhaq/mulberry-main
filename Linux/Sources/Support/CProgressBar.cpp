@@ -38,6 +38,7 @@ CProgressBar::CProgressBar(JXContainer* enclosure, const HSizingOption hSizing, 
 {
 	mIndeterminate = false;
 	mCtr = 0;
+	mLastTime = 0;
 }
 
 // Start progress

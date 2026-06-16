@@ -61,6 +61,7 @@ LTableView::InitTable()
 	mTableStorage			= NULL;
 	mUseDragSelect			= false;
 	mDeferAdjustment		= false;
+	mDragType				= kInvalidDrag;
 }
 
 

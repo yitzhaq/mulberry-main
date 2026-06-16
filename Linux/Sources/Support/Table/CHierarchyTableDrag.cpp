@@ -42,6 +42,8 @@ CHierarchyTableDrag::CHierarchyTableDrag(JXScrollbarSet* scrollbarSet,
 	mKeySelection = false;
 	mLastTyping = 0UL;
 	mLastChars[0] = '\0';
+	mTimeInCell = 0;
+	mRowWasSelected = false;
 }
 
 CHierarchyTableDrag::~CHierarchyTableDrag()

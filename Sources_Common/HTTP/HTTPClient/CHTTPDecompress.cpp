@@ -30,6 +30,7 @@ inflate_streambuf::inflate_streambuf(std::ostream& output, EEncoding encoding)
 	: mOutput(output), mEncoding(encoding), mZStreamInit(false),
 	  mInBufLen(0), mTotalIn(0), mTotalOut(0)
 {
+	mInBuf[0] = 0;
 	::memset(&mZStream, 0, sizeof(mZStream));
 
 #ifdef HAVE_BROTLI

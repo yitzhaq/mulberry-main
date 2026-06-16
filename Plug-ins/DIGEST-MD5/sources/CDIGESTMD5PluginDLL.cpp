@@ -104,6 +104,7 @@ const char* cTokenSeparators = "()<>@,;:\\\"/[]?={} \t\r\n";
 CDIGESTMD5PluginDLL::CDIGESTMD5PluginDLL()
 {
 	mState = eFirstLine;
+	hex_response_server[0] = 0;
 }
 
 // Destructor

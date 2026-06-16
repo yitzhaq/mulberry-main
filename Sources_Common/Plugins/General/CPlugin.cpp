@@ -78,7 +78,7 @@ const char* cPluginEntry = "MulberryPluginEntry";
 // Constructor
 CPlugin::CPluginInfo::CPluginInfo()
 {
-	*(long*) &mVersion = 0;
+	mVersion = 0;
 	mType = ePluginUnknown;
 	mDataLength = 0;
 	mData = NULL;

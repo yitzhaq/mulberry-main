@@ -82,6 +82,7 @@ CFontNameMenu::CFontNameMenu
 void CFontNameMenu::CFontNameMenuX()
 {
 	itsBroadcastNameChangeFlag = kTrue;
+	itsFontIndex = 1;
 
 	mForScreen = true;
 	mForPrinter = false;

@@ -63,6 +63,7 @@ const char* cPluginDescription = "ASpell spelling plugin for Mulberry." OS_ENDL 
 // Constructor
 CASpellPluginDLL::CASpellPluginDLL()
 {
+	mCheckLength = 0;
 	mSelectionAdjust = 0;
 	mData = new SData;
 	mASpellConfig = NULL;

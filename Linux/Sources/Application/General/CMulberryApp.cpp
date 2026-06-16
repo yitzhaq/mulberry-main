@@ -133,6 +133,11 @@ CMulberryApp::CMulberryApp(int *argc, char* argv[])
 	// Init this first
 	sApp = this;
 
+	mNotificationOn = false;
+	mDemoTimeout = 0;
+	for (size_t i = 0; i < sizeof(mCRC) / sizeof(mCRC[0]); i++)
+		mCRC[i] = 0;
+
 	// Create the MDI server
 	sMDIServer = new CMulberryMDIServer();
 

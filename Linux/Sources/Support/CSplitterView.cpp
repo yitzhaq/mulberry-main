@@ -52,6 +52,8 @@ CSplitterView::CSplitterView
 				enclosure, hSizing, vSizing, x,y, w,h)
 {
 	itsDragType = kInvalidDrag;
+	itsMinDrag = 0;
+	itsMaxDrag = 0;
 	SetDefaultCursor(JXGetDragHorizLineCursor(GetDisplay()));
 	itsDragAllLineCursor = JXGetDragAllHorizLineCursor(GetDisplay());
 
@@ -59,7 +61,9 @@ CSplitterView::CSplitterView
 
 	mSub1 = NULL;
 	mSub2 = NULL;
-	
+	mHorizSplit = NULL;
+	mVertSplit = NULL;
+
 	mDividerPos = 0;
 	mMin1 = 32;
 	mMin2 = 32;

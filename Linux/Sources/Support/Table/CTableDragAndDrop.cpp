@@ -77,6 +77,11 @@ CTableDragAndDrop::CTableDragAndDrop(JXScrollbarSet* scrollbarSet,
 	mHandleMove = true;
 	mIsDropTarget = false;
 	mDropData = NULL;
+	mDataLen = 0;
+	mDelMethod = JXSelectionManager::kArrayDelete;
+	mDropFlavor = 0;
+	mDragFlavor = 0;
+	mDropActionMove = false;
 }
 
 // Default destructor

@@ -274,6 +274,8 @@ CTCPStreamBuf::CTCPStreamBuf() : std::streambuf()
 	setg(mBufIn, mBufIn, mBufIn);
 	setp(mBufOut, mBufOut + cTCPBufferSize);
 	mCompressOn = false;
+	mCompressBufIn[0] = 0;
+	mCompressRawIn[0] = 0;
 	mCompressBufInLen = 0;
 	mCompressBufInPos = 0;
 	mCompressRawInLen = 0;
@@ -291,6 +293,8 @@ CTCPStreamBuf::CTCPStreamBuf(const CTCPStreamBuf& copy)
 	setg(mBufIn, mBufIn, mBufIn);
 	setp(mBufOut, mBufOut + cTCPBufferSize);
 	mCompressOn = false;
+	mCompressBufIn[0] = 0;
+	mCompressRawIn[0] = 0;
 	mCompressBufInLen = 0;
 	mCompressBufInPos = 0;
 	mCompressRawInLen = 0;

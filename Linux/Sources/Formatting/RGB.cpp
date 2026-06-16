@@ -23,6 +23,9 @@
 
 RGB::RGB()
 {
+	red = 0;
+	green = 0;
+	blue = 0;
 }
 
 RGB::RGB(int red, int green, int blue){

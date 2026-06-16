@@ -40,7 +40,7 @@ public:
 template <class T> class CDataItem : public CDataItemBase
 {
 public:
-	CDataItem() {}
+	CDataItem() : mData() {}
 	CDataItem(const T& data)
 		{ mData = data; }
 	CDataItem(const CDataItem& copy)

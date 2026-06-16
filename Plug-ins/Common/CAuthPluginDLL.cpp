@@ -72,6 +72,9 @@ CAuthPluginDLL::CAuthPluginDLL()
 	mChannelBind.mMode = 'n';
 	mChannelBind.mType[0] = 0;
 	mChannelBind.mLength = 0;
+	*mAuthInfo.mAuthTypeID = 0;
+	*mAuthInfo.mPrefsDescriptor = 0;
+	mAuthInfo.mAuthUIType = eAuthUserPswd;
 }
 
 // Destructor

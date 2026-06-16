@@ -35,6 +35,10 @@ CFileDocument::CFileDocument(JXDirector* owner, const JCharacter* fileName,
 		  
 {
 	mTextDisplay = NULL;
+
+	// Menu bar is built later by CreateMainMenu
+	for (size_t i = 0; i < sizeof(mainMenus) / sizeof(mainMenus[0]); i++)
+		mainMenus[i] = NULL;
 }
 
 void CFileDocument::SafetySave(const JXDocumentManager::SafetySaveReason reason)

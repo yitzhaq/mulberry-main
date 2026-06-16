@@ -96,6 +96,7 @@ CUUFilter::CUUFilter(LStream* aStream, CProgress* progress) : CCreateFileFilter(
 	mLinePos = mLineBuffer;
 	mLineLength = 0;
 	mEncodeStatus = eStart;
+	mAtom.base256[0] = 0;
 	mAtomPos = 0;
 	mDecodeStatus = eDecodeStart;
 	mDecodedOne = false;

@@ -26,6 +26,9 @@
 CWindow::CWindow(JXDirector* owner)
 		: CCommander(CMulberryApp::sApp), JXWindowDirector(owner)
 {
+	// Menu bar is built later by CreateMainMenu
+	for (size_t i = 0; i < sizeof(mainMenus) / sizeof(mainMenus[0]); i++)
+		mainMenus[i] = NULL;
 }
 
 JBoolean CWindow::Close()

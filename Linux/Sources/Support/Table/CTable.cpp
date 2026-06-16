@@ -70,6 +70,9 @@ CTable::CTable(JXScrollbarSet* scrollbarSet,
 	
 	mFontInfo.fontname = JGetDefaultFontName();
 	mFontInfo.size = 10;
+
+	mIconOrigin = 0;
+	mTextOrigin = 0;
 }
 
 void CTable::OnCreate()

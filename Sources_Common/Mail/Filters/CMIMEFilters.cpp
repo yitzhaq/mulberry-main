@@ -925,6 +925,7 @@ CBase64Filter::CBase64Filter(i18n::ECharsetCode charset, bool is_text, bool is_f
 	: CMIMEFilter(charset, is_text, is_flowed, is_delsp, aStream, progress)
 {
 	mReadStatus = eLineBuild;
+	mAtom.base256[0] = 0;
 	mAtomPos = 0;
 	mCharLast = 0;
 }

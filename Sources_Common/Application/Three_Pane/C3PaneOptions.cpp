@@ -88,6 +88,9 @@ void C3PaneOptions::_copy(const C3PaneOptions& copy)
 	mMailViewOptions = copy.mMailViewOptions;
 	mAddressViewOptions = copy.mAddressViewOptions;
 	mCalendarViewOptions = copy.mCalendarViewOptions;
+
+	mGeometriesPerView = copy.mGeometriesPerView;
+	mActionsPerView = copy.mActionsPerView;
 }
 
 const char* cViewDescriptors[] =
@@ -205,10 +208,12 @@ void C3PaneOptions::C3PaneViewOptions::_copy(const C3PaneOptions::C3PaneViewOpti
 	mItemsVisible = copy.mItemsVisible;
 	mPreviewVisible = copy.mPreviewVisible;
 
+	mFocusedPanel = copy.mFocusedPanel;
+
 	for(int i = 0; i < eUserAction_Total; i++)
 	{
 		mUserActions[i] = copy.mUserActions[i];
-	}	
+	}
 }
 
 const char* cGeometryDescriptors[] =

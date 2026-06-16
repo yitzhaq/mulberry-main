@@ -34,6 +34,7 @@ CDateTimeControl::CDateTimeControl(const JCharacter* text, JXContainer* enclosur
 								const JCoordinate w, const JCoordinate h)
 				: CTextInputField(text, enclosure, menu, hSizing, vSizing, x, y, w - 20, h)
 {
+	mMode = eDate;
 	mSpinUp = NULL;
 	mSpinDown = NULL;
 }
@@ -44,6 +45,7 @@ CDateTimeControl::CDateTimeControl(JXContainer* enclosure,
 							const JCoordinate w, const JCoordinate h)
 				: CTextInputField(enclosure, hSizing, vSizing, x, y, w - 20, h)
 {
+	mMode = eDate;
 	mSpinUp = NULL;
 	mSpinDown = NULL;
 }

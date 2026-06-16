@@ -50,6 +50,7 @@ CSCRAMPluginDLL::CSCRAMPluginDLL(const EVP_MD* digest, unsigned int digestLen)
 	mGS2Header[0] = 0;
 	mClientFirstBare[0] = 0;
 	mServerFirstMsg[0] = 0;
+	mServerSignature[0] = 0;
 	mServerSigLen = 0;
 }
 
