@@ -360,7 +360,7 @@ public:
 	const cdstring&	GetMailboxId() const
 		{ return (mStatusInfo ? mStatusInfo->mMailboxId : cdstring::null_str); }
 	void	SetMailboxId(const cdstring& mid)
-		{ InitStatusInfo(); mStatusInfo->mMailboxId = mid; }
+		{ if (mStatusInfo) mStatusInfo->mMailboxId = mid; }
 
 	void	ChangeUIDValidity(unsigned long uidv);
 
