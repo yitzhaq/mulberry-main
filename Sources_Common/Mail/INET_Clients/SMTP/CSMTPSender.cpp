@@ -1202,8 +1202,8 @@ void CSMTPSender::SMTPHandleSMTPException(CSMTPException& ex, bool do_quit)
 
 	// Handle error
 	cdstring errtxt = mLineData;
-	const char* enhanced = GetEnhancedStatusText();
-	if (enhanced)
+	cdstring enhanced = GetEnhancedStatusText();
+	if (!enhanced.empty())
 	{
 		errtxt += "\n(";
 		errtxt += enhanced;
@@ -1593,122 +1593,35 @@ bool CSMTPSender::SMTPContinuation()
 	return ((mLineData[3] == CONTINUATION) ? true : false);
 }
 
-// RFC 3463 enhanced status code descriptions
-struct SEnhancedCode { int subject; int detail; const char* text; };
-
-static const SEnhancedCode cEnhancedCodes[] = {
-	{ 0, 0, "Other" },
-	{ 1, 0, "Other address status" },
-	{ 1, 1, "Bad destination mailbox address" },
-	{ 1, 2, "Bad destination system address" },
-	{ 1, 3, "Bad destination mailbox address syntax" },
-	{ 1, 4, "Destination mailbox address ambiguous" },
-	{ 1, 5, "Destination address valid" },
-	{ 1, 6, "Destination mailbox has moved" },
-	{ 1, 7, "Bad sender's mailbox address syntax" },
-	{ 1, 8, "Bad sender's system address" },
-	{ 1, 9, "Message relayed to non-compliant mailer" },
-	{ 1, 10, "Recipient address has null MX" },
-	{ 2, 0, "Other mailbox status" },
-	{ 2, 1, "Mailbox disabled, not accepting messages" },
-	{ 2, 2, "Mailbox full" },
-	{ 2, 3, "Message length exceeds limit" },
-	{ 2, 4, "Mailing list expansion problem" },
-	{ 3, 0, "Other mail system status" },
-	{ 3, 1, "Mail system full" },
-	{ 3, 2, "System not accepting messages" },
-	{ 3, 3, "System not capable of selected features" },
-	{ 3, 4, "Message too big for system" },
-	{ 3, 5, "System incorrectly configured" },
-	{ 3, 6, "Requested priority was changed" },
-	{ 4, 0, "Other network/routing status" },
-	{ 4, 1, "No answer from host" },
-	{ 4, 2, "Bad connection" },
-	{ 4, 3, "Directory server failure" },
-	{ 4, 4, "Unable to route" },
-	{ 4, 5, "Mail system congestion" },
-	{ 4, 6, "Routing loop detected" },
-	{ 4, 7, "Delivery time expired" },
-	{ 5, 0, "Other protocol status" },
-	{ 5, 1, "Invalid command" },
-	{ 5, 2, "Syntax error" },
-	{ 5, 3, "Too many recipients" },
-	{ 5, 4, "Invalid command arguments" },
-	{ 5, 5, "Wrong protocol version" },
-	{ 5, 6, "Authentication exchange line too long" },
-	{ 6, 0, "Other media error" },
-	{ 6, 1, "Media not supported" },
-	{ 6, 2, "Conversion required and prohibited" },
-	{ 6, 3, "Conversion required but not supported" },
-	{ 6, 4, "Conversion with loss performed" },
-	{ 6, 5, "Conversion failed" },
-	{ 6, 6, "Message content could not be fetched from remote" },
-	{ 6, 7, "Non-ASCII addresses not permitted for this sender/recipient" },
-	{ 6, 8, "UTF-8 string reply required but not permitted by SMTP session" },
-	{ 6, 9, "UTF-8 header message cannot be transferred to non-UTF-8 session" },
-	{ 7, 0, "Other security status" },
-	{ 7, 1, "Delivery not authorized, message refused" },
-	{ 7, 2, "Mailing list expansion prohibited" },
-	{ 7, 3, "Security conversion required but not possible" },
-	{ 7, 4, "Security features not supported" },
-	{ 7, 5, "Cryptographic failure" },
-	{ 7, 6, "Cryptographic algorithm not supported" },
-	{ 7, 7, "Message integrity failure" },
-	{ 7, 8, "Authentication credentials invalid" },
-	{ 7, 9, "Authentication mechanism too weak" },
-	{ 7, 10, "Encryption needed" },
-	{ 7, 11, "Encryption required for requested authentication" },
-	{ 7, 12, "Password transition needed" },
-	{ 7, 13, "Account disabled" },
-	{ 7, 14, "Trust relationship required" },
-	{ 7, 15, "Priority level too low" },
-	{ 7, 16, "Message too big for specified priority" },
-	{ 7, 17, "Mailbox owner has changed" },
-	{ 7, 18, "Domain owner has changed" },
-	{ 7, 19, "RRVS test cannot be completed" },
-	{ 7, 20, "No passing DKIM signature found" },
-	{ 7, 21, "No acceptable DKIM signature found" },
-	{ 7, 22, "No valid author-matched DKIM signature found" },
-	{ 7, 23, "SPF validation failed" },
-	{ 7, 24, "SPF validation error" },
-	{ 7, 25, "Reverse DNS validation failed" },
-	{ 7, 26, "Multiple authentication checks failed" },
-	{ 7, 27, "Sender address has null MX" },
-	{ 7, 28, "Mail flood detected" },
-	{ 7, 29, "ARC validation failure" },
-	{ 7, 30, "REQUIRETLS support required" },
-	{ -1, -1, NULL }
-};
-
-const char* CSMTPSender::GetEnhancedStatusText() const
+// RFC 3463 enhanced status text lives in ProtocolErrors.xml, keyed by
+// "Error::SMTP::Enhanced::<subject>.<detail>" with a "<subject>.0" fallback
+cdstring CSMTPSender::GetEnhancedStatusText() const
 {
 	if (!mEnhancedStatus)
-		return NULL;
+		return cdstring::null_str;
 
 	const char* p = mLineData + 4;
 	if (!*p || !::isdigit(*p))
-		return NULL;
+		return cdstring::null_str;
 
-	int eclass = *p - '0';
 	if (*(p+1) != '.')
-		return NULL;
+		return cdstring::null_str;
 
 	int esubject = ::atoi(p + 2);
 	const char* dot2 = ::strchr(p + 2, '.');
 	if (!dot2)
-		return NULL;
+		return cdstring::null_str;
 	int edetail = ::atoi(dot2 + 1);
 
-	const char* subject_fallback = NULL;
-	for (const SEnhancedCode* code = cEnhancedCodes; code->subject >= 0; code++)
+	char rsrc_id[64];
+	::snprintf(rsrc_id, sizeof(rsrc_id), "Error::SMTP::Enhanced::%d.%d", esubject, edetail);
+	cdstring text = rsrc::GetString(rsrc_id);
+	if (text.empty())
 	{
-		if (code->subject == esubject && code->detail == edetail)
-			return code->text;
-		if (code->subject == esubject && code->detail == 0)
-			subject_fallback = code->text;
+		::snprintf(rsrc_id, sizeof(rsrc_id), "Error::SMTP::Enhanced::%d.0", esubject);
+		text = rsrc::GetString(rsrc_id);
 	}
-
-	return subject_fallback;
+	return text;
 }
 
 void CSMTPSender::SMTPMapErrorStr(const char*& syserr_id, const char*& protobad_id)

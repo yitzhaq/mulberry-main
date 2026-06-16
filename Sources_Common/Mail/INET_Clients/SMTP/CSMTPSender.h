@@ -216,7 +216,7 @@ private:
 	void SMTPReceiveCapability(char code = OK_RESPONSE);
 	bool SMTPCheckResponse(char code);
 	bool SMTPContinuation();
-	const char* GetEnhancedStatusText() const;
+	cdstring GetEnhancedStatusText() const;
 
 	// S E N D  D A T A
 	void SMTPSendEHello()

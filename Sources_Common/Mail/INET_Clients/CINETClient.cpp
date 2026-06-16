@@ -2198,54 +2198,55 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 		nex->sethandled();
 }
 
-// RFC 5530 response code explanations
-static const char* GetResponseCodeExplanation(const cdstring& tag_msg)
+// RFC 5530 response codes: map the bracketed protocol token (kept in code as the
+// lookup key) to a resource ID; the user-visible explanation lives in ProtocolErrors.xml
+static cdstring GetResponseCodeExplanation(const cdstring& tag_msg)
 {
 	struct SResponseCode
 	{
 		const char* code;
-		const char* explanation;
+		const char* rsrc_id;
 	};
 
 	static const SResponseCode cResponseCodes[] =
 	{
-		{ "[UNAVAILABLE]",          "Server temporarily unavailable" },
-		{ "[AUTHENTICATIONFAILED]", "Authentication failed (invalid credentials)" },
-		{ "[AUTHORIZATIONFAILED]",  "Authorization failed (access denied)" },
-		{ "[EXPIRED]",              "Password has expired" },
-		{ "[PRIVACYREQUIRED]",      "Encryption (TLS) required for this operation" },
-		{ "[CONTACTADMIN]",         "Contact your system administrator" },
-		{ "[NOPERM]",               "Insufficient permissions" },
-		{ "[INUSE]",                "Resource is in use by another session" },
-		{ "[EXPUNGEISSUED]",        "Another client has expunged messages" },
-		{ "[CORRUPTION]",           "Server detected data corruption" },
-		{ "[SERVERBUG]",            "Server internal error" },
-		{ "[CLIENTBUG]",            "Server reports client protocol error" },
-		{ "[CANNOT]",               "Operation not permitted by server policy" },
-		{ "[LIMIT]",                "Server implementation limit reached" },
-		{ "[OVERQUOTA]",            "Quota exceeded" },
-		{ "[ALREADYEXISTS]",        "Mailbox or resource already exists" },
-		{ "[NONEXISTENT]",          "Mailbox or resource does not exist" },
-		{ "[TOOBIG]",               "Message exceeds server size limit" },
-		{ "[UNKNOWN-CTE]",          "Server cannot decode content transfer encoding" },
-		{ "[BADCHARSET]",            "Requested character set not supported by server" },
-		{ "[UIDNOTSTICKY]",          "Mailbox does not support persistent UIDs" },
-		{ "[NOTSAVED]",              "Server could not save search results" },
-		{ "[HASCHILDREN]",           "Mailbox has children that must be deleted first" },
-		{ "[BADCOMPARATOR]",         "No matching comparator found" },
-		{ "[AUTH]",                  "Authentication failed (invalid credentials)" },
-		{ "[SYS/PERM]",             "Permanent server error — contact administrator" },
-		{ "[SYS/TEMP]",             "Temporary server error — try again later" },
+		{ "[UNAVAILABLE]",          "Error::INET::ResponseCode::UNAVAILABLE" },
+		{ "[AUTHENTICATIONFAILED]", "Error::INET::ResponseCode::AUTHENTICATIONFAILED" },
+		{ "[AUTHORIZATIONFAILED]",  "Error::INET::ResponseCode::AUTHORIZATIONFAILED" },
+		{ "[EXPIRED]",              "Error::INET::ResponseCode::EXPIRED" },
+		{ "[PRIVACYREQUIRED]",      "Error::INET::ResponseCode::PRIVACYREQUIRED" },
+		{ "[CONTACTADMIN]",         "Error::INET::ResponseCode::CONTACTADMIN" },
+		{ "[NOPERM]",               "Error::INET::ResponseCode::NOPERM" },
+		{ "[INUSE]",                "Error::INET::ResponseCode::INUSE" },
+		{ "[EXPUNGEISSUED]",        "Error::INET::ResponseCode::EXPUNGEISSUED" },
+		{ "[CORRUPTION]",           "Error::INET::ResponseCode::CORRUPTION" },
+		{ "[SERVERBUG]",            "Error::INET::ResponseCode::SERVERBUG" },
+		{ "[CLIENTBUG]",            "Error::INET::ResponseCode::CLIENTBUG" },
+		{ "[CANNOT]",               "Error::INET::ResponseCode::CANNOT" },
+		{ "[LIMIT]",                "Error::INET::ResponseCode::LIMIT" },
+		{ "[OVERQUOTA]",            "Error::INET::ResponseCode::OVERQUOTA" },
+		{ "[ALREADYEXISTS]",        "Error::INET::ResponseCode::ALREADYEXISTS" },
+		{ "[NONEXISTENT]",          "Error::INET::ResponseCode::NONEXISTENT" },
+		{ "[TOOBIG]",               "Error::INET::ResponseCode::TOOBIG" },
+		{ "[UNKNOWN-CTE]",          "Error::INET::ResponseCode::UNKNOWN-CTE" },
+		{ "[BADCHARSET]",           "Error::INET::ResponseCode::BADCHARSET" },
+		{ "[UIDNOTSTICKY]",         "Error::INET::ResponseCode::UIDNOTSTICKY" },
+		{ "[NOTSAVED]",             "Error::INET::ResponseCode::NOTSAVED" },
+		{ "[HASCHILDREN]",          "Error::INET::ResponseCode::HASCHILDREN" },
+		{ "[BADCOMPARATOR]",        "Error::INET::ResponseCode::BADCOMPARATOR" },
+		{ "[AUTH]",                 "Error::INET::ResponseCode::AUTH" },
+		{ "[SYS/PERM]",             "Error::INET::ResponseCode::SYS_PERM" },
+		{ "[SYS/TEMP]",             "Error::INET::ResponseCode::SYS_TEMP" },
 		{ NULL, NULL }
 	};
 
 	for (const SResponseCode* rc = cResponseCodes; rc->code; rc++)
 	{
 		if (::strstrnocase(tag_msg, rc->code) != NULL)
-			return rc->explanation;
+			return rsrc::GetString(rc->rsrc_id);
 	}
 
-	return NULL;
+	return cdstring::null_str;
 }
 
 // Handle an error condition
@@ -2301,8 +2302,8 @@ void CINETClient::INETDisplayError(CINETException& ex, const char* err_id, const
 	default:
 		{
 			cdstring err = mLastResponse.tag_msg;
-			const char* explanation = GetResponseCodeExplanation(err);
-			if (explanation)
+			cdstring explanation = GetResponseCodeExplanation(err);
+			if (!explanation.empty())
 			{
 				err += "\n(";
 				err += explanation;
