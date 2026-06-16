@@ -528,15 +528,15 @@ void CSearchCriteriaSIEVE::SetSearchItem(const CSearchItem* spec, bool negate)
 			popup1 = eCriteria_Size;
 			popup2 = eSizeMethod_Smaller;
 			long size = static_cast<long>(reinterpret_cast<intptr_t>(spec->GetData()));
-			if (size >= 1024L)
-			{
-				size /= 1024L;
-				popup3 = eSize_KBytes;
-			}
-			else if (size >= 1024L * 1024L)
+			if (size >= 1024L * 1024L)
 			{
 				size /= 1024L * 1024L;
 				popup3 = eSize_MBytes;
+			}
+			else if (size >= 1024L)
+			{
+				size /= 1024L;
+				popup3 = eSize_KBytes;
 			}
 			text3 = size;
 			break;

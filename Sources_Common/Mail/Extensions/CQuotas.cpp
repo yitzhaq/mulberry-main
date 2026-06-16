@@ -110,7 +110,7 @@ void CQuotaRoot::ParseList(const char* txt)
 		char* current = ::strgetquotestr(&p);
 		if (!current) break;
 		char* max = ::strgetquotestr(&p);
-		if (!current) break;
+		if (!max) break;
 
 		// Add to list
 		mItems.push_back(CQuotaItem(item, current, max));
