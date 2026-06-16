@@ -2153,13 +2153,13 @@ static const char* page_map[num_pages] = {NULL};
 
 int CMacTradChinese::w_2_c(wchar_t wc, char* out)
 {
-	// Look for ascii
-	if (wc <= 0x007F)
-		*out++ = wc;
-	
-	// Apple specials
-	else if (wc == 0x005C)
+	// Apple specials — must check before ASCII range
+	if (wc == 0x005C)
 		*out++ = (char)0x80;
+
+	// Look for ascii
+	else if (wc <= 0x007F)
+		*out++ = wc;
 	else if (wc == 0xF880)
 		*out++ = (char)0x81;
 	else if (wc == 0xF881)

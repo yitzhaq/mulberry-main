@@ -1109,13 +1109,13 @@ wchar_t CMacJapanese::tabledata(size_t i, size_t j) const
 
 int CMacJapanese::w_2_c(wchar_t wc, char* out)
 {
-	// Look for ascii
-	if (wc <= 0x007F)
-		*out++ = wc;
-	
-	// Apple specials
-	else if (wc == 0x005C)
+	// Apple specials — must check before ASCII range
+	if (wc == 0x005C)
 		*out++ = (char)0x80;
+
+	// Look for ascii
+	else if (wc <= 0x007F)
+		*out++ = wc;
 	else if (wc == 0x00A0)
 		*out++ = (char)0xA0;
 	else if (wc == 0x00A9)
