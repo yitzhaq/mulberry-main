@@ -67,6 +67,22 @@ protected:
 		uint32_t	mCacheModifiedHi;	// Hi 32 bits of cache mtime (version >= 0x0C)
 		uint32_t	mLastSyncHi;		// Hi 32 bits of last sync time (version >= 0x0C)
 
+		SIndexHeader()
+			{ mVersion = 0;
+			  mMboxModified = 0;
+			  mCacheModified = 0;
+			  mLastSync = 0;
+			  mIndexSize = 0;
+			  mUIDValidity = 0;
+			  mUIDNext = 0;
+			  mLastUID = 0;
+			  mLocalUIDNext = 0;
+			  mHighestModSeqHi = 0;
+			  mHighestModSeqLo = 0;
+			  mMboxModifiedHi = 0;
+			  mCacheModifiedHi = 0;
+			  mLastSyncHi = 0; }
+
 		uint32_t& Version()
 			{ return mVersion; }
 		const uint32_t& Version() const

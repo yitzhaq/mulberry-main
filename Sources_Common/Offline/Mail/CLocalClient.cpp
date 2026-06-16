@@ -3010,6 +3010,7 @@ void CLocalClient::Reconstruct(CMbox* mbox)
 			header.UIDNext() = recovered ? recovered_index.UIDNext() : mbox->GetUIDNext();
 			header.LastUID() = recovered ? recovered_index.LastUID() : (indices.size() ? indices.back().UID() : 0);
 			header.LocalUIDNext() = recovered ? recovered_index.LocalUIDNext() : (mSeparateUIDs ? indices.size() + 1 : 0);
+			header.SetHighestModSeq(recovered ? recovered_index.GetHighestModSeq() : 0);
 			header.write(fout);
 
 			// Sync header modtimes
