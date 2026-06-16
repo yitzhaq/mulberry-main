@@ -44,6 +44,8 @@ class JXTextButton;
 
 class CNewComponentRepeat : public CNewComponentPanel
 {
+	friend class CNewComponentRepeatSimple;
+
 public:
 
 	CNewComponentRepeat(JXContainer* enclosure,
@@ -64,6 +66,7 @@ public:
 
 	virtual	void	SetReadOnly(bool read_only);
 
+protected:
 	enum
 	{
 		eOccurs_Yearly = 1,
@@ -75,7 +78,6 @@ public:
 		eOccurs_Secondly
 	};
 
-protected:
 	enum
 	{
 		eOccurs_Simple = 1,
