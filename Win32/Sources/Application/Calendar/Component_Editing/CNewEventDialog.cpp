@@ -328,9 +328,11 @@ void CNewEventDialog::DoCancel()
 		iCal::CICalendar* cal = iCal::CICalendar::GetICalendar(mComponent->GetCalendar());
 		if (cal != NULL)
 		{
-			cal->RemoveVEvent(static_cast<iCal::CICalendarVEvent*>(mComponent));
+			// Defer deletion until after the views are notified: RemoveVEvent
+			// otherwise deletes the event (delete_it defaults true) and
+			// EventChangedAll would then use freed memory.
+			cal->RemoveVEvent(static_cast<iCal::CICalendarVEvent*>(mComponent), false);
 			CCalendarView::EventChangedAll(static_cast<iCal::CICalendarVEvent*>(mComponent));
-			mComponent = NULL;
 		}
 	}
 
