@@ -26,8 +26,6 @@ const size_t cTableOffset1 = 0x81;
 const size_t cTableOffset2 = 0x40;
 const size_t cTableSize1 = 109;
 const size_t cTableSize2 = 191;
-const size_t cTableMax1 = cTableOffset1 + cTableSize1;
-const size_t cTableMax2 = cTableOffset2 + cTableSize2;
 
 const size_t cTableOffset11 = 0x81;
 const size_t cTableOffset12 = 0xE0;

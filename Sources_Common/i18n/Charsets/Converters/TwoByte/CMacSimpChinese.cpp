@@ -26,8 +26,6 @@ const size_t cTableOffset1 = 0xA1;
 const size_t cTableOffset2 = 0xA1;
 const size_t cTableSize1 = 87;
 const size_t cTableSize2 = 94;
-const size_t cTableMax1 = cTableOffset1 + cTableSize1;
-const size_t cTableMax2 = cTableOffset2 + cTableSize2;
 const wchar_t cTableData[cTableSize1][cTableSize2] =
 {
 	{ // Index 0x01  Page 0xA100
