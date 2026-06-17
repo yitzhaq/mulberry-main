@@ -124,13 +124,13 @@ void CPropCalendarGeneral::SetCalendar(calstore::CCalendarStoreNode* node)
 	if (!node->IsDirectory())
 	{
 		{
-			unsigned long size = node->GetSize();
-			if ((size == ULONG_MAX) && (node->GetProtocol()->IsOffline() || node->GetProtocol()->IsWebCalendar()))
+			uint32_t size = node->GetSize();
+			if ((size == UINT32_MAX) && (node->GetProtocol()->IsOffline() || node->GetProtocol()->IsWebCalendar()))
 			{
 				node->CheckSize();
 				size = node->GetSize();
 			}
-			if (size != ULONG_MAX)
+			if (size != UINT32_MAX)
 			{
 				mSize->SetText(::GetNumericFormat(size));
 			}
@@ -217,7 +217,7 @@ void CPropCalendarGeneral::CheckSize()
 
 	{
 		uint32_t size = mCalList->front()->GetSize();
-		if (size != ULONG_MAX)
+		if (size != UINT32_MAX)
 		{
 			mSize->SetText(::GetNumericFormat(size));
 		}
