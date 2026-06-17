@@ -42,7 +42,6 @@ wchar_t CUTF16::c_2_w(const unsigned char*& c)
 		{
 			// BOM indicates opposite endianness — switch and re-read
 			mBigEndian = !mBigEndian;
-			wc = mBigEndian ? ((c1 << 8) | c2) : ((c2 << 8) | c1);
 			// Skip the BOM, read next character
 			return c_2_w(c);
 		}
