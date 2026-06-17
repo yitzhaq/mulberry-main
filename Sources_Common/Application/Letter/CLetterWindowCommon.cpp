@@ -935,8 +935,8 @@ void CLetterWindow::OnDraftSendMail()
 				flags = static_cast<CRFC822::ECreateHeaderFlags>(flags | CRFC822::eRejectDSN);
 			CRFC822::CreateHeader(mail_msg_bcc.get(), flags, id, &mDSN, mBounceHeader);
 
-			// Send it
-			smtp_hold = CSMTPAccountManager::sSMTPAccountManager->SendMessage(mail_msg_bcc.get(), *id, mBounceHeader != NULL);
+			// Send it — keep any hold flag from the non-bcc send above
+			smtp_hold = CSMTPAccountManager::sSMTPAccountManager->SendMessage(mail_msg_bcc.get(), *id, mBounceHeader != NULL) || smtp_hold;
 		}
 		else
 		{
@@ -1823,10 +1823,8 @@ const char* CLetterWindow::QuoteText(const char* theText, bool forward, bool hea
 		cdstring temp(theText);
 		CTextEngine::RemoveSigDashes(temp.c_str_mod());
 
-		// Headers must not be wrapped so use very large wrap length
-		quoted = CTextEngine::QuoteLines(temp, temp.length(), header ? 990 : CRFC822::GetWrapLength(),
-										forward ?
-										CPreferences::sPrefs->mForwardQuote.GetValue() :
+		// This branch is reply-body only (forward and header are both false here)
+		quoted = CTextEngine::QuoteLines(temp, temp.length(), CRFC822::GetWrapLength(),
 										CPreferences::sPrefs->mReplyQuote.GetValue(),
 										&CPreferences::sPrefs->mRecognizeQuotes.GetValue(),
 										is_flowed);

@@ -1073,6 +1073,9 @@ void CSecurityPlugin::ProcessAttachment(CMessage* msg, CAttachment* part, ESecur
 	if (mode == eEncrypt)
 		mode = eEncryptSign;
 
+	if (!part)
+		return;
+
 	// See if multipart
 	if (part->IsMultipart() && !part->IsMessage() && !part->IsApplefile() && part->GetParts())
 	{
@@ -1681,9 +1684,6 @@ bool CSecurityPlugin::VerifyDecryptPartInternal(CMessage* msg, CAttachment* part
 	StLoadPlugin load(this);
 
 	bool result = false;
-	const char* old_data = NULL;
-	CAttachment* temp_attach = NULL;
-	bool remove_temp_data = false;
 	try
 	{
 		// Is message top part multipart/signed
@@ -1865,9 +1865,6 @@ bool CSecurityPlugin::FileVerifyDecrypt(const CMessage* msg) const
 bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 {
 	bool result = false;
-	const char* old_data = NULL;
-	CAttachment* temp_attach = NULL;
-	bool remove_temp_data = false;
 
 	// See whether to use file or not
 	if (FileVerifyDecrypt(msg))
@@ -1918,6 +1915,7 @@ bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 
 			// Must have message
 			if (!lmsg.get() ||
+				!lmsg->GetBody() ||
 				!lmsg->GetBody()->GetParts() ||
 				(lmsg->GetBody()->GetParts()->size() != 2))
 			{
@@ -1929,9 +1927,7 @@ bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 			CAttachmentList* parts = lmsg->GetBody()->GetParts();
 			unsigned long data_start = static_cast<CLocalAttachment*>(parts->at(0))->GetIndexStart();
 			unsigned long data_length = static_cast<CLocalAttachment*>(parts->at(0))->GetIndexLength();
-			unsigned long sig_start = static_cast<CLocalAttachment*>(parts->at(1))->GetIndexBodyStart();
-			unsigned long sig_length = static_cast<CLocalAttachment*>(parts->at(1))->GetIndexBodyLength();
-			
+
 			// Write data into another temp file
 			{
 #if 1
@@ -2008,6 +2004,7 @@ bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 
 		// Must have message
 		if (!lmsg.get() ||
+			!lmsg->GetBody() ||
 			!lmsg->GetBody()->GetParts() ||
 			(lmsg->GetBody()->GetParts()->size() != 2))
 		{
@@ -2019,9 +2016,7 @@ bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 		CAttachmentList* parts = lmsg->GetBody()->GetParts();
 		unsigned long data_start = static_cast<CLocalAttachment*>(parts->at(0))->GetIndexStart();
 		unsigned long data_length = static_cast<CLocalAttachment*>(parts->at(0))->GetIndexLength();
-		unsigned long sig_start = static_cast<CLocalAttachment*>(parts->at(1))->GetIndexBodyStart();
-		unsigned long sig_length = static_cast<CLocalAttachment*>(parts->at(1))->GetIndexBodyLength();
-		
+
 		cdstring from;
 		if (msg->GetEnvelope() && msg->GetEnvelope()->GetFrom() && (msg->GetEnvelope()->GetFrom()->size() != 0))
 			from = msg->GetEnvelope()->GetFrom()->front()->GetMailAddress();
@@ -2082,9 +2077,6 @@ bool CSecurityPlugin::VerifyMessage(CMessage* msg, CMessageCryptoInfo& info)
 bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bool use_multi_part)
 {
 	bool result = false;
-	const char* old_data = NULL;
-	CAttachment* temp_attach = NULL;
-	bool remove_temp_data = false;
 
 	// See whether to use file or not
 	if (FileVerifyDecrypt(msg))

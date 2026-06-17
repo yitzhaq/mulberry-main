@@ -661,10 +661,10 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	}
 
 	// Now check for auto verify/decrypt
-	else if (CPreferences::sPrefs->mAutoVerify.GetValue() &&
-		mItsMsg->GetBody()->IsVerifiable() ||
-		CPreferences::sPrefs->mAutoDecrypt.GetValue() &&
-		mItsMsg->GetBody()->IsDecryptable())
+	else if ((CPreferences::sPrefs->mAutoVerify.GetValue() &&
+		mItsMsg->GetBody()->IsVerifiable()) ||
+		(CPreferences::sPrefs->mAutoDecrypt.GetValue() &&
+		mItsMsg->GetBody()->IsDecryptable()))
 	{
 		// NULL out current part as its used in VerifyDecrypt
 		mCurrentPart = NULL;

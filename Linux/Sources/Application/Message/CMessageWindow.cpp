@@ -532,7 +532,7 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	// Set window title to subject (if there), else from (if there) else unknown
 	if (!theEnv->GetSubject().empty())
 	{
-		unsigned short subj_len = theEnv->GetSubject().length();
+		unsigned long subj_len = theEnv->GetSubject().length();
 		if (subj_len < cMaxTitleLength)
 			theTitle= theEnv->GetSubject();
 		else
@@ -578,10 +578,10 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	}
 
 	// Now check for auto verify/decrypt
-	else if (CPreferences::sPrefs->mAutoVerify.GetValue() &&
-		mItsMsg->GetBody()->IsVerifiable() ||
-		CPreferences::sPrefs->mAutoDecrypt.GetValue() &&
-		mItsMsg->GetBody()->IsDecryptable())
+	else if ((CPreferences::sPrefs->mAutoVerify.GetValue() &&
+		mItsMsg->GetBody()->IsVerifiable()) ||
+		(CPreferences::sPrefs->mAutoDecrypt.GetValue() &&
+		mItsMsg->GetBody()->IsDecryptable()))
 	{
 		// NULL out current part as its used in VerifyDecrypt
 		mCurrentPart = NULL;
@@ -726,7 +726,7 @@ void CMessageWindow::SetMessageList(CMessageList* msgs)
 		theTitle = "Unknown";
 	else if (!theEnv->GetSubject().empty())
 	{
-		unsigned short subj_len = theEnv->GetSubject().length();
+		unsigned long subj_len = theEnv->GetSubject().length();
 		if (subj_len < cMaxTitleLength)
 			theTitle= theEnv->GetSubject();
 		else

@@ -764,15 +764,16 @@ const CMessage* CMessage::FindChildMsg() const
 {
 	// First look at each child
 	const CMessage* child = GetThreadChild();
+	const CMessage* first_child = child;
 	while(child)
 	{
 		if (!child->IsFake())
 			return child;
 		child = child->GetThreadNext();
 	}
-	
-	// Look at children of first child
-	return child ? child->FindChildMsg() : NULL;
+
+	// No non-fake direct child — look at children of first child
+	return first_child ? first_child->FindChildMsg() : NULL;
 }
 
 #pragma mark ____________________________Flags

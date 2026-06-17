@@ -299,8 +299,6 @@ bool CGPGPluginDLL::CanDemo(void)
 // Test for run ability
 bool CGPGPluginDLL::CanRun(void)
 {
-	bool result = false;
-
 #if DATE_PROTECTION
 	time_t systime = ::time(nil);
 	struct tm* currtime = ::localtime(&systime);
@@ -1580,7 +1578,7 @@ long CGPGPluginDLL::ProcessExitResult(int exit_code, bool exited_normally, bool 
 
 		cdstring buf;
 		buf.reserve(1024);
-		::sprintf(buf.c_str_mod(), "Exit status non-zero: %d\n", exit_code);
+		::snprintf(buf.c_str_mod(), 1024, "Exit status non-zero: %d\n", exit_code);
 		buf.ConvertEndl();
 #ifdef DEBUG_OUTPUT
 		printf("%s", buf);
@@ -2257,8 +2255,7 @@ long CGPGPluginDLL::ProcessKeyListOutput(cdstring& output)
 		else if ((type == "ssb" || type == "sub") && fields.size() > 4)
 		{
 			cdstring subid = fields[4];
-			cdstrvect names = mData->mKeyIDMap["current"];
-			mData->mKeyIDMap[subid] = names;
+			mData->mKeyIDMap[subid] = mData->mKeyIDMap["current"];
 		}
 		else if (type == "uid" && fields.size() > 9)
 		{
