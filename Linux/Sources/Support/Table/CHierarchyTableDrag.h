@@ -62,7 +62,7 @@ public:
 		{ mKeySelection = key; }
 	virtual void	DoKeySelection();						// Select row after typing
 
-	virtual bool	CanDropExpand(const JArray<Atom>& typeList, int woRow); // Can row expand for drop
+	virtual bool	CanDropExpand(const JArray<Atom>& typeList, TableIndexT woRow); // Can row expand for drop
 	virtual void	DoDropExpand(int woRow); // Do row expand for drop
 	virtual void	DrawDropCell(const STableCell& cell); // Draw drag row frame
 	virtual void	ClearDropCell(const STableCell& cell); // Clear drag row frame

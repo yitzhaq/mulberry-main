@@ -323,7 +323,7 @@ void CHierarchyTableDrag::ClearDropCell(const STableCell& cell)
 }
 
 // Can row expand for drop
-bool CHierarchyTableDrag::CanDropExpand(const JArray<Atom>& typeList,int woRow)
+bool CHierarchyTableDrag::CanDropExpand(const JArray<Atom>& typeList,TableIndexT woRow)
 {
 	return IsCollapsable(woRow) && !IsExpanded(woRow);
 }
