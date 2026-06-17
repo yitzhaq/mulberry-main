@@ -1996,6 +1996,8 @@ void CMboxProtocol::OpenMbox(CMbox* mbox, bool update, bool examine)
 		index = 1;
 	else if (!mINBOX || (mbox != mINBOX))
 	{
+		// Start as not-found so the search loop runs and the -1 sentinel is meaningful
+		index = -1;
 		for(CHierarchies::iterator iter = mHierarchies.begin(); (index < 0) && (iter != mHierarchies.end()); iter++)
 			index = (*iter)->FetchIndexOf(mbox);
 	}
