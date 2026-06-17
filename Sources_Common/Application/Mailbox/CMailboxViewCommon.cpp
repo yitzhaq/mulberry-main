@@ -655,7 +655,6 @@ void CMailboxView::RestoreSubstitutes()
 void CMailboxView::CloseSubstitute(CMbox* mbox)
 {
 	// Look for existing substitute item
-	SMailboxSubstitute* subs = NULL;
 	unsigned long index = 0;
 	for(SMailboxSubstituteList::iterator iter = mSubsList.begin(); iter != mSubsList.end(); iter++, index++)
 	{

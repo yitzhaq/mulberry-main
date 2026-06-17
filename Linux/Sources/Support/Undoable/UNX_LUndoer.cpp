@@ -71,8 +71,6 @@ LUndoer::~LUndoer()
 void
 LUndoer::PostAction(LAction	*inAction)
 {
-	ExceptionCode	actionFailure = noErr;
-	
 	if ((inAction == nil)  ||
 		((inAction != nil) && inAction->IsPostable())) {
 
