@@ -24,6 +24,23 @@
 #include <JXMenu.h>
 #include <JXWindow.h>
 
+// Delegating target: the scrollbar set is already constructed, so the base
+// initialiser can read it (and its enclosure) without the unspecified
+// argument-evaluation-order hazard of building and dereferencing sbs inline.
+HTextField::HTextField
+(Type editorType,
+ JXScrollbarSet* scrollbars,
+ const HSizingOption hSizing, const VSizingOption vSizing,
+ const JCoordinate w, const JCoordinate h)
+  : super(editorType, kFalse, kFalse,
+		scrollbars,
+		scrollbars->GetScrollEnclosure(),
+		hSizing, vSizing,
+		0, 0, w, h)
+{
+	sbs = scrollbars;
+}
+
 HTextField::HTextField
 (const JCharacter *text,
  JXContainer* enclosure,
@@ -32,13 +49,9 @@ HTextField::HTextField
  const JCoordinate x, const JCoordinate y,
  const JCoordinate w, const JCoordinate h,
  Type editorType)
-  : super(editorType, kFalse, kFalse,
-		sbs = 
-		new CScrollbarSet(enclosure,
-				   hSizing, vSizing, x, y, w, h),
-		sbs->GetScrollEnclosure(),
-		hSizing, vSizing,
-		0, 0, w, h)
+  : HTextField(editorType,
+		new CScrollbarSet(enclosure, hSizing, vSizing, x, y, w, h),
+		hSizing, vSizing, w, h)
 {
 	HTextFieldX(text, menu, w, h);
 }
@@ -49,13 +62,9 @@ HTextField::HTextField
  const JCoordinate x, const JCoordinate y,
  const JCoordinate w, const JCoordinate h,
  Type editorType)
-  : super(editorType, kFalse, kFalse,
-		sbs = 
-		new CScrollbarSet(enclosure,
-				   hSizing, vSizing, x, y, w, h),
-		sbs->GetScrollEnclosure(),
-		hSizing, vSizing,
-		0, 0, w, h)
+  : HTextField(editorType,
+		new CScrollbarSet(enclosure, hSizing, vSizing, x, y, w, h),
+		hSizing, vSizing, w, h)
 {
 	HTextFieldX("", NULL, w, h);
 }

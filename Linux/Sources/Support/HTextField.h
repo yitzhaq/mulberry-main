@@ -73,6 +73,13 @@ SetBackgroundColor
 ) { SetBackColor(color); SetFocusColor(color); }
 
 private:
+	// Delegating target ctor: takes an already-constructed scrollbar set so the
+	// base initialiser reads it (and its enclosure) without the unspecified
+	// argument-evaluation-order hazard of assigning and dereferencing sbs inline.
+	HTextField(Type editorType, JXScrollbarSet* scrollbars,
+						 const HSizingOption hSizing, const VSizingOption vSizing,
+						 const JCoordinate w, const JCoordinate h);
+
 	JXScrollbarSet* sbs;
 };
 
