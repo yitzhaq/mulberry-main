@@ -268,7 +268,8 @@ void CPrefsAccountAuth::BuildAuthPopup(CINETAccount* account)
 	// Copy info
 	cdstring set_name;
 	short set_value = 0;
-	switch(account->GetAuthenticatorType())
+	const CAuthenticator::EAuthenticators auth_type = account->GetAuthenticatorType();
+	switch(auth_type)
 	{
 	case CAuthenticator::eNone:
 		set_value = 0;
@@ -277,7 +278,7 @@ void CPrefsAccountAuth::BuildAuthPopup(CINETAccount* account)
 		set_value = 1;
 		break;
 	case CAuthenticator::eSSL:
-		set_value = 0;
+		// SSL Client Certificate is the last menu item; selected after the menu is built
 		break;
 	case CAuthenticator::ePlugin:
 		set_name = account->GetAuthenticator().GetDescriptor();
@@ -311,7 +312,10 @@ void CPrefsAccountAuth::BuildAuthPopup(CINETAccount* account)
 	// Set value
 	{
 		StStopListening _no_listen(this);
-		mAuthPopup->SetValue(set_value ? set_value : index);
+		if (auth_type == CAuthenticator::eSSL)
+			mAuthPopup->SetValue(mAuthPopup->GetItemCount());	// SSL Client Certificate is the last item
+		else
+			mAuthPopup->SetValue(set_value ? set_value : index);	// index is the Anonymous item
 	}
 	cdstring title(mAuthPopup->GetCurrentItemText());
 	SetAuthPanel(title);
