@@ -99,6 +99,7 @@ void CCalendarPopup::SetCalendar(const iCal::CICalendarRef& calref)
 
 void CCalendarPopup::GetCalendar(iCal::CICalendarRef& calref) const
 {
+	calref = 0;
 	SInt32 value = GetValue();
 	if (calstore::CCalendarStoreManager::sCalendarStoreManager != NULL)
 	{

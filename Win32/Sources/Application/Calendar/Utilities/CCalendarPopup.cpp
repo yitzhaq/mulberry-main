@@ -123,6 +123,7 @@ void CCalendarPopup::SetCalendar(const iCal::CICalendarRef& calref)
 
 void CCalendarPopup::GetCalendar(iCal::CICalendarRef& calref) const
 {
+	calref = 0;
 	UINT value = GetValue() - IDM_POPUP_CALENDARS_FIRST;
 	if (calstore::CCalendarStoreManager::sCalendarStoreManager != NULL)
 	{

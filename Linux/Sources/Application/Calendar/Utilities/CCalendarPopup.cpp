@@ -75,6 +75,7 @@ void CCalendarPopup::SetCalendar(const iCal::CICalendarRef& calref)
 
 void CCalendarPopup::GetCalendar(iCal::CICalendarRef& calref) const
 {
+	calref = 0;
 	JIndex value = GetValue();
 	if (calstore::CCalendarStoreManager::sCalendarStoreManager != NULL)
 	{
