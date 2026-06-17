@@ -307,6 +307,7 @@ void CSearchCriteriaSIEVE::OnSetMethod(long item)
 		case eAddressMethod_EndsWith:
 		case eAddressMethod_NotEndsWith:
 		case eAddressMethod_Matches:
+		case eAddressMethod_NotMatches:
 			mText1->Show();
 			break;
 		case eAddressMethod_IsMe:

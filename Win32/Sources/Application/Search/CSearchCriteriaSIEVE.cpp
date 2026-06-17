@@ -409,6 +409,7 @@ void CSearchCriteriaSIEVE::OnSetMethod(UINT nID)
 		case eAddressMethod_EndsWith:
 		case eAddressMethod_NotEndsWith:
 		case eAddressMethod_Matches:
+		case eAddressMethod_NotMatches:
 			mText1.ShowWindow(SW_SHOW);
 			break;
 		case eAddressMethod_IsMe:
