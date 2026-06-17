@@ -92,6 +92,21 @@ protected:
 	void ProcessBody(CMessage* msg, ESecureMessage mode, const char* key);
 	bool FileBody(const CAttachment* part, unsigned long& size) const;
 
+	// RFC 3156 Â§5 step 4: strip trailing whitespace before signing
+	static void StripTrailingWhitespace(cdstring& data);
+	static void StripTrailingWhitespaceFile(const cdstring& path);
+
+	// RFC 9788 header protection
+	static cdstring ApplyHCP(const cdstring& name, const cdstring& value);
+	static void GetUserFacingHeaders(const CMessage* msg, cdstrpairvect& headers);
+	static void InsertProtectedHeaders(cdstring& data, const cdstrpairvect& headers,
+										const cdstrpairvect* hp_outer);
+	static void InsertProtectedHeadersFile(const cdstring& path, const cdstrpairvect& headers,
+											const cdstrpairvect* hp_outer);
+	static void ExtractProtectedHeaders(const CAttachment* payload, const CMessage* msg,
+										CMessageCryptoInfo& info,
+										const char* raw_data = NULL);
+
 	// Operations on single parts
 	bool CanSecureAttachment(const CAttachment* part) const;
 	bool FileAttachment(const CAttachment* part) const;
@@ -329,7 +344,7 @@ protected:
 #endif
 	void ApplyMIME(CAttachment* part, SMIMEInfo* info);
 
-	// Operations on in memory daÁta
+	// Operations on in memory data
 	virtual long 	SignData(const char* in,					// Sign data
 								const char* key,
 								char** out,

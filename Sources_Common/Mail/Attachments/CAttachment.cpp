@@ -15,7 +15,7 @@
 */
 
 
-//	CAttachment.cp
+//	CAttachment.cpp
 
 #include "CAttachment.h"
 
@@ -568,9 +568,9 @@ const CAttachment* CAttachment::FirstDisplaySubPart(bool& skip_it, bool no_style
                             break;
 
 						// Get higher type if showing styled or style test is turned off
-						if ((no_style_test || CPreferences::sPrefs->showStyled.GetValue()) && (part_subtype > subtype) ||
+						if (((no_style_test || CPreferences::sPrefs->showStyled.GetValue()) && (part_subtype > subtype)) ||
 							// Get lower type if not showing styled
-							!CPreferences::sPrefs->showStyled.GetValue() && (part_subtype < subtype))
+							(!CPreferences::sPrefs->showStyled.GetValue() && (part_subtype < subtype)))
 						{
 							subtype = (*iter)->mContent.GetContentSubtype();
 							firstFound = found;
@@ -888,6 +888,44 @@ void CAttachment::ProcessSendCrypto(CSecurityPlugin::ESecureMessage mode, bool u
 		{
 		case CSecurityPlugin::eSign:
 		case CSecurityPlugin::eEncryptSign:
+			// RFC 9580 §5.2.4: signed text MUST be UTF-8
+			if (IsText() && mData &&
+				GetContent().GetCharset() != i18n::eUSASCII &&
+				GetContent().GetCharset() != i18n::eUTF8)
+			{
+				const char* new_data = NULL;
+				if (i18n::CCharsetManager::sCharsetManager.Transcode(
+						GetContent().GetCharset(), i18n::eUTF8,
+						mData, ::strlen(mData), new_data))
+				{
+					delete[] mData;
+					mData = const_cast<char*>(new_data);
+				}
+				GetContent().SetCharset(i18n::eUTF8);
+				GetContent().SetTransferEncoding(eQuotedPrintableEncoding);
+			}
+
+			// RFC 3156 §3: force QP if text has "From " at line start or 8-bit bytes
+			if (use_mime && IsText() && mData &&
+				GetContent().GetTransferEncoding() != eQuotedPrintableEncoding &&
+				GetContent().GetTransferEncoding() != eBase64Encoding)
+			{
+				bool needs_qp = false;
+				const char* p = mData;
+				if (::strncmp(p, "From ", 5) == 0)
+					needs_qp = true;
+				while (!needs_qp && *p)
+				{
+					if (*p == '\n' && *(p + 1) && ::strncmp(p + 1, "From ", 5) == 0)
+						needs_qp = true;
+					else if (static_cast<unsigned char>(*p) > 0x7F)
+						needs_qp = true;
+					p++;
+				}
+				if (needs_qp)
+					GetContent().SetTransferEncoding(eQuotedPrintableEncoding);
+			}
+
 			// Special processing for format=flowed due to bugs in PGP
 			if (GetContent().IsFlowed())
 			{

@@ -44,13 +44,76 @@ class CStreamAttachment;
 class CMessageCryptoInfo
 {
 public:
+	enum ECryptoSeverity
+	{
+		eSeverityNone = 0,
+		eSeverityPositive,
+		eSeverityNeutral,
+		eSeverityCautious,
+		eSeverityNegative
+	};
+
+	enum ETrustLevel
+	{
+		eTrustUnknown = 0,
+		eTrustNever,
+		eTrustUndefined,
+		eTrustMarginal,
+		eTrustFully,
+		eTrustUltimate
+	};
+
 	CMessageCryptoInfo()
-		{ mSuccess = false; mDidSignature = false; mSignatureOK = false; mDidDecrypt = false; mBadPassphrase = false; }
+	{
+		mSuccess = false;
+		mDidSignature = false;
+		mSignatureOK = false;
+		mDidDecrypt = false;
+		mBadPassphrase = false;
+
+		mHashAlgorithm = 0;
+		mCipherAlgorithm = 0;
+		mWeakHash = false;
+		mWeakCipher = false;
+		mSignatureExpiry = 0;
+		mTrustLevel = eTrustUnknown;
+		mExpiredSignature = false;
+		mExpiredKey = false;
+		mRevokedKey = false;
+
+		mHeadersProtected = false;
+		mHeadersEncrypted = false;
+		mFromMismatch = false;
+	}
 	CMessageCryptoInfo(const CMessageCryptoInfo& copy)
-		{ mSuccess = copy.mSuccess; mDidSignature = copy.mDidSignature; mSignatureOK = copy.mSignatureOK; mDidDecrypt = copy.mDidDecrypt; mBadPassphrase = copy.mBadPassphrase;
-		  mSignedBy = copy.mSignedBy; mEncryptedTo = copy.mEncryptedTo; mError = copy.mError; }
+	{
+		mSuccess = copy.mSuccess;
+		mDidSignature = copy.mDidSignature;
+		mSignatureOK = copy.mSignatureOK;
+		mDidDecrypt = copy.mDidDecrypt;
+		mBadPassphrase = copy.mBadPassphrase;
+		mSignedBy = copy.mSignedBy;
+		mEncryptedTo = copy.mEncryptedTo;
+		mError = copy.mError;
+
+		mHashAlgorithm = copy.mHashAlgorithm;
+		mCipherAlgorithm = copy.mCipherAlgorithm;
+		mWeakHash = copy.mWeakHash;
+		mWeakCipher = copy.mWeakCipher;
+		mSignerFingerprint = copy.mSignerFingerprint;
+		mSignatureExpiry = copy.mSignatureExpiry;
+		mTrustLevel = copy.mTrustLevel;
+		mExpiredSignature = copy.mExpiredSignature;
+		mExpiredKey = copy.mExpiredKey;
+		mRevokedKey = copy.mRevokedKey;
+
+		mHeadersProtected = copy.mHeadersProtected;
+		mHeadersEncrypted = copy.mHeadersEncrypted;
+		mHeaderMismatches = copy.mHeaderMismatches;
+		mFromMismatch = copy.mFromMismatch;
+	}
 	~CMessageCryptoInfo() {}
-	
+
 	bool GetSuccess() const
 		{ return mSuccess; }
 	void SetSuccess(bool success)
@@ -91,17 +154,105 @@ public:
 	void SetError(const cdstring& error)
 		{ mError = error; }
 
+	long GetHashAlgorithm() const
+		{ return mHashAlgorithm; }
+	void SetHashAlgorithm(long algo)
+		{ mHashAlgorithm = algo; }
+
+	long GetCipherAlgorithm() const
+		{ return mCipherAlgorithm; }
+	void SetCipherAlgorithm(long algo)
+		{ mCipherAlgorithm = algo; }
+
+	bool GetWeakHash() const
+		{ return mWeakHash; }
+	void SetWeakHash(bool weak)
+		{ mWeakHash = weak; }
+
+	bool GetWeakCipher() const
+		{ return mWeakCipher; }
+	void SetWeakCipher(bool weak)
+		{ mWeakCipher = weak; }
+
+	const cdstring& GetSignerFingerprint() const
+		{ return mSignerFingerprint; }
+	void SetSignerFingerprint(const cdstring& fpr)
+		{ mSignerFingerprint = fpr; }
+
+	long GetSignatureExpiry() const
+		{ return mSignatureExpiry; }
+	void SetSignatureExpiry(long expiry)
+		{ mSignatureExpiry = expiry; }
+
+	ETrustLevel GetTrustLevel() const
+		{ return mTrustLevel; }
+	void SetTrustLevel(ETrustLevel trust)
+		{ mTrustLevel = trust; }
+
+	bool GetExpiredSignature() const
+		{ return mExpiredSignature; }
+	void SetExpiredSignature(bool expired)
+		{ mExpiredSignature = expired; }
+
+	bool GetExpiredKey() const
+		{ return mExpiredKey; }
+	void SetExpiredKey(bool expired)
+		{ mExpiredKey = expired; }
+
+	bool GetRevokedKey() const
+		{ return mRevokedKey; }
+	void SetRevokedKey(bool revoked)
+		{ mRevokedKey = revoked; }
+
+	bool GetHeadersProtected() const
+		{ return mHeadersProtected; }
+	void SetHeadersProtected(bool prot)
+		{ mHeadersProtected = prot; }
+
+	bool GetHeadersEncrypted() const
+		{ return mHeadersEncrypted; }
+	void SetHeadersEncrypted(bool enc)
+		{ mHeadersEncrypted = enc; }
+
+	const cdstrmap& GetHeaderMismatches() const
+		{ return mHeaderMismatches; }
+	cdstrmap& GetHeaderMismatches()
+		{ return mHeaderMismatches; }
+
+	bool GetFromMismatch() const
+		{ return mFromMismatch; }
+	void SetFromMismatch(bool mismatch)
+		{ mFromMismatch = mismatch; }
+
+	void GetCryptoSummary(cdstring& summary, cdstring& detail, ECryptoSeverity& severity) const;
+
 private:
 	bool		mSuccess;
 	bool		mDidSignature;
 	bool		mSignatureOK;
 	bool		mDidDecrypt;
 	bool		mBadPassphrase;
-	
+
 	cdstrvect	mSignedBy;
 	cdstrvect	mEncryptedTo;
-	
+
 	cdstring	mError;
+
+	long		mHashAlgorithm;
+	long		mCipherAlgorithm;
+	bool		mWeakHash;
+	bool		mWeakCipher;
+	cdstring	mSignerFingerprint;
+	long		mSignatureExpiry;
+	ETrustLevel	mTrustLevel;
+	bool		mExpiredSignature;
+	bool		mExpiredKey;
+	bool		mRevokedKey;
+
+	bool		mHeadersProtected;
+	bool		mHeadersEncrypted;
+	cdstrmap	mHeaderMismatches;
+	bool		mFromMismatch;
 };
 
 class CMessage

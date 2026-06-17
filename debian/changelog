@@ -31,7 +31,6 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Timezone database: build-time generation from IANA tzdata via vzic
   * Recovered 16 patches from original developer's SVN repository
   * Replace 3DES with AES-128-CBC for S/MIME encryption
-  * Replace SHA-1 with SHA-256 for PGP signatures
   * Modernize internal keyring encryption from MD5+RC4 to Argon2id +
     XChaCha20-Poly1305 via libsodium; fix keyring file permissions
   * Replace MD5 with libsodium random bytes for Message-ID and MIME
@@ -83,7 +82,11 @@ mulberry (4.2.0a1) unstable; urgency=medium
     SMTP BURL (4468), IMAP CATENATE (4469),
     $SubmitPending/$Submitted keywords (5788),
     Lemonade profile complete (5550) — all 27 extensions,
-    fcc-via-BURL single-upload optimization (5550 §8.6)
+    fcc-via-BURL single-upload optimization (5550 §8.6),
+    PGP/MIME compliance overhaul (3156/9580/9787/9788/1847):
+    dynamic micalg, header protection, unified crypto summary,
+    inline PGP safety, Bcc key leak fix, weak hash detection,
+    reply-to-encrypted protection, trailing whitespace stripping
   * PRECIS username/password normalization (RFC 8265) for internationalized
     credentials. New dependency: libunistring-dev
   * TLS UI labels modernized (None / SSL/TLS / STARTTLS) on Linux

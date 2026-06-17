@@ -1271,9 +1271,16 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	// the correct passphrase next time
 	if ((mItsMsg->GetCryptoInfo() != NULL) && !mItsMsg->GetCryptoInfo()->GetBadPassphrase())
 	{
-		// Show the secure info pane
-		SetSecretPane(*mItsMsg->GetCryptoInfo());
-		ShowSecretPane(true);
+		// RFC 9787 §6.4: failed sig = pane hidden, not alarming red
+		cdstring summary;
+		cdstring detail;
+		CMessageCryptoInfo::ECryptoSeverity severity;
+		mItsMsg->GetCryptoInfo()->GetCryptoSummary(summary, detail, severity);
+		if (severity != CMessageCryptoInfo::eSeverityNone)
+		{
+			SetSecretPane(*mItsMsg->GetCryptoInfo());
+			ShowSecretPane(true);
+		}
 	}
 
 	// Now check for auto verify/decrypt
@@ -1540,116 +1547,48 @@ void CMessageWindow::SetSecretPane(const CMessageCryptoInfo& info)
 		// Delete any previous text
 		mSecureInfo->WipeText(txtr);
 
-		if (info.GetSuccess())
+		// RFC 9787 §3.2: use unified Cryptographic Summary
+		cdstring summary;
+		cdstring detail;
+		CMessageCryptoInfo::ECryptoSeverity severity;
+		info.GetCryptoSummary(summary, detail, severity);
+
+		if (severity != CMessageCryptoInfo::eSeverityNone)
 		{
-			if (info.GetDidSignature())
+			RGBColor color;
+			switch (severity)
 			{
-				cdstring txt;
-				if (info.GetSignatureOK())
-				{
-					txt += "Signature: OK";
-					RGBColor green = {0x0000, 0xDDDD, 0x0000};
-					mSecureInfo->SetFontColor(green);
-				}
-				else
-				{
-					txt += "Signature: Bad";
-					RGBColor red = {0xDDDD, 0x0000, 0x0000};
-					mSecureInfo->SetFontColor(red);
-				}
-				mSecureInfo->SetFontStyle(bold);
-				mSecureInfo->InsertUTF8(txt);
+			case CMessageCryptoInfo::eSeverityPositive:
+				color.red = 0x0000; color.green = 0xDDDD; color.blue = 0x0000;
+				break;
+			case CMessageCryptoInfo::eSeverityNeutral:
+				color.red = 0x6666; color.green = 0x6666; color.blue = 0xDDDD;
+				break;
+			case CMessageCryptoInfo::eSeverityCautious:
+				color.red = 0xDDDD; color.green = 0xAAAA; color.blue = 0x0000;
+				break;
+			case CMessageCryptoInfo::eSeverityNegative:
+				color.red = 0xDDDD; color.green = 0x0000; color.blue = 0x0000;
+				break;
+			default:
+				color.red = 0x0000; color.green = 0x0000; color.blue = 0x0000;
+				break;
+			}
+
+			mSecureInfo->SetFontColor(color);
+			mSecureInfo->SetFontStyle(bold);
+			mSecureInfo->InsertUTF8(summary);
+
+			if (!detail.empty())
+			{
+				mSecureInfo->InsertUTF8(os_endl, os_endl_len);
+				multi_line = true;
 
 				RGBColor black = {0x0000, 0x0000, 0x0000};
 				mSecureInfo->SetFontColor(black);
-				txt = "    Signed By: ";
-				mSecureInfo->InsertUTF8(txt);
-
 				mSecureInfo->SetFontStyle(normal);
-
-				cdstring addr;
-				bool matched_from = false;
-				for(cdstrvect::const_iterator iter = info.GetSignedBy().begin(); iter != info.GetSignedBy().end(); iter++)
-				{
-					// Add text
-					if (iter != info.GetSignedBy().begin())
-						addr += ", ";
-					addr += *iter;
-					
-					// Determine whether item matches from address
-					if (mItsMsg && mItsMsg->GetEnvelope() &&
-						(mItsMsg->GetEnvelope()->GetFrom()->size() > 0) &&
-						mItsMsg->GetEnvelope()->GetFrom()->front()->StrictCompareEmail(CAddress(*iter)))
-					{
-						// Only show the address of the one that matches - ignore others
-						matched_from = true;
-						addr = *iter;
-						break;
-					}
-				}
-				
-				// Change colour if n matching from address
-				if (!matched_from)
-				{
-					RGBColor red = {0xDDDD, 0x0000, 0x0000};
-					mSecureInfo->SetFontColor(red);
-					
-					addr += " WARNING: Does not match From address";
-				}
-
-				// Insert address data
-				mSecureInfo->InsertUTF8(addr);
-
-				// Next line
-				if (info.GetDidDecrypt())
-				{
-					mSecureInfo->InsertUTF8(os_endl, os_endl_len);
-					multi_line = true;
-				}
+				mSecureInfo->InsertUTF8(detail);
 			}
-
-			if (info.GetDidDecrypt())
-			{
-				mSecureInfo->SetFontStyle(bold);
-				RGBColor green = {0x0000, 0xDDDD, 0x0000};
-				mSecureInfo->SetFontColor(green);
-
-				cdstring txt;
-				txt += "Decrypted: OK";
-				mSecureInfo->InsertUTF8(txt);
-
-				RGBColor black = {0x0000, 0x0000, 0x0000};
-				mSecureInfo->SetFontColor(black);
-				txt = "    Encrypted To: ";
-				mSecureInfo->InsertUTF8(txt);
-
-				mSecureInfo->SetFontStyle(normal);
-
-				cdstring addr;
-				for(cdstrvect::const_iterator iter = info.GetEncryptedTo().begin(); iter != info.GetEncryptedTo().end(); iter++)
-				{
-					if (iter != info.GetEncryptedTo().begin())
-						addr += ", ";
-					addr += *iter;
-				}
-				mSecureInfo->InsertUTF8(addr);
-			}
-		}
-		else
-		{
-			TextStyle ts;
-			ts.tsFace = bold;
-			RGBColor red = {0xDDDD,0x0000,0x0000};
-			mSecureInfo->SetFontColor(red);
-
-			cdstring txt;
-			txt += "Failed to Verify/Decrypt";
-			if (!info.GetError().empty())
-			{
-				txt+= ":   ";
-				txt += info.GetError();
-			}
-			mSecureInfo->InsertUTF8(txt);
 		}
 	}
 

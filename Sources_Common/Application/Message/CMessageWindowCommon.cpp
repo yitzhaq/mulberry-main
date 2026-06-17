@@ -120,6 +120,38 @@ void CMessageWindow::ShowPart(CAttachment* attach)
 
 		mShowText = attach ? attach->ReadPart(mItsMsg) : NULL;
 
+		// RFC 9788 §4.5.3: hide Legacy Display Elements
+		if (mShowText && attach &&
+			!attach->GetContent().GetContentParameter(cMIMEParameter[eHPLegacyDisplay]).empty())
+		{
+			if (attach->GetContent().GetContentSubtype() == eContentSubPlain)
+			{
+				// Skip to first blank line (end of Legacy Display Element)
+				const char* p = mShowText;
+				while (*p)
+				{
+					if (*p == '\r' && *(p + 1) == '\n' && *(p + 2) == '\r' && *(p + 3) == '\n')
+						{ mShowText = p + 4; break; }
+					if (*p == '\n' && *(p + 1) == '\n')
+						{ mShowText = p + 2; break; }
+					p++;
+				}
+			}
+			else if (attach->GetContent().GetContentSubtype() == eContentSubHTML)
+			{
+				const char* div_end = ::strstr(mShowText, "</div>");
+				if (!div_end)
+					div_end = ::strstr(mShowText, "</DIV>");
+				if (div_end)
+				{
+					div_end += 6;
+					while (*div_end == '\r' || *div_end == '\n')
+						div_end++;
+					mShowText = div_end;
+				}
+			}
+		}
+
 		// Do charset conversion to utf8
 		Text2UTF16(attach ? attach->GetContent().GetCharset() : i18n::eUSASCII);
 

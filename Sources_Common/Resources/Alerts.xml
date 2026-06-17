@@ -221,6 +221,9 @@
 	<string id="Alerts::Letter::MissingAttachmentsDontShow">Don't do attachment check from now on</string>
 	<string id="Alerts::Letter::UnencryptedSend">You are responding to messages whose content was originally encrypted, but your response is not encrypted. Do you want to send this draft now without using encryption?</string>
 	<string id="Alerts::Letter::UnencryptedSendDontShow">Don't do encryption check from now on</string>
+	<string id="Alerts::Letter::WarnDisableCryptoOnEncryptedReply">You are about to disable cryptographic protection on a reply to an encrypted message. Previously encrypted content quoted in this reply will be sent in cleartext. Do you want to continue?</string>
+
+	<string id="Alerts::Message::SignaturePartTypeMismatch">The signature part of this signed message has an unexpected content type. The message structure may be malformed or tampered with.</string>
 
 	<string id="Alerts::Letter::AddressDisplay_Title">Choose an Address</string>
 	<string id="Alerts::Letter::AddressDisplay_Desc">Choose an Address:</string>

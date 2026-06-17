@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CGPGPluginDLL.cp
+// CGPGPluginDLL.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //
@@ -72,14 +72,51 @@ const char* cProcessVersion = "Mulberry GPG Plugin v2.0";
 
 const char* cGPG = "gpg";
 const char* cGNUPGStatus = "[GNUPG:] ";
-const char* cNEED_PASSPHRASE = "NEED_PASSPHRASE ";
-const char* cBAD_PASSPHRASE = "BAD_PASSPHRASE ";
+
+// Passphrase status
 const char* cGOOD_PASSPHRASE = "GOOD_PASSPHRASE";
-const char* cTRUST_UNDEFINED = "TRUST_UNDEFINED";
+const char* cBAD_PASSPHRASE = "BAD_PASSPHRASE ";
+
+// Signature verification status
+const char* cNEWSIG = "NEWSIG";
 const char* cGOODSIG = "GOODSIG ";
 const char* cBADSIG = "BADSIG ";
 const char* cERRSIG = "ERRSIG ";
+const char* cEXPSIG = "EXPSIG ";
+const char* cEXPKEYSIG = "EXPKEYSIG ";
+const char* cREVKEYSIG = "REVKEYSIG ";
+const char* cVALIDSIG = "VALIDSIG ";
 const char* cNOPUBKEY = "NO_PUBKEY ";
+
+// Trust status
+const char* cTRUST_UNDEFINED = "TRUST_UNDEFINED";
+const char* cTRUST_NEVER = "TRUST_NEVER";
+const char* cTRUST_MARGINAL = "TRUST_MARGINAL";
+const char* cTRUST_FULLY = "TRUST_FULLY";
+const char* cTRUST_ULTIMATE = "TRUST_ULTIMATE";
+
+// Decryption status
+const char* cDECRYPTION_OKAY = "DECRYPTION_OKAY";
+const char* cDECRYPTION_FAILED = "DECRYPTION_FAILED";
+const char* cDECRYPTION_INFO = "DECRYPTION_INFO ";
+
+// Signing status
+const char* cSIG_CREATED = "SIG_CREATED ";
+const char* cBEGIN_SIGNING = "BEGIN_SIGNING";
+
+// Key status
+const char* cNO_SECKEY = "NO_SECKEY ";
+const char* cKEYEXPIRED = "KEYEXPIRED ";
+const char* cKEYREVOKED = "KEYREVOKED";
+
+// Recipient errors
+const char* cINV_RECP = "INV_RECP ";
+const char* cNO_RECP = "NO_RECP";
+
+// General errors
+const char* cERROR = "ERROR ";
+const char* cFAILURE = "FAILURE ";
+const char* cNODATA = "NODATA ";
 
 #pragma mark ____________________________CGPGPluginDLL
 
@@ -133,6 +170,27 @@ private:
 };
 #endif
 
+class StClearPassphrase
+{
+public:
+	StClearPassphrase(char* buf, size_t len)
+		: mBuf(buf), mLen(len) {}
+	~StClearPassphrase()
+	{
+		if (mBuf)
+		{
+#if __dest_os == __win32_os
+			SecureZeroMemory(mBuf, mLen);
+#else
+			explicit_bzero(mBuf, mLen);
+#endif
+		}
+	}
+private:
+	char* mBuf;
+	size_t mLen;
+};
+
 #if __dest_os == __win32_os
 static const char *gpg2ExeName = "\\gpg2.exe";
 #endif
@@ -145,6 +203,17 @@ CGPGPluginDLL::CGPGPluginDLL()
 	mData->mEncryptedToList = NULL;
 	mData->mErrno = eSecurity_NoErr;
 	mData->mDidSig = false;
+
+	mData->mHashAlgorithm = 0;
+	mData->mCipherAlgorithm = 0;
+	mData->mSignatureExpiry = 0;
+	mData->mTrustLevel = 0;
+	mData->mExpiredSignature = false;
+	mData->mExpiredKey = false;
+	mData->mRevokedKey = false;
+	mData->mDecryptionOK = false;
+	mData->mWeakHashDetected = false;
+	mData->mSigCreatedHashAlgo = 0;
 
 #if __dest_os == __win32_os
 	// Try to get exe path from registry
@@ -542,6 +611,7 @@ long CGPGPluginDLL::SignFileX(fspec in, const char* key, fspec out, bool useMime
 {
 	// Signing requires passphrase
 	char passphrase[256];
+	StClearPassphrase _clear_pass(passphrase, sizeof(passphrase));
 	if (!GetSignKeyPassphrase(key, passphrase))
 	{
 		REPORTERROR(eSecurity_UserAbort, "User cancelled passphrase");
@@ -581,8 +651,6 @@ long CGPGPluginDLL::SignFileX(fspec in, const char* key, fspec out, bool useMime
 	args.push_back("-o");
 	args.push_back(out_path.get());
 	args.push_back("-a");
-	args.push_back("--digest-algo");
-	args.push_back("SHA256");
 	if (useMime)
 		args.push_back("--detach-sign");
 	else
@@ -662,6 +730,7 @@ long CGPGPluginDLL::EncryptSignFileX(fspec in, const char** to, const char* key,
 
 	// Signing requires passphrase
 	char passphrase[256];
+	StClearPassphrase _clear_pass(passphrase, sizeof(passphrase));
 	if (!GetSignKeyPassphrase(key, passphrase))
 	{
 		REPORTERROR(eSecurity_UserAbort, "User cancelled passphrase");
@@ -704,8 +773,6 @@ long CGPGPluginDLL::EncryptSignFileX(fspec in, const char** to, const char* key,
 	args.push_back("-o");
 	args.push_back(out_path.get());
 	args.push_back("-a");
-	args.push_back("--digest-algo");
-	args.push_back("SHA256");
 	args.push_back("-es");
 	args.push_back(in_path.get());
 
@@ -759,6 +826,7 @@ long CGPGPluginDLL::DecryptVerifyFileX(fspec in, const char* sig, const char* in
 
 	// Signing requires passphrase
 	char passphrase[256];
+	StClearPassphrase _clear_pass(passphrase, sizeof(passphrase));
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 	FSSpec sig_spec;
@@ -867,7 +935,8 @@ const char* cMIMEMultipartType = "multipart";
 const char* cMIMEMultipartSigned = "signed";
 const char* cMIMEMultipartEncrypted = "encrypted";
 
-const char* cMIMEMultipartSignedParams[] = 
+// micalg value will be dynamically overridden by SIG_CREATED parsing
+const char* cMIMEMultipartSignedParams[] =
 	{ "micalg", "pgp-sha256", "protocol", "application/pgp-signature", NULL };
 const char* cMIMEMultipartEncryptedParams[] = 
 	{ "protocol", "application/pgp-encrypted", NULL };
@@ -880,21 +949,35 @@ const char* cMIMEOctetStream = "octet-stream";
 // Get MIME parameters for signing
 long CGPGPluginDLL::GetMIMESign(SMIMEMultiInfo* params)
 {
+	// Use dynamic micalg from SIG_CREATED if available
+	const char** sign_params;
+	if (!mData->mSigCreatedMicalg.empty())
+	{
+		mData->mDynamicSignedParams[0] = "micalg";
+		mData->mDynamicSignedParams[1] = mData->mSigCreatedMicalg.c_str();
+		mData->mDynamicSignedParams[2] = "protocol";
+		mData->mDynamicSignedParams[3] = "application/pgp-signature";
+		mData->mDynamicSignedParams[4] = NULL;
+		sign_params = mData->mDynamicSignedParams;
+	}
+	else
+		sign_params = cMIMEMultipartSignedParams;
+
 	SetMIMEDetails(&params->multipart,
 					cMIMEMultipartType,
 					cMIMEMultipartSigned,
-					cMIMEMultipartSignedParams);
-	
+					sign_params);
+
 	SetMIMEDetails(&params->first,
 					NULL,
 					NULL,
 					NULL);
-	
+
 	SetMIMEDetails(&params->second,
 					cMIMEApplicationType,
 					cMIMEPGPSigned,
 					NULL);
-	
+
 	return 1;
 }
 
@@ -995,6 +1078,8 @@ void CGPGPluginDLL::SetMIMEDetails(SMIMEInfo* mime, const char* type, const char
 long CGPGPluginDLL::CallGPG(cdstrvect& args, const char* passphrase, bool binary, bool file_status, bool key_list)
 {
 	mData->mErrno = 0;
+	mData->mSigCreatedHashAlgo = 0;
+	mData->mSigCreatedMicalg = cdstring::null_str;
 	long result = 1;
 
 	cdstrvect out;
@@ -1010,7 +1095,8 @@ long CGPGPluginDLL::CallGPG(cdstrvect& args, const char* passphrase, bool binary
 	out.push_back("--batch");
 	//out.push_back("--no-options");
 	out.push_back("--yes");
-	
+	out.push_back("--no-emit-version");
+
 	// Do canonical text mode if not binary
 	if (!binary)
 		out.push_back("-t");
@@ -1159,6 +1245,8 @@ long CGPGPluginDLL::CallGPG(cdstrvect& args, const char* passphrase, bool binary
 		// create args
 		int argc = out.size() + args.size();
 		char** argv = (char**) malloc((argc + 1) * sizeof(char*));
+		if (!argv)
+			exit(1);
 		char** p = argv;
 		cdstring logged;
  		for(unsigned int i = 0; i < out.size(); i++)
@@ -1177,7 +1265,7 @@ long CGPGPluginDLL::CallGPG(cdstrvect& args, const char* passphrase, bool binary
 	else
 	{
 		// Parent process must wait
-		int status;
+		int status = 0;
 		pid_t retpid = ::waitpid(pid, &status, WNOHANG);
 
 		fd_set readfds;
@@ -1275,38 +1363,18 @@ long CGPGPluginDLL::CallGPG(cdstrvect& args, const char* passphrase, bool binary
 				break;
 		}
 
-		// Check process return value
-		if (mData->mErrno)
-			result = 0;
-		else if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-		{
-			// Use stderror output if any as error text
-			if (mData->mStdError.length())
-				REPORTERROR(eSecurity_UnknownError, mData->mStdError.c_str());
-			else
-				REPORTERROR(eSecurity_UnknownError, "Exit status non-zero");
-			result = 0;
-			{
-				cdstring buf;
-				buf.reserve(1024);
-				int exit_status = WEXITSTATUS(status);
-				::sprintf(buf.c_str_mod(), "Exit status non-zero: %d\n", exit_status);
+		// Ensure the child is reaped so status is valid — the loop may have
+		// exited via a read-error break before the in-loop waitpid ran
+		if (retpid == 0)
+			retpid = ::waitpid(pid, &status, 0);
 
-				buf.ConvertEndl();
-#ifdef DEBUG_OUTPUT
-				printf("%s", buf);
-#endif
-				LogEntry(buf);
-			}
-		}
-		else if (WIFSIGNALED(status) && WTERMSIG(status) != 0)
-		{
-			REPORTERROR(eSecurity_UnknownError, "Unhandled signal");
-			result = 0;
-		}
-		else
-			result = 1;
-		
+		// Check process return value via shared helper
+		result = ProcessExitResult(
+			WIFEXITED(status) ? WEXITSTATUS(status) : 0,
+			WIFEXITED(status),
+			WIFSIGNALED(status),
+			WIFSIGNALED(status) ? WTERMSIG(status) : 0);
+
 		unix_closepipes(outputfd);
 		unix_closepipes(errorfd);
 		unix_closepipes(statusfd);
@@ -1485,33 +1553,9 @@ long CGPGPluginDLL::CallGPG(cdstrvect& args, const char* passphrase, bool binary
 			dataavail = win32_select(outputfd[0], outputfd_bytes, errorfd[0], errorfd_bytes, statusfd[0], statusfd_bytes);
 		}
 
-		// Check process return value
-		if (mData->mErrno && mData->mErrno != eSecurity_DubiousKey)
-			result = 0;
-		else if (status != 0)
-		{
-			// Use stderror output if any as error text
-			if (mData->mStdError.length())
-				REPORTERROR(eSecurity_UnknownError, mData->mStdError.c_str());
-			else
-				REPORTERROR(eSecurity_UnknownError, "Exit status non-zero");
-			result = 0;
-			{
-				cdstring buf;
-				buf.reserve(1024);
-				::sprintf(buf.c_str_mod(), "Exit status non-zero: %d\n", status);
+		// Check process return value via shared helper
+		result = ProcessExitResult(status, true, false, 0);
 
-				buf.ConvertEndl();
-#ifdef DEBUG_OUTPUT
-				printf("%s", buf);
-#endif
-				LogEntry(buf);
-			}
-		}
-		else
-		{
-			result = 1;
-		}
 		win32_closepipes(outputfd);
 		win32_closepipes(errorfd);
 		win32_closepipes(statusfd);
@@ -1520,6 +1564,45 @@ long CGPGPluginDLL::CallGPG(cdstrvect& args, const char* passphrase, bool binary
 #endif
 
 	return result;
+}
+
+long CGPGPluginDLL::ProcessExitResult(int exit_code, bool exited_normally, bool was_signaled, int signal_num)
+{
+	if (mData->mErrno && mData->mErrno != eSecurity_DubiousKey)
+		return 0;
+
+	if (exited_normally && exit_code != 0)
+	{
+		if (mData->mStdError.length())
+			REPORTERROR(eSecurity_UnknownError, mData->mStdError.c_str());
+		else
+			REPORTERROR(eSecurity_UnknownError, "Exit status non-zero");
+
+		cdstring buf;
+		buf.reserve(1024);
+		::sprintf(buf.c_str_mod(), "Exit status non-zero: %d\n", exit_code);
+		buf.ConvertEndl();
+#ifdef DEBUG_OUTPUT
+		printf("%s", buf);
+#endif
+		LogEntry(buf);
+		return 0;
+	}
+
+	if (was_signaled && signal_num != 0)
+	{
+		cdstring errtxt("Process killed by signal: ");
+#if __dest_os == __linux_os || __dest_os == __mac_os_x
+		errtxt += ::strsignal(signal_num);
+#else
+		errtxt += cdstring((long) signal_num);
+#endif
+		REPORTERROR(eSecurity_UnknownError, errtxt);
+		LogEntry(errtxt);
+		return 0;
+	}
+
+	return 1;
 }
 
 #ifdef USE_UNIXFORK
@@ -1775,9 +1858,10 @@ void CGPGPluginDLL::LookupKeys(bool secret, const cdstrvect& keyids, cdstrvect& 
 {
 	mData->mKeyIDMap.clear();
 
-	// List public keys with matching keyids
+	// List keys with matching keyids — use --with-colons for stable machine-parseable output
 	cdstrvect args;
 	args.push_back(secret ? "--list-secret-keys" : "--list-keys");
+	args.push_back("--with-colons");
 	for(cdstrvect::const_iterator iter = keyids.begin(); iter != keyids.end(); iter++)
 		args.push_back(*iter);
 
@@ -1837,61 +1921,231 @@ long CGPGPluginDLL::ProcessStatus(cdstring& status)
 		// Look for GPG tag and step over
 		if (::strncmp(line, cGNUPGStatus, ::strlen(cGNUPGStatus)))
 			return 1;
-		p = line.c_str() + ::strlen(cGNUPGStatus);
+		const char* q = line.c_str() + ::strlen(cGNUPGStatus);
 
-		// Look for specific tags
-		if (!::strncmp(p, cGOOD_PASSPHRASE, ::strlen(cGOOD_PASSPHRASE)))
+		// Passphrase status
+		if (!::strncmp(q, cGOOD_PASSPHRASE, ::strlen(cGOOD_PASSPHRASE)))
 		{
 			// Always reset the error here. When decrypting a message with multiple sigs
 			// BAD_PASSPHRASE will occur before GOOD_PASSPHRASE for keys the user does not
-			// enter a passpharse for. As soon as GOOD_PASSPHRASE is sent, passphrase processing
+			// enter a passphrase for. As soon as GOOD_PASSPHRASE is sent, passphrase processing
 			// stops, so we clear any earlier errors.
 			REPORTERROR(eSecurity_NoErr, "Good Passphrase");
 		}
-		else if (!::strncmp(p, cBAD_PASSPHRASE, ::strlen(cBAD_PASSPHRASE)))
+		else if (!::strncmp(q, cBAD_PASSPHRASE, ::strlen(cBAD_PASSPHRASE)))
 		{
-			// Step over it
 			REPORTERROR(eSecurity_BadPassphrase, "Bad Passphrase");
 		}
-		else if (!::strncmp(p, cBADSIG, ::strlen(cBADSIG)))
+
+		// Signature verification: good signature
+		else if (!::strncmp(q, cGOODSIG, ::strlen(cGOODSIG)))
 		{
-			// Step over it
+			mData->mDidSig = true;
+			cdstring tok(q + ::strlen(cGOODSIG));
+			char* keyid = ::strtok(tok.c_str_mod(), " ");
+			if (keyid)
+				mData->mSignatureKeys.push_back(keyid);
+		}
+		// Expired signature (sig is good but the signature itself expired)
+		else if (!::strncmp(q, cEXPSIG, ::strlen(cEXPSIG)))
+		{
+			mData->mDidSig = true;
+			mData->mExpiredSignature = true;
+			cdstring tok(q + ::strlen(cEXPSIG));
+			char* keyid = ::strtok(tok.c_str_mod(), " ");
+			if (keyid)
+				mData->mSignatureKeys.push_back(keyid);
+		}
+		// Expired key (sig is good but key has expired)
+		else if (!::strncmp(q, cEXPKEYSIG, ::strlen(cEXPKEYSIG)))
+		{
+			mData->mDidSig = true;
+			mData->mExpiredKey = true;
+			cdstring tok(q + ::strlen(cEXPKEYSIG));
+			char* keyid = ::strtok(tok.c_str_mod(), " ");
+			if (keyid)
+				mData->mSignatureKeys.push_back(keyid);
+		}
+		// Revoked key (sig is good but key has been revoked)
+		else if (!::strncmp(q, cREVKEYSIG, ::strlen(cREVKEYSIG)))
+		{
+			mData->mDidSig = true;
+			mData->mRevokedKey = true;
+			cdstring tok(q + ::strlen(cREVKEYSIG));
+			char* keyid = ::strtok(tok.c_str_mod(), " ");
+			if (keyid)
+				mData->mSignatureKeys.push_back(keyid);
+		}
+		// Bad signature
+		else if (!::strncmp(q, cBADSIG, ::strlen(cBADSIG)))
+		{
 			REPORTERROR(eSecurity_InvalidSignature, "Bad Signature");
 		}
-		else if (!::strncmp(p, cERRSIG, ::strlen(cERRSIG)))
+		// Error in signature verification
+		else if (!::strncmp(q, cERRSIG, ::strlen(cERRSIG)))
 		{
-			// Step over it
 			REPORTERROR(eSecurity_InvalidSignature, "Error in Signature");
 		}
-		else if (!::strncmp(p, cNOPUBKEY, ::strlen(cNOPUBKEY)))
+		// No public key
+		else if (!::strncmp(q, cNOPUBKEY, ::strlen(cNOPUBKEY)))
 		{
-			::strtok(const_cast<char*>(p), " ");		// Token: NO_PUBKEY
-			char* q = ::strtok(NULL, "");	// Token: keyid
-			if (::strlen(q) == 16)
-				q += 8;
+			cdstring keyid(q + ::strlen(cNOPUBKEY));
+			keyid.trimspace();
 			cdstring errtxt("No Public Key (0x");
-			errtxt += q;
+			errtxt += keyid;
 			errtxt += ") for Signature";
-
-			// Step over it
 			REPORTERROR(eSecurity_InvalidSignature, errtxt);
 		}
-		else if (!::strncmp(p, cGOODSIG, ::strlen(cGOODSIG)))
+		// VALIDSIG: full fingerprint, hash algo, timestamps
+		// Format: VALIDSIG <fpr> <date> <timestamp> <expire> <ver> <reserved> <pkalgo> <hashalgo> <sigclass> [<primary-fpr>]
+		else if (!::strncmp(q, cVALIDSIG, ::strlen(cVALIDSIG)))
 		{
-			// Set flag only
-			mData->mDidSig = true;
-			
-			::strtok(const_cast<char*>(p), " ");		// Token: GOODSIG
-			char* q = ::strtok(NULL, " ");	// Token: keyid
-			if (::strlen(q) == 16)
-				q += 8;
-
-			// Add key id to list of signatures
-			mData->mSignatureKeys.push_back(q);
+			cdstring tok(q + ::strlen(cVALIDSIG));
+			char* fields[12] = {};
+			char* f = ::strtok(tok.c_str_mod(), " ");
+			for (int i = 0; i < 12 && f; i++)
+			{
+				fields[i] = f;
+				f = ::strtok(NULL, " ");
+			}
+			// Field 0: fingerprint
+			if (fields[0])
+				mData->mSignerFingerprint = fields[0];
+			// Field 3: expire-timestamp (0 = no expiry)
+			if (fields[3])
+				mData->mSignatureExpiry = ::atol(fields[3]);
+			// Field 7: hash algorithm ID
+			if (fields[7])
+			{
+				mData->mHashAlgorithm = ::atol(fields[7]);
+				// RFC 9580 §9.5: MUST NOT validate recent sigs with MD5(1), SHA-1(2), RIPEMD-160(3)
+				if (mData->mHashAlgorithm == 1 || mData->mHashAlgorithm == 2 || mData->mHashAlgorithm == 3)
+				{
+					mData->mWeakHashDetected = true;
+					REPORTERROR(eSecurity_DubiousKey, "WARNING: Signature uses weak hash algorithm");
+				}
+			}
 		}
-		else if (!::strncmp(p, cTRUST_UNDEFINED, ::strlen(cTRUST_UNDEFINED)))
+
+		// Trust levels
+		else if (!::strncmp(q, cTRUST_ULTIMATE, ::strlen(cTRUST_ULTIMATE)))
 		{
+			mData->mTrustLevel = 5;
+		}
+		else if (!::strncmp(q, cTRUST_FULLY, ::strlen(cTRUST_FULLY)))
+		{
+			mData->mTrustLevel = 4;
+		}
+		else if (!::strncmp(q, cTRUST_MARGINAL, ::strlen(cTRUST_MARGINAL)))
+		{
+			mData->mTrustLevel = 3;
+		}
+		else if (!::strncmp(q, cTRUST_UNDEFINED, ::strlen(cTRUST_UNDEFINED)))
+		{
+			mData->mTrustLevel = 2;
 			REPORTERROR(eSecurity_DubiousKey, " WARNING: Key has no trusted signature!");
+		}
+		else if (!::strncmp(q, cTRUST_NEVER, ::strlen(cTRUST_NEVER)))
+		{
+			mData->mTrustLevel = 1;
+			REPORTERROR(eSecurity_DubiousKey, " WARNING: Key is explicitly marked as untrusted!");
+		}
+
+		// Decryption status
+		else if (!::strncmp(q, cDECRYPTION_OKAY, ::strlen(cDECRYPTION_OKAY)))
+		{
+			mData->mDecryptionOK = true;
+		}
+		else if (!::strncmp(q, cDECRYPTION_FAILED, ::strlen(cDECRYPTION_FAILED)))
+		{
+			mData->mDecryptionOK = false;
+		}
+		// DECRYPTION_INFO: cipher algorithm extraction
+		// Format: DECRYPTION_INFO <mdc_method> <sym_algo> [<aead_algo>]
+		else if (!::strncmp(q, cDECRYPTION_INFO, ::strlen(cDECRYPTION_INFO)))
+		{
+			cdstring tok(q + ::strlen(cDECRYPTION_INFO));
+			char* mdc = ::strtok(tok.c_str_mod(), " ");
+			char* sym = ::strtok(NULL, " ");
+			if (sym)
+				mData->mCipherAlgorithm = ::atol(sym);
+		}
+
+		// SIG_CREATED: for dynamic micalg derivation
+		// Format: SIG_CREATED <type> <pk_algo> <hash_algo> <class> <timestamp> <keyfpr>
+		else if (!::strncmp(q, cSIG_CREATED, ::strlen(cSIG_CREATED)))
+		{
+			cdstring tok(q + ::strlen(cSIG_CREATED));
+			char* type = ::strtok(tok.c_str_mod(), " ");
+			char* pkalgo = ::strtok(NULL, " ");
+			char* hashalgo = ::strtok(NULL, " ");
+			if (hashalgo)
+			{
+				mData->mSigCreatedHashAlgo = ::atol(hashalgo);
+				// Map hash algorithm ID to micalg text name (RFC 9580 §9.5 / IANA registry)
+				switch(mData->mSigCreatedHashAlgo)
+				{
+				case 1:  mData->mSigCreatedMicalg = "pgp-md5"; break;
+				case 2:  mData->mSigCreatedMicalg = "pgp-sha1"; break;
+				case 3:  mData->mSigCreatedMicalg = "pgp-ripemd160"; break;
+				case 8:  mData->mSigCreatedMicalg = "pgp-sha256"; break;
+				case 9:  mData->mSigCreatedMicalg = "pgp-sha384"; break;
+				case 10: mData->mSigCreatedMicalg = "pgp-sha512"; break;
+				case 11: mData->mSigCreatedMicalg = "pgp-sha224"; break;
+				case 12: mData->mSigCreatedMicalg = "pgp-sha3-256"; break;
+				case 14: mData->mSigCreatedMicalg = "pgp-sha3-512"; break;
+				default: mData->mSigCreatedMicalg = cdstring::null_str; break;
+				}
+			}
+		}
+
+		// Key status
+		else if (!::strncmp(q, cNO_SECKEY, ::strlen(cNO_SECKEY)))
+		{
+			REPORTERROR(eSecurity_KeyUnavailable, "No secret key available");
+		}
+
+		// Recipient errors
+		else if (!::strncmp(q, cINV_RECP, ::strlen(cINV_RECP)))
+		{
+			cdstring tok(q + ::strlen(cINV_RECP));
+			char* reason = ::strtok(tok.c_str_mod(), " ");
+			char* addr = ::strtok(NULL, "");
+			cdstring errtxt("Invalid recipient");
+			if (addr)
+			{
+				errtxt += ": ";
+				errtxt += addr;
+			}
+			LogEntry(errtxt);
+		}
+		else if (!::strncmp(q, cNO_RECP, ::strlen(cNO_RECP)))
+		{
+			REPORTERROR(eSecurity_KeyUnavailable, "No usable recipients for encryption");
+		}
+
+		// Key status
+		else if (!::strncmp(q, cKEYEXPIRED, ::strlen(cKEYEXPIRED)))
+		{
+			mData->mExpiredKey = true;
+		}
+		else if (!::strncmp(q, cKEYREVOKED, ::strlen(cKEYREVOKED)))
+		{
+			mData->mRevokedKey = true;
+		}
+
+		// General errors
+		else if (!::strncmp(q, cFAILURE, ::strlen(cFAILURE)))
+		{
+			LogEntry(cdstring(q));
+		}
+		else if (!::strncmp(q, cERROR, ::strlen(cERROR)))
+		{
+			LogEntry(cdstring(q));
+		}
+		else if (!::strncmp(q, cNODATA, ::strlen(cNODATA)))
+		{
+			LogEntry(cdstring(q));
 		}
 
 		// Look for next complete line
@@ -1925,8 +2179,6 @@ long CGPGPluginDLL::ProcessFileStatusOutput(cdstring& output)
 				char* r = ::strtok(q, " ");
 				if (r)
 				{
-					if (::strlen(r) == 16)
-						r += 8;
 					mData->mEncryptionKeys.push_back(r);
 				}
 			}
@@ -1943,8 +2195,6 @@ long CGPGPluginDLL::ProcessFileStatusOutput(cdstring& output)
 			char* q = ::strstr(line.c_str_mod(), "keyid ");
 			q += 6;
 			char* r = ::strtok(q, " ");
-			if (::strlen(r) == 16)
-				r += 8;
 			mData->mSignatureKeys.push_back(r);
 		}
 
@@ -1956,95 +2206,181 @@ long CGPGPluginDLL::ProcessFileStatusOutput(cdstring& output)
 
 long CGPGPluginDLL::ProcessKeyListOutput(cdstring& output)
 {
-	// Look for complete line
+	// Parse --with-colons output format (stable across gpg versions)
+	// Fields are colon-separated. Key record types:
+	//   sec/pub: field 4 = key ID, field 1 = validity
+	//   ssb/sub: field 4 = subkey ID
+	//   uid:     field 9 = user ID string, field 1 = validity
+	//   fpr:     field 9 = fingerprint
+
 	const char* p = ::strchr(output.c_str(), os_endl[0]);
 	while(p)
 	{
-		// Grab line and reset remainder
 		cdstring line(output.c_str(), p - output.c_str());
 		cdstring temp(p + os_endl_len);
 		output = temp;
 
-		// Look for specific text
-		if (line.compare_start("sec ") || line.compare_start("pub "))
+		// Split line into colon-delimited fields
+		cdstrvect fields;
+		const char* start = line.c_str();
+		while (start)
 		{
-			cdstring id;
-			::strtok(line, " ");	// sec
-			char* q = ::strtok(NULL, " ");		// id
-			if (::strchr(q, '/'))
-				id += ::strchr(q, '/') + 1;
-			else
-				id += q;
-			::strtok(NULL, " ");		// date
-			cdstring name = ::strtok(NULL, "");		// name
-			name.trimspace();
-			
-			// Cache new id
-			mData->mLastID = id;
-
-			// Create map entries
-			cdstrvect temp;
-			mData->mKeyIDMap["current"] = temp;
-			mData->mKeyIDMap[mData->mLastID] = temp;
-			
-			// Skip if not a valid name
-			if (!name.empty() && (name[(cdstring::size_type)0] != '['))
-			{			
-				// Cache current name (before we add the key id)
-				mData->mKeyIDMap["current"].push_back(name);
-				
-				// Add name/id to list
-				mData->mKeyIDMap[mData->mLastID].push_back(name);
-			}
-		}
-		else if (line.compare_start("uid "))
-		{
-			cdstring id;
-			::strtok(line, " ");	// uid
-			char* q = ::strtok(NULL, "");	// name
-			const char* r = NULL;
-			
-			// Get current name
-			cdstring name(q);
-			name.trimspace();
-			if ((name[(cdstring::size_type)0] == '[') && ((r = ::strchr(q, ']')) != NULL))
+			const char* colon = ::strchr(start, ':');
+			if (colon)
 			{
-				while (*r == ' ')
-					r++;
-				r++;
-				name = r;
-				name.trimspace();
+				fields.push_back(cdstring(start, colon - start));
+				start = colon + 1;
 			}
-
-			// Skip if not a valid name
-			if (!name.empty() && (name[(cdstring::size_type)0] != '['))
-			{			
-				// Cache current name (before we add the key id)
-				mData->mKeyIDMap["current"].push_back(name);
-				
-				// Add name/id to list
-				mData->mKeyIDMap[mData->mLastID].push_back(name);
+			else
+			{
+				fields.push_back(cdstring(start));
+				break;
 			}
 		}
-		else if (line.compare_start("sub ") || line.compare_start("ssb "))
-		{
-			cdstring id;
-			::strtok(line, " ");	// sec
-			char* q = ::strtok(NULL, " ");		// id
-			if (::strchr(q, '/'))
-				id += ::strchr(q, '/') + 1;
-			else
-				id += q;
-			
-			// Get current names
-			cdstrvect names = mData->mKeyIDMap["current"];
 
-			// Add id/names to map
-			mData->mKeyIDMap[id] = names;
+		if (fields.empty())
+		{
+			p = ::strchr(output.c_str(), os_endl[0]);
+			continue;
+		}
+
+		const cdstring& type = fields[0];
+
+		if ((type == "sec" || type == "pub") && fields.size() > 4)
+		{
+			mData->mLastID = fields[4];
+
+			cdstrvect empty;
+			mData->mKeyIDMap["current"] = empty;
+			mData->mKeyIDMap[mData->mLastID] = empty;
+		}
+		else if ((type == "ssb" || type == "sub") && fields.size() > 4)
+		{
+			cdstring subid = fields[4];
+			cdstrvect names = mData->mKeyIDMap["current"];
+			mData->mKeyIDMap[subid] = names;
+		}
+		else if (type == "uid" && fields.size() > 9)
+		{
+			// field 1 = validity (r = revoked, skip)
+			if (fields[1] == "r")
+			{
+				p = ::strchr(output.c_str(), os_endl[0]);
+				continue;
+			}
+
+			cdstring name = fields[9];
+			if (!name.empty())
+			{
+				mData->mKeyIDMap["current"].push_back(name);
+				mData->mKeyIDMap[mData->mLastID].push_back(name);
+			}
 		}
 
 		p = ::strchr(output.c_str(), os_endl[0]);
 	}
 
 	return 1;
+}
+
+// Check key health: expiry, revocation, UID match
+bool CGPGPluginDLL::CheckKeyHealth(const char* key_id, cdstring& warning)
+{
+	if (!key_id || !*key_id)
+		return true;
+
+	cdstrvect args;
+	args.push_back("--list-keys");
+	args.push_back("--with-colons");
+	args.push_back(key_id);
+
+	mData->mStdError = cdstring::null_str;
+	mData->mErrno = eSecurity_NoErr;
+	long result = CallGPG(args, NULL, true, true);
+
+	if (result != 1)
+	{
+		warning = "Signing key not found: ";
+		warning += key_id;
+		return false;
+	}
+
+	return true;
+}
+
+// Check which recipients have keys available
+bool CGPGPluginDLL::CheckRecipientKeys(const char** recipients, cdstrvect& missing)
+{
+	if (!recipients)
+		return true;
+
+	const char** p = recipients;
+	while(*p)
+	{
+		cdstrvect args;
+		args.push_back("--list-keys");
+		args.push_back("--with-colons");
+		args.push_back(*p);
+
+		mData->mStdError = cdstring::null_str;
+		mData->mErrno = eSecurity_NoErr;
+		long result = CallGPG(args, NULL, true, false);
+
+		if (result != 1)
+			missing.push_back(*p);
+
+		p++;
+	}
+
+	return missing.empty();
+}
+
+// Export public key as ASCII-armored text
+bool CGPGPluginDLL::ExportPublicKey(const char* key_id, cdstring& key_data)
+{
+	if (!key_id || !*key_id)
+		return false;
+
+	char out_tmp[1024];
+	*out_tmp = 0;
+
+	try
+	{
+		TempCreate(NULL, out_tmp, NULL);
+	}
+	catch(...)
+	{
+		return false;
+	}
+
+	if (!*out_tmp)
+		return false;
+
+	StRemoveFileSpec _remove_tmp(out_tmp);
+
+	cdstrvect args;
+	args.push_back("--export");
+	args.push_back("--armor");
+	args.push_back("-o");
+	args.push_back(out_tmp);
+	args.push_back(key_id);
+
+	mData->mStdError = cdstring::null_str;
+	mData->mErrno = eSecurity_NoErr;
+	long result = CallGPG(args, NULL, true);
+
+	if (result == 1)
+	{
+		char* data = NULL;
+		unsigned long data_len = 0;
+		TempRead(out_tmp, &data, &data_len);
+		if (data)
+		{
+			key_data = data;
+			::free(data);
+			return true;
+		}
+	}
+
+	return false;
 }

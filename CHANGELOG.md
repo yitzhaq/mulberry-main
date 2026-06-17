@@ -325,8 +325,95 @@ X11 bitmap fonts).
 - $Junk, $NotJunk, $Phishing keyword string constants defined
   (RFC 9051 §2.3.2). Flag enum bits and UI deferred.
 
+- PGP/MIME compliance overhaul (RFC 3156, 9580, 9787, 9788, 1847).
+  Comprehensive audit and remediation of Mulberry's PGP/MIME
+  implementation against five RFCs governing email cryptographic
+  security. Key changes:
+  - GPG status parsing rewritten to handle all verification statuses
+    (GOODSIG, BADSIG, EXPSIG, EXPKEYSIG, REVKEYSIG, ERRSIG, VALIDSIG,
+    NEWSIG), all trust levels (UNDEFINED through ULTIMATE), decryption
+    status (DECRYPTION_OKAY/FAILED/INFO), signing status (SIG_CREATED),
+    and key status (KEYEXPIRED, KEYREVOKED, NO_SECKEY). Fixes the
+    "Unhandled signal" error to report actual signal names.
+  - Dynamic micalg derivation: the digest algorithm is no longer
+    hardcoded (was SHA-256). GPG now chooses the hash based on key
+    type and user configuration. The micalg parameter is derived
+    dynamically from GPG's SIG_CREATED status output, supporting
+    SHA-256, SHA-384, SHA-512, SHA-224, SHA3-256, SHA3-512, and
+    all other registered OpenPGP hash algorithms.
+  - Unified Cryptographic Summary replaces the separate "Signature:
+    OK" and "Decrypted: OK" status lines with a single clear
+    indicator: signed messages show the signer identity, encrypted
+    messages show their encryption status, and combined messages
+    show both. Failed signatures no longer display alarming red
+    banners — they are treated as unprotected (same as unsigned),
+    per RFC 9787 §6.4. Trust level, key expiry, weak algorithm,
+    and From mismatch warnings use a cautious indicator.
+  - Header Protection (RFC 9788). User-facing headers (Subject,
+    From, To, Cc, Date, Reply-To) are cryptographically protected
+    inside encrypted messages. Signed messages set the `hp=clear`
+    parameter; full protected header injection for signed-only
+    messages is pending. Encrypted messages
+    apply the baseline Header Confidentiality Policy: the outer
+    Subject is replaced with "[...]" while the real Subject is
+    protected inside the encrypted payload. HP-Outer headers
+    document the composer's confidentiality choices. Legacy Display
+    Elements provide backward compatibility with older clients.
+    On receive, protected headers are compared with outer headers
+    and From mismatches are flagged.
+  - Reply-to-encrypted protection. Replying to an encrypted message
+    now auto-enables encryption and signing. Disabling either shows
+    a non-suppressible warning. Quoted text from encrypted originals
+    is prefixed with "[Originally encrypted content]" to make the
+    provenance visible to the recipient.
+  - Inline PGP signature verification disabled per RFC 9787 §6.2.3.1
+    (prevents signature spoofing attacks). Inline PGP decryption
+    retained with content isolation per RFC 9787 §6.2.3.2.
+  - Encrypt-only mode eliminated. Encryption now always includes
+    signing (RFC 9787 §5.3). UI three-state selector deferred.
+  - Bcc recipients excluded from encryption keylists to prevent
+    key ID leakage in PGP packets (RFC 9787 §9.4.1). Per-Bcc
+    separate-copy encryption pending.
+  - Trailing whitespace stripped from encrypted payloads and
+    clearsign data (RFC 3156 §3, §5 step 4). Signed-only
+    (multipart/signed) stripping pending architectural fix;
+    gpg text mode canonicalization provides hash invariance
+    in the interim.
+  - Signed data written with CRLF line endings (RFC 3156 §5 step 1),
+    with gpg text mode (-t) retained as defense-in-depth.
+  - Signed messages always use UTF-8 encoding regardless of the
+    "Always Unicode" preference (RFC 9580 §5.2.4). Non-UTF-8
+    text parts are transcoded before signing.
+  - "From " lines and 8-bit bytes in signed text parts force
+    Quoted-Printable encoding (RFC 3156 §3).
+  - GPG Version armor header suppressed (RFC 9580 §6.2.2.1) to
+    minimize metadata leakage.
+  - Passphrase buffers cleared via explicit_bzero after use
+    (prevents compiler optimization of the clear).
+  - Unified exit-status handling for GPG subprocess on all
+    platforms (Linux, macOS, Win32). Fixes signatures from
+    untrusted keys being reported as verification failures on
+    Linux (was correct on Win32).
+  - Signature and encrypted data parts now include Content-Description,
+    Content-Disposition, and filename parameters for interoperability
+    with MUAs that lack PGP/MIME-aware rendering.
+  - Signature part Content-Type validated against multipart/signed
+    protocol parameter before verification.
+  - Weak hash algorithm detection: signatures using MD5, SHA-1,
+    or RIPEMD-160 trigger a warning (RFC 9580 §9.5).
+
 ### Added
 
+- Header Protection for cryptographic email (RFC 9788). Protects
+  email headers (Subject, From, To, Cc, Date, Reply-To) inside
+  encrypted MIME structures, providing Subject confidentiality
+  for encrypted messages. Implements the baseline Header
+  Confidentiality Policy, HP-Outer header fields, and Legacy
+  Display Elements for backward compatibility. On receive,
+  protected headers are compared with outer headers and
+  mismatches are flagged. Signed-only protected header injection
+  pending. See the PGP/MIME compliance overhaul entry above for
+  full details.
 - IMAP OBJECTID extension (RFC 8474). Persistent server-assigned
   identifiers for mailboxes (MAILBOXID) and messages (EMAILID,
   THREADID) that survive renames, copies, and moves. MAILBOXID
@@ -718,10 +805,6 @@ X11 bitmap fonts).
   3DES was withdrawn by NIST in 2023 and is vulnerable to Sweet32
   attacks on large messages. AES-128-CBC is the current standard
   across modern S/MIME implementations.
-- Replace SHA-1 with SHA-256 for PGP signatures. SHA-1 is broken
-  for collision attacks since 2017 (SHAttered) and has been deprecated
-  by GPG since 2019. SHA-256 is universally supported by all current
-  OpenPGP implementations.
 - Modernize internal keyring encryption from MD5+RC4 to Argon2id
   key derivation and XChaCha20-Poly1305 authenticated encryption
   via libsodium. Fix keyring file permissions to 0600.

@@ -152,6 +152,21 @@ protected:
 		long 			mErrno;
 		bool 			mDidSig;
 		cdstring 		mStdError;
+
+		// Extended status from gpg (RFC 9580/9787 compliance)
+		long			mHashAlgorithm;
+		long			mCipherAlgorithm;
+		cdstring		mSignerFingerprint;
+		long			mSignatureExpiry;
+		long			mTrustLevel;
+		bool			mExpiredSignature;
+		bool			mExpiredKey;
+		bool			mRevokedKey;
+		bool			mDecryptionOK;
+		bool			mWeakHashDetected;
+		long			mSigCreatedHashAlgo;
+		cdstring		mSigCreatedMicalg;
+		const char*		mDynamicSignedParams[5];
 	};
 	SData* mData;
 #if __dest_os == __win32_os
@@ -224,7 +239,8 @@ protected:
 #endif
 
 	long CallGPG(cdstrvect& args, const char* passphrase, bool binary,
-					bool file_status = false, bool key_list = false);							// Call 
+					bool file_status = false, bool key_list = false);
+	long ProcessExitResult(int exit_code, bool exited_normally, bool was_signaled, int signal_num);
 
 	long GetSignKeyPassphrase(const char* key, char* passphrase);
 	long GetPassphraseForFile(const char* in_path, char* passphrase, cdstrvect& signedBy, cdstrvect& encryptedTo);
@@ -233,6 +249,11 @@ protected:
 	long ProcessStatus(cdstring& status);
 	long ProcessFileStatusOutput(cdstring& output);
 	long ProcessKeyListOutput(cdstring& output);
+
+public:
+	bool CheckKeyHealth(const char* key_id, cdstring& warning);
+	bool CheckRecipientKeys(const char** recipients, cdstrvect& missing);
+	bool ExportPublicKey(const char* key_id, cdstring& key_data);
 };
 
 #endif

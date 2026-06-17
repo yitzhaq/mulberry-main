@@ -89,6 +89,9 @@ const char cHDR_XMULBERRY_DRAFTUID[] = "X-Mulberry-Draft-UID: ";
 const char cHDR_XMULBERRY_DRAFTMBOX[] = "X-Mulberry-Draft-Mailbox: ";
 const char cHDR_AUTHENTICATION_RESULTS[] = "Authentication-Results";
 
+const char cHDR_HP_OUTER[] = "HP-Outer: ";
+const char cHDR_HP_OUTER_TAG[] = "HP-Outer";
+
 const char cGMT_POS[] = "+";
 const char cGMT_NEG[] = "-";
 

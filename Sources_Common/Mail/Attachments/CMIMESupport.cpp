@@ -257,7 +257,7 @@ cdstring CMIMESupport::GenerateContentDescription(const CAttachment* attach, EEn
 		cdstring txt;
 		if (description)
 			txt += cHDR_MIME_DESCRIPTION;
-		txt += GenerateContentParameter(content.GetContentDescription());
+		txt += content.GetContentDescription();
 		return txt;
 	}
 }
@@ -989,11 +989,11 @@ cdstring CMIMESupport::MapMIMEToApp(const CAttachment& attach)
 #endif
 
 	// Cannot map multipart (can do AppleDouble) or message
-	if (attach.IsMultipart() && !attach.IsApplefile() || attach.IsMessage())
+	if ((attach.IsMultipart() && !attach.IsApplefile()) || attach.IsMessage())
 		return cdstring::null_str;
 
 	// Do not map attachments which we decode
-	if (attach.GetContent().IsBinHexed() || attach.GetContent().IsUUed() || !attach.IsMultipart() && attach.IsApplefile())
+	if (attach.GetContent().IsBinHexed() || attach.GetContent().IsUUed() || (!attach.IsMultipart() && attach.IsApplefile()))
 		return cdstring::null_str;
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x

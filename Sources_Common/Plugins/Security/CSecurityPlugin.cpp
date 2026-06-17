@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-// CSecurityPlugin.cp
+// CSecurityPlugin.cpp
 //
 // Copyright 2006, Cyrus Daboo.  All Rights Reserved.
 //
@@ -55,6 +55,7 @@
 #include "CPluginManager.h"
 #include "CPreferences.h"
 #include "CPreferenceVersions.h"
+#include "CRFC822.h"
 #include "CRFC822Parser.h"
 #include "CSSLPlugin.h"
 #include "CStreamAttachment.h"
@@ -301,16 +302,380 @@ bool CSecurityPlugin::UseMIME() const
 	return (GetName() == cSMIMEName) || CPreferences::sPrefs->mUseMIMESecurity.GetValue();
 }
 
+#pragma mark ____________________________Whitespace stripping
+
+// RFC 3156 §5 step 4: strip trailing spaces/tabs from each line before signing
+void CSecurityPlugin::StripTrailingWhitespace(cdstring& data)
+{
+	if (data.empty())
+		return;
+
+	const char* src = data.c_str();
+	size_t len = data.length();
+	cdstring result;
+	result.reserve(len);
+
+	const char* line_start = src;
+	const char* end = src + len;
+
+	while (src < end)
+	{
+		if (*src == '\r' && src + 1 < end && *(src + 1) == '\n')
+		{
+			const char* p = src;
+			while (p > line_start && (*(p - 1) == ' ' || *(p - 1) == '\t'))
+				p--;
+			result += cdstring(line_start, p - line_start);
+			result += "\r\n";
+			src += 2;
+			line_start = src;
+		}
+		else if (*src == '\n')
+		{
+			const char* p = src;
+			while (p > line_start && (*(p - 1) == ' ' || *(p - 1) == '\t'))
+				p--;
+			result += cdstring(line_start, p - line_start);
+			result += "\n";
+			src++;
+			line_start = src;
+		}
+		else
+		{
+			src++;
+		}
+	}
+
+	if (src > line_start)
+	{
+		const char* p = src;
+		while (p > line_start && (*(p - 1) == ' ' || *(p - 1) == '\t'))
+			p--;
+		result += cdstring(line_start, p - line_start);
+	}
+
+	data = result;
+}
+
+void CSecurityPlugin::StripTrailingWhitespaceFile(const cdstring& path)
+{
+	cdstring data;
+	{
+		cdifstream in(path, std::ios_base::in | std::ios_base::binary);
+		if (!in.is_open())
+			return;
+		std::ostrstream buf;
+		buf << in.rdbuf();
+		buf << std::ends;
+		data.steal(buf.str());
+	}
+
+	StripTrailingWhitespace(data);
+
+	{
+		cdofstream out(path, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+		out.write(data.c_str(), data.length());
+	}
+}
+
+#pragma mark ____________________________Header protection (RFC 9788)
+
+// RFC 9788 §3.2.1: hcp_baseline
+cdstring CSecurityPlugin::ApplyHCP(const cdstring& name, const cdstring& value)
+{
+	if (!::strcmpnocase(name, "Subject"))
+		return "[...]";
+	if (!::strcmpnocase(name, "Comments") || !::strcmpnocase(name, "Keywords"))
+		return cdstring::null_str;
+	return value;
+}
+
+// Collect user-facing headers from message envelope
+void CSecurityPlugin::GetUserFacingHeaders(const CMessage* msg, cdstrpairvect& headers)
+{
+	if (!msg || !msg->GetEnvelope())
+		return;
+
+	const CEnvelope* env = msg->GetEnvelope();
+
+	// Date
+	cdstring date_text = env->GetTextDate(false);
+	if (!date_text.empty())
+		headers.push_back(cdstrpair("Date", date_text));
+
+	// From
+	if (env->GetFrom() && env->GetFrom()->size())
+	{
+		std::ostrstream buf;
+		env->GetFrom()->WriteToStream(buf);
+		buf << std::ends;
+		cdstring from;
+		from.steal(buf.str());
+		headers.push_back(cdstrpair("From", from));
+	}
+
+	// To
+	if (env->GetTo() && env->GetTo()->size())
+	{
+		std::ostrstream buf;
+		env->GetTo()->WriteToStream(buf);
+		buf << std::ends;
+		cdstring to;
+		to.steal(buf.str());
+		headers.push_back(cdstrpair("To", to));
+	}
+
+	// Cc
+	if (env->GetCC() && env->GetCC()->size())
+	{
+		std::ostrstream buf;
+		env->GetCC()->WriteToStream(buf);
+		buf << std::ends;
+		cdstring cc;
+		cc.steal(buf.str());
+		headers.push_back(cdstrpair("Cc", cc));
+	}
+
+	// Reply-To
+	if (env->GetReplyTo() && env->GetReplyTo()->size())
+	{
+		std::ostrstream buf;
+		env->GetReplyTo()->WriteToStream(buf);
+		buf << std::ends;
+		cdstring reply_to;
+		reply_to.steal(buf.str());
+		headers.push_back(cdstrpair("Reply-To", reply_to));
+	}
+
+	// Subject
+	if (!env->GetSubject().empty())
+		headers.push_back(cdstrpair("Subject", env->GetSubject()));
+
+	// Message-ID
+	if (!env->GetMessageID().empty())
+		headers.push_back(cdstrpair("Message-ID", env->GetMessageID()));
+}
+
+// Insert protected headers into MIME data before the header/body separator
+void CSecurityPlugin::InsertProtectedHeaders(cdstring& data, const cdstrpairvect& headers,
+												const cdstrpairvect* hp_outer)
+{
+	if (headers.empty() && (!hp_outer || hp_outer->empty()))
+		return;
+
+	// Find the first CRLFCRLF (header/body separator)
+	const char* sep = ::strstr(data.c_str(), "\r\n\r\n");
+	if (!sep)
+		return;
+
+	size_t insert_pos = sep - data.c_str() + 2;
+
+	cdstring insert_text;
+
+	// Add user-facing headers
+	for (cdstrpairvect::const_iterator iter = headers.begin(); iter != headers.end(); iter++)
+	{
+		insert_text += iter->first;
+		insert_text += ": ";
+		insert_text += iter->second;
+		insert_text += "\r\n";
+	}
+
+	// Add HP-Outer headers
+	if (hp_outer)
+	{
+		for (cdstrpairvect::const_iterator iter = hp_outer->begin(); iter != hp_outer->end(); iter++)
+		{
+			insert_text += cHDR_HP_OUTER;
+			insert_text += iter->first;
+			insert_text += ": ";
+			insert_text += iter->second;
+			insert_text += "\r\n";
+		}
+	}
+
+	cdstring result(data.c_str(), insert_pos);
+	result += insert_text;
+	result += cdstring(data.c_str() + insert_pos);
+	data = result;
+}
+
+void CSecurityPlugin::InsertProtectedHeadersFile(const cdstring& path, const cdstrpairvect& headers,
+													const cdstrpairvect* hp_outer)
+{
+	cdstring data;
+	{
+		cdifstream in(path, std::ios_base::in | std::ios_base::binary);
+		if (!in.is_open())
+			return;
+		std::ostrstream buf;
+		buf << in.rdbuf();
+		buf << std::ends;
+		data.steal(buf.str());
+	}
+
+	InsertProtectedHeaders(data, headers, hp_outer);
+
+	{
+		cdofstream out(path, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+		out.write(data.c_str(), data.length());
+	}
+}
+
+// Extract a header value from raw MIME text (before the blank line)
+static cdstring ExtractHeaderFromRaw(const char* data, const char* header_name)
+{
+	if (!data || !header_name)
+		return cdstring::null_str;
+
+	size_t name_len = ::strlen(header_name);
+	const char* p = data;
+
+	while (*p)
+	{
+		// Check for blank line (end of headers)
+		if (*p == '\r' && *(p + 1) == '\n' && *(p + 2) == '\r' && *(p + 3) == '\n')
+			break;
+		if (*p == '\n' && *(p + 1) == '\n')
+			break;
+
+		// Check for matching header name (case-insensitive)
+		if (::strncasecmp(p, header_name, name_len) == 0 && *(p + name_len) == ':')
+		{
+			const char* val = p + name_len + 1;
+			while (*val == ' ' || *val == '\t')
+				val++;
+
+			// Find end of value (handle continuation lines)
+			const char* end = val;
+			while (*end)
+			{
+				if (*end == '\r' && *(end + 1) == '\n')
+				{
+					if (*(end + 2) == ' ' || *(end + 2) == '\t')
+						end += 2;
+					else
+						break;
+				}
+				else if (*end == '\n')
+				{
+					if (*(end + 1) == ' ' || *(end + 1) == '\t')
+						end++;
+					else
+						break;
+				}
+				else
+					end++;
+			}
+
+			return cdstring(val, end - val);
+		}
+
+		// Skip to next line
+		while (*p && *p != '\n')
+			p++;
+		if (*p == '\n')
+			p++;
+	}
+
+	return cdstring::null_str;
+}
+
+// Extract protected headers from Cryptographic Payload on receive side
+void CSecurityPlugin::ExtractProtectedHeaders(const CAttachment* payload, const CMessage* msg,
+												CMessageCryptoInfo& info,
+												const char* raw_data)
+{
+	if (!payload || !msg || !msg->GetEnvelope())
+		return;
+
+	// Check for hp parameter on Cryptographic Payload
+	const cdstring& hp = payload->GetContent().GetContentParameter(cMIMEParameter[eHP]);
+	if (hp.empty())
+		return;
+
+	bool is_encrypted = !::strcmpnocase(hp, "cipher");
+
+	info.SetHeadersProtected(true);
+	info.SetHeadersEncrypted(is_encrypted);
+
+	// Extract and compare protected header values if raw data is available
+	if (raw_data)
+	{
+		const CEnvelope* env = msg->GetEnvelope();
+
+		cdstring inner_subject = ExtractHeaderFromRaw(raw_data, "Subject");
+		cdstring inner_from = ExtractHeaderFromRaw(raw_data, "From");
+		cdstring inner_to = ExtractHeaderFromRaw(raw_data, "To");
+		cdstring inner_cc = ExtractHeaderFromRaw(raw_data, "Cc");
+		cdstring inner_date = ExtractHeaderFromRaw(raw_data, "Date");
+		cdstring inner_replyto = ExtractHeaderFromRaw(raw_data, "Reply-To");
+
+		// Compare each with outer headers
+		if (!inner_subject.empty() && env->GetSubject() != inner_subject)
+			info.GetHeaderMismatches().insert(cdstrmap::value_type("Subject", inner_subject));
+
+		if (!inner_from.empty())
+		{
+			CAddress inner_addr(inner_from);
+			CAddress outer_addr(env->GetFrom()->size() ? env->GetFrom()->front()->GetMailAddress() : cdstring::null_str);
+			if (::strcmpnocase(inner_addr.GetMailAddress(), outer_addr.GetMailAddress()) != 0)
+			{
+				info.SetFromMismatch(true);
+				info.GetHeaderMismatches().insert(cdstrmap::value_type("From", inner_from));
+			}
+		}
+
+		if (!inner_to.empty())
+		{
+			cdstring outer_to;
+			if (env->GetTo() && env->GetTo()->size())
+				outer_to = env->GetTo()->front()->GetMailAddress();
+			if (::strcmpnocase(inner_to, outer_to) != 0)
+				info.GetHeaderMismatches().insert(cdstrmap::value_type("To", inner_to));
+		}
+
+		if (!inner_cc.empty())
+		{
+			cdstring outer_cc;
+			if (env->GetCC() && env->GetCC()->size())
+				outer_cc = env->GetCC()->front()->GetMailAddress();
+			if (::strcmpnocase(inner_cc, outer_cc) != 0)
+				info.GetHeaderMismatches().insert(cdstrmap::value_type("Cc", inner_cc));
+		}
+
+		if (!inner_date.empty())
+		{
+			cdstring outer_date = env->GetTextDate(true, false);
+			if (::strcmpnocase(inner_date, outer_date) != 0)
+				info.GetHeaderMismatches().insert(cdstrmap::value_type("Date", inner_date));
+		}
+
+		if (!inner_replyto.empty())
+		{
+			cdstring outer_replyto;
+			if (env->GetReplyTo() && env->GetReplyTo()->size())
+				outer_replyto = env->GetReplyTo()->front()->GetMailAddress();
+			if (::strcmpnocase(inner_replyto, outer_replyto) != 0)
+				info.GetHeaderMismatches().insert(cdstrmap::value_type("Reply-To", inner_replyto));
+		}
+	}
+}
+
 #pragma mark ____________________________Operations on entire body
 
 void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char* key)
 {
+	// RFC 9787 §5.3: encrypt-only is not permitted — always sign when encrypting
+	if (mode == eEncrypt)
+		mode = eEncryptSign;
+
 	// Special processing for Encrypt&Sign separate
 	if ((mode == eEncryptSign) && !DoesEncryptSignAllInOne())
 	{
 		// Do signature first
 		ProcessBody(msg, eSign, key);
-		
+
 		// Change mode to encrypt for second operation
 		mode = eEncrypt;
 	}
@@ -323,6 +688,122 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 
 	// Special processing for crypto - only needed for broken PGP implementations
 	part->ProcessSendCrypto(mode, true);
+
+	// RFC 9788: set hp parameter and collect headers for protection
+	cdstrpairvect protected_headers;
+	cdstrpairvect hp_outer_headers;
+	bool do_header_protection = (mode == eSign || mode == eEncryptSign);
+	if (do_header_protection)
+	{
+		GetUserFacingHeaders(msg, protected_headers);
+
+		if (mode == eSign)
+		{
+			part->GetContent().SetContentParameter(cMIMEParameter[eHP], "clear");
+		}
+		else
+		{
+			part->GetContent().SetContentParameter(cMIMEParameter[eHP], "cipher");
+
+			// Build HP-Outer: protected copy of what the outer headers will be after HCP
+			for (cdstrpairvect::const_iterator iter = protected_headers.begin();
+				 iter != protected_headers.end(); iter++)
+			{
+				cdstring hcp_val = ApplyHCP(iter->first, iter->second);
+				if (!hcp_val.empty())
+					hp_outer_headers.push_back(cdstrpair(iter->first, hcp_val));
+			}
+
+			// RFC 9788 §5.2.1 step 2: build Legacy Display list (headers changed by HCP)
+			cdstrpairvect ldlist;
+			for (cdstrpairvect::const_iterator iter = protected_headers.begin();
+				 iter != protected_headers.end(); iter++)
+			{
+				cdstring hcp_val = ApplyHCP(iter->first, iter->second);
+				if (hcp_val != iter->second)
+					ldlist.push_back(*iter);
+			}
+
+			// Insert Legacy Display Elements into text body parts
+			if (!ldlist.empty())
+			{
+				cdstring ld_text;
+				for (cdstrpairvect::const_iterator iter = ldlist.begin();
+					 iter != ldlist.end(); iter++)
+				{
+					ld_text += iter->first;
+					ld_text += ": ";
+					ld_text += iter->second;
+					ld_text += os_endl;
+				}
+				ld_text += os_endl;
+
+				// Walk leaf parts and prepend to text/plain main body parts
+				CAttachment* main_part = part;
+				if (main_part->IsMultipart() && main_part->GetParts())
+					main_part = main_part->GetParts()->front();
+
+				if (main_part && main_part->IsText() && main_part->GetData())
+				{
+					EContentSubType sub = main_part->GetContent().GetContentSubtype();
+					if (sub == eContentSubPlain)
+					{
+						cdstring new_data = ld_text;
+						new_data += main_part->GetData();
+						char* copy = new char[new_data.length() + 1];
+						::memcpy(copy, new_data.c_str(), new_data.length() + 1);
+						main_part->SetData(copy);
+						main_part->GetContent().SetContentParameter(
+							cMIMEParameter[eHPLegacyDisplay], "1");
+					}
+					else if (sub == eContentSubHTML)
+					{
+						cdstring html_ld = "<div class=\"legacy-display\">\r\n";
+						for (cdstrpairvect::const_iterator iter = ldlist.begin();
+							 iter != ldlist.end(); iter++)
+						{
+							html_ld += "<b>";
+							html_ld += iter->first;
+							html_ld += "</b>: ";
+							html_ld += iter->second;
+							html_ld += "<br>\r\n";
+						}
+						html_ld += "<hr>\r\n</div>\r\n";
+
+						cdstring orig(main_part->GetData());
+						const char* body_tag = ::strstr(orig.c_str(), "<body");
+						if (!body_tag)
+							body_tag = ::strstr(orig.c_str(), "<BODY");
+
+						cdstring new_data;
+						if (body_tag)
+						{
+							const char* after = ::strchr(body_tag, '>');
+							if (after)
+							{
+								after++;
+								new_data = cdstring(orig.c_str(), after - orig.c_str());
+								new_data += html_ld;
+								new_data += after;
+							}
+						}
+
+						if (new_data.empty())
+						{
+							new_data = html_ld;
+							new_data += orig;
+						}
+
+						char* copy = new char[new_data.length() + 1];
+						::memcpy(copy, new_data.c_str(), new_data.length() + 1);
+						main_part->SetData(copy);
+						main_part->GetContent().SetContentParameter(
+							cMIMEParameter[eHPLegacyDisplay], "1");
+					}
+				}
+			}
+		}
+	}
 
 	unsigned long size = 0;
 	if (FileBody(part, size))
@@ -354,12 +835,27 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 		StRemoveFileSpec _remove_fout(fout);
 #endif
 
-		// Write it to a stream
+		// Write it to a stream — use CRLF for signing (RFC 3156 §5 step 1)
 		{
 			cdofstream outs(fin_path, std::ios_base::out|std::ios_base::trunc|std::ios_base::binary);
 			unsigned long level = 0;
-			costream stream_out(&outs, lendl);
+			EEndl sign_endl = (mode == eSign || mode == eEncryptSign) ? eEndl_CRLF : lendl;
+			costream stream_out(&outs, sign_endl);
 			part->WriteToStream(stream_out, level, false, nil);
+		}
+
+		// For encryption: insert protected headers and strip whitespace
+		// in the temp file (the temp file IS the encrypted payload)
+		// For signing: the temp file must match the transmitted part exactly,
+		// so modifications go on the part object (hp=clear already set above),
+		// and gpg -t handles whitespace canonicalization
+		if (mode != eSign)
+		{
+			if (do_header_protection && !protected_headers.empty())
+				InsertProtectedHeadersFile(fin_path, protected_headers,
+					(mode == eEncryptSign) ? &hp_outer_headers : NULL);
+			if (mode == eEncryptSign)
+				StripTrailingWhitespaceFile(fin_path);
 		}
 
 		// Now process file
@@ -373,10 +869,10 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 		generated_part = new CFileAttachment(fout);
 #endif
 		static_cast<CFileAttachment*>(generated_part)->SetDeleteFile(true);
-		
+
 		// Always NULL the file name to prevent temp file names leaking into MIME parameters
 		generated_part->GetContent().SetMappedName(cdstring::null_str);
-		
+
 		// Make sure output file is not deleted via stack remove
 		_remove_fout.release();
 	}
@@ -384,14 +880,26 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 	{
 		cdstring data;
 
-		// Write it to a stream
+		// Write it to a stream — use CRLF for signing (RFC 3156 §5 step 1)
 		{
 			std::ostrstream outs;
 			unsigned long level = 0;
-			costream stream_out(&outs, lendl);
+			EEndl sign_endl = (mode == eSign || mode == eEncryptSign) ? eEndl_CRLF : lendl;
+			costream stream_out(&outs, sign_endl);
 			part->WriteToStream(stream_out, level, false, nil);
 			outs << std::ends;
 			data.steal(outs.str());
+		}
+
+		// For encryption: insert protected headers and strip whitespace
+		// For signing: data must match the transmitted part exactly
+		if (mode != eSign)
+		{
+			if (do_header_protection && !protected_headers.empty())
+				InsertProtectedHeaders(data, protected_headers,
+					(mode == eEncryptSign) ? &hp_outer_headers : NULL);
+			if (mode == eEncryptSign)
+				StripTrailingWhitespace(data);
 		}
 
 		char* out = nil;
@@ -400,7 +908,8 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 
 		// Make a copy of the data
 		char* local = new char[out_len + 1];
-		::memcpy(local, out, out_len);
+		if (out != NULL)
+			::memcpy(local, out, out_len);
 		local[out_len] = 0;
 
 		DisposeData(out);
@@ -457,6 +966,12 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 			//	application/pgp-signature
 			multi_part->AddPart(part);
 			multi_part->AddPart(generated_part);
+
+			// Interop: help MUAs that lack PGP/MIME-aware rendering
+			generated_part->GetContent().SetContentParameter("name", "OpenPGP_signature.asc");
+			generated_part->GetContent().SetContentDescription("OpenPGP digital signature");
+			generated_part->GetContent().SetContentDisposition(eContentDispositionAttachment);
+			generated_part->GetContent().SetMappedName("OpenPGP_signature.asc");
 			break;
 		case eEncrypt:
 		case eEncryptSign:
@@ -472,6 +987,8 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 				CDataAttachment* version_part = new CDataAttachment;
 				ApplyMIME(version_part, &mime.first);
 
+				version_part->GetContent().SetContentDescription("PGP/MIME version identification");
+
 				cdstring temp("Version: 1");
 				temp += os_endl;
 				version_part->SetData(temp.grab_c_str());
@@ -479,7 +996,13 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 				// Add the parts now
 				multi_part->AddPart(version_part);
 				multi_part->AddPart(generated_part);
-				
+
+				// Interop: help MUAs that lack PGP/MIME-aware rendering
+				generated_part->GetContent().SetContentParameter("name", "encrypted.asc");
+				generated_part->GetContent().SetContentDescription("OpenPGP encrypted message");
+				generated_part->GetContent().SetContentDisposition(eContentDispositionInline);
+				generated_part->GetContent().SetMappedName("encrypted.asc");
+
 				// NB last part must be set to CTE of 7bit
 				generated_part->GetContent().SetTransferEncoding(e7bitEncoding);
 			}
@@ -494,6 +1017,12 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 
 		// Give new generated part to the message
 		msg->SetBody(generated_part, false);
+	}
+
+	// RFC 9788 §5.2.1 step 5: apply HCP to outer message headers for encrypted messages
+	if (do_header_protection && (mode == eEncrypt || mode == eEncryptSign))
+	{
+		msg->GetEnvelope()->SetSubject(ApplyHCP("Subject", msg->GetEnvelope()->GetSubject()));
 	}
 }
 
@@ -540,6 +1069,10 @@ bool CSecurityPlugin::FileAttachment(const CAttachment* part) const
 
 void CSecurityPlugin::ProcessAttachment(CMessage* msg, CAttachment* part, ESecureMessage mode, const char* key)
 {
+	// RFC 9787 §5.3: encrypt-only is not permitted — always sign when encrypting
+	if (mode == eEncrypt)
+		mode = eEncryptSign;
+
 	// See if multipart
 	if (part->IsMultipart() && !part->IsMessage() && !part->IsApplefile() && part->GetParts())
 	{
@@ -704,11 +1237,22 @@ void CSecurityPlugin::ProcessAttachment(CMessage* msg, CAttachment* part, ESecur
 			char* out = nil;
 			unsigned long out_len = 0;
 
-			Process(msg, mode, part->GetData(), NULL, key, &out, NULL, &out_len, false, !part->IsText());
+			// RFC 9580 §7: strip trailing whitespace for clearsign (defense-in-depth)
+			cdstring stripped_data;
+			const char* in_data = part->GetData();
+			if ((mode == eSign || mode == eEncryptSign) && in_data)
+			{
+				stripped_data = in_data;
+				StripTrailingWhitespace(stripped_data);
+				in_data = stripped_data.c_str();
+			}
+
+			Process(msg, mode, in_data, NULL, key, &out, NULL, &out_len, false, !part->IsText());
 
 			// Make a copy of the data
 			char* local = new char[out_len + 1];
-			::memcpy(local, out, out_len);
+			if (out != NULL)
+				::memcpy(local, out, out_len);
 			local[out_len] = 0;
 
 			DisposeData(out);
@@ -759,15 +1303,20 @@ void CSecurityPlugin::Process(const CMessage* msg,
 	case eEncrypt:
 		{
 			// Create array of keys
+			// RFC 9787 §9.4.1: Bcc recipients excluded to prevent key ID leakage
 			cdstrvect keylist;
 
-			// Now add all keys
-			for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetTo()->begin(); iter !=  msg->GetEnvelope()->GetTo()->end(); iter++)
-				keylist.push_back((*iter)->GetMailAddress().c_str());
-			for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetCC()->begin(); iter !=  msg->GetEnvelope()->GetCC()->end(); iter++)
-				keylist.push_back((*iter)->GetMailAddress().c_str());
-			for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetBcc()->begin(); iter !=  msg->GetEnvelope()->GetBcc()->end(); iter++)
-				keylist.push_back((*iter)->GetMailAddress().c_str());
+			// Add To and CC recipients only — not Bcc
+			if (msg->GetEnvelope()->GetTo())
+			{
+				for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetTo()->begin(); iter !=  msg->GetEnvelope()->GetTo()->end(); iter++)
+					keylist.push_back((*iter)->GetMailAddress().c_str());
+			}
+			if (msg->GetEnvelope()->GetCC())
+			{
+				for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetCC()->begin(); iter !=  msg->GetEnvelope()->GetCC()->end(); iter++)
+					keylist.push_back((*iter)->GetMailAddress().c_str());
+			}
 			if (CPreferences::sPrefs->mEncryptToSelf.GetValue())
 				keylist.push_back(key);
 
@@ -816,15 +1365,20 @@ void CSecurityPlugin::Process(const CMessage* msg,
 	case eEncryptSign:
 		{
 			// Create array of keys
+			// RFC 9787 §9.4.1: Bcc recipients excluded to prevent key ID leakage
 			cdstrvect keylist;
 
-			// Now add all keys
-			for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetTo()->begin(); iter !=  msg->GetEnvelope()->GetTo()->end(); iter++)
-				keylist.push_back((*iter)->GetMailAddress().c_str());
-			for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetCC()->begin(); iter !=  msg->GetEnvelope()->GetCC()->end(); iter++)
-				keylist.push_back((*iter)->GetMailAddress().c_str());
-			for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetBcc()->begin(); iter !=  msg->GetEnvelope()->GetBcc()->end(); iter++)
-				keylist.push_back((*iter)->GetMailAddress().c_str());
+			// Add To and CC recipients only — not Bcc
+			if (msg->GetEnvelope()->GetTo())
+			{
+				for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetTo()->begin(); iter !=  msg->GetEnvelope()->GetTo()->end(); iter++)
+					keylist.push_back((*iter)->GetMailAddress().c_str());
+			}
+			if (msg->GetEnvelope()->GetCC())
+			{
+				for(CAddressList::const_iterator iter =  msg->GetEnvelope()->GetCC()->begin(); iter !=  msg->GetEnvelope()->GetCC()->end(); iter++)
+					keylist.push_back((*iter)->GetMailAddress().c_str());
+			}
 			if (CPreferences::sPrefs->mEncryptToSelf.GetValue())
 				keylist.push_back(key);
 
@@ -888,7 +1442,22 @@ bool CSecurityPlugin::VerifyDecryptPart(CMessage* msg, CAttachment* part, CMessa
 		{
 			// Get the protocol parameter
 			const cdstring& protocol = msg->GetBody()->GetContent().GetContentParameter(cMIMEParameter[eCryptoProtocol]);
-			
+
+			// RFC 3156 §5: validate signature part Content-Type matches protocol
+			if (!protocol.empty() && msg->GetBody()->GetParts()->at(1))
+			{
+				cdstring sig_type = CMIMESupport::GenerateContentHeader(msg->GetBody()->GetParts()->at(1), false, lendl, false);
+				if (!sig_type.empty() && ::strcmpnocase(sig_type, protocol) != 0)
+				{
+					cdstring errstr;
+					errstr.FromResource("Alerts::Message::SignaturePartTypeMismatch");
+					info.SetError(errstr);
+					if (CPreferences::sPrefs->mUseErrorAlerts.GetValue())
+						CErrorHandler::PutStopAlertRsrc("Alerts::Message::SignaturePartTypeMismatch");
+					return false;
+				}
+			}
+
 			// Get suitable plugin for verify
 			splugin = GetVerifyPlugin(protocol);
 
@@ -1172,11 +1741,14 @@ bool CSecurityPlugin::VerifyDecryptPartInternal(CMessage* msg, CAttachment* part
 		
 		else if (part)
 		{
+			// RFC 9787 §6.2.3: inline PGP handling
+			// §6.2.3.1: MUST NOT validate inline signatures
+			// §6.2.3.2: decrypted content MUST be isolated in a separate MIME part
+
 			cdstring from;
 			if (msg->GetEnvelope() && msg->GetEnvelope()->GetFrom() && (msg->GetEnvelope()->GetFrom()->size() != 0))
 				from = msg->GetEnvelope()->GetFrom()->front()->GetMailAddress();
 
-			// Just use current data in this part
 			const char* in = part->GetData();
 			char* out = NULL;
 			unsigned long out_len = 0;
@@ -1190,35 +1762,56 @@ bool CSecurityPlugin::VerifyDecryptPartInternal(CMessage* msg, CAttachment* part
 				CLOG_LOGTHROW(CGeneralException, -1);
 				throw CGeneralException(-1);
 			}
+
+			// RFC 9787 §6.2.3.1: suppress inline signature verification results
 			info.SetSuccess(result);
-			info.SetDidSignature(did_signature);
-			info.SetSignatureOK(signature_ok);
+			info.SetDidSignature(false);
+			info.SetSignatureOK(false);
 
-			// Get signed by info
-			if (info.GetDidSignature() && signed_by)
-				cdstring::FromArray((const char**) signed_by, info.GetSignedBy());
-
-			// Get encrypted to info
-			cdstrvect encryptedTo;
+			// Only process decryption results
 			if (encrypted_to)
 			{
 				info.SetDidDecrypt(true);
 				cdstring::FromArray((const char**) encrypted_to, info.GetEncryptedTo());
 			}
 
-			// Add data to part, remove any old cached data
-			if (result)
+			// RFC 9787 §6.2.3.2: isolate decrypted content in a separate part
+			if (result && out && encrypted_to)
 			{
-				// Replace existing part data with output
-				if (out)
+				size_t copy_len = ::strlen(out) + 1;
+				char* out_copy = new char[copy_len];
+				::memcpy(out_copy, out, copy_len);
+
+				CDataAttachment* decrypted_part = new CDataAttachment;
+				decrypted_part->SetData(out_copy);
+				decrypted_part->GetContent().SetContent(eContentText, eContentSubPlain);
+
+				if (part->GetParent())
 				{
-						size_t out_len = ::strlen(out) + 1;
-						char* out_copy = new char[out_len];
-						::memcpy(out_copy, out, out_len);
-						part->SetData(out_copy);
+					CAttachment* parent = part->GetParent();
+					unsigned long index = parent->GetParts() ? parent->GetParts()->FetchIndexOf(part) : 0;
+					if (index)
+					{
+						index--;
+						parent->RemovePart(part, false);
+
+						CDataAttachment* wrapper = new CDataAttachment;
+						wrapper->GetContent().SetContent(eContentMultipart, eContentSubMixed);
+						parent->AddPart(wrapper, index);
+						wrapper->AddPart(part);
+						wrapper->AddPart(decrypted_part);
 					}
+					else
+					{
+						delete decrypted_part;
+					}
+				}
+				else
+				{
+					msg->SetBody(decrypted_part, true);
+				}
 			}
-			else
+			else if (!result)
 				HandleError(&info);
 
 			DisposeData(out);
@@ -1240,6 +1833,22 @@ bool CSecurityPlugin::VerifyDecryptPartInternal(CMessage* msg, CAttachment* part
 
 		HandleError(&info);
 		result = false;
+	}
+
+	// RFC 9788: extract and check protected headers if present
+	if (result && msg->GetBody())
+	{
+		// For multipart/signed, the Cryptographic Payload is the first subpart
+		const CAttachment* payload = msg->GetBody();
+		if (payload->GetContent().GetContentType() == eContentMultipart &&
+			payload->GetContent().GetContentSubtype() == eContentSubSigned &&
+			payload->GetParts() && payload->GetParts()->size() >= 1)
+		{
+			payload = payload->GetParts()->at(0);
+		}
+		// Get raw data from payload for header extraction
+		const char* payload_data = payload->GetData();
+		ExtractProtectedHeaders(payload, msg, info, payload_data);
 	}
 
 	return result;
@@ -1583,16 +2192,29 @@ bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bo
 		// Add data to part, remove any old cached data
 		if (result)
 		{
+			// RFC 9788: restore inner Subject before replacing body
+			{
+				cdifstream raw_in(fin_d_path, std::ios_base::in | std::ios_base::binary);
+				std::ostrstream raw_buf;
+				raw_buf << raw_in.rdbuf();
+				raw_buf << std::ends;
+				cdstring raw_data;
+				raw_data.steal(raw_buf.str());
+				cdstring inner_subject = ExtractHeaderFromRaw(raw_data, "Subject");
+				if (!inner_subject.empty())
+					const_cast<CMessage*>(msg)->GetEnvelope()->SetSubject(inner_subject);
+			}
+
 			// Replace existing part data with output
 			// Create fstream data
 			std::unique_ptr<cdifstream> stream(new cdifstream(fin_d_path, std::ios_base::in|std::ios_base::binary));
-			
+
 			// Parse RFC822 parts
 			CRFC822Parser parser(true, msg);
 			CAttachment* new_body = parser.AttachmentFromStream(*stream, NULL);
 			static_cast<CStreamAttachment*>(new_body)->SetStream(stream.get(), NULL, fin_d_path);
 			msg->ReplaceBody(static_cast<CStreamAttachment*>(new_body));
-			
+
 			// Stream & temp file are now owned by attachment
 			_remove_fin_d.release();
 			stream.release();
@@ -1657,16 +2279,21 @@ bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bo
 			// Replace existing part data with output
 			if (out)
 			{
+				// RFC 9788: restore inner Subject
+				cdstring inner_subject = ExtractHeaderFromRaw(out, "Subject");
+				if (!inner_subject.empty())
+					const_cast<CMessage*>(msg)->GetEnvelope()->SetSubject(inner_subject);
+
 				// Create strstream data
 				cdstring temp(out);
 				std::unique_ptr<std::istrstream> stream(new std::istrstream(temp.c_str()));
-				
+
 				// Parse RFC822 parts
 				CRFC822Parser parser(true, msg);
 				CAttachment* new_body = parser.AttachmentFromStream(*stream, NULL);
 				static_cast<CStreamAttachment*>(new_body)->SetStream(stream.get(), temp.grab_c_str(), cdstring::null_str);
 				msg->ReplaceBody(static_cast<CStreamAttachment*>(new_body));
-				
+
 				// Stream is now owned by attachment
 				stream.release();
 			}
@@ -1690,12 +2317,12 @@ bool CSecurityPlugin::DecryptMessage(CMessage* msg, CMessageCryptoInfo& info, bo
 
 		try
 		{
-			// Now verify signature
+			// Now verify signature — don't let sig failure override decrypt success
 			CMessageCryptoInfo info2;
-			result = VerifyDecryptPart(msg, NULL, info2);
+			VerifyDecryptPart(msg, NULL, info2);
 			
-			// Merge signature data into current info item
-			info.SetSuccess(info2.GetSuccess());
+			// Merge signature data — preserve decrypt success even if inner sig fails
+			// RFC 9787 §6.4: failed inner sig should yield "Encrypted But Unverified"
 			info.SetDidSignature(info2.GetDidSignature());
 			info.SetSignatureOK(info2.GetSignatureOK());
 			info.GetSignedBy() = info2.GetSignedBy();
@@ -1726,28 +2353,31 @@ long CSecurityPlugin::HandleError(CMessageCryptoInfo* info)
 	char* error = NULL;
 	GetLastError(&err, &error);
 
+	// Plugin may not return an error string; treat as empty to avoid NULL deref
+	const char* error_str = (error != NULL) ? error : "";
+
 	// Put into verify/decrypt info if present
 	if (info)
 	{
 		// Copy only first line of error
-		const char* p1 = ::strchr(error, '\r');
-		const char* p2 = ::strchr(error, '\n');
+		const char* p1 = ::strchr(error_str, '\r');
+		const char* p2 = ::strchr(error_str, '\n');
 		if ((p1 != NULL) && (p2 != NULL))
 			p1 = (p1 > p2) ? p2 : p1;
 		else if (p2 != NULL)
 			p1 = p2;
 		if (p1 != NULL)
-			info->SetError(cdstring(error, p1 - error));
+			info->SetError(cdstring(error_str, p1 - error_str));
 		else
-			info->SetError(error);
-		
+			info->SetError(error_str);
+
 		if (err == eSecurity_BadPassphrase)
 			info->SetBadPassphrase(true);
 	}
 
 	// Show error alert in some cases
 	if ((err != 0) && (err != eSecurity_UserAbort) && ((info == NULL) || CPreferences::sPrefs->mUseErrorAlerts.GetValue()))
-		CErrorHandler::PutStopAlert(error, true);
+		CErrorHandler::PutStopAlert(error_str, true);
 
 	// Special support for certian errors
 	switch(err)

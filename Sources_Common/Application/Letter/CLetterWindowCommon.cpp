@@ -434,6 +434,13 @@ void CLetterWindow::SetReplyMessages(CMessageList* msgs,
 		if (crypto && crypto->GetDidDecrypt())
 			mOriginalEncrypted = true;
 	}
+
+	// RFC 9787 §5.4: auto-encrypt reply to encrypted message
+	if (mOriginalEncrypted)
+	{
+		mDoEncrypt = true;
+		mDoSign = true;
+	}
 }
 
 // Set forward message and init letter
@@ -485,6 +492,13 @@ void CLetterWindow::SetForwardMessages(CMessageList* msgs, EForwardOptions forwa
 		const CMessageCryptoInfo* crypto = (*iter)->GetCryptoInfo();
 		if (crypto && crypto->GetDidDecrypt())
 			mOriginalEncrypted = true;
+	}
+
+	// RFC 9787 §5.4: auto-encrypt forward of encrypted message
+	if (mOriginalEncrypted)
+	{
+		mDoEncrypt = true;
+		mDoSign = true;
 	}
 }
 
@@ -799,13 +813,10 @@ void CLetterWindow::OnDraftSendMail()
 			return;
 	}
 
-	// Warn about unencrypted send of encrypted data
-	if (CPreferences::sPrefs->mWarnUnencryptedSend.GetValue() && UnencryptedSend())
+	// RFC 9787 §5.4: warn about unencrypted send of encrypted data (non-suppressible)
+	if (UnencryptedSend())
 	{
-		bool dontshow = false;
-		short answer = CErrorHandler::PutCautionAlertRsrc(true, "Alerts::Letter::UnencryptedSend", "Alerts::Letter::UnencryptedSendDontShow", &dontshow);
-		if (dontshow)
-			CPreferences::sPrefs->mWarnUnencryptedSend.SetValue(false);
+		short answer = CErrorHandler::PutCautionAlertRsrc(true, "Alerts::Letter::UnencryptedSend", NULL, NULL);
 		if (answer == CErrorHandler::Cancel)
 			return;
 	}
@@ -929,6 +940,18 @@ void CLetterWindow::OnDraftSendMail()
 		}
 		else
 		{
+			// RFC 9788: header protection obscures the outer Subject of encrypted
+			// messages in the envelope, but the header was cached at construction
+			// with the original Subject. Rebuild it from the (obscured) envelope
+			// before sending, as the separate-BCC path above already does.
+			if (mail_msg->GetBody() && mail_msg->GetBody()->IsEncrypted())
+			{
+				CRFC822::ECreateHeaderFlags flags = static_cast<CRFC822::ECreateHeaderFlags>(CRFC822::eAddBcc | CRFC822::eAddXMulberry);
+				if (mReject)
+					flags = static_cast<CRFC822::ECreateHeaderFlags>(flags | CRFC822::eRejectDSN);
+				CRFC822::CreateHeader(mail_msg, flags, id, &mDSN, mBounceHeader);
+			}
+
 			// Send it — SMTP layer handles BURL optimization if fcc mbox provided
 			smtp_hold = CSMTPAccountManager::sSMTPAccountManager->SendMessage(mail_msg, *id, mBounceHeader != NULL, burl_fcc_mbox, &burl_fcc_done);
 		}
@@ -1784,6 +1807,16 @@ void CLetterWindow::SpeakMessage()
 // Include some text indented
 const char* CLetterWindow::QuoteText(const char* theText, bool forward, bool header, bool is_flowed)
 {
+	// RFC 9787 §5.4: mark quoted encrypted content
+	cdstring encrypted_prefix;
+	if (mOriginalEncrypted && !header)
+	{
+		encrypted_prefix = "[Originally encrypted content]";
+		encrypted_prefix += os_endl;
+	}
+
+	const char* quoted = NULL;
+
 	// Strip sig dashes if required
 	if (!forward && !header && CPreferences::sPrefs->mReplyNoSignature.GetValue())
 	{
@@ -1791,7 +1824,7 @@ const char* CLetterWindow::QuoteText(const char* theText, bool forward, bool hea
 		CTextEngine::RemoveSigDashes(temp.c_str_mod());
 
 		// Headers must not be wrapped so use very large wrap length
-		return CTextEngine::QuoteLines(temp, temp.length(), header ? 990 : CRFC822::GetWrapLength(),
+		quoted = CTextEngine::QuoteLines(temp, temp.length(), header ? 990 : CRFC822::GetWrapLength(),
 										forward ?
 										CPreferences::sPrefs->mForwardQuote.GetValue() :
 										CPreferences::sPrefs->mReplyQuote.GetValue(),
@@ -1800,12 +1833,22 @@ const char* CLetterWindow::QuoteText(const char* theText, bool forward, bool hea
 	}
 	else
 		// Headers must not be wrapped so use very large wrap length
-		return CTextEngine::QuoteLines(theText, ::strlen(theText), header ? 990 : CRFC822::GetWrapLength(),
+		quoted = CTextEngine::QuoteLines(theText, ::strlen(theText), header ? 990 : CRFC822::GetWrapLength(),
 										forward ?
 										CPreferences::sPrefs->mForwardQuote.GetValue() :
 										CPreferences::sPrefs->mReplyQuote.GetValue(),
 										&CPreferences::sPrefs->mRecognizeQuotes.GetValue(),
 										is_flowed);
+
+	if (!encrypted_prefix.empty() && quoted)
+	{
+		cdstring result = encrypted_prefix;
+		result += quoted;
+		delete[] quoted;
+		return result.grab_c_str();
+	}
+
+	return quoted;
 }
 
 #pragma mark ____________________________Parts
@@ -2048,6 +2091,13 @@ void CLetterWindow::OnDraftSign()
 	// Set sign buttons
 	if (CPluginManager::sPluginManager.HasSecurity())
 	{
+		// RFC 9787 §5.4: warn when disabling signing on reply to encrypted message
+		if (mDoSign && mOriginalEncrypted)
+		{
+			if (CErrorHandler::PutCautionAlertRsrc(true, "Alerts::Letter::WarnDisableCryptoOnEncryptedReply") == CErrorHandler::Cancel)
+				return;
+		}
+
 		// Toggle
 		mDoSign = !mDoSign;
 
@@ -2061,6 +2111,13 @@ void CLetterWindow::OnDraftEncrypt()
 	// Set encrypt buttons
 	if (CPluginManager::sPluginManager.HasSecurity())
 	{
+		// RFC 9787 §5.4: warn when disabling encryption on reply to encrypted message
+		if (mDoEncrypt && mOriginalEncrypted)
+		{
+			if (CErrorHandler::PutCautionAlertRsrc(true, "Alerts::Letter::WarnDisableCryptoOnEncryptedReply") == CErrorHandler::Cancel)
+				return;
+		}
+
 		// Toggle
 		mDoEncrypt = !mDoEncrypt;
 

@@ -132,7 +132,9 @@ enum EMIMEParameter
 	eMicalg,
 	sSMIMEType,
 	eMethod,
-	eComponent
+	eComponent,
+	eHP,
+	eHPLegacyDisplay
 };
 
 extern const char* cMIMEParameter[];

@@ -648,9 +648,16 @@ void CMessageWindow::SetMessage(CMessage* theMsg)
 	// the correct passphrase next time
 	if ((mItsMsg->GetCryptoInfo() != NULL) && !mItsMsg->GetCryptoInfo()->GetBadPassphrase())
 	{
-		// Show the secure info pane
-		SetSecretPane(*mItsMsg->GetCryptoInfo());
-		ShowSecretPane(true);
+		// RFC 9787 §6.4: failed sig = pane hidden, not alarming red
+		cdstring summary;
+		cdstring detail;
+		CMessageCryptoInfo::ECryptoSeverity severity;
+		mItsMsg->GetCryptoInfo()->GetCryptoSummary(summary, detail, severity);
+		if (severity != CMessageCryptoInfo::eSeverityNone)
+		{
+			SetSecretPane(*mItsMsg->GetCryptoInfo());
+			ShowSecretPane(true);
+		}
 	}
 
 	// Now check for auto verify/decrypt
@@ -1090,136 +1097,52 @@ void CMessageWindow::SetSecretPane(const CMessageCryptoInfo& info)
 
 	bool multi_line = false;
 
-	if (info.GetSuccess())
+	// RFC 9787 §3.2: use unified Cryptographic Summary
+	cdstring summary;
+	cdstring detail;
+	CMessageCryptoInfo::ECryptoSeverity severity;
+	info.GetCryptoSummary(summary, detail, severity);
+
+	if (severity != CMessageCryptoInfo::eSeverityNone)
 	{
-		CHARFORMAT format_bold;
-		format_bold.dwMask = CFM_BOLD | CFM_COLOR;
-		format_bold.dwEffects = CFE_BOLD;
-		format_bold.crTextColor = RGB(0x00,0x00,0x00);
+		CHARFORMAT format;
+		format.dwMask = CFM_BOLD | CFM_COLOR;
+		format.dwEffects = CFE_BOLD;
 
-		CHARFORMAT format_redbold;
-		format_redbold.dwMask = CFM_BOLD | CFM_COLOR;
-		format_redbold.dwEffects = CFE_BOLD;
-		format_redbold.crTextColor = RGB(0x80,0x00,0x00);
-
-		CHARFORMAT format_greenbold;
-		format_greenbold.dwMask = CFM_BOLD | CFM_COLOR;
-		format_greenbold.dwEffects = CFE_BOLD;
-		format_greenbold.crTextColor = RGB(0x00,0x80,0x00);
-
-		CHARFORMAT format_plain;
-		format_plain.dwMask = CFM_BOLD | CFM_UNDERLINE | CFM_ITALIC | CFM_COLOR;
-		format_plain.dwEffects = 0;
-		format_plain.crTextColor = RGB(0x00,0x00,0x00);
-
-		CHARFORMAT format_redplain;
-		format_redplain.dwMask = CFM_BOLD | CFM_UNDERLINE | CFM_ITALIC | CFM_COLOR;
-		format_redplain.dwEffects = 0;
-		format_redplain.crTextColor = RGB(0x80,0x00,0x00);
-
-		if (info.GetDidSignature())
+		switch (severity)
 		{
-			cdstring txt;
-			if (info.GetSignatureOK())
-			{
-				txt += "Signature: OK";
-				mSecureInfo.SetSelectionCharFormat(format_greenbold);
-			}
-			else
-			{
-				txt += "Signature: Bad";
-				mSecureInfo.SetSelectionCharFormat(format_redbold);
-			}
-			mSecureInfo.InsertUTF8(txt);
+		case CMessageCryptoInfo::eSeverityPositive:
+			format.crTextColor = RGB(0x00, 0x80, 0x00);
+			break;
+		case CMessageCryptoInfo::eSeverityNeutral:
+			format.crTextColor = RGB(0x44, 0x44, 0x88);
+			break;
+		case CMessageCryptoInfo::eSeverityCautious:
+			format.crTextColor = RGB(0x88, 0x66, 0x00);
+			break;
+		case CMessageCryptoInfo::eSeverityNegative:
+			format.crTextColor = RGB(0x80, 0x00, 0x00);
+			break;
+		default:
+			format.crTextColor = RGB(0x00, 0x00, 0x00);
+			break;
+		}
 
-			mSecureInfo.SetSelectionCharFormat(format_bold);
-			txt = "    Signed By: ";
-			mSecureInfo.InsertUTF8(txt);
+		mSecureInfo.SetSelectionCharFormat(format);
+		mSecureInfo.InsertUTF8(summary);
 
+		if (!detail.empty())
+		{
+			mSecureInfo.InsertUTF8(os_endl);
+			multi_line = true;
+
+			CHARFORMAT format_plain;
+			format_plain.dwMask = CFM_BOLD | CFM_UNDERLINE | CFM_ITALIC | CFM_COLOR;
+			format_plain.dwEffects = 0;
+			format_plain.crTextColor = RGB(0x00, 0x00, 0x00);
 			mSecureInfo.SetSelectionCharFormat(format_plain);
-
-			cdstring addr;
-			bool matched_from = false;
-			for(cdstrvect::const_iterator iter = info.GetSignedBy().begin(); iter != info.GetSignedBy().end(); iter++)
-			{
-				// Add text
-				if (iter != info.GetSignedBy().begin())
-					addr += ", ";
-				addr += *iter;
-				
-				// Determine whether item matches from address
-				if (mItsMsg && mItsMsg->GetEnvelope() &&
-					(mItsMsg->GetEnvelope()->GetFrom()->size() > 0) &&
-					mItsMsg->GetEnvelope()->GetFrom()->front()->StrictCompareEmail(CAddress(*iter)))
-				{
-					// Only show the address of the one that matches - ignore others
-					matched_from = true;
-					addr = *iter;
-					break;
-				}
-			}
-
-			// Change colour if n matching from address
-			if (!matched_from)
-			{
-				mSecureInfo.SetSelectionCharFormat(format_redplain);
-				
-				addr += " WARNING: Does not match From address";
-			}
-
-			// Insert address data
-			mSecureInfo.InsertUTF8(addr);
-
-			// Next line
-			if (info.GetDidDecrypt())
-			{
-				mSecureInfo.InsertUTF8(os_endl);
-				multi_line = true;
-			}
+			mSecureInfo.InsertUTF8(detail);
 		}
-
-		if (info.GetDidDecrypt())
-		{
-			mSecureInfo.SetSelectionCharFormat(format_bold);
-			
-			cdstring txt;
-			txt += "Decrypted: OK";
-			mSecureInfo.SetSelectionCharFormat(format_greenbold);
-			mSecureInfo.InsertUTF8(txt);
-
-			mSecureInfo.SetSelectionCharFormat(format_bold);
-			txt = "    Encrypted To: ";
-			mSecureInfo.InsertUTF8(txt);
-
-			mSecureInfo.SetSelectionCharFormat(format_plain);
-
-			cdstring addr;
-			for(cdstrvect::const_iterator iter = info.GetEncryptedTo().begin(); iter != info.GetEncryptedTo().end(); iter++)
-			{
-				if (iter != info.GetEncryptedTo().begin())
-					addr += ", ";
-				addr += *iter;
-			}
-			mSecureInfo.InsertUTF8(addr);
-		}
-	}
-	else
-	{
-		CHARFORMAT format_redbold;
-		format_redbold.dwMask = CFM_BOLD | CFM_COLOR;
-		format_redbold.dwEffects = CFE_BOLD;
-		format_redbold.crTextColor = RGB(0x80,0x00,0x00);
-
-		mSecureInfo.SetSelectionCharFormat(format_redbold);
-
-		cdstring txt;
-		txt += "Failed to Verify/Decrypt";
-		if (!info.GetError().empty())
-		{
-			txt+= ":   ";
-			txt += info.GetError();
-		}
-		mSecureInfo.InsertUTF8(txt);
 	}
 
 	// Check multi-line state

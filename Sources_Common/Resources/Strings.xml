@@ -120,4 +120,29 @@
 	<string id="CITIPProcessor::AuthUntrusted">This message contains email authentication results, but none are from a recognized server. You may need to configure 'Auth Results Trusted Servers' in your preferences. Accept anyway?</string>
 	<string id="CITIPProcessor::AuthMissing">The organizer's identity could not be verified because this message has no email authentication data. This is normal for some mail systems. Accept anyway?</string>
 
+<!-- Cryptographic message summary -->
+	<string id="CMessageCryptoInfo::DecryptFailed">Decryption failed</string>
+	<string id="CMessageCryptoInfo::DecryptFailedBadPassphrase">Decryption failed (bad passphrase)</string>
+	<string id="CMessageCryptoInfo::EncryptedAndSignedBy">Encrypted and signed by: </string>
+	<string id="CMessageCryptoInfo::EncryptedSignatureUnverified">Encrypted (signature unverified)</string>
+	<string id="CMessageCryptoInfo::EncryptedUnsigned">Encrypted (unsigned)</string>
+	<string id="CMessageCryptoInfo::SignedBy">Signed by: </string>
+	<string id="CMessageCryptoInfo::WeakCipher"> (weak cipher)</string>
+	<string id="CMessageCryptoInfo::WeakHash"> (weak hash)</string>
+	<string id="CMessageCryptoInfo::RevokedKey"> (revoked key)</string>
+	<string id="CMessageCryptoInfo::ExpiredKey"> (expired key)</string>
+	<string id="CMessageCryptoInfo::ExpiredSignature"> (expired signature)</string>
+	<string id="CMessageCryptoInfo::UntrustedKey"> (untrusted key)</string>
+	<string id="CMessageCryptoInfo::MarginallyTrusted"> (marginally trusted)</string>
+	<string id="CMessageCryptoInfo::FromMismatch"> (From mismatch)</string>
+	<string id="CMessageCryptoInfo::DetailFingerprint">Fingerprint: </string>
+	<string id="CMessageCryptoInfo::DetailHash">Hash: </string>
+	<string id="CMessageCryptoInfo::DetailCipher">Cipher: </string>
+	<string id="CMessageCryptoInfo::DetailTrust">Trust: </string>
+	<string id="CMessageCryptoInfo::TrustNever">Never</string>
+	<string id="CMessageCryptoInfo::TrustUndefined">Undefined</string>
+	<string id="CMessageCryptoInfo::TrustMarginal">Marginal</string>
+	<string id="CMessageCryptoInfo::TrustFull">Full</string>
+	<string id="CMessageCryptoInfo::TrustUltimate">Ultimate</string>
+
 </stringlist>

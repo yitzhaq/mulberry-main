@@ -43,7 +43,8 @@ const char* cMIMEParameter[] = {"unknown",
 								"format", "fixed", "flowed",
 								"delsp", "yes", "no",
 								"protocol", "micalg", "smime-type",
-								"method", "component"};
+								"method", "component",
+								"hp", "hp-legacy-display"};
 const char* cMIMEDisposition[] = {"unknown", "inline", "attachment", "x-mulberry-partial"};
 const char* cMIMEDispositionParameter[] = {"filename", "creation-date", "modification-date", "read-date", "size"};
 

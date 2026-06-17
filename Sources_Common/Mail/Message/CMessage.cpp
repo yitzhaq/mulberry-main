@@ -41,6 +41,7 @@
 #include "CStreamType.h"
 #include "CStringUtils.h"
 #include "CURL.h"
+#include "CXStringResources.h"
 
 #include "ctrbuf.h"
 
@@ -56,6 +57,205 @@ extern const char* cSpace;
 
 // Get message flags namespace
 using namespace NMessage;
+
+#pragma mark ____________________________CMessageCryptoInfo
+
+static const char* HashAlgoName(long algo)
+{
+	switch(algo)
+	{
+	case 1:  return "MD5";
+	case 2:  return "SHA-1";
+	case 3:  return "RIPEMD-160";
+	case 8:  return "SHA-256";
+	case 9:  return "SHA-384";
+	case 10: return "SHA-512";
+	case 11: return "SHA-224";
+	case 12: return "SHA3-256";
+	case 14: return "SHA3-512";
+	default: return NULL;
+	}
+}
+
+static const char* CipherAlgoName(long algo)
+{
+	switch(algo)
+	{
+	case 1:  return "IDEA";
+	case 2:  return "3DES";
+	case 3:  return "CAST5";
+	case 4:  return "Blowfish";
+	case 7:  return "AES-128";
+	case 8:  return "AES-192";
+	case 9:  return "AES-256";
+	case 10: return "Twofish";
+	case 11: return "Camellia-128";
+	case 12: return "Camellia-192";
+	case 13: return "Camellia-256";
+	default: return NULL;
+	}
+}
+
+void CMessageCryptoInfo::GetCryptoSummary(cdstring& summary, cdstring& detail, ECryptoSeverity& severity) const
+{
+	summary = cdstring::null_str;
+	detail = cdstring::null_str;
+	severity = eSeverityNone;
+
+	// Failed decrypt is always negative
+	if (mDidDecrypt && !mSuccess)
+	{
+		summary = rsrc::GetString("CMessageCryptoInfo::DecryptFailed");
+		if (!mError.empty())
+		{
+			detail = mError;
+		}
+		severity = eSeverityNegative;
+		return;
+	}
+
+	// Bad passphrase
+	if (mBadPassphrase)
+	{
+		summary = rsrc::GetString("CMessageCryptoInfo::DecryptFailedBadPassphrase");
+		severity = eSeverityNegative;
+		return;
+	}
+
+	// Failed signature only (no decrypt) — treat as Unprotected
+	if (mDidSignature && !mSignatureOK && !mDidDecrypt)
+	{
+		severity = eSeverityNone;
+		return;
+	}
+
+	// Build signer identity string
+	cdstring signer;
+	if (mSignedBy.size() > 0)
+		signer = mSignedBy.front();
+	else if (!mSignerFingerprint.empty())
+		signer = mSignerFingerprint;
+
+	// Determine cautious conditions
+	bool cautious = mWeakHash || mWeakCipher || mExpiredSignature ||
+					mExpiredKey || mRevokedKey || mFromMismatch ||
+					(mTrustLevel == eTrustUndefined) ||
+					(mTrustLevel == eTrustNever);
+
+	// Encrypted and signed
+	if (mDidDecrypt && mDidSignature && mSignatureOK)
+	{
+		summary = rsrc::GetString("CMessageCryptoInfo::EncryptedAndSignedBy");
+		summary += signer;
+		if (mWeakCipher)
+			summary += rsrc::GetString("CMessageCryptoInfo::WeakCipher");
+		if (mWeakHash)
+			summary += rsrc::GetString("CMessageCryptoInfo::WeakHash");
+		if (mRevokedKey)
+			summary += rsrc::GetString("CMessageCryptoInfo::RevokedKey");
+		if (mExpiredKey)
+			summary += rsrc::GetString("CMessageCryptoInfo::ExpiredKey");
+		if (mExpiredSignature)
+			summary += rsrc::GetString("CMessageCryptoInfo::ExpiredSignature");
+		if (mTrustLevel == eTrustNever)
+			summary += rsrc::GetString("CMessageCryptoInfo::UntrustedKey");
+		if (mTrustLevel == eTrustUndefined)
+			summary += rsrc::GetString("CMessageCryptoInfo::UntrustedKey");
+		if (mTrustLevel == eTrustMarginal)
+			summary += rsrc::GetString("CMessageCryptoInfo::MarginallyTrusted");
+		if (mFromMismatch)
+			summary += rsrc::GetString("CMessageCryptoInfo::FromMismatch");
+		severity = cautious ? eSeverityCautious : eSeverityPositive;
+	}
+	// Encrypted, no valid signature
+	else if (mDidDecrypt && (!mDidSignature || !mSignatureOK))
+	{
+		if (mDidSignature && !mSignatureOK)
+			summary = rsrc::GetString("CMessageCryptoInfo::EncryptedSignatureUnverified");
+		else
+			summary = rsrc::GetString("CMessageCryptoInfo::EncryptedUnsigned");
+		if (mWeakCipher)
+			summary += rsrc::GetString("CMessageCryptoInfo::WeakCipher");
+		severity = (mWeakCipher) ? eSeverityCautious : eSeverityNeutral;
+	}
+	// Signed only
+	else if (mDidSignature && mSignatureOK)
+	{
+		summary = rsrc::GetString("CMessageCryptoInfo::SignedBy");
+		summary += signer;
+		if (mWeakHash)
+			summary += rsrc::GetString("CMessageCryptoInfo::WeakHash");
+		if (mRevokedKey)
+			summary += rsrc::GetString("CMessageCryptoInfo::RevokedKey");
+		if (mExpiredKey)
+			summary += rsrc::GetString("CMessageCryptoInfo::ExpiredKey");
+		if (mExpiredSignature)
+			summary += rsrc::GetString("CMessageCryptoInfo::ExpiredSignature");
+		if (mTrustLevel == eTrustNever)
+			summary += rsrc::GetString("CMessageCryptoInfo::UntrustedKey");
+		if (mTrustLevel == eTrustUndefined)
+			summary += rsrc::GetString("CMessageCryptoInfo::UntrustedKey");
+		if (mTrustLevel == eTrustMarginal)
+			summary += rsrc::GetString("CMessageCryptoInfo::MarginallyTrusted");
+		if (mFromMismatch)
+			summary += rsrc::GetString("CMessageCryptoInfo::FromMismatch");
+		severity = cautious ? eSeverityCautious : eSeverityPositive;
+	}
+
+	// Build detail string
+	if (severity != eSeverityNone)
+	{
+		detail = cdstring::null_str;
+		if (!mSignerFingerprint.empty())
+		{
+			detail += rsrc::GetString("CMessageCryptoInfo::DetailFingerprint");
+			detail += mSignerFingerprint;
+		}
+		if (mHashAlgorithm != 0)
+		{
+			if (!detail.empty())
+				detail += os_endl;
+			detail += rsrc::GetString("CMessageCryptoInfo::DetailHash");
+			const char* hname = HashAlgoName(mHashAlgorithm);
+			if (hname)
+				detail += hname;
+			else
+				detail += cdstring((unsigned long) mHashAlgorithm);
+		}
+		if (mCipherAlgorithm != 0)
+		{
+			if (!detail.empty())
+				detail += os_endl;
+			detail += rsrc::GetString("CMessageCryptoInfo::DetailCipher");
+			const char* cname = CipherAlgoName(mCipherAlgorithm);
+			if (cname)
+				detail += cname;
+			else
+				detail += cdstring((unsigned long) mCipherAlgorithm);
+		}
+		if (mTrustLevel != eTrustUnknown)
+		{
+			if (!detail.empty())
+				detail += os_endl;
+			detail += rsrc::GetString("CMessageCryptoInfo::DetailTrust");
+			switch(mTrustLevel)
+			{
+			case eTrustNever:		detail += rsrc::GetString("CMessageCryptoInfo::TrustNever"); break;
+			case eTrustUndefined:	detail += rsrc::GetString("CMessageCryptoInfo::TrustUndefined"); break;
+			case eTrustMarginal:	detail += rsrc::GetString("CMessageCryptoInfo::TrustMarginal"); break;
+			case eTrustFully:		detail += rsrc::GetString("CMessageCryptoInfo::TrustFull"); break;
+			case eTrustUltimate:	detail += rsrc::GetString("CMessageCryptoInfo::TrustUltimate"); break;
+			default: break;
+			}
+		}
+		if (!mError.empty())
+		{
+			if (!detail.empty())
+				detail += os_endl;
+			detail += mError;
+		}
+	}
+}
 
 #pragma mark ____________________________CMessageCache
 
@@ -908,7 +1108,7 @@ unsigned long CMessage::CheckSizeWarning(bool all) const
 	{
 		return CPreferences::sPrefs->mDoSizeWarn.GetValue() &&
 				(CPreferences::sPrefs->warnMessageSize.GetValue() > 0) &&
-				(GetSize() > CPreferences::sPrefs->warnMessageSize.GetValue() * 1024L) ? GetSize() : 0;
+				(GetSize() > CPreferences::sPrefs->warnMessageSize.GetValue() * 1024UL) ? GetSize() : 0;
 	}
 	else if (HasText())
 	{
@@ -916,7 +1116,7 @@ unsigned long CMessage::CheckSizeWarning(bool all) const
 		return !HasData(attach) &&
 				CPreferences::sPrefs->mDoSizeWarn.GetValue() &&
 				(CPreferences::sPrefs->warnMessageSize.GetValue() > 0) &&
-				(GetPartSize(attach) > CPreferences::sPrefs->warnMessageSize.GetValue() * 1024L) ? GetPartSize(attach) : 0;
+				(GetPartSize(attach) > CPreferences::sPrefs->warnMessageSize.GetValue() * 1024UL) ? GetPartSize(attach) : 0;
 	}
 	else
 		return 0;
