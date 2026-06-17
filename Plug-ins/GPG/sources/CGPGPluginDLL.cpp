@@ -2063,7 +2063,7 @@ long CGPGPluginDLL::ProcessStatus(cdstring& status)
 		else if (!::strncmp(q, cDECRYPTION_INFO, ::strlen(cDECRYPTION_INFO)))
 		{
 			cdstring tok(q + ::strlen(cDECRYPTION_INFO));
-			char* mdc = ::strtok(tok.c_str_mod(), " ");
+			::strtok(tok.c_str_mod(), " ");			// skip mdc_method
 			char* sym = ::strtok(NULL, " ");
 			if (sym)
 				mData->mCipherAlgorithm = ::atol(sym);
@@ -2074,8 +2074,8 @@ long CGPGPluginDLL::ProcessStatus(cdstring& status)
 		else if (!::strncmp(q, cSIG_CREATED, ::strlen(cSIG_CREATED)))
 		{
 			cdstring tok(q + ::strlen(cSIG_CREATED));
-			char* type = ::strtok(tok.c_str_mod(), " ");
-			char* pkalgo = ::strtok(NULL, " ");
+			::strtok(tok.c_str_mod(), " ");			// skip type
+			::strtok(NULL, " ");				// skip pk_algo
 			char* hashalgo = ::strtok(NULL, " ");
 			if (hashalgo)
 			{
@@ -2107,7 +2107,7 @@ long CGPGPluginDLL::ProcessStatus(cdstring& status)
 		else if (!::strncmp(q, cINV_RECP, ::strlen(cINV_RECP)))
 		{
 			cdstring tok(q + ::strlen(cINV_RECP));
-			char* reason = ::strtok(tok.c_str_mod(), " ");
+			::strtok(tok.c_str_mod(), " ");			// skip reason code
 			char* addr = ::strtok(NULL, "");
 			cdstring errtxt("Invalid recipient");
 			if (addr)
