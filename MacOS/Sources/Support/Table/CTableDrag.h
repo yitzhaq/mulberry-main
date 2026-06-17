@@ -152,8 +152,9 @@ public:
 	virtual void	UnselectRow(TableIndexT row);
 	virtual bool	IsRowSelected(TableIndexT row) const;				// Test row for selection
 
+	virtual void	ScrollCellIntoFrame(const STableCell &scrollCell);		// Scroll cell into view (overrides LTableView)
 	virtual void	ScrollCellIntoFrame(const STableCell &scrollCell,
-											bool middle = false);			// Scroll cell into view
+											bool middle);					// Scroll cell into view, optionally centred
 	virtual void	ScrollCellToTop(const STableCell &scrollCell);			// Scroll cell to top of view
 
 	enum EScrollTo

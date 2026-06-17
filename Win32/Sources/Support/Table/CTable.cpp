@@ -264,8 +264,10 @@ bool CTable::DeleteRow(TableIndexT row)
 	return true;
 }
 
-// Scroll cell into view
-void CTable::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
+// Scroll cell into view. This overrides LTableView so that base-class callers
+// (e.g. keyboard Page-Up/Down in LTableView::HandleChar) also get the
+// selection-axis adjustment instead of silently calling the base version.
+void CTable::ScrollCellIntoFrame(const STableCell &scrollCell)
 {
 	STableCell  theCell(scrollCell);
 
@@ -275,7 +277,26 @@ void CTable::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
 	else if (mColSelect)
 		theCell.row = 1;
 
-	if (middle)
+	LTableView::ScrollCellIntoFrame(theCell);
+}
+
+// Scroll cell into view, optionally centred in the aperture
+void CTable::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
+{
+	if (!middle)
+	{
+		ScrollCellIntoFrame(scrollCell);
+		return;
+	}
+
+	STableCell  theCell(scrollCell);
+
+	// Adjust for selection mechanism
+	if (mRowSelect)
+		theCell.col = 1;
+	else if (mColSelect)
+		theCell.row = 1;
+
 	{
 		CRect frame;
 		GetClientRect(frame);
@@ -327,8 +348,6 @@ void CTable::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
 
 		ScrollPinnedImageBy(horizScroll, vertScroll, true);
 	}
-	else
-		LTableView::ScrollCellIntoFrame(theCell);
 }
 
 // Scroll cell into view

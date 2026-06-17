@@ -611,8 +611,10 @@ bool CTableDrag::IsRowSelected(TableIndexT row) const
 	return CellIsSelected(cell);
 }
 
-// Scroll cell into view
-void CTableDrag::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
+// Scroll cell into view. This overrides LTableView so that base-class callers
+// (e.g. keyboard Page-Up/Down in LTableView::HandleChar) also get the
+// selection-axis adjustment instead of silently calling the base version.
+void CTableDrag::ScrollCellIntoFrame(const STableCell &scrollCell)
 {
 	STableCell  theCell(scrollCell);
 
@@ -622,7 +624,26 @@ void CTableDrag::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
 	else if (mColSelect)
 		theCell.row = 1;
 
-	if (middle)
+	LTableView::ScrollCellIntoFrame(theCell);
+}
+
+// Scroll cell into view, optionally centred in the aperture
+void CTableDrag::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
+{
+	if (!middle)
+	{
+		ScrollCellIntoFrame(scrollCell);
+		return;
+	}
+
+	STableCell  theCell(scrollCell);
+
+	// Adjust for selection mechanism
+	if (mRowSelect)
+		theCell.col = 1;
+	else if (mColSelect)
+		theCell.row = 1;
+
 	{
 		// Adjustment is half frame height
 		unsigned long adjust_halfway = mFrameSize.height / 2;
@@ -673,8 +694,6 @@ void CTableDrag::ScrollCellIntoFrame(const STableCell &scrollCell, bool middle)
 
 		ScrollPinnedImageBy(horizScroll, vertScroll, Refresh_Yes);
 	}
-	else
-		LTableView::ScrollCellIntoFrame(theCell);
 }
 
 // Scroll cell into view
