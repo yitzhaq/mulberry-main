@@ -186,14 +186,14 @@ bool CSMTPSender::SMTPNextAsync(bool reset)
 		{
 			bool sent = false;
 			bool tried_burl = false;
+			unsigned long drain_fcc_uid = 0;
+			CMbox* drain_fcc_mbox = NULL;
 			try
 			{
 				found->ChangeFlags(NMessage::eSendingNow, true);
 
 				// Check for BURL optimization: fcc APPEND + BURL at drain time
 				ClearBurlUrl();
-				unsigned long drain_fcc_uid = 0;
-				CMbox* drain_fcc_mbox = NULL;
 				if (mBurl && mBurlImap)
 				{
 					char* hdr = found->GetHeader();
@@ -274,31 +274,6 @@ bool CSMTPSender::SMTPNextAsync(bool reset)
 				// Send it (uses BURL if mBurlUrl was set above)
 				SMTPSendMessage(found);
 				sent = true;
-
-				if (drain_fcc_uid != 0 && drain_fcc_mbox)
-				{
-					ulvector uids;
-					uids.push_back(drain_fcc_uid);
-					try {
-						drain_fcc_mbox->SetFlagMessage(
-							uids, true, NMessage::eSubmitPending, false);
-					} catch (...) { CLOG_LOGCATCH(...); }
-				}
-
-				// UID expunge it
-				ulvector nums;
-				nums.push_back(found->GetMessageNumber());
-				mQueueMbox->ExpungeMessage(nums, false);
-
-				// Safety check - if we get the same message back
-				// something went very wrong. We MUST make sure it doesn't
-				// get sent out again and again
-				CMessage* next_found = SMTPAsyncMessage();
-				if (next_found == found)
-				{
-					CLOG_LOGTHROW(CGeneralException, -1L);
-					throw CGeneralException(-1L);
-				}
 			}
 			catch (CSMTPException& smtp_ex)
 			{
@@ -339,6 +314,48 @@ bool CSMTPSender::SMTPNextAsync(bool reset)
 				found->ChangeFlags(NMessage::eHold, true);
 				found->ChangeFlags(NMessage::eSendError, true);
 				found->ChangeFlags(NMessage::eSendingNow, false);
+			}
+
+			// Message was sent (via BURL, plain DATA, or DATA after a failed
+			// BURL attempt) - remove it from the queue. This must run for every
+			// path that set sent, including the BURL-failure retry; otherwise a
+			// retried message stays queued and is sent again on the next drain.
+			if (sent)
+			{
+				try
+				{
+					if (drain_fcc_uid != 0 && drain_fcc_mbox)
+					{
+						ulvector uids;
+						uids.push_back(drain_fcc_uid);
+						try {
+							drain_fcc_mbox->SetFlagMessage(
+								uids, true, NMessage::eSubmitPending, false);
+						} catch (...) { CLOG_LOGCATCH(...); }
+					}
+
+					// UID expunge it
+					ulvector nums;
+					nums.push_back(found->GetMessageNumber());
+					mQueueMbox->ExpungeMessage(nums, false);
+
+					// Safety check - if we get the same message back
+					// something went very wrong. We MUST make sure it doesn't
+					// get sent out again and again
+					CMessage* next_found = SMTPAsyncMessage();
+					if (next_found == found)
+					{
+						CLOG_LOGTHROW(CGeneralException, -1L);
+						throw CGeneralException(-1L);
+					}
+				}
+				catch (...)
+				{
+					CLOG_LOGCATCH(...);
+					found->ChangeFlags(NMessage::eHold, true);
+					found->ChangeFlags(NMessage::eSendError, true);
+					found->ChangeFlags(NMessage::eSendingNow, false);
+				}
 			}
 
 			// Check if more to come
