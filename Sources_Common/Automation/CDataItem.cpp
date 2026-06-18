@@ -163,7 +163,7 @@ template<> void CDataItem<CActionItem::CActionFlags>::SetInfo(char_stream& info,
 	}
 	mData.SetFlags(flags);
 
-	bool is_set;
+	bool is_set = false;
 	info.get(is_set);
 	mData.Set(is_set);
 }
@@ -203,7 +203,7 @@ template<> cdstring CDataItem<CActionItem::CActionReply>::GetInfo() const
 // Convert text to items
 template<> void CDataItem<CActionItem::CActionReply>::SetInfo(char_stream& info, NumVersion vers_prefs)
 {
-	bool is_set;
+	bool is_set = false;
 	info.get(is_set);
 	mData.SetCreateDraft(is_set);
 
@@ -278,7 +278,7 @@ template<> cdstring CDataItem<CActionItem::CActionForward>::GetInfo() const
 // Convert text to items
 template<> void CDataItem<CActionItem::CActionForward>::SetInfo(char_stream& info, NumVersion vers_prefs)
 {
-	bool is_set;
+	bool is_set = false;
 	info.get(is_set);
 	mData.SetCreateDraft(is_set);
 
@@ -342,7 +342,7 @@ template<> cdstring CDataItem<CActionItem::CActionBounce>::GetInfo() const
 // Convert text to items
 template<> void CDataItem<CActionItem::CActionBounce>::SetInfo(char_stream& info, NumVersion vers_prefs)
 {
-	bool is_set;
+	bool is_set = false;
 	info.get(is_set);
 	mData.SetCreateDraft(is_set);
 
@@ -384,7 +384,7 @@ template<> cdstring CDataItem<CActionItem::CActionReject>::GetInfo() const
 // Convert text to items
 template<> void CDataItem<CActionItem::CActionReject>::SetInfo(char_stream& info, NumVersion vers_prefs)
 {
-	bool is_set;
+	bool is_set = false;
 	info.get(is_set);
 	mData.SetCreateDraft(is_set);
 
@@ -428,7 +428,7 @@ template<> cdstring CDataItem<CActionItem::CActionVacation>::GetInfo() const
 // Convert text to items
 template<> void CDataItem<CActionItem::CActionVacation>::SetInfo(char_stream& info, NumVersion vers_prefs)
 {
-	unsigned long days;
+	unsigned long days = 0;
 	info.get(days);
 	mData.SetDays(days);
 

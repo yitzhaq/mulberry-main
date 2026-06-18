@@ -483,9 +483,9 @@ cdstring CCharsetManager::Transcode(ECharsetCode from, ECharsetCode to, const cd
 		result = txt;
 	else
 	{
-		const char* sout;
-		Transcode(from, to, txt, txt.length(), sout);
-		result.steal(const_cast<char*>(sout));
+		const char* sout = NULL;
+		if (Transcode(from, to, txt, txt.length(), sout))
+			result.steal(const_cast<char*>(sout));
 	}
 	
 	return result;
