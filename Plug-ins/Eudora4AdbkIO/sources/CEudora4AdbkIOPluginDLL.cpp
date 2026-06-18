@@ -361,13 +361,15 @@ long CEudora4AdbkIOPluginDLL::ExportAddress(SAdbkIOPluginAddress* addr)
 		{
 			// Convert CRLFs
 			char* text  = ConvertFromCRLF(addr->mAddress);
+			if (text)
+			{
+				::fwrite("<", 1, 1, mExportFile);
+				::fwrite(cEudoraAddress, 1, cEudoraAddressLen, mExportFile);
+				::fwrite(text, 1, ::strlen(text), mExportFile);
+				::fwrite(">", 1, 1, mExportFile);
 
-			::fwrite("<", 1, 1, mExportFile);
-			::fwrite(cEudoraAddress, 1, cEudoraAddressLen, mExportFile);
-			::fwrite(text, 1, ::strlen(text), mExportFile);
-			::fwrite(">", 1, 1, mExportFile);
-			
-			free(text);
+				free(text);
+			}
 		}
 
 		// Do name
@@ -383,8 +385,11 @@ long CEudora4AdbkIOPluginDLL::ExportAddress(SAdbkIOPluginAddress* addr)
 		if (addr->mNotes && *addr->mNotes)
 		{
 			char* text  = ConvertFromCRLF(addr->mNotes);
-			::fwrite(text, 1, ::strlen(text), mExportFile);
-			free(text);
+			if (text)
+			{
+				::fwrite(text, 1, ::strlen(text), mExportFile);
+				free(text);
+			}
 		}
 
 		::fwrite(cEudoraLineEnd, 1, cEudoraLineEndLen, mExportFile);
