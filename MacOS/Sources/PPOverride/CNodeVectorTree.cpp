@@ -484,6 +484,10 @@ CNodeVectorTree::InsertChildNodes(
 		return;
 	}
 
+	// Inserting zero children is a no-op; avoid using theNode uninitialized below
+	if (inHowMany == 0)
+		return;
+
 	SHierarchyNode	*parent = mHierarchyArray.at(inParentIndex - 1);
 										// Make space for Nodes in Array
 	mHierarchyArray.insert(mHierarchyArray.begin() + inParentIndex, inHowMany, nil);
