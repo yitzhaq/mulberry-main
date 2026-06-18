@@ -2597,7 +2597,7 @@ char* CINETClient::INETParseString(char** txt, bool nullify)
 			CLOG_LOGCATCH(...);
 
 			// Clean up and throw up
-			delete msg_txt;
+			delete[] msg_txt;
 			CLOG_LOGRETHROW;
 			throw;
 		}
