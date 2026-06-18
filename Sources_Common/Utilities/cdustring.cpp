@@ -328,14 +328,10 @@ std::istream& getline (std::istream& is, cdustring& str, unichar_t delim)
 		unichar_t buf[BSIZE];
 		int bcnt = 0;
 		str._tidy();
-		bool have_c1 = false;
 
 		while (true)
 		{
-			if (!have_c1)
-				c1 = is.rdbuf ()->sbumpc();				// try to extract a character
-			else
-				have_c1 = false;
+			c1 = is.rdbuf ()->sbumpc();				// try to extract a character
 			if (c1 == EOF)
 			{
 				flg |= std::ios_base::eofbit;
@@ -354,11 +350,15 @@ std::istream& getline (std::istream& is, cdustring& str, unichar_t delim)
 				break;								// stop reading - delim reached
 			else if (c == '\r')
 			{
-				// Ignore LF after CR
+				// Ignore LF after CR. Read the next byte to test for a
+				// following LF (wide 0x000A); if it is not one it is the high
+				// byte of the next character, so put it back rather than
+				// discard it (which would misalign every later read).
 				c1 = is.rdbuf ()->sbumpc();
-				have_c1 = true;
 				if ((c1 == 0) && (is.rdbuf ()->sgetc() == '\n'))
 					is.rdbuf ()->sbumpc ();
+				else if (c1 != EOF)
+					is.rdbuf ()->sputbackc(static_cast<char>(c1));
 				break;
 			}
 
