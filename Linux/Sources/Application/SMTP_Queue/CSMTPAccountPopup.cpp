@@ -87,7 +87,7 @@ void CSMTPAccountPopup::InitAccountPopup()
 
 	// Add each SMTP account
 	int menu_pos = 1;
-	int first_enabled = 1;
+	int first_enabled = 0;
 	CSMTPSenderList& senders = CSMTPAccountManager::sSMTPAccountManager->GetSMTPSenders();
 	for(CSMTPSenderList::const_iterator iter = senders.begin(); iter != senders.end(); iter++, menu_pos++)
 	{
