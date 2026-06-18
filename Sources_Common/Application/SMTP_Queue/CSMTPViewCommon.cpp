@@ -135,7 +135,6 @@ void CSMTPView::SetSMTPSender(CSMTPSender* sender)
 	if (GetMbox() && (GetMbox() != mbox))
 		DoCloseMbox();
 
-	bool window_closed = false;
 	if (GetMbox() != mbox)
 	{
 		try
