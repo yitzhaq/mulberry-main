@@ -283,7 +283,6 @@ void CMessagePaneOptions::Receive(JBroadcaster* sender, const Message& message)
 	{
 		const JXRadioGroup::SelectionChanged* radio_sel = dynamic_cast<const JXRadioGroup::SelectionChanged*>(&message);
 		if (!radio_sel) return;
-		JIndex index = radio_sel->GetID();
 		if (sender == mMarkSeenGroup)
 		{
 			if (mMarkSeenGroup->GetSelectedItem() - 1 == CMailViewOptions::eDelayedSeen)

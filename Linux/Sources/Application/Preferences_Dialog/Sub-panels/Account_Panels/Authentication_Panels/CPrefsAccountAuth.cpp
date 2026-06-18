@@ -122,7 +122,6 @@ void CPrefsAccountAuth::Receive(JBroadcaster* sender, const Message& message)
 	{
 		const JXMenu::ItemSelected* menu_sel = dynamic_cast<const JXMenu::ItemSelected*>(&message);
 		if (!menu_sel) return;
-		JIndex index = menu_sel->GetIndex();
     	if (sender == mAuthPopup)
     	{
 			OnAuthPopup();
