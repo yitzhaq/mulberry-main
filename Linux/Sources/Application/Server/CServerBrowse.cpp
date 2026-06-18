@@ -417,7 +417,7 @@ void CServerBrowse::DrawCell(JPainter* pDC, const STableCell& inCell, const JRec
 					iconID = IDI_DIAMONDTICKED;
 				else
 					iconID = IDI_DIAMOND;
-				JXImage* icon = CIconLoader::GetIcon(IDI_SERVER_CALCULATE_SIZE, this, 16, bkgnd);
+				JXImage* icon = CIconLoader::GetIcon(iconID, this, 16, bkgnd);
 				pDC->Image(*icon, icon->GetBounds(), inLocalRect.left, inLocalRect.top + mIconOrigin);
 			}
 		break;
