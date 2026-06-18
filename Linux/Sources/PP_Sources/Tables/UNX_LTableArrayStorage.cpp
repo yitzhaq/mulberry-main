@@ -108,7 +108,13 @@ LTableArrayStorage::SetCellData(
 		if (inDataSize > 0)
 		{
 			element.first = std::malloc(inDataSize);
-			std::memcpy(element.first, inDataPtr, inDataSize);
+			if (element.first != NULL)
+				std::memcpy(element.first, inDataPtr, inDataSize);
+			else
+				// Allocation failed: store an empty cell rather than a NULL
+				// pointer with a non-zero size, which GetCellDataByIndex would
+				// later memcpy from.
+				element.second = 0;
 		}
 
 		mDataArray->at(cellIndex - 1) = element;
