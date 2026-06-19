@@ -46,29 +46,6 @@ char* strndup_new(const char* s1, size_t n)
 	return s2;
 }
 
-#if !defined(__GNUC__) && !defined(__VCPP__)
-char* strdup(const char* s1)
-{
-	return strdup_new(s1);
-}
-#endif
-
-#if !defined(__GNUC__) || __dest_os == __mac_os_x
-// Duplicate string a fixed length
-char* strndup(const char* s1, size_t len)
-{
-	if (s1 && *s1 && len)
-	{
-		char* s2 = new char[len + 1];
-		::strncpy(s2, s1, len);
-		s2[len] = 0;
-		return s2;
-	}
-	else
-		return NULL;
-}
-#endif
-
 // Convert to lowercase
 void strlower(char* s1)
 {

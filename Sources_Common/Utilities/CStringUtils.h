@@ -66,14 +66,6 @@ char* strduptokenstr(char** s1,
 char* strdup_new(const char* s1);				// Duplicate using new[] (for cdstring ownership)
 char* strndup_new(const char* s1, size_t n);	// Duplicate n chars using new[] (for cdstring ownership)
 
-#if !defined(__GNUC__) && !defined(__VCPP__)
-char* strdup(const char* s1);					// Duplicate a string
-#endif
-
-#if !defined(__GNUC__) || __dest_os == __mac_os_x
-char* strndup(const char* s1, size_t len);		// Duplicate len chars of string
-#endif
-
 void strlower(char* s1);						// Convert to lowercase
 void strupper(char* s1);						// Convert to uppercase
 
