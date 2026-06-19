@@ -172,7 +172,7 @@ static bool DecryptV1(const cdstring& data, const cdstring& passphrase, cdstrmap
 		return false;
 
 	size_t encrypted_len = 0;
-	std::unique_ptr<unsigned char> encrypted(::base64_decode(data.c_str(), encrypted_len));
+	std::unique_ptr<unsigned char[]> encrypted(::base64_decode(data.c_str(), encrypted_len));
 	if (!encrypted || encrypted_len == 0)
 		return false;
 
@@ -217,7 +217,7 @@ cdstrmap CPasswordManagerKeyring::ReadEncryptedMap() const
 		std::string b64data = file_content.substr(cKeyRingV2HeaderLen);
 
 		size_t blob_len = 0;
-		std::unique_ptr<unsigned char> blob(::base64_decode(b64data.c_str(), blob_len));
+		std::unique_ptr<unsigned char[]> blob(::base64_decode(b64data.c_str(), blob_len));
 		if (!blob)
 			return results;
 
@@ -357,7 +357,7 @@ void CPasswordManagerKeyring::WriteEncryptedMap(const cdstrmap& pswds) const
 	::memcpy(p, ciphertext.get(), ciphertext_len);
 
 	// Base64 encode
-	std::unique_ptr<char> b64(::base64_encode(blob.get(), blob_len));
+	std::unique_ptr<char[]> b64(::base64_encode(blob.get(), blob_len));
 
 	// Write V2 file with restrictive permissions
 #if __dest_os != __win32_os
