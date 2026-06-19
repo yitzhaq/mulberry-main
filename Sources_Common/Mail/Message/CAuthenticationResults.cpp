@@ -178,7 +178,6 @@ bool CAuthenticationResults::ParseMethodResult(const char*& p)
 			break;
 
 		cdstring ptype_property;
-		const char* prop_start = p;
 		if (!ParseToken(p, ptype_property))
 			break;
 
