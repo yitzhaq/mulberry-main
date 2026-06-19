@@ -150,7 +150,7 @@ void CAddress::ParseAddress(const char* txt)
 		return;
 
 	// Make local copy of text for tokenising
-	char* s = ::strdup(txt);
+	char* s = strdup_new(txt);
 	if (!s)
 		return;
 
@@ -170,7 +170,7 @@ void CAddress::ParseAddress(const char* txt)
 				// Terminate and copy
 				*q = 0;
 				if (p < q) CopyMailAddress(p);
-				free(s);
+				delete[] s;
 				s = NULL;
 				return;
 
@@ -192,7 +192,7 @@ void CAddress::ParseAddress(const char* txt)
 				}
 				if (!*q)
 				{
-					free(s);
+					delete[] s;
 					s = NULL;
 					return;
 				}
@@ -257,7 +257,7 @@ void CAddress::ParseAddress(const char* txt)
 					CopyName(NULL, false);
 
 				q++;
-				free(s);
+				delete[] s;
 				s = NULL;
 				return;
 			  }
@@ -276,7 +276,7 @@ void CAddress::ParseAddress(const char* txt)
 				while (*q && (*q != '>')) q++;
 				if (!*q)
 				{
-					free(s);
+					delete[] s;
 					s = NULL;
 					return;
 				}
@@ -285,7 +285,7 @@ void CAddress::ParseAddress(const char* txt)
 				*q++ = '\0';
 				CopyMailAddress(p);
 
-				free(s);
+				delete[] s;
 				s = NULL;
 				return;
 			  }
@@ -294,7 +294,7 @@ void CAddress::ParseAddress(const char* txt)
 		}
 	}
 
-	free(s);
+	delete[] s;
 	s = NULL;
 	return;
 }

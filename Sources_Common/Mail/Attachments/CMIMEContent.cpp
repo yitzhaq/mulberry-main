@@ -409,13 +409,13 @@ void CMIMEContent::SetContent(const unsigned char* mime)
 void CMIMEContent::SetContent(const char* mime)
 {
 	// Make local c-string copy
-	char* txt = ::strdup(mime);
+	char* txt = strdup_new(mime);
 
 	// Get first token and convert to lower
 	char* type_token = txt ? ::strtok(txt, " /") : NULL;
 	if (!type_token || !*type_token)
 	{
-		free(txt);
+		delete[] txt;
 		SetContent(eNoContentType, eNoContentSubType);
 		return;
 	}
@@ -462,7 +462,7 @@ void CMIMEContent::SetContent(const char* mime)
 	else
 		SetContent(type_token, subtype_token);
 
-	free(txt);
+	delete[] txt;
 }
 
 #pragma mark ____________________________type
