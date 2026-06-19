@@ -527,8 +527,8 @@ long CSMIMEPluginDLL::SignFileX(fspec in, const char* key, fspec out, bool useMi
 #endif
 
 	// Convert fspec to file path
-	std::unique_ptr<char> in_path(ToPath(in));
-	std::unique_ptr<char> out_path(ToPath(out));
+	std::unique_ptr<char[]> in_path(ToPath(in));
+	std::unique_ptr<char[]> out_path(ToPath(out));
 
 	try
 	{
@@ -693,8 +693,8 @@ long CSMIMEPluginDLL::EncryptFileX(fspec in, const char** to, fspec out, bool us
 	PKCS7* p7 = NULL;
 #endif
 
-	std::unique_ptr<char> in_path(ToPath(in));
-	std::unique_ptr<char> out_path(ToPath(out));
+	std::unique_ptr<char[]> in_path(ToPath(in));
+	std::unique_ptr<char[]> out_path(ToPath(out));
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x || __dest_os == __win32_os
 	// Make sure temp file is deleted when we return
@@ -820,7 +820,7 @@ long CSMIMEPluginDLL::VerifyFileX(fspec in, const char* sig, const char* in_from
 	try
 	{
 		// Convert fspec to file path
-		std::unique_ptr<char> in_path(ToPath(in));
+		std::unique_ptr<char[]> in_path(ToPath(in));
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 		FSSpec sig_spec;
@@ -845,7 +845,7 @@ long CSMIMEPluginDLL::VerifyFileX(fspec in, const char* sig, const char* in_from
 			throw -1L;
 		}
 
-		std::unique_ptr<char> sig_path(ToPath(sig_tmp));
+		std::unique_ptr<char[]> sig_path(ToPath(sig_tmp));
 		_sig_remove.set(sig_path.get());
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x || __dest_os == __win32_os
@@ -1016,8 +1016,8 @@ long CSMIMEPluginDLL::DecryptFileX(fspec in, const char* in_from, fspec out, cha
 #endif
 	EVP_PKEY* pkey = NULL;
 
-	std::unique_ptr<char> in_path(ToPath(in));
-	std::unique_ptr<char> out_path(ToPath(out));
+	std::unique_ptr<char[]> in_path(ToPath(in));
+	std::unique_ptr<char[]> out_path(ToPath(out));
 
 	try
 	{
