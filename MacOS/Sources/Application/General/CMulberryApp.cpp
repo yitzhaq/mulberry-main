@@ -2274,7 +2274,7 @@ void CMulberryApp::HandleGetURLEvent(
 	char* txt;
 	{
 		StHandleLocker lock(text_desc.dataHandle);
-		txt = ::strndup(*text_desc.dataHandle, len);
+		txt = strndup_new(*text_desc.dataHandle, len);
 	}
 #endif
 
@@ -2291,7 +2291,7 @@ void CMulberryApp::HandleGetURLEvent(
 		{
 			// Get remainder of text
 			char* addr = ::strtok(NULL, cdstring::null_str);
-			char *text = (addr ? ::strdup(addr) : NULL);
+			char *text = (addr ? strdup_new(addr) : NULL);
 
 			// Only handle if SMTP client exists (ie app is already running - not waiting for prefs dialog)
 			if (!CMailAccountManager::sMailAccountManager)
@@ -2312,7 +2312,7 @@ void CMulberryApp::HandleGetURLEvent(
 		{
 			// Get remainder of text
 			char* addr = ::strtok(NULL, cdstring::null_str);
-			char *text = (addr ? ::strdup(addr) : NULL);
+			char *text = (addr ? strdup_new(addr) : NULL);
 
 			// Only handle if calendars available
 			if (calstore::CCalendarStoreManager::sCalendarStoreManager == NULL)
@@ -2330,7 +2330,7 @@ void CMulberryApp::HandleGetURLEvent(
 				ProcessWebcal(text);
 		}
 	}
-	delete txt;
+	delete[] txt;
 	::AEDisposeDesc(&text_desc);
 }
 

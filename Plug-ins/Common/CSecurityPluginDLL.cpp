@@ -638,7 +638,7 @@ long CSecurityPluginDLL::lendl_convert(const char* spec, cdstring* tspec, bool t
 		if (!MakeTemp(&tmp_spec))
 			return 0;
 		
-		*tspec = ToPath(&tmp_spec);
+		tspec->steal(ToPath(&tmp_spec));
 
 #elif __dest_os == __win32_os
 		// Create temp file for conversion (do not open it in mkstemp as we will do that later)

@@ -621,7 +621,7 @@ long CPGPPluginDLL::SignFile(fspec in, const char* key, fspec out, bool useMime,
 
 #if __dest_os == __mac_os
 		// Do LF -> lendl conversion
-		auto_ptr<char> out_path(ToPath(out));
+		unique_ptr<char[]> out_path(ToPath(out));
 		result = lendl_convertLF(out_path.get(), NULL, true);
 #endif
 	}
@@ -694,7 +694,7 @@ long CPGPPluginDLL::EncryptFile(fspec in, const char** to, fspec out, bool useMi
 
 #if __dest_os == __mac_os
 		// Do LF -> lendl conversion
-		auto_ptr<char> out_path(ToPath(out));
+		unique_ptr<char[]> out_path(ToPath(out));
 		result = lendl_convertLF(out_path.get(), NULL, true);
 #endif
 	}
@@ -771,7 +771,7 @@ long CPGPPluginDLL::EncryptSignFile(fspec in, const char** to, const char* key, 
 
 #if __dest_os == __mac_os
 		// Do LF -> lendl conversion
-		auto_ptr<char> out_path(ToPath(out));
+		unique_ptr<char[]> out_path(ToPath(out));
 		result = lendl_convertLF(out_path.get(), NULL, true);
 #endif
 	}
@@ -856,7 +856,7 @@ long CPGPPluginDLL::DecryptVerifyFile(fspec in, const char* sig, const char* in_
 #if __dest_os == __mac_os_x || __dest_os == __win32_os
 		// Do LF -> lendl conversion only for valid output file
 		// When verifying there may not be an output
-		auto_ptr<char> out_path(ToPath(out));
+		unique_ptr<char[]> out_path(ToPath(out));
 		if (out_path.get() && *out_path.get())
 			result = lendl_convertLF(out_path.get(), NULL, true);
 #endif

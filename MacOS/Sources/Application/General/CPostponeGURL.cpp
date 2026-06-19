@@ -43,7 +43,7 @@ CPostponeGURL::CPostponeGURL(char *text, EType type)
 
 CPostponeGURL::~CPostponeGURL()
 {
-	delete mText;
+	delete[] mText;
 }
 
 // Run GURL Event then remove
