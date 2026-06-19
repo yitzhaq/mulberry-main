@@ -52,7 +52,6 @@ void CAdminLock::ReadFromMap(COptionsMap* theMap)
 
 	// Read prefs version
 	NumVersionVariant vers_var;
-	vers_var.whole = 0;
 	cdstring txt;
 	NumVersion vers_prefs = {};
 	theMap->ReadValue(cVersionKey, txt, vers_prefs);
