@@ -63,7 +63,7 @@ protected:
 	long ProcessServerFinal(SAuthPluginData* info);
 	long ProcessTag(SAuthPluginData* info);
 
-	void GenerateNonce();
+	bool GenerateNonce();
 	void EscapeUsername(const char* in, char* out, size_t outlen);
 };
 

@@ -84,11 +84,13 @@ long CSCRAMPluginDLL::ProcessData(SAuthPluginData* info)
 	}
 }
 
-void CSCRAMPluginDLL::GenerateNonce()
+bool CSCRAMPluginDLL::GenerateNonce()
 {
 	unsigned char raw[24];
-	RAND_bytes(raw, sizeof(raw));
+	if (RAND_bytes(raw, sizeof(raw)) != 1)
+		return false;
 	kbase64_to64((unsigned char*) mClientNonce, raw, sizeof(raw));
+	return true;
 }
 
 void CSCRAMPluginDLL::EscapeUsername(const char* in, char* out, size_t outlen)
@@ -143,7 +145,8 @@ long CSCRAMPluginDLL::ProcessClientFirst(SAuthPluginData* info)
 		AUTHERROR("unknown server type");
 	}
 
-	GenerateNonce();
+	if (!GenerateNonce())
+		AUTHERROR("failed to generate client nonce");
 
 	char escaped_user[768];
 	EscapeUsername(mUserID, escaped_user, sizeof(escaped_user));
@@ -164,9 +167,13 @@ long CSCRAMPluginDLL::ProcessClientFirst(SAuthPluginData* info)
 	::snprintf(mClientFirstBare, sizeof(mClientFirstBare),
 		"n=%s,r=%s", escaped_user, mClientNonce);
 
-	char client_first[1024];
+	char client_first[sizeof(mGS2Header) + sizeof(mClientFirstBare)];
 	::snprintf(client_first, sizeof(client_first),
 		"%s%s", mGS2Header, mClientFirstBare);
+
+	// Reject if the base64-encoded message would not fit the caller's line buffer
+	if ((long)(::strlen(client_first) * 3 + 16) > info->length)
+		AUTHERROR("client-first-message too long for buffer");
 
 	p = info->data;
 	*p = 0;
@@ -237,6 +244,8 @@ long CSCRAMPluginDLL::ProcessServerFirst(SAuthPluginData* info)
 	case eServerSMTP:
 	{
 		int len = kbase64_from64(info->data, p);
+		if (len < 0)
+			AUTHERROR("invalid base64 in server-first-message");
 		info->data[len] = 0;
 		break;
 	}
@@ -263,6 +272,8 @@ long CSCRAMPluginDLL::ProcessServerFirst(SAuthPluginData* info)
 	{
 		p = info->data;
 		int len = kbase64_from64(info->data, p);
+		if (len < 0)
+			AUTHERROR("invalid base64 in server-first-message");
 		info->data[len] = 0;
 	}
 
@@ -322,6 +333,8 @@ long CSCRAMPluginDLL::ProcessServerFirst(SAuthPluginData* info)
 		AUTHERROR("iteration count too high");
 
 	unsigned char salt[256];
+	if (::strlen(salt_b64) > sizeof(salt))
+		AUTHERROR("salt too long");
 	int salt_len = kbase64_from64((char*) salt, salt_b64);
 	if (salt_len <= 0)
 		AUTHERROR("invalid salt encoding");
@@ -407,6 +420,10 @@ long CSCRAMPluginDLL::ProcessServerFirst(SAuthPluginData* info)
 	char client_final[2048];
 	::snprintf(client_final, sizeof(client_final),
 		"%s,p=%s", cfm_without_proof, proof_b64);
+
+	// Reject if the base64-encoded message would not fit the caller's line buffer
+	if ((long)(::strlen(client_final) * 3 + 16) > info->length)
+		AUTHERROR("client-final-message too long for buffer");
 
 	// Encode for wire
 	p = info->data;
@@ -533,8 +550,7 @@ long CSCRAMPluginDLL::ProcessServerFinal(SAuthPluginData* info)
 		AUTHERROR("unknown server type");
 	}
 
-	// Decode the server-final-message
-	char decoded[1024];
+	// Decode the server-final-message in place (base64 output never exceeds input)
 	switch(mServerType)
 	{
 	case eServerIMAP:
@@ -542,17 +558,17 @@ long CSCRAMPluginDLL::ProcessServerFinal(SAuthPluginData* info)
 	case eServerIMSP:
 	case eServerSMTP:
 	{
-		int len = kbase64_from64(decoded, p);
-		decoded[len] = 0;
+		int len = kbase64_from64(info->data, p);
+		if (len < 0)
+			AUTHERROR("invalid base64 in server-final-message");
+		info->data[len] = 0;
+		p = info->data;
 		break;
 	}
 	default:
-		::strncpy(decoded, p, sizeof(decoded) - 1);
-		decoded[sizeof(decoded) - 1] = 0;
+		// p already references the NUL-terminated plain-text response
 		break;
 	}
-
-	p = decoded;
 
 	// Check for error
 	if (*p == 'e' && *(p + 1) == '=')
@@ -570,6 +586,8 @@ long CSCRAMPluginDLL::ProcessServerFinal(SAuthPluginData* info)
 	p += 2;
 
 	unsigned char recv_sig[EVP_MAX_MD_SIZE];
+	if (::strlen(p) > sizeof(recv_sig))
+		AUTHERROR("server signature too long");
 	int recv_sig_len = kbase64_from64((char*) recv_sig, p);
 	if (recv_sig_len <= 0)
 		AUTHERROR("invalid server signature encoding");
