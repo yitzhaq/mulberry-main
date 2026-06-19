@@ -897,8 +897,8 @@ void CDisplayFormatter::DoQuotation()
 	{
 		// Check if same depth
 		if ((current_depth == info.get()[i].depth) ||
-			// Check for orphaned lines
-			(!info.get()[i].depth &&
+			// Check for orphaned lines (but not past the last line)
+			(!info.get()[i].depth && (i + 1 < lines) &&
 					(info.get()[i+1].depth == current_depth)))
 			// Accumulate same depth quotation
 			stop = info.get()[i].stop;

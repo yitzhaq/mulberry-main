@@ -529,10 +529,12 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 					{
 						cdstring val((*vals[i]).bv_val, (*vals[i]).bv_len);
 						unsigned char* p = (unsigned char*) val.c_str();
+						unsigned char* start = p;
 						bool safe_string = true;
 						while(*p)
 						{
-							if ((*p == '\n') && (*(p-1) != '\r'))
+							// A leading '\n' has no preceding char to test - treat it as bare
+							if ((*p == '\n') && ((p == start) || (*(p-1) != '\r')))
 								*p = '\r';
 							if (*p++ == 0)
 							{
@@ -578,9 +580,11 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 							{
 								char* p = use_val;
 								char* q = use_val;
+								char* start = p;
 								while(*p)
 								{
-									if ((*p == '$') && (*(p-1) == ' ') && (*(p+1) == ' '))
+									// Need a preceding char for the " $ " test - skip at the start
+									if ((*p == '$') && (p != start) && (*(p-1) == ' ') && (*(p+1) == ' '))
 									{
 										*(q-1) = lendl1;
 #if __line_end == __crlf

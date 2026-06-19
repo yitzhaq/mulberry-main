@@ -1079,8 +1079,10 @@ void cdstring::DecodeURL()
 	unsigned long ctr = 0;
 	while(*p)
 	{
-		// Is current char escape
-		if (*p == cURLEscape)
+		// Is current char escape - only decode when two hex digits actually
+		// follow, otherwise a truncated escape ("...%" or "...%X") would read
+		// past the end of the string
+		if ((*p == cURLEscape) && (p[1] != 0) && (p[2] != 0))
 		{
 			// Advance past escape
 			ctr++;

@@ -439,6 +439,12 @@ cdstring CEnvelope::NormaliseSubject(bool matching) const
 	{
 		repeat = false;
 
+		// Nothing to normalise once the string is empty - avoids end_p
+		// underflowing the buffer below (e.g. an empty subject, or one wholly
+		// consumed by the steps below)
+		if (!*p)
+			break;
+
 		// Step 2 - remove trailer repeatedly
 		bool changed = true;
 		char* end_p = p + ::strlen(p) - 1;
