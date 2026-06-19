@@ -576,12 +576,12 @@ bool CGroupTable::EditEntry(TableIndexT row)
 	UInt32 dataSize = sizeof(SGroupTableItem);
 	GetCellData(woCell, &item, dataSize);
 
-	// Copy original address
-	CGroup* copy = new CGroup(*item.mGroup);
-
 	// Only edit groups
 	if (item.mIsGroup)
 	{
+		// Copy original address
+		CGroup* copy = new CGroup(*item.mGroup);
+
 		// Let DialogHandler process events
 		if (CEditGroupDialog::PoseDialog(copy))
 		{

@@ -6001,7 +6001,7 @@ CAttachment* CIMAPClient::IMAPParseBodyContent(char** txt)
 				delete INETParseString(&p);	// Forget body line size
 #ifdef ASIP_FIX
 				}
-				else
+				else if (sub_message)
 				{
 					// Set blank envelope and body for corrupt message/rfc822 part
 					SetEnvelope(new CEnvelope);

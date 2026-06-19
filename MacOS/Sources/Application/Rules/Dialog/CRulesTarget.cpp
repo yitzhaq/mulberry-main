@@ -159,8 +159,13 @@ bool CRulesTarget::DoActivate()
 void CRulesTarget::SwitchWith(CCriteriaBase* other)
 {
 	CFilterTarget* this_target = GetFilterTarget();
-	SetFilterTarget(static_cast<CRulesTarget*>(other)->GetFilterTarget());
+	CFilterTarget* other_target = static_cast<CRulesTarget*>(other)->GetFilterTarget();
+	SetFilterTarget(other_target);
 	static_cast<CRulesTarget*>(other)->SetFilterTarget(this_target);
+
+	// GetFilterTarget returns newly allocated targets; SetFilterTarget only copies
+	delete this_target;
+	delete other_target;
 }
 
 void CRulesTarget::OnSetTarget(long item1)

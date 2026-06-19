@@ -955,12 +955,12 @@ bool CGroupTable::EditEntry(TableIndexT row)
 	UInt32 dataSize = sizeof(SGroupTableItem);
 	GetCellData(woCell, &item, dataSize);
 
-	// Copy original address
-	CGroup* copy = new CGroup(*item.mGroup);
-
 	// Only edit groups
 	if (item.mIsGroup)
 	{
+		// Copy original address
+		CGroup* copy = new CGroup(*item.mGroup);
+
 		// Create the dialog
 		CBalloonDialog	theHandler(paneid_EditGroup, this);
 
