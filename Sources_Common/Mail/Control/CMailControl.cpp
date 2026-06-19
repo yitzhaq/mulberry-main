@@ -168,7 +168,7 @@ void CMailControl::MboxServerDisconnect(CMboxProtocol* server)
 	}
 
 	// Clean up UI items
-	bool closed = CleanUpServerDisconnect(server, false);
+	CleanUpServerDisconnect(server, false);
 
 	// Now clear out server
 	CServerForceoffTask* task = new CServerForceoffTask(server);

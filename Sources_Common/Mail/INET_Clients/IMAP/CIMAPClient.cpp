@@ -3623,7 +3623,7 @@ void CIMAPClient::_CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 				{
 					p += ::strlen(cCOPYUID);
 
-					unsigned long uidv = ::strtoul(p, const_cast<char**>(&p), 10);
+					::strtoul(p, const_cast<char**>(&p), 10);
 					CSequence source;
 					CSequence destination;
 					source.ParseSequence(&p, nums.size());
@@ -3698,7 +3698,7 @@ void CIMAPClient::_MoveMessage(const ulvector& nums, bool uids, CMbox* mbox_to, 
 				{
 					p += ::strlen(cCOPYUID);
 
-					unsigned long uidv = ::strtoul(p, const_cast<char**>(&p), 10);
+					::strtoul(p, const_cast<char**>(&p), 10);
 					CSequence source;
 					CSequence destination;
 					source.ParseSequence(&p, nums.size());
