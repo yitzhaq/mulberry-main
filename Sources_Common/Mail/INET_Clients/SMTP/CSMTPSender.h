@@ -144,7 +144,7 @@ private:
 
 public:
 			CSMTPSender(CINETAccount* account);
-			~CSMTPSender();
+	virtual	~CSMTPSender();
 
 	// Account
 	const CINETAccount* GetAccount() const
