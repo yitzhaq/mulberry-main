@@ -56,6 +56,13 @@ char* strgettokenstr(char** s1,
 char* strduptokenstr(char** s1,
 						const char* tokens);	// Duplicate possibly quoted string without destroying end
 
+// String-duplication ownership rule (read before using ::strdup):
+// strdup_new/strndup_new allocate with new[], so their result MUST be freed
+// with delete[] (or owned by cdstring, whose _tidy frees _str with delete[],
+// or by unique_ptr<char[]>). Use THESE for any buffer freed by delete[]/cdstring.
+// libc ::strdup/::strndup allocate with malloc on GCC/Clang/VC, so freeing such
+// a buffer with delete[] is undefined behaviour; reserve ::strdup/::strndup for
+// buffers freed with a matching ::free().
 char* strdup_new(const char* s1);				// Duplicate using new[] (for cdstring ownership)
 char* strndup_new(const char* s1, size_t n);	// Duplicate n chars using new[] (for cdstring ownership)
 
