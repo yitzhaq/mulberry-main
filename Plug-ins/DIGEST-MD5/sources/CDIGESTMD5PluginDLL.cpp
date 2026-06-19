@@ -297,10 +297,10 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	PuntLWS(p);
 
 	bool got_qop = false;
-	std::unique_ptr<const char> nonce;
-	std::unique_ptr<const char> opaque;
-	std::unique_ptr<const char> realm;
-	std::unique_ptr<const char> cnonce;
+	std::unique_ptr<const char[]> nonce;
+	std::unique_ptr<const char[]> opaque;
+	std::unique_ptr<const char[]> realm;
+	std::unique_ptr<const char[]> cnonce;
 
 	// Tokenize to get nonce
 	while(*p)
@@ -319,17 +319,23 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 		if (::strcmpnocase(token, "nonce") == 0)
 		{
 			char* temp = ::strgettokenstr(&p, cTokenSeparators);
-			nonce.reset(::strdup(temp));
+			if (!temp)
+				AUTHERROR("Illegal nonce value in Step 1");
+			nonce.reset(strdup_new(temp));
 		}
 		else if (::strcmpnocase(token, "opaque") == 0)
 		{
 			char* temp = ::strgettokenstr(&p, cTokenSeparators);
-			opaque.reset(::strdup(temp));
+			if (!temp)
+				AUTHERROR("Illegal opaque value in Step 1");
+			opaque.reset(strdup_new(temp));
 		}
 		else if (::strcmpnocase(token, "realm") == 0)
 		{
 			char* temp = ::strgettokenstr(&p, cTokenSeparators);
-			realm.reset(::strdup(temp));
+			if (!temp)
+				AUTHERROR("Illegal realm value in Step 1");
+			realm.reset(strdup_new(temp));
 		}
 		else if (::strcmpnocase(token, "qop") == 0)
 		{
@@ -383,25 +389,25 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 		char* q = msg_id + ::strlen(msg_id) + 1;
 		kbase64_to64((unsigned char*) q, (unsigned char*) msg_id, ::strlen(msg_id));
 		::memmove(msg_id, q, ::strlen(q) + 1);
-		cnonce.reset(::strdup(msg_id));
+		cnonce.reset(strdup_new(msg_id));
 	}
 	
 	//nonce.reset(::strdup("123"));
 	//cnonce.reset(::strdup("123"));
 
 	// Split user id into user id/realm
-	std::unique_ptr<const char> userid;
+	std::unique_ptr<const char[]> userid;
 	const char* useridat = ::strrchr(mUserID, '@');
 	if (useridat)
 	{
 		// Split at least '@' sign
 		// If '@' is legitimetaly part of the user id, users can end with a trailing
 		// '@' to force an empty realm
-		userid.reset(::strndup(mUserID, useridat - mUserID));
-		realm.reset(::strdup(useridat + 1));
+		userid.reset(strndup_new(mUserID, useridat - mUserID));
+		realm.reset(strdup_new(useridat + 1));
 	}
 	else
-		userid.reset(::strdup(mUserID));
+		userid.reset(strdup_new(mUserID));
 
 	// Caclulate HEX(H(A1))
 	char hex_h_a1[33];
@@ -675,7 +681,7 @@ long CDIGESTMD5PluginDLL::ProcessSecondData(SAuthPluginData* info)
 	PuntLWS(p);
 
 	bool got_rspauth = false;
-	std::unique_ptr<const char> rspauth;
+	std::unique_ptr<const char[]> rspauth;
 
 	// Tokenize to get nonce
 	while(*p)
@@ -693,7 +699,9 @@ long CDIGESTMD5PluginDLL::ProcessSecondData(SAuthPluginData* info)
 		if (::strcmpnocase(token, "rspauth") == 0)
 		{
 			char* temp = ::strgettokenstr(&p, cTokenSeparators);
-			rspauth.reset(::strdup(temp));
+			if (!temp)
+				AUTHERROR("Illegal rspauth value in Step 3");
+			rspauth.reset(strdup_new(temp));
 			got_rspauth = true;
 		}
 
