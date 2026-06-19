@@ -270,7 +270,7 @@ void CMboxProtocol::AddWD(const CDisplayItem& wd, char dir_delim)
 
 	// Create new hierarchy
 	CMboxList* new_list = new CMboxList(this, wd.GetName());
-	new_list->SetDirDelim(GetMailAccount()->GetDirDelim());
+	new_list->SetDirDelim(dir_delim);
 	new_list->SetFlag(CTreeNodeList::eHierarchic, wd.IsHierarchic());
 	new_list->SetFlag(CTreeNodeList::eExpanded, wd.IsExpanded());
 	mHierarchies.push_back(new_list);

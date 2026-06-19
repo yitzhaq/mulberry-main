@@ -629,7 +629,7 @@ void CCalendarEventBase::DrawVertFrame(JXWindowPainter* pDC, JRect& rect)
 		}
 
 		JXImage* icon = CIconLoader::GetIcon(theResID, this, 16, bkgnd);
-		pDC->JPainter::Image(*icon, icon->GetBounds(), rect.right - 17 + horiz_offset, rect.top);
+		pDC->JPainter::Image(*icon, icon->GetBounds(), rect.right - 17 + horiz_offset, vOffset + vert_offset);
 		
 		// Offset right edge of text
 		rect.right -= 16;

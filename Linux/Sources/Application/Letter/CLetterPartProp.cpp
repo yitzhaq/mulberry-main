@@ -425,8 +425,8 @@ void CLetterPartProp::SyncSubtypePopup(const cdstring& sel)
 	mSubtypePopup->SetMenuItems(menu);
 
 	mEncodingPopup->SetActive(JBoolean(encoding));
-	mDispositionPopup->SetActive(JBoolean(encoding));
-	mCharsetPopup->SetActive(JBoolean(encoding));
+	mDispositionPopup->SetActive(JBoolean(disposition));
+	mCharsetPopup->SetActive(JBoolean(charset));
 }
 
 bool CLetterPartProp::PoseDialog(CMIMEContent& content)
