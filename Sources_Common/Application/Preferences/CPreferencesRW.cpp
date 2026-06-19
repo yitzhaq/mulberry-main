@@ -74,7 +74,7 @@ void CPreferences::WriteToMap(COptionsMap* theMap, bool dirty_only,
 
 		// DEBUG: Check what we're about to write
 
-		NumVersionVariant tempv = {0};  // Initialize to zero first
+		NumVersionVariant tempv;
 		tempv.parts = vers;
 
 
