@@ -597,8 +597,9 @@ void CPRECIS::UTF8ToUCS4(const cdstring& input, uint32_t*& cps, size_t& len)
 	const uint8_t* src = reinterpret_cast<const uint8_t*>(input.c_str());
 	size_t src_len = input.length();
 
-	// Allocate worst case (one cp per byte)
-	cps = new uint32_t[src_len + 1];
+	// Allocate worst case (one cp per byte); hold it in a guard so a decode
+	// error frees it instead of leaking before the caller takes ownership
+	std::unique_ptr<uint32_t[]> buf(new uint32_t[src_len + 1]);
 	len = 0;
 
 	size_t i = 0;
@@ -645,9 +646,11 @@ void CPRECIS::UTF8ToUCS4(const cdstring& input, uint32_t*& cps, size_t& len)
 			throw std::invalid_argument("PRECIS: invalid UTF-8");
 		}
 
-		cps[len++] = cp;
+		buf[len++] = cp;
 		i += bytes;
 	}
+
+	cps = buf.release();
 }
 
 cdstring CPRECIS::UCS4ToUTF8(const uint32_t* cps, size_t len)
