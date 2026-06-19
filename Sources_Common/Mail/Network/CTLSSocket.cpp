@@ -131,16 +131,34 @@ CTLSSocket::CTLSSocket(const CTLSSocket& copy) :
 CTLSSocket::~CTLSSocket()
 {
 #ifdef _OS_X_SECURITY
-	m_ctx = NULL;
-    
+	// Free the context here too: the base ~CTCPSocket calls TCPClose() with
+	// base dispatch, so CTLSSocket::TCPClose's cleanup is bypassed if the
+	// socket is destroyed while still open
+	if (m_ctx != NULL)
+	{
+		::SSLDisposeContext(m_ctx);
+		m_ctx = NULL;
+	}
+
     if (mClientIdentity != NULL)
     {
         ::CFRelease(mClientIdentity);
         mClientIdentity = NULL;
     }
 #else
-	m_ctx = NULL;
-	m_tls = NULL;
+	// Free TLS objects here too: the base ~CTCPSocket calls TCPClose() with
+	// base dispatch, so CTLSSocket::TCPClose's SSL_free/SSL_CTX_free is
+	// bypassed if the socket is destroyed while still open (SSL before CTX)
+	if (m_tls != NULL)
+	{
+		::SSL_free(m_tls);
+		m_tls = NULL;
+	}
+	if (m_ctx != NULL)
+	{
+		::SSL_CTX_free(m_ctx);
+		m_ctx = NULL;
+	}
 
 	if (mClientCert != NULL)
 	{
