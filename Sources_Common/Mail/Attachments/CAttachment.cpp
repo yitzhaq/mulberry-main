@@ -2182,11 +2182,28 @@ void CAttachment::TryLaunch(CFullFileStream* aFile) const
 
 			if (!cmd.empty())
 			{
-				// Mailcap match found — use it
+				// Mailcap match found — use it. CMailcapMap leaves %s
+				// substitution to the caller (RFC 1524), so do it by string
+				// replacement, not by feeding the command to a printf-style
+				// formatter: a mailcap entry may carry other codes (%t, %{...})
+				// that printf would treat as conversions on a missing argument,
+				// and an entry without %s must not consume fpath.
 				cdstring buf;
-				size_t buf_reserve = cmd.length() + fpath.length() + 1;
-				buf.reserve(buf_reserve);
-				::snprintf(buf.c_str_mod(), buf_reserve, cmd.c_str(), fpath.c_str());
+				for(const char* p = cmd.c_str(); *p != 0; p++)
+				{
+					if ((*p == '%') && (*(p + 1) == 's'))
+					{
+						buf += fpath;
+						p++;
+					}
+					else if ((*p == '%') && (*(p + 1) == '%'))
+					{
+						buf += '%';
+						p++;
+					}
+					else
+						buf += *p;
+				}
 
 				pid_t childPID;
 				JExecute(buf.c_str(), &childPID);
