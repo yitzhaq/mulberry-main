@@ -2872,7 +2872,7 @@ void CIMAPClient::_ReadHeader(CMessage* msg)
 				StHandleLocker lock(data.GetDataHandle());
 
 				// Make a copy of the text
-				msg->SetHeader(::strndup(*data.GetDataHandle(), data.GetMarker()));
+				msg->SetHeader(strndup_new(*data.GetDataHandle(), data.GetMarker()));
 #elif __dest_os == __win32_os || __dest_os == __linux_os
 				// Must write c-string terminator
 				char end = 0;

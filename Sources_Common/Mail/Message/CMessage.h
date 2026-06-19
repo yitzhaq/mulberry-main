@@ -511,7 +511,7 @@ public:
 		{ return mCache ? mCache->mSaveZone : 0; }
 
 	void	SetHeader(char* txt)									// Set pointer to header
-		{ if (mCache) {delete mCache->mHeader; mCache->mHeader = txt;} }
+		{ if (mCache) {delete[] mCache->mHeader; mCache->mHeader = txt;} }
 	char*	GetHeader();											// Return pointer to header
 	bool	HasHeader() const										// Check for cached header
 		{return mCache ? (mCache->mHeader != NULL) : false;}

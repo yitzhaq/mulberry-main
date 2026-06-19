@@ -34,6 +34,7 @@
 #include "CConfigPluginDLL.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #pragma mark ____________________________CConfigPluginDLL
 
@@ -50,11 +51,11 @@ CConfigPluginDLL::CConfigPluginDLL()
 // Destructor
 CConfigPluginDLL::~CConfigPluginDLL()
 {
-	// Delete any allocated fields
-	delete mUserID;
-	delete mPassword;
-	delete mRealName;
-	delete mServer;
+	// Free any allocated fields (::strdup is malloc on this platform)
+	::free(const_cast<char*>(mUserID));
+	::free(const_cast<char*>(mPassword));
+	::free(const_cast<char*>(mRealName));
+	::free(const_cast<char*>(mServer));
 }
 
 // DLL entry point and dispatch

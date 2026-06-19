@@ -303,7 +303,7 @@ CMessage::CMessageCache::CMessageCache(const CMessageCache& copy)
 CMessage::CMessageCache::~CMessageCache()
 {
 	delete mEnvelope;
-	delete mHeader;
+	delete[] mHeader;
 
 	// Body owned by owner
 	if (!mOwner)
@@ -1645,7 +1645,7 @@ void CMessage::WriteToStream(costream& stream, bool dummy_files, CProgress* prog
 				// Remove header if not previously cached
 				if (!has_header)
 				{
-					delete mCache->mHeader;
+					delete[] mCache->mHeader;
 					mCache->mHeader = NULL;
 				}
 			}
