@@ -262,7 +262,7 @@ long CSCRAMPluginDLL::ProcessServerFirst(SAuthPluginData* info)
 			return eAuthMoreData;
 		}
 		else
-			AUTHERROR("illegal server data: not a string");
+			AUTHERROR("illegal data return by server: not a string");
 		break;
 	default:
 		AUTHERROR("unknown server type");
