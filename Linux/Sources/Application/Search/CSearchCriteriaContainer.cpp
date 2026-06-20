@@ -394,10 +394,17 @@ CSearchItem* CSearchCriteriaContainer::ConstructSearch() const
 		CSearchItemList flat_list;
 		for(long i = 0; i < num; i++)
 		{
-			// Insert OR/AND operator for items after the first one
-			if (i > 0)
+			// A criterion may yield no search item (e.g. a named style with an empty
+			// item, or an unset criterion) - skip it entirely, including its operator,
+			// so the flat list never contains a NULL for the merge passes below
+			CSearchItem* item = static_cast<const CSearchCriteria*>(mCriteriaItems[i])->GetSearchItem();
+			if (item == NULL)
+				continue;
+
+			// Insert OR/AND operator before each item after the first real one
+			if (!flat_list.empty())
 				flat_list.push_back(new CSearchItem(static_cast<const CSearchCriteria*>(mCriteriaItems[i])->IsOr() ? CSearchItem::eOr : CSearchItem::eAnd, new CSearchItemList));
-			flat_list.push_back(static_cast<const CSearchCriteria*>(mCriteriaItems[i])->GetSearchItem());
+			flat_list.push_back(item);
 		}
 
 		// Pass 1: Merge all AND pairs into one
@@ -488,10 +495,14 @@ CSearchItem* CSearchCriteriaContainer::ConstructSearch() const
 			}
 		}
 
-		// We should now have one item left! Return it.
-		CSearchItem* generated = flat_list.front();
-		*flat_list.begin() = NULL;
-		
+		// We should now have one item left! Return it (NULL if every criterion was empty).
+		CSearchItem* generated = NULL;
+		if (!flat_list.empty())
+		{
+			generated = flat_list.front();
+			*flat_list.begin() = NULL;
+		}
+
 		result = generated;
 	}
 	

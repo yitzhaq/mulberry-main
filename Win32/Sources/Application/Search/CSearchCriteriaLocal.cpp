@@ -814,7 +814,8 @@ CSearchItem* CSearchCriteriaLocal::GetSearchItem() const
 		{
 			cdstring title = CUnicodeUtils::GetWindowTextUTF8(mPopup7);
 			
-			const CSearchItem* found = CPreferences::sPrefs->mSearchStyles.GetValue().FindStyle(title)->GetSearchItem();
+			const CSearchStyle* found_style = CPreferences::sPrefs->mSearchStyles.GetValue().FindStyle(title);
+			const CSearchItem* found = found_style ? found_style->GetSearchItem() : NULL;
 			
 			// May need to negate
 			if (mPopup8.GetValue() == eSearchSetMethod_Is)
