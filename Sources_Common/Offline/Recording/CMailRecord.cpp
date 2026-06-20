@@ -611,9 +611,10 @@ void CMailRecord::Playback_Delete(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_DELETE", mbox->GetName()) == CErrorHandler::Cancel)
 			{
-				// This deletes the object so release the unique_ptr
+				// Remove() does not delete this temporary on a clone (playback
+				// always uses a cloned protocol, whose RemoveMbox skips the
+				// delete), so let the unique_ptr free it - do NOT release.
 				mbox->Remove();
-				mbox.release();
 				if (mLog)
 					*mLog << "* ERROR: Delete Mailbox: " << action.GetNameUIDAction().first << " - UIDValidity does not match" << os_endl << std::flush;
 				CLOG_LOGTHROW(CGeneralException, eException_FailedSafe);
@@ -657,9 +658,10 @@ void CMailRecord::Playback_Rename(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_RENAME", mbox->GetName()) == CErrorHandler::Cancel) 
 			{
-				// This deletes the object so release the unique_ptr
+				// Remove() does not delete this temporary on a clone (playback
+				// always uses a cloned protocol, whose RemoveMbox skips the
+				// delete), so let the unique_ptr free it - do NOT release.
 				mbox->Remove();
-				mbox.release();
 				if (mLog)
 					*mLog << "* ERROR: Rename Mailbox: " << action.GetRenameAction().first.first << " - UIDValidity does not match" << os_endl << std::flush;
 				CLOG_LOGTHROW(CGeneralException, eException_FailedSafe);
@@ -705,9 +707,10 @@ void CMailRecord::Playback_Subscribe(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_SUBSCRIBE", mbox->GetName()) == CErrorHandler::Cancel)
 			{
-				// This deletes the object so release the unique_ptr
+				// Remove() does not delete this temporary on a clone (playback
+				// always uses a cloned protocol, whose RemoveMbox skips the
+				// delete), so let the unique_ptr free it - do NOT release.
 				mbox->Remove();
-				mbox.release();
 				if (mLog)
 					*mLog << "* ERROR: Subscribe to Mailbox: " << action.GetNameUIDAction().first << " - UIDValidity does not match" << os_endl << std::flush;
 				CLOG_LOGTHROW(CGeneralException, eException_FailedSafe);
@@ -750,9 +753,10 @@ void CMailRecord::Playback_Unsubscribe(CMailAction& action)
 		{
 			if (CErrorHandler::PutCautionAlertRsrcStr(true, "Alerts::Playback::UIDVALIDITY_UNSUBSCRIBE", mbox->GetName()) == CErrorHandler::Cancel)
 			{
-				// This deletes the object so release the unique_ptr
+				// Remove() does not delete this temporary on a clone (playback
+				// always uses a cloned protocol, whose RemoveMbox skips the
+				// delete), so let the unique_ptr free it - do NOT release.
 				mbox->Remove();
-				mbox.release();
 				if (mLog)
 					*mLog << "* ERROR: Unsubscribe from Mailbox: " << action.GetNameUIDAction().first << " - UIDValidity does not match" << os_endl << std::flush;
 				CLOG_LOGTHROW(CGeneralException, eException_FailedSafe);
