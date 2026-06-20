@@ -236,6 +236,8 @@ long CDIGESTMD5PluginDLL::ProcessFirst(SAuthPluginData* info)
 	{
 		// Decode base64 from server in place
 	    int len = kbase64_from64(info->data, p);
+	    if (len < 0)
+	        AUTHERROR("Illegal base64 data in Step 1");
 	    info->data[len] = 0;
 
 	    // Process DIGEST-MD5
@@ -290,6 +292,8 @@ long CDIGESTMD5PluginDLL::ProcessFirstData(SAuthPluginData* info)
 	{
 		char* p = info->data;
 	    int len = kbase64_from64(info->data, p);
+	    if (len < 0)
+	        AUTHERROR("Illegal base64 data in Step 1");
 	    info->data[len] = 0;
 	}
 
@@ -652,6 +656,8 @@ long CDIGESTMD5PluginDLL::ProcessSecond(SAuthPluginData* info)
 	{
 		// Decode base64 from server in place
 	    int len = kbase64_from64(info->data, p);
+	    if (len < 0)
+	        AUTHERROR("Illegal base64 data in Step 3");
 	    info->data[len] = 0;
 
 	    // Process DIGEST-MD5
@@ -674,6 +680,8 @@ long CDIGESTMD5PluginDLL::ProcessSecondData(SAuthPluginData* info)
 	{
 		char* p = info->data;
 	    int len = kbase64_from64(info->data, p);
+	    if (len < 0)
+	        AUTHERROR("Illegal base64 data in Step 3");
 	    info->data[len] = 0;
 	}
 
