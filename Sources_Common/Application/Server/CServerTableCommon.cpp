@@ -908,7 +908,7 @@ void CServerTable::DoResetHierarchy(void)
 				default:;
 				}
 
-				if (server != proto)
+				if ((server != NULL) && (server != proto))
 				{
 					proto = server;
 					proto->InitNamespace();
