@@ -1143,17 +1143,17 @@ void CMailRecord::Playback_CopyToFull(CMailAction& action, ulvector& uids, const
 
 	// Get remote destination
 	char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();
-	CMbox* rdest = new CMbox(mPlayRemote, action.GetCopyAction().first, dir_delim, NULL);
+	std::unique_ptr<CMbox> rdest(new CMbox(mPlayRemote, action.GetCopyAction().first, dir_delim, NULL));
 
 	// Set flags
 	ulmap copy_map;
 	try
 	{
-		rsource->CopyMessage(uids, true, rdest, copy_map);
+		rsource->CopyMessage(uids, true, rdest.get(), copy_map);
 
 		// See if no UIDPLUS support
 		if (copy_map.empty())
-			DescoverUIDs(uids, copy_map, rsource, rdest);
+			DescoverUIDs(uids, copy_map, rsource, rdest.get());
 		
 		// Must remap UIDs in local destination
 		CMbox* ldest = mPlayLocal->FindMbox(action.GetCopyAction().first, true);
@@ -1208,6 +1208,7 @@ void CMailRecord::Playback_AppendTo(CMailAction& action)
 		// Get mailbox object
 		CMbox* rsource = NULL;
 		CMbox* lsource = NULL;
+		std::unique_ptr<CMbox> rsource_temp;	// owns rsource when it is a temp we allocate
 		bool remove_rsource = false;
 		bool open_lsource = false;
 
@@ -1222,6 +1223,7 @@ void CMailRecord::Playback_AppendTo(CMailAction& action)
 			// Create temp mailbox
 			char dir_delim = mPlayRemote->GetMailAccount()->GetDirDelim();
 			rsource = new CMbox(mPlayRemote, action.GetAppendAction().mName, dir_delim, NULL);
+			rsource_temp.reset(rsource);
 			remove_rsource = true;
 
 			// Source must be open
