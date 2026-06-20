@@ -232,9 +232,9 @@ CINETClient::CINETClient(const CINETClient& copy, CINETProtocol* owner)
 CINETClient::~CINETClient()
 {
 	// Always delete buffers just in case
-	delete mLineData;
+	delete[] mLineData;
 	mLineData = NULL;
-	delete mLongLine;
+	delete[] mLongLine;
 	mLongLine = NULL;
 
 	mOwner = NULL;
@@ -561,7 +561,7 @@ void CINETClient::Reset()
 void CINETClient::Close()
 {
 	// Delete buffers
-	delete mLineData;
+	delete[] mLineData;
 	mLineData = NULL;
 
 	// Set status
@@ -1654,7 +1654,7 @@ char* CINETClient::INETGetLine()
 	// Delete any existing long line buffer
 	if (mLongLine)
 	{
-		delete mLongLine;
+		delete[] mLongLine;
 		mLongLine = NULL;
 	}
 
@@ -1742,7 +1742,7 @@ void CINETClient::INETProcess()
 		// Clean up any long lines
 		if (mLongLine)
 		{
-			delete mLongLine;
+			delete[] mLongLine;
 			mLongLine = NULL;
 		}
 

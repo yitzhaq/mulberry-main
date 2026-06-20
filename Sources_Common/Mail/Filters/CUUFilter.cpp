@@ -106,7 +106,7 @@ CUUFilter::CUUFilter(LStream* aStream, CProgress* progress) : CCreateFileFilter(
 
 CUUFilter::~CUUFilter()
 {
-	delete mLineBuffer;
+	delete[] mLineBuffer;
 	mLineBuffer = NULL;
 	mLinePos = NULL;
 	mDecodeLookup = NULL;

@@ -81,7 +81,7 @@ CBinHexFilter::CBinHexFilter(LStream* aStream, CProgress* progress) : CCreateFil
 
 CBinHexFilter::~CBinHexFilter()
 {
-	delete mFileOutBuffer;
+	delete[] mFileOutBuffer;
 	mFileOutBuffer = NULL;
 }
 

@@ -124,7 +124,7 @@ CFilterEndls::CFilterEndls(LStream* aStream, CProgress* progress) : CFilter(aStr
 
 CFilterEndls::~CFilterEndls()
 {
-	delete mLineBuffer;
+	delete[] mLineBuffer;
 	mLineBuffer = NULL;
 	mLinePos = NULL;
 }

@@ -450,7 +450,7 @@ CQPFilter::CQPFilter(i18n::ECharsetCode charset, bool is_text, bool is_flowed, b
 
 CQPFilter::~CQPFilter()
 {
-	delete mTempBuffer;
+	delete[] mTempBuffer;
 	mTempBuffer = NULL;
 }
 
