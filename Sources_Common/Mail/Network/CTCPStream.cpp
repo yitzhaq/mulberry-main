@@ -405,7 +405,16 @@ int CTCPStreamBuf::overflow(int c)
 
 	// Check if we are at end of buffer
 	if (!(pptr() && (pptr() < epptr())))
+	{
 		flush_output();
+
+		// flush_output() only re-establishes the put area when the stream is open
+		// and had pending data; if there is still no usable put pointer (e.g. a
+		// write to an unopened stream) signal failure rather than dereferencing
+		// a NULL pptr()
+		if (!(pptr() && (pptr() < epptr())))
+			return CTCPStreamBuf::traits_type::eof();
+	}
 
 	// store char
 	*pptr() = c;
