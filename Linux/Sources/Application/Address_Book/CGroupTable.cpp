@@ -76,9 +76,6 @@ CGroupTable::CGroupTable(JXScrollbarSet* scrollbarSet,
 	mEditAction = NULL;
 	mReplaceAction = NULL;
 
-	mLastTyping = 0UL;
-	mLastChars[0] = 0;
-
 	mTableGeometry = new CTableRowGeometry(this, 128, 18);
 	mTableSelector = new CTableRowSelector(this);
 	mTableStorage = new LTableArrayStorage(this, sizeof(SGroupTableItem));

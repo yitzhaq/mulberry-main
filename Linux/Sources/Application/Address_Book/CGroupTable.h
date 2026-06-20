@@ -138,8 +138,6 @@ private:
 	CAddressBook*				mAdbk;
 	CAddressBookView*			mTableView;
 	bool						mDirty;
-	unsigned long				mLastTyping;							// Time of last typed character
-	char						mLastChars[32];							// Last characters typed
 	CGroupTableEditAction*		mEditAction;							// Action to store edits
 	CGroupTableReplaceAction*	mReplaceAction;							// Action to store replacements
 
