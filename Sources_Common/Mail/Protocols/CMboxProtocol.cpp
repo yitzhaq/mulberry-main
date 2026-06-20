@@ -3345,7 +3345,7 @@ void CMboxProtocol::GoOffline(bool force, bool sync_list)
 		SwitchMailboxes(this);
 }
 
-void CMboxProtocol::GoOnline(bool updating_only)
+void CMboxProtocol::GoOnline()
 {
 	// Reset mailbox state
 	SwitchMailboxes(NULL);

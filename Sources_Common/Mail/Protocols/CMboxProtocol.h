@@ -258,7 +258,7 @@ public:
 	virtual void	InitDisconnect();
 	virtual const cdstring& GetOfflineDefaultDirectory();
 	virtual void	GoOffline(bool force, bool sync_list);
-	virtual void	GoOnline(bool updating_only = false);
+	virtual void	GoOnline();
 			bool	DoPlayback(CProgress* progress);
 	virtual void	SetSynchronising();						// Set into synchronising mode
 

@@ -2464,7 +2464,7 @@ void CMailAccountManager::GoOnline(bool playback, bool update, bool do_pop3, CPr
 				CLOG_LOGTHROW(CGeneralException, -1L);
 				throw CGeneralException(-1L);
 			}
-			(*iter)->GoOnline(update);
+			(*iter)->GoOnline();
 		}
 		
 		// Special for POP3 and update
