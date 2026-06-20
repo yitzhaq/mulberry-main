@@ -48,6 +48,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 #include "MyCFString.h"
@@ -2307,11 +2308,11 @@ unsigned long CRFC822::ParseDate(char* txt)
 unsigned long CRFC822::GetDayOfWeek(char* day)
 {
 	::strupper(day);
-#ifdef sparc
-	long temp = (day[0] << 24) | (day[1] << 16) | (day[2] << 8) | day[3];
-#else
-	long temp = *((long*) day);
-#endif
+	// Read exactly 4 bytes via memcpy: avoids unaligned access and, on LP64,
+	// an 8-byte over-read of *((long*)day); ntohl normalises to network byte
+	// order to match the multi-character literals below.
+	uint32_t temp;
+	::memcpy(&temp, day, sizeof(temp));
 	long test = ntohl(temp) & 0xFFFFFF00;
 	switch(test)
 	{
@@ -2339,11 +2340,11 @@ unsigned long CRFC822::GetDayOfWeek(char* day)
 unsigned long CRFC822::GetMonth(char* month)
 {
 	::strupper(month);
-#ifdef sparc
-	long temp = (month[0] << 24) | (month[1] << 16) | (month[2] << 8) | month[3];
-#else
-	long temp = *((long*) month);
-#endif
+	// Read exactly 4 bytes via memcpy: avoids unaligned access and, on LP64,
+	// an 8-byte over-read of *((long*)month); ntohl normalises to network byte
+	// order to match the multi-character literals below.
+	uint32_t temp;
+	::memcpy(&temp, month, sizeof(temp));
 	long test = ntohl(temp) & 0xFFFFFF00;
 	switch(test)
 	{
