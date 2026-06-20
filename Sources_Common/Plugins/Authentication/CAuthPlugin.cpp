@@ -348,6 +348,14 @@ bool CAuthPlugin::DoAuthentication(const CAuthenticator* acct_auth,
 			{
 				// Read literal
 				long len = *(long*) buffer;
+				if ((len < 0) || ((size_t) len >= buflen))
+				{
+					// Reject oversized/invalid literal length from server
+					stream << "*" << net_endl << std::flush;
+					result = false;
+					done = true;
+					break;
+				}
 				if (len)
 				{
 					stream.read(buffer, len);
