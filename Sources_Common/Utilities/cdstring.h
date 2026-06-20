@@ -93,7 +93,7 @@ public:
 	cdstring(const cdstring& copy)							// Copy construct
 		{ _init(); _allocate(copy._str); }
 	cdstring(const cdstring& copy, size_type pos, size_type n = npos)
-		{ _init(); _allocate(copy._str + pos, n); }
+		{ _init(); if (pos < copy.length()) _allocate(copy._str + pos, n); }
 	cdstring(const std::string& copy)								// Construct from MSL string
 		{ _init(); _allocate(copy.data(), copy.length()); }
 	cdstring(const char* buf, size_type size)					// Construct from data

@@ -174,7 +174,7 @@ int unistrncmp(const unichar_t * str1, const char * str2, size_t n)
 int unistrcmpnocase(const unichar_t* s1, const unichar_t* s2)
 {
 	if (!s1 || !s2)
-		return s1 - s2;
+		return (s1 == NULL) ? (s2 == NULL ? 0 : -1) : 1;
 
 #if !__POWERPC__
 
@@ -206,7 +206,7 @@ int unistrcmpnocase(const unichar_t* s1, const unichar_t* s2)
 int unistrncmpnocase(const unichar_t* s1, const unichar_t* s2, size_t n)
 {
 	if (!s1 || !s2)
-		return s1 - s2;
+		return (s1 == NULL) ? (s2 == NULL ? 0 : -1) : 1;
 
 #if !__POWERPC__
 
@@ -245,7 +245,7 @@ int unistrncmpnocase(const unichar_t* s1, const unichar_t* s2, size_t n)
 int unistrcmpnocase(const unichar_t* s1, const char* s2)
 {
 	if (!s1 || !s2)
-		return (const char*)s1 - s2;
+		return (s1 == NULL) ? (s2 == NULL ? 0 : -1) : 1;
 
 #if !__POWERPC__
 
@@ -277,7 +277,7 @@ int unistrcmpnocase(const unichar_t* s1, const char* s2)
 int unistrncmpnocase(const unichar_t* s1, const char* s2, size_t n)
 {
 	if (!s1 || !s2)
-		return (const char*)s1 - s2;
+		return (s1 == NULL) ? (s2 == NULL ? 0 : -1) : 1;
 
 #if !__POWERPC__
 

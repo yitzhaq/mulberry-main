@@ -130,7 +130,7 @@ void strplacespace(char* s1, char c)
 int strcmpnocase(const char* s1,const char* s2)
 {
 	if (!s1 || !s2)
-		return s1 - s2;
+		return (s1 == NULL) ? (s2 == NULL ? 0 : -1) : 1;
 
 #if !__POWERPC__
 
@@ -161,7 +161,7 @@ int strcmpnocase(const char* s1,const char* s2)
 int strncmpnocase(const char* s1,const char* s2, size_t n)
 {
 	if (!s1 || !s2)
-		return s1 - s2;
+		return (s1 == NULL) ? (s2 == NULL ? 0 : -1) : 1;
 
 #if !__POWERPC__
 
