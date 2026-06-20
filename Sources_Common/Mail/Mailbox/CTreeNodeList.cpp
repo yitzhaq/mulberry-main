@@ -532,7 +532,7 @@ CTreeNode* CTreeNodeList::GetParentNode(const CTreeNode* node)
 	if (wd_level)
 	{
 		// Step back looking for next lower WD
-		while(((*--found)->GetWDLevel() != wd_level - 1) && (found != begin())) {}
+		while((found != begin()) && ((*--found)->GetWDLevel() != wd_level - 1)) {}
 
 		// Got it
 		return *found;
