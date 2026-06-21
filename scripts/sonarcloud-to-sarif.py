@@ -4,6 +4,7 @@
 import json
 import os
 import sys
+import time
 import urllib.request
 import urllib.error
 
@@ -11,6 +12,8 @@ PROJECT_KEY = "yitzhaq_mulberry-main"
 API_BASE = "https://sonarcloud.io/api"
 PAGE_SIZE = 500
 MAX_RESULTS = 5000  # GitHub SARIF upload limit
+REPORT_TASK = os.environ.get("SONAR_REPORT_TASK", ".scannerwork/report-task.txt")
+CE_WAIT_TIMEOUT = 900  # seconds to wait for SonarCloud Compute Engine processing
 
 SEVERITY_MAP = {
     "BLOCKER": "error",
@@ -26,6 +29,52 @@ IMPACT_SEVERITY_MAP = {
     "MEDIUM": "warning",
     "LOW": "note",
 }
+
+
+def api_get(url, token):
+    req = urllib.request.Request(url)
+    req.add_header("Authorization", f"Bearer {token}")
+    with urllib.request.urlopen(req) as resp:
+        return json.loads(resp.read().decode())
+
+
+def wait_for_ce_task(token):
+    """Block until the analysis this CI run just submitted is fully processed.
+
+    The scanner writes .scannerwork/report-task.txt with the Compute Engine task
+    id; the issues API only reflects the new analysis once that task reaches
+    SUCCESS. Without this wait the export races the (asynchronous) CE processing
+    and reads the PREVIOUS analysis, so fixed findings linger in the Security tab.
+    """
+    if not os.path.exists(REPORT_TASK):
+        print(f"warning: {REPORT_TASK} not found; exporting without CE wait "
+              f"(results may lag one analysis)", file=sys.stderr)
+        return
+    props = {}
+    for line in open(REPORT_TASK):
+        line = line.strip()
+        if "=" in line:
+            k, v = line.split("=", 1)
+            props[k] = v
+    task_id = props.get("ceTaskId")
+    if not task_id:
+        print("warning: no ceTaskId in report-task.txt; exporting without CE wait",
+              file=sys.stderr)
+        return
+
+    deadline = time.monotonic() + CE_WAIT_TIMEOUT
+    while True:
+        status = api_get(f"{API_BASE}/ce/task?id={task_id}", token).get("task", {}).get("status")
+        print(f"CE task {task_id}: {status}")
+        if status == "SUCCESS":
+            return
+        if status in ("FAILED", "CANCELED"):
+            print(f"warning: CE task ended {status}; exporting prior analysis", file=sys.stderr)
+            return
+        if time.monotonic() >= deadline:
+            print("warning: timed out waiting for CE task; results may lag", file=sys.stderr)
+            return
+        time.sleep(5)
 
 
 def fetch_issues(token):
@@ -92,12 +141,22 @@ def issue_to_result(issue):
         if region:
             location["physicalLocation"]["region"] = region
 
-    return {
+    result = {
         "ruleId": issue.get("rule", "unknown"),
         "level": issue_severity(issue),
         "message": {"text": issue.get("message", "No message")},
         "locations": [location],
     }
+
+    # Stable fingerprint so GitHub tracks each SonarCloud issue 1:1 across SARIF
+    # uploads instead of closing the whole batch and re-opening fresh alerts every
+    # scan. The SonarCloud issue key is globally unique and persists across
+    # analyses while the issue stays open.
+    key = issue.get("key")
+    if key:
+        result["partialFingerprints"] = {"sonarIssueKey/v1": key}
+
+    return result
 
 
 def build_sarif(results):
@@ -123,6 +182,8 @@ def main():
     if not token:
         print("Error: SONAR_TOKEN environment variable not set", file=sys.stderr)
         sys.exit(1)
+
+    wait_for_ce_task(token)
 
     issues = fetch_issues(token)
     print(f"Fetched {len(issues)} issues total")
