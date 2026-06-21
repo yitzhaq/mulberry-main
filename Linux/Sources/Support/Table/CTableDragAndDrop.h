@@ -96,8 +96,7 @@ protected:
 	CFlavorsList	mDragFlavors;				// List of flavors to send
   	CFlavorsList	mDropFlavors;				// List of flavors to accept
 	JArray<Atom>	mCurrentDropFlavors;   		// List of flavors of the current drop
-	bool			mIsDropTarget; 				//This is in CTable on windows.  Don't know if
-                             					//we need it there or if we need it at all
+												// mIsDropTarget lives in the base CTable (as on Win32)
 
 	//To do drag and drop we need a bit more info than
 	//the LClickCell way of doing things allows us.
