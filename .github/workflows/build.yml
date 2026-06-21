@@ -184,10 +184,6 @@ jobs:
         print(f'Total results: {results}')
         "
 
-        # Stable per-finding fingerprints so dismissals persist across uploads
-        # (see scripts/sast-sarif-fingerprint.py).
-        python3 scripts/sast-sarif-fingerprint.py "${{ github.workspace }}/codechecker.sarif"
-
     - name: Upload SARIF to GitHub Security
       if: always()
       uses: github/codeql-action/upload-sarif@v4
@@ -307,10 +303,6 @@ jobs:
           -t json -n relative -R toRelative -r "$PWD"
         plog-converter relative.json \
           -t sarif -n pvs-report -r file://
-
-        # Stable per-finding fingerprints so dismissals persist across uploads
-        # (see scripts/sast-sarif-fingerprint.py).
-        python3 scripts/sast-sarif-fingerprint.py pvs-report.sarif
 
     - name: Upload SARIF to GitHub Security
       if: steps.check-creds.outputs.skip != 'true'
