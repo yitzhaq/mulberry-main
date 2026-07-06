@@ -1381,9 +1381,16 @@ void CMessageView::ShowSubMessage(CAttachment* attach, Rect zoom_from)
 		// Create the message window
 		newWindow = (CMessageWindow*) CMessageWindow::CreateWindow(paneid_MessageWindow, CMulberryApp::sApp);
 		newWindow->SetMessage(attach->GetMessage());
-		newWindow->Show();
 
-		attach->SetSeen(true);
+		// SetMessage can run a nested event loop (auto verify/decrypt,
+		// body fetch) during which the window or its mailbox may be
+		// destroyed - only show it if it still exists
+		if (CMessageWindow::WindowExists(newWindow))
+		{
+			newWindow->Show();
+
+			attach->SetSeen(true);
+		}
 	}
 	catch (CNetworkException& ex)
 	{

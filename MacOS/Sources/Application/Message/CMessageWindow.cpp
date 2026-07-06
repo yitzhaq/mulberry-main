@@ -1482,29 +1482,35 @@ void CMessageWindow::ShowSubMessage(CAttachment* attach, Rect zoom_from)
 		newWindow = (CMessageWindow*) CMessageWindow::CreateWindow(paneid_MessageWindow, CMulberryApp::sApp);
 		newWindow->SetMessage(attach->GetMessage());
 
-		// Stagger relative to this
-		Rect frame;
-		CalcLocalFrameRect(frame);
-		LocalToPortPoint(topLeft(frame));
-		PortToGlobalPoint(topLeft(frame));
-		::OffsetRect(&frame, 20, 20);
-		newWindow->DoSetPosition(topLeft(frame));
-
-		if (!::EmptyRect(&zoom_from))
+		// SetMessage can run a nested event loop (auto verify/decrypt,
+		// body fetch) during which the window or its mailbox may be
+		// destroyed - only show it if it still exists
+		if (CMessageWindow::WindowExists(newWindow))
 		{
-			Rect zoom_to;
-			newWindow->CalcLocalFrameRect(zoom_to);
-			newWindow->LocalToPortPoint(topLeft(zoom_to));
-			newWindow->LocalToPortPoint(botRight(zoom_to));
-			newWindow->PortToGlobalPoint(topLeft(zoom_to));
-			newWindow->PortToGlobalPoint(botRight(zoom_to));
+			// Stagger relative to this
+			Rect frame;
+			CalcLocalFrameRect(frame);
+			LocalToPortPoint(topLeft(frame));
+			PortToGlobalPoint(topLeft(frame));
+			::OffsetRect(&frame, 20, 20);
+			newWindow->DoSetPosition(topLeft(frame));
 
-			::ZoomRects(&zoom_from, &zoom_to, 8, kZoomAccelerate);
+			if (!::EmptyRect(&zoom_from))
+			{
+				Rect zoom_to;
+				newWindow->CalcLocalFrameRect(zoom_to);
+				newWindow->LocalToPortPoint(topLeft(zoom_to));
+				newWindow->LocalToPortPoint(botRight(zoom_to));
+				newWindow->PortToGlobalPoint(topLeft(zoom_to));
+				newWindow->PortToGlobalPoint(botRight(zoom_to));
+
+				::ZoomRects(&zoom_from, &zoom_to, 8, kZoomAccelerate);
+			}
+
+			newWindow->Show();
+
+			attach->SetSeen(true);
 		}
-
-		newWindow->Show();
-
-		attach->SetSeen(true);
 	}
 	catch (CNetworkException& ex)
 	{

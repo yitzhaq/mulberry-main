@@ -471,18 +471,35 @@ bool CMailboxTable::OpenMailMessage(TableIndexT row, bool* option_key)
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
 			newWindow = (CMessageWindow*) CMessageWindow::CreateWindow(paneid_MessageWindow, CMulberryApp::sApp);
 			newWindow->SetMessage(theMsg);
-			newWindow->Show();
-			newWindow->PostSetMessage();		// Make sure visible processing occurs
+
+			// SetMessage can run a nested event loop (auto verify/decrypt,
+			// body fetch) during which the window or its mailbox may be
+			// destroyed - only show it if it still exists
+			if (CMessageWindow::WindowExists(newWindow))
+			{
+				newWindow->Show();
+				newWindow->PostSetMessage();		// Make sure visible processing occurs
+			}
 #elif __dest_os == __win32_os
 			newWindow = CMessageWindow::ManualCreate();
 			newWindow->SetMessage(theMsg);
-			newWindow->GetParentFrame()->ShowWindow(SW_SHOW);
+
+			// SetMessage can run a nested event loop (auto verify/decrypt,
+			// body fetch) during which the window or its mailbox may be
+			// destroyed - only show it if it still exists
+			if (CMessageWindow::WindowExists(newWindow))
+				newWindow->GetParentFrame()->ShowWindow(SW_SHOW);
 			//newWindow->GetText()->UpdateMargins();
 			//newWindow->PostSetMessage();
 #elif __dest_os == __linux_os
 			newWindow = CMessageWindow::ManualCreate();
 			newWindow->SetMessage(theMsg);
-			newWindow->GetWindow()->Show();
+
+			// SetMessage can run a nested event loop (auto verify/decrypt,
+			// body fetch) during which the window or its mailbox may be
+			// destroyed - only show it if it still exists
+			if (CMessageWindow::WindowExists(newWindow))
+				newWindow->GetWindow()->Show();
 #else
 #error __dest_os
 #endif

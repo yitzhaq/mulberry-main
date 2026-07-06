@@ -956,16 +956,22 @@ void CMessageWindow::ShowSubMessage(CAttachment* attach)
 		// Create the message window
 		newWindow = CMessageWindow::ManualCreate();
 		newWindow->SetMessage(attach->GetMessage());
-		
-		// Stagger relative to this
-		JRect frame = GetWindow()->GetFrame();
-		frame.Shift(20, 20);
-		newWindow->GetWindow()->Place(frame.left, frame.top);
-		newWindow->GetWindow()->SetSize(frame.width(), frame.height());
-		newWindow->GetWindow()->Show();
-		//newWindow->GetText()->UpdateMargins();
-		
-		attach->SetSeen(true);
+
+		// SetMessage can run a nested event loop (auto verify/decrypt,
+		// body fetch) during which the window or its mailbox may be
+		// destroyed - only show it if it still exists
+		if (CMessageWindow::WindowExists(newWindow))
+		{
+			// Stagger relative to this
+			JRect frame = GetWindow()->GetFrame();
+			frame.Shift(20, 20);
+			newWindow->GetWindow()->Place(frame.left, frame.top);
+			newWindow->GetWindow()->SetSize(frame.width(), frame.height());
+			newWindow->GetWindow()->Show();
+			//newWindow->GetText()->UpdateMargins();
+
+			attach->SetSeen(true);
+		}
 	}
 	catch (...)
 	{

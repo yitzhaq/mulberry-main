@@ -1079,9 +1079,16 @@ void CMessageView::ShowSubMessage(CAttachment* attach)
 		// Create the message window
 		newWindow = CMessageWindow::ManualCreate();
 		newWindow->SetMessage(attach->GetMessage());
-		newWindow->GetWindow()->Show();
-		
-		attach->SetSeen(true);
+
+		// SetMessage can run a nested event loop (auto verify/decrypt,
+		// body fetch) during which the window or its mailbox may be
+		// destroyed - only show it if it still exists
+		if (CMessageWindow::WindowExists(newWindow))
+		{
+			newWindow->GetWindow()->Show();
+
+			attach->SetSeen(true);
+		}
 	}
 	catch (...)
 	{
