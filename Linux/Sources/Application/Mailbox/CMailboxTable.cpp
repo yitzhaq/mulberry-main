@@ -109,6 +109,7 @@ void CMailboxTable::InitMailboxTable(void)
 {
 	// Zero out
 	mMbox = NULL;
+	mCopyFromMbox = NULL;
 	mMboxError = false;
 	mListChanging = false;
 	mSelectionPreserved = false;
