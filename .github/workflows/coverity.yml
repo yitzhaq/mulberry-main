@@ -5,31 +5,48 @@ on:
     - cron: '23 5 * * 1'
   workflow_dispatch:
 
+# Never run two scans at once (Coverity enforces per-week build quotas).
+concurrency:
+  group: coverity-scan
+  cancel-in-progress: false
+
 jobs:
   coverity:
     name: Analyze (Coverity Scan)
     runs-on: ubuntu-latest
-    if: ${{ secrets.COVERITY_SCAN_TOKEN != '' }}
+    env:
+      # Case-sensitive; must match the project name registered on scan.coverity.com.
+      # Override with a repo/org variable COVERITY_SCAN_PROJECT if it differs.
+      COVERITY_SCAN_PROJECT: ${{ vars.COVERITY_SCAN_PROJECT || github.repository }}
 
     steps:
-    - name: Check for credentials
-      id: check-creds
+    # Gate the whole job on credentials. When the secrets are absent the job
+    # SKIPS cleanly (every step below is conditional) and the run stays green —
+    # so an unconfigured schedule never sends a "run failed" e-mail. Only a
+    # genuine build break (the capture step) turns the run red.
+    # NB: `secrets` is not a valid context in a job-level `if:` (that alone
+    # makes every run error out), so the gate lives in this step instead.
+    - name: Gate on Coverity credentials
+      id: gate
+      env:
+        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        EMAIL: ${{ secrets.COVERITY_SCAN_EMAIL }}
       run: |
-        if [ -z "${{ secrets.COVERITY_SCAN_TOKEN }}" ]; then
-          echo "skip=true" >> "$GITHUB_OUTPUT"
-          echo "::notice::Coverity Scan skipped — COVERITY_SCAN_TOKEN secret not set"
+        if [ -z "$TOKEN" ] || [ -z "$EMAIL" ]; then
+          echo "::notice::Coverity Scan skipped — COVERITY_SCAN_TOKEN / COVERITY_SCAN_EMAIL not set."
+          echo "run=false" >> "$GITHUB_OUTPUT"
         else
-          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "run=true" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Checkout repository
-      if: steps.check-creds.outputs.skip != 'true'
+      if: steps.gate.outputs.run == 'true'
       uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Install dependencies
-      if: steps.check-creds.outputs.skip != 'true'
+      if: steps.gate.outputs.run == 'true'
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -41,17 +58,77 @@ jobs:
           pkg-config python3 unicode-cldr-core zlib1g-dev
 
     - name: Configure
-      if: steps.check-creds.outputs.skip != 'true'
+      if: steps.gate.outputs.run == 'true'
       run: |
         autoconf
         ./configure
 
-    - name: Run Coverity Scan
-      if: steps.check-creds.outputs.skip != 'true'
-      uses: vapier/coverity-scan-action@v1
-      with:
-        token: ${{ secrets.COVERITY_SCAN_TOKEN }}
-        email: ${{ secrets.COVERITY_SCAN_EMAIL }}
-        command: make -j$(nproc)
-        version: ${{ github.sha }}
-        description: "${{ github.event.head_commit.message }} (${{ github.ref_name }})"
+    - name: Download Coverity Build Tool
+      if: steps.gate.outputs.run == 'true'
+      env:
+        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+      run: |
+        set -euo pipefail
+        wget -nv -O cov-tool.tgz \
+          "https://scan.coverity.com/download/$(uname)" \
+          --post-data "project=${COVERITY_SCAN_PROJECT}&token=${TOKEN}"
+        mkdir -p "$HOME/cov-analysis"
+        tar xzf cov-tool.tgz --strip-components=1 -C "$HOME/cov-analysis"
+        echo "$HOME/cov-analysis/bin" >> "$GITHUB_PATH"
+
+    # Build the vendor libraries (JX + its bundled ACE) and the generated
+    # prerequisites OUTSIDE the Coverity capture. cov-build only emits what is
+    # actually (re)compiled while it runs, so pre-building these leaves the
+    # subsequent SKIPJX build to emit ONLY our code — Sources_Common, the Linux
+    # platform layer, the plug-ins, and the Tier-1 libs (CICalendar/vCard/
+    # XMLLib). ACE is the bulk of both the artifact size (keeps cov-int under
+    # Coverity's 500MB upload cap) and the out-of-scope finding noise.
+    - name: Pre-build JX/ACE + generated files (excluded from the scan)
+      if: steps.gate.outputs.run == 'true'
+      run: |
+        set -euo pipefail
+        make timezones emoji-table -j"$(nproc)"
+        make -C Libraries jx -j"$(nproc)"
+
+    # The ONE step whose failure is meant to notify: a genuine build break.
+    - name: Coverity build capture (our code only)
+      if: steps.gate.outputs.run == 'true'
+      run: |
+        set -euo pipefail
+        cov-configure --gcc
+        cov-build --dir cov-int make SKIPJX=yes -j"$(nproc)"
+        if ! grep -qi "compilation units" cov-int/build-log.txt; then
+          echo "::warning::Coverity captured no compilation units — check the SKIPJX scoping."
+        fi
+
+    # Submission is deliberately non-fatal: quota, size, or transient scan-
+    # service errors annotate the run but do NOT fail it, so they never trigger
+    # a failure e-mail. Only the build capture above does that.
+    - name: Submit to Coverity Scan (non-fatal)
+      if: steps.gate.outputs.run == 'true'
+      continue-on-error: true
+      env:
+        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        EMAIL: ${{ secrets.COVERITY_SCAN_EMAIL }}
+      run: |
+        set -uo pipefail
+        tar czf cov-int.tgz cov-int
+        SIZE=$(stat -c%s cov-int.tgz)
+        echo "cov-int.tgz = $((SIZE / 1024 / 1024)) MB"
+        if [ "$SIZE" -gt $((500 * 1024 * 1024)) ]; then
+          echo "::error::cov-int.tgz is $((SIZE / 1024 / 1024)) MB, over Coverity's 500MB multipart limit. Tighten the scan scope or switch this step to the large-build upload endpoint (see the project's Submit Build page). Not failing the run."
+          exit 0
+        fi
+        code=$(curl --silent --write-out '%{http_code}' --output /tmp/cov-resp.txt \
+          --form project="${COVERITY_SCAN_PROJECT}" \
+          --form token="${TOKEN}" \
+          --form email="${EMAIL}" \
+          --form file=@cov-int.tgz \
+          --form version="${GITHUB_SHA}" \
+          --form description="${GITHUB_REF_NAME} @ ${GITHUB_SHA}" \
+          "https://scan.coverity.com/builds")
+        echo "Coverity responded HTTP $code"
+        cat /tmp/cov-resp.txt 2>/dev/null || true
+        if [ "$code" != "200" ] && [ "$code" != "201" ]; then
+          echo "::error::Coverity submission failed (HTTP $code) — see response above. Not failing the run per policy."
+        fi
