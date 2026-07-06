@@ -126,6 +126,11 @@ void CTextDisplay::CTextDisplayX()
 	mRTSpell.busy = false;
 	mRTSpell.enabled = false;
 	mRTSpell.pending = false;
+	mRTSpell.state = RTSpell::eNotInWord;
+	mRTSpell.cursorPos = 0;
+	mRTSpell.charCount = 0;
+	mRTSpell.wordStartPos = 0;
+	mRTSpell.contextWordPos = 0;
 	mSpellPopup = NULL;
 }
 
