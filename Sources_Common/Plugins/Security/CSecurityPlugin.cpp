@@ -852,8 +852,7 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 		if (mode != eSign)
 		{
 			if (do_header_protection && !protected_headers.empty())
-				InsertProtectedHeadersFile(fin_path, protected_headers,
-					(mode == eEncryptSign) ? &hp_outer_headers : NULL);
+				InsertProtectedHeadersFile(fin_path, protected_headers, &hp_outer_headers);
 			if (mode == eEncryptSign)
 				StripTrailingWhitespaceFile(fin_path);
 		}
@@ -896,8 +895,7 @@ void CSecurityPlugin::ProcessBody(CMessage* msg, ESecureMessage mode, const char
 		if (mode != eSign)
 		{
 			if (do_header_protection && !protected_headers.empty())
-				InsertProtectedHeaders(data, protected_headers,
-					(mode == eEncryptSign) ? &hp_outer_headers : NULL);
+				InsertProtectedHeaders(data, protected_headers, &hp_outer_headers);
 			if (mode == eEncryptSign)
 				StripTrailingWhitespace(data);
 		}

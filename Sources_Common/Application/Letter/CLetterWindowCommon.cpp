@@ -656,7 +656,7 @@ void CLetterWindow::SetSendAgainMessages(CMessageList* msgs)
 	mSendAgain = true;
 
 	// Seed draft UID for REPLACE (RFC 8508)
-	if (mMsgs && mMsgs->size() == 1)
+	if (mMsgs->size() == 1)
 	{
 		CMessage* msg = mMsgs->front();
 		if (msg->IsDraft() && msg->GetMbox())

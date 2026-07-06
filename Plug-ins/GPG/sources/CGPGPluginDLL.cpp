@@ -2250,7 +2250,7 @@ long CGPGPluginDLL::ProcessKeyListOutput(cdstring& output)
 
 			cdstrvect empty;
 			mData->mKeyIDMap["current"] = empty;
-			mData->mKeyIDMap[mData->mLastID] = empty;
+			mData->mKeyIDMap[mData->mLastID] = std::move(empty);
 		}
 		else if ((type == "ssb" || type == "sub") && fields.size() > 4)
 		{

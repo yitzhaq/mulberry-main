@@ -517,8 +517,8 @@ void CIMAPClient::_PostProcess()
 
 	// [CLOSED] — previously selected mailbox was implicitly closed
 	// by this SELECT/EXAMINE (RFC 7162 §3.2.11). Mulberry handles
-	// this via SetCurrentMbox clearing mCurrent_mbox before SELECT.
-	mLastResponse.CheckUntagged(cCLOSED);
+	// this via SetCurrentMbox clearing mCurrent_mbox before SELECT,
+	// so no explicit action is taken on the [CLOSED] response code.
 
 	// [UIDNOTSTICKY] — mailbox does not support persistent UIDs (RFC 9051 §7.1)
 	if (mLastResponse.CheckUntagged(cUIDNOTSTICKY))
@@ -2440,7 +2440,7 @@ void CIMAPClient::_SearchMbox(const CSearchItem* spec, ulvector* results, bool u
 		if (save && mHasSearchRes && mLastResponse.code == cTagBAD)
 		{
 			mSearchSaved = prevSearchSaved;
-			mSavedSearchResults = prevSavedResults;
+			mSavedSearchResults = std::move(prevSavedResults);
 		}
 
 		// NOTSAVED: server could not save search results (RFC 9051 §6.4.4.3)
@@ -2540,7 +2540,7 @@ void CIMAPClient::_SearchMboxContext(const CSearchItem* spec, ulvector* results,
 		if (save && mHasSearchRes && mLastResponse.code == cTagBAD)
 		{
 			mSearchSaved = prevSearchSaved;
-			mSavedSearchResults = prevSavedResults;
+			mSavedSearchResults = std::move(prevSavedResults);
 		}
 
 		// NOTSAVED: server could not save search results (RFC 9051 §6.4.4.3)
@@ -7358,7 +7358,7 @@ void CIMAPClient::IMAPParseUrlFetch(char** txt)
 			}
 		}
 
-		mUrlFetchResults->push_back(item);
+		mUrlFetchResults->push_back(std::move(item));
 		while (**txt == ' ') (*txt)++;
 	}
 }

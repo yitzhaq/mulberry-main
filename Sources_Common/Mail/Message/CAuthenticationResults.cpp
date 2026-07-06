@@ -206,7 +206,7 @@ bool CAuthenticationResults::ParseMethodResult(const char*& p)
 			method.mProperties.insert(cdstrmap::value_type(ptype_property, pvalue));
 	}
 
-	mResults.push_back(method);
+	mResults.push_back(std::move(method));
 	return true;
 }
 
