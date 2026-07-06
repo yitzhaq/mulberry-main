@@ -38,8 +38,18 @@ CEditFormattedTextDisplay::CEditFormattedTextDisplay(
 	: CFormattedTextDisplay(enclosure, hSizing, vSizing, x, y, w, h)
 {
 	mHandleClick = false;
-	
+
 	mEnriched = NULL;
+
+	mBlackIndex = 0;
+	mRedIndex = 0;
+	mGreenIndex = 0;
+	mBlueIndex = 0;
+	mYellowIndex = 0;
+	mCyanIndex = 0;
+	mMagentaIndex = 0;
+	mMulberryIndex = 0;
+	mWhiteIndex = 0;
 }
 
 CEditFormattedTextDisplay::~CEditFormattedTextDisplay()
