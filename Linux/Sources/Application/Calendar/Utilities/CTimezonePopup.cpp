@@ -106,6 +106,9 @@ void CTimezonePopup::NoFloating()
 	RemoveItem(eNoTimezone);
 	mNoFloating = true;
 
+	// Current value now indexes a shifted item - clear it so the title is refreshed
+	SetValue(0);
+
 	// Always start with the current user default
 	SetTimezone(iCal::CICalendarManager::sICalendarManager->GetDefaultTimezone());
 }
