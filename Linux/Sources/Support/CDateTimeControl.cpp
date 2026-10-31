@@ -24,8 +24,11 @@
 #include <jASCIIConstants.h>
 #include <jGlobals.h>
 
+#include <ctype.h>
+#include <langinfo.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 CDateTimeControl::CDateTimeControl(const JCharacter* text, JXContainer* enclosure,
 								JXTextMenu* menu,
@@ -97,52 +100,66 @@ void CDateTimeControl::SetMode(EDateTimeMode dtmode)
 	switch(dtmode)
 	{
 	case eDate:
-	{
 		// Determine whether to use DDMMYYYY or MMDDYYYY
-
-		// Get string time in locale format
-		char s[64];
-		time_t now = ::time(NULL);
-		struct tm* now_tm = ::localtime(&now);
-		now_tm->tm_mon = 0;
-		now_tm->tm_mday = 31;
-		::strftime(s, 64, "%x", now_tm);
-
-		// If first character is a digit assuming day is first in this lcoale
-		dtmode = (*s == '3') ? eDateDDMMYYYY : eDateMMDDYYYY;
+		dtmode = UseDDMMDate() ? eDateDDMMYYYY : eDateMMDDYYYY;
 		break;
-	}
 	case eTimeSecs:
-	{
 		// Determine whether to use 12 or 24 hour time
-		time_t date = ::time(NULL);
-		struct tm* now_tm = ::localtime(&date);
-		now_tm->tm_hour = 23;
-		cdstring result;
-		result.reserve(256);
-		::strftime(result.c_str_mod(), 256,"%X", now_tm);
-
-		dtmode = (result[0UL] == '2') ? e24TimeSecs : e12TimeSecs;
+		dtmode = Use24HourTime() ? e24TimeSecs : e12TimeSecs;
 		break;
-	}
 	case eTimeNoSecs:
-	{
 		// Determine whether to use 12 or 24 hour time
-		time_t date = ::time(NULL);
-		struct tm* now_tm = ::localtime(&date);
-		now_tm->tm_hour = 23;
-		cdstring result;
-		result.reserve(256);
-		::strftime(result.c_str_mod(), 256,"%X", now_tm);
-
-		dtmode = (result[0UL] == '2') ? e24TimeNoSecs : e12TimeNoSecs;
+		dtmode = Use24HourTime() ? e24TimeNoSecs : e12TimeNoSecs;
 		break;
-	}
 	default:;
 	}
 	
 	mMode = dtmode;
 	InitDate();
+}
+
+// Use 24 hour time display
+bool CDateTimeControl::Use24HourTime()
+{
+	// Locale time format may have text before the hour (e.g. "kl. %H.%M") or a
+	// day period marker with a 24 hour clock (e.g. "%OH:%OM:%OS %p") so look for
+	// a 12 hour conversion rather than inspecting formatted output
+	return (FindConversion(::nl_langinfo(T_FMT), "Ilr") == NULL);
+}
+
+// Use dd/mm order for dates
+bool CDateTimeControl::UseDDMMDate()
+{
+	// Locale date format may start with a weekday or year so compare the positions
+	// of the day and month conversions (%D and %F put month before day)
+	const char* format = ::nl_langinfo(D_FMT);
+	const char* day = FindConversion(format, "de");
+	const char* month = FindConversion(format, "mbBhDF");
+	return (day != NULL) && ((month == NULL) || (day < month));
+}
+
+// Find first strftime conversion in format matching one of conversions
+const char* CDateTimeControl::FindConversion(const char* format, const char* conversions)
+{
+	for(const char* p = format; *p != 0; p++)
+	{
+		if (*p != '%')
+			continue;
+
+		// Skip flags, field width and E/O modifiers
+		p++;
+		while((*p != 0) && ((::strchr("_-0^#", *p) != NULL) || ::isdigit((unsigned char)*p)))
+			p++;
+		if ((*p == 'E') || (*p == 'O'))
+			p++;
+		if (*p == 0)
+			break;
+
+		if (::strchr(conversions, *p) != NULL)
+			return p;
+	}
+
+	return NULL;
 }
 
 // Use locale date settings

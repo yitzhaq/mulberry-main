@@ -65,6 +65,9 @@ public:
 
 	virtual 		~CDateTimeControl() {}
 
+	static bool Use24HourTime();							// Use 24 hour time display
+	static bool UseDDMMDate();								// Use dd/mm order for dates
+
 	void OnCreate(EDateTimeMode dtmode);					// Do odds & ends
 
 	void SetMode(EDateTimeMode dtmode);
@@ -100,6 +103,8 @@ protected:
 	unsigned long NormaliseDay(unsigned long month, unsigned long mday) const;
 	EFieldType GetCurrentField(JIndex& sel_start, JIndex& sel_end) const;
 	void SelectField(EFieldType type);
+
+	static const char* FindConversion(const char* format, const char* conversions);
 };
 
 #endif

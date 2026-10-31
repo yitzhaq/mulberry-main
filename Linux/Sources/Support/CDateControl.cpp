@@ -19,6 +19,7 @@
 
 #include "CDateControl.h"
 
+#include "CDateTimeControl.h"
 #include "CRFC822.h"
 
 #include <JXInputField.h>
@@ -87,16 +88,7 @@ void CDateControl::OnCreate()
 // Use locale date settings
 void CDateControl::InitDate()
 {
-	// Get string time in locale format
-	char s[64];
-	time_t now = ::time(NULL);
-	struct tm* now_tm = ::localtime(&now);
-	now_tm->tm_mon = 0;
-	now_tm->tm_mday = 31;
-	::strftime(s, 64, "%x", now_tm);
-
-	// If first character is a digit assuming day is first in this lcoale
-	mDayFirst = (*s == '3');
+	mDayFirst = CDateTimeControl::UseDDMMDate();
 
 	// For now always use / as date separator
 	mSeparator1->SetText("/");
