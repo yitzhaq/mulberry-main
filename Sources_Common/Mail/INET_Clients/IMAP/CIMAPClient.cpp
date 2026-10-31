@@ -6436,7 +6436,9 @@ void CIMAPClient::IMAPParseFlags(char** txt)
 	{
 		// Skip per-message UI notification during bulk fetch.
 		// A full table refresh happens after the bulk operation completes.
-		if (!mItemTotal)
+		// Single message fetches (item total of one) get no such refresh, and
+		// a non-PEEK body fetch sets \Seen implicitly, so they must notify.
+		if (mItemTotal <= 1)
 		{
 			try
 			{
