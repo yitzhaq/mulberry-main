@@ -797,8 +797,11 @@ X11 bitmap fonts).
   loop causing 100% CPU and eventual out-of-memory crash.
 - Fix "Undisclosed recipients:;" appearing as a reply target when
   replying to messages with empty group addresses.
-- Fix 12-hour time display on Debian/Ubuntu despite 24-hour locale
-  setting (missing `setlocale()` call at startup).
+- Fix 12-hour time display despite 24-hour locale setting (e.g.
+  `LC_TIME=nb_NO.UTF-8`), and wrong day/month order for some locales.
+  The locale time and date formats are now inspected for 12-hour and
+  day/month conversions instead of guessing from the first character
+  of formatted output, which broke on formats such as `kl. %H.%M`.
 - Fix auto-save drafts interval checkbox being non-functional
   (duplicated condition checked wrong control).
 - Replace deprecated 3DES with AES-128-CBC for S/MIME encryption.

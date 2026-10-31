@@ -24,7 +24,8 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Font menu: use fontconfig instead of XListFonts
   * xdg-open fallback for attachments and URL links
   * Accept bare mailto: URLs on command line
-  * setlocale(LC_ALL, "") at startup (fixes 12-hour clock)
+  * Fix 12-hour clock and day/month order detection for locales such as
+    nb_NO (inspect locale time/date formats, not formatted output)
   * IMAP ID extension (RFC 2971) with server ID parsing and display
   * User-Agent header on HTTP requests
   * Subject prefix stripping for multilingual Re:/Fwd: chains
