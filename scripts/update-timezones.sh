@@ -71,7 +71,9 @@ cd "$VZIC_SOURCE_DIR"
 
 make clean >/dev/null 2>&1 || true
 # Use empty TZID_PREFIX to generate standard Olson timezone names (e.g. "America/New_York")
-make TZID_PREFIX="" >/dev/null 2>&1
+# Use CREATE_SYMLINK=0 so each Link alias (e.g. "Europe/Bratislava") gets its own VTIMEZONE
+# with its own TZID - a symlink to the target zone file only carries the target's TZID
+make TZID_PREFIX="" CREATE_SYMLINK=0 >/dev/null 2>&1
 
 if [ ! -f ./vzic ]; then
     echo "ERROR: vzic build failed"
