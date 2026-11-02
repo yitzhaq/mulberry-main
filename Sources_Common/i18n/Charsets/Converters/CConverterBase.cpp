@@ -214,9 +214,9 @@ void CConverterBase::ToUTF16(const char* str, size_t len, std::ostream& wout)
 	while(p < q)
 	{
 		wchar_t wc = c_2_w(p);
-		if (wc < 0x100)
+		if ((wc < 0x100) || IsEuroSign(wc))
 		{
-			// Latin-1 — render natively
+			// Latin-1 or Euro — render natively
 #ifdef big_endian
 			wout.put((wc & 0xFF00) >> 8);
 			wout.put(wc & 0x00FF);

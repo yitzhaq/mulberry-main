@@ -52,6 +52,13 @@ inline bool IsLatin1(wchar_t wc)
 	return wc < 0x100 && wc != 0x00AD;
 }
 
+// Euro sign is also rendered natively - 8-bit text is treated as
+// iso-8859-15 for the Euro (see cdstring::FromISOToUTF8)
+inline bool IsEuroSign(wchar_t wc)
+{
+	return wc == 0x20AC;
+}
+
 // Characters above the maximum valid Unicode codepoint
 inline bool IsInvalidUnicode(wchar_t wc)
 {

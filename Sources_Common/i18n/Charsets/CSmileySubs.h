@@ -53,7 +53,6 @@ static const SSmileySub cSmileySubs[] = {
 	{ 0x20A9, "KRW" },           // won sign
 	{ 0x20AA, "ILS" },           // Israeli new sheqel
 	{ 0x20AB, "VND" },           // Vietnamese dong
-	{ 0x20AC, "EUR" },           // euro sign
 	{ 0x20B9, "Rs" },            // Indian rupee
 	{ 0x20BD, "RUB" },           // Russian ruble
 	{ 0x20BF, "BTC" },           // bitcoin

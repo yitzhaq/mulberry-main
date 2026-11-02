@@ -49,7 +49,7 @@ cdstring FilterUTF8ForDisplay(const char* txt)
 		const unsigned char* start = p;
 		wchar_t wc = utf8.c_2_w(p);
 
-		if (IsLatin1(wc))
+		if (IsLatin1(wc) || IsEuroSign(wc))
 		{
 			// Copy original UTF-8 bytes (not raw Latin-1)
 			result.append((const char*)start, p - start);
