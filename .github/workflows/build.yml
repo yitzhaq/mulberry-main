@@ -159,12 +159,23 @@ jobs:
         clang --version
         clang-tidy --version
 
+    # The action finds the latest CodeChecker release by parsing pip's error
+    # output, which newer pip no longer matches, so look it up on PyPI here.
+    - name: Find the latest CodeChecker release
+      id: codechecker-release
+      run: |
+        VERSION=$(curl -fsSL https://pypi.org/pypi/codechecker/json \
+          | python3 -c 'import json,sys; print(json.load(sys.stdin)["info"]["version"])')
+        echo "CodeChecker $VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
     - name: Run CodeChecker analysis
       uses: whisperity/codechecker-analysis-action@v1
       id: codechecker
       with:
         config: ${{ github.workspace }}/.codechecker/config.json
         logfile: ${{ github.workspace }}/compile_commands.json
+        version: ${{ steps.codechecker-release.outputs.version }}
         ctu: true
         llvm-version: ignore
         ignore-analyze-crashes: true
