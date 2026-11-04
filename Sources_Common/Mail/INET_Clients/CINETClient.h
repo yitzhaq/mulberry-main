@@ -289,6 +289,8 @@ public:
 	// P R O T O C O L
 	virtual void	_Tickle(bool force_tickle);				// Do tickle
 protected:
+			bool	_TickleExpired() const;					// Idle for longer than any tickle allows
+			void	_TickleAbort();							// Force abort and recovery of connection
 	virtual bool	_ProcessGreeting();						// Process greeting response
 	virtual void	_Capability(bool after_tls = false);	// Determine version
 	virtual void	_InitCapability() {}					// Initialise capability flags to empty set
@@ -356,6 +358,8 @@ protected:
 							const char* nobad_id);
 	virtual void	INETRecoverReconnect();						// Force reconnect
 	virtual void	INETRecoverDisconnect();					// Force disconnect
+	virtual bool	INETRecoverWait();							// Wait to reconnect
+			bool	INETIsConnectionLost(CNetworkException& ex) const;	// Error that recovery reconnects from
 	virtual void	INETGetErrorContext(cdstring& error) const;		// Get error context string
 	virtual const char*	INETGetErrorDescriptor() const;				// Descriptor for object error context
 

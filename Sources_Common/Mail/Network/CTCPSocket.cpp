@@ -581,19 +581,6 @@ bool CTCPSocket::HasPendingData() const
 	return result > 0;
 }
 
-bool CTCPSocket::WaitForData(unsigned long timeout_secs)
-{
-	try
-	{
-		TCPSelectYield(true, timeout_secs);
-		return true;
-	}
-	catch (CTCPTimeoutException&)
-	{
-		return false;
-	}
-}
-
 void CTCPSocket::TCPHandleError(int err)
 {
 	switch(err)

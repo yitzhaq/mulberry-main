@@ -88,6 +88,7 @@ public:
 	// Forced changes in server state
 	static void		MboxServerReconnect(CMboxProtocol* server);
 	static void		MboxServerDisconnect(CMboxProtocol* server);
+	static bool		MboxServerWait(CMboxProtocol* server);
 	static bool		CleanUpServerDisconnect(CMboxProtocol* server, bool reconnect);
 	static void		CleanUpMboxClose(CMbox* mbox);
 	static void		CleanUpMboxRecover(CMbox* mbox);

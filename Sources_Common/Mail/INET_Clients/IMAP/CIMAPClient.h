@@ -205,7 +205,6 @@ protected:
 			void	_StartIdle();
 			void	_EndIdle();
 			void	_CheckIdleResponses();
-			void	SignalDeadConnection();
 			bool	IsIdleActive() const { return mIdleState == eIdleActive; }
 			bool	ShouldStartIdle();
 			bool	ShouldReIdle() const;
@@ -402,6 +401,11 @@ protected:
 	// H A N D L E  E R R O R
 	virtual void	INETRecoverReconnect();						// Force reconnect
 	virtual void	INETRecoverDisconnect();					// Force disconnect
+	virtual bool	INETRecoverWait();							// Wait to reconnect
+	using CINETClient::INETDisplayError;
+	virtual void	INETDisplayError(std::exception& ex,
+							const char* err_id,
+							const char* nobad_id);					// Handle an error condition
 	virtual const char*	INETGetErrorDescriptor() const;			// Descriptor for object error context
 
 	// H A N D L E  R E S P O N S E

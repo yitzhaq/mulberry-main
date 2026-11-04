@@ -4260,6 +4260,22 @@ void CIMAPClient::INETRecoverDisconnect()
 	CMailControl::MboxServerDisconnect(GetMboxOwner());
 }
 
+// Wait to reconnect
+bool CIMAPClient::INETRecoverWait()
+{
+	return CMailControl::MboxServerWait(GetMboxOwner());
+}
+
+// Handle an error condition
+void CIMAPClient::INETDisplayError(std::exception& ex, const char* err_id, const char* nobad_id)
+{
+	// A connection waiting to reconnect expects network failures - only report server responses
+	if (GetMboxOwner() && GetMboxOwner()->NeedsReconnect() && !dynamic_cast<CINETException*>(&ex))
+		return;
+
+	CINETClient::INETDisplayError(ex, err_id, nobad_id);
+}
+
 // Descriptor for object error context
 const char*	CIMAPClient::INETGetErrorDescriptor() const
 {
@@ -4279,22 +4295,23 @@ bool CIMAPClient::MatchesSavedSearch(const ulvector& nums) const
 
 #pragma mark ____________________________IDLE
 
-void CIMAPClient::SignalDeadConnection()
-{
-	mIdleState = eIdleOff;
-	mContextTag.clear();
-	if (mOwner)
-	{
-		mOwner->SetState(CINETProtocol::eINETLoggedOff);
-		mOwner->SetNeedsReconnect(true);
-	}
-}
-
 void CIMAPClient::_Tickle(bool force_tickle)
 {
-	if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
+	// Only if we have a stream
+	if (!mStream)
+		return;
+
+	// Dead connection, or idle for longer than any tickle allows (e.g. after sleep)
+	if ((mStream->TCPGetState() < CTCPSocket::TCPConnected) || _TickleExpired())
 	{
-		SignalDeadConnection();
+		// Write to log file
+		mLog.LogEntry("Tickle Abort due to dead connection or excess idle time");
+
+		// IDLE is over with the connection
+		mIdleState = eIdleOff;
+
+		// Force abort and reconnect
+		_TickleAbort();
 		return;
 	}
 
@@ -4320,12 +4337,15 @@ void CIMAPClient::_Tickle(bool force_tickle)
 
 bool CIMAPClient::ShouldStartIdle()
 {
+	// Delay before retrying IDLE after a failure
+	const time_t cIdleRetryDelay = 30;
+
 	return mHasIdle &&
 		mIdleState == eIdleOff &&
 		mStream != NULL &&
 		(GetCurrentMbox() != NULL || mNotifyActive) &&
 		mVersion >= eIMAP4rev1 &&
-		(mIdleStartTime == 0 || ::difftime(::time(NULL), mIdleStartTime) >= 30);
+		(mIdleStartTime == 0 || ::difftime(::time(NULL), mIdleStartTime) >= cIdleRetryDelay);
 }
 
 bool CIMAPClient::ShouldReIdle() const
@@ -4357,9 +4377,6 @@ void CIMAPClient::_StartIdle()
 		CLOG_LOGCATCH(...);
 		mIdleState = eIdleOff;
 		mIdleStartTime = ::time(NULL);
-
-		if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
-			SignalDeadConnection();
 	}
 }
 
@@ -4380,13 +4397,6 @@ void CIMAPClient::_EndIdle()
 		if (mAllowLog && mLog.DoLog())
 			*mLog.GetLog() << done_line << std::flush;
 
-		if (!mStream->WaitForData(5))
-		{
-			mStream->TCPAbort(true);
-			CLOG_LOGTHROW(CTCPException, CTCPException::err_TCPAbort);
-			throw CTCPException(CTCPException::err_TCPAbort);
-		}
-
 		// Restore the IDLE tag so INETProcess matches it
 		char saved_tag[16];
 		::strcpy(saved_tag, mTag);
@@ -4400,9 +4410,6 @@ void CIMAPClient::_EndIdle()
 	{
 		CLOG_LOGCATCH(...);
 		mIdleState = eIdleOff;
-
-		if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
-			SignalDeadConnection();
 	}
 }
 
@@ -4447,8 +4454,9 @@ void CIMAPClient::_CheckIdleResponses()
 		CLOG_LOGCATCH(...);
 		mIdleState = eIdleOff;
 
-		if (!mStream || mStream->TCPGetState() < CTCPSocket::TCPConnected)
-			SignalDeadConnection();
+		// Response only partly read so connection is out of step with the server - force it closed
+		if (mStream && (mStream->TCPGetState() >= CTCPSocket::TCPConnected))
+			mStream->TCPAbort();
 	}
 }
 

@@ -72,6 +72,7 @@ CMboxProtocol::CMboxProtocol(CMailAccount* account)
 	mCurrent_mbox = NULL;
 	mClient = NULL;
 	mAppendLimit = UINT64_MAX;
+	mReconnectTime = 0;
 
 	// Do the rest
 	mHierarchies.push_back(new CMboxList(this));								// Always have subscribed list
@@ -101,6 +102,7 @@ CMboxProtocol::CMboxProtocol(const CMboxProtocol& copy, bool force_local, bool f
 	mAccount = NULL;			// Clones never have an account but rely on their owner's account
 	mCurrent_mbox = NULL;
 	mAppendLimit = copy.mAppendLimit;
+	mReconnectTime = 0;
 
 	mRecorder = NULL; 				// Only original proto uses this - clones do not
 
@@ -708,6 +710,13 @@ void CMboxProtocol::Logon()
 // Logoff server
 void CMboxProtocol::Logoff()
 {
+	// Waiting to reconnect after a lost connection - nothing to log off from so just force off
+	if (NeedsReconnect())
+	{
+		Forceoff();
+		return;
+	}
+
 	if (IsLoggedOn())
 	{
 		// If disconnected then this is a good time to sync any
@@ -721,6 +730,9 @@ void CMboxProtocol::Logoff()
 
 		// Do inherited
 		CINETProtocol::Logoff();
+
+		// A connection lost during logoff is not waited for
+		CancelReconnect();
 
 		// Close all mailboxes
 		if (!IsCloned())
@@ -737,11 +749,24 @@ void CMboxProtocol::Logoff()
 
 } // CMboxProtocol::Logoff
 
+// Forced reconnect
+void CMboxProtocol::Forceon()
+{
+	// Do inherited
+	CINETProtocol::Forceon();
+
+	// Connection is back
+	mFlags.Set(eNeedsReconnect, false);
+}
+
 // Forced off server
 void CMboxProtocol::Forceoff()
 {
 	// Do inherited
 	CINETProtocol::Forceoff();
+
+	// No longer waiting to reconnect
+	CancelReconnect();
 
 	// Close all mailboxes
 	if (!IsCloned())
@@ -762,6 +787,81 @@ void CMboxProtocol::Forceoff()
 	Broadcast_Message(eBroadcast_MailLogoff, this);
 
 } // CINETProtocol::Forceoff
+
+// Called during idle
+void CMboxProtocol::SpendTime(bool force_tickle)
+{
+	// Retry a lost connection when due
+	if (NeedsReconnect() && IsLoggedOff() && !IsErrorProcess())
+	{
+		unsigned long interval = CPreferences::sPrefs ? CPreferences::sPrefs->mConnectRetryTimeout.GetValue() : 15;
+		if (force_tickle || (::difftime(::time(NULL), mReconnectTime) >= interval))
+			RetryReconnect();
+	}
+
+	// Do inherited
+	CINETProtocol::SpendTime(force_tickle);
+}
+
+// Wait to reconnect after losing the connection - windows stay open
+void CMboxProtocol::AwaitReconnect()
+{
+	// Set flag
+	mMPState = eINETLoggedOff;
+	SetErrorProcess(false);
+	mFlags.Set(eNeedsReconnect, true);
+	mReconnectTime = ::time(NULL);
+
+	// Stay in list of periodic items so that SpendTime retries
+	CMailControl::RegisterPeriodic(this, true);
+}
+
+// Try to reconnect a lost connection
+void CMboxProtocol::RetryReconnect()
+{
+	// Never while a command is in progress
+	if (!TryIdleLock())
+		return;
+
+	mReconnectTime = ::time(NULL);
+
+	try
+	{
+		// Reconnect and recover state
+		CMailControl::MboxServerReconnect(this);
+
+		_mutex.release();
+	}
+
+	// Server refused the reconnect which has already been reported
+	catch (CINETClient::CINETException&)
+	{
+		CLOG_LOGCATCH(CINETException&);
+
+		_mutex.release();
+
+		// Give up with a clean disconnect
+		CMailControl::MboxServerDisconnect(this);
+	}
+
+	// Still no connection
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+
+		_mutex.release();
+
+		// Keep waiting
+		AwaitReconnect();
+	}
+}
+
+// Stop waiting to reconnect
+void CMboxProtocol::CancelReconnect()
+{
+	mFlags.Set(eNeedsReconnect, false);
+	CMailControl::RegisterPeriodic(this, false);
+}
 
 // Recover clone state
 void CMboxProtocol::RecoverClone()
@@ -792,24 +892,6 @@ void CMboxProtocol::RecoverClone()
 
 	// Reset recovery
 	SetNoRecovery(recovery);
-}
-
-// Reconnect a dead per-mailbox clone: Open + Logon + reselect mbox
-bool CMboxProtocol::ReconnectDeadClone(CMbox* mbox)
-{
-	try
-	{
-		Open();
-		Logon();
-		mCurrent_mbox = NULL;
-		SetCurrentMbox(mbox, false, mbox->IsExamine());
-		return true;
-	}
-	catch (...)
-	{
-		CLOG_LOGCATCH(...);
-		return false;
-	}
 }
 
 #pragma mark ____________________________Mbox List related
@@ -2085,7 +2167,8 @@ void CMboxProtocol::SetCurrentMbox(CMbox* mbox, bool update, bool examine)
 		// Force selection off after error
 
 		// Only do if this is not deleted
-		if (mbox->GetMsgProtocol() || !is_msg_proto)
+		// A clone keeps the mailbox it exists for so that recovery can reselect it
+		if ((mbox->GetMsgProtocol() || !is_msg_proto) && !(is_msg_proto && IsCloned()))
 			mCurrent_mbox = NULL;
 
 		CLOG_LOGRETHROW;
@@ -2351,11 +2434,12 @@ void CMboxProtocol::ExpungeMbox(CMbox* mbox, bool closing)
 	if (mbox->IsReadOnly())
 		return;
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
 		return;
-	if (GetCurrentMbox() != mbox)
-		return;
+
+	// Make it current (causes an update)
+	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Send EXPUNGE message to server
 	bool did_close = mClient->_ExpungeMbox(closing);
@@ -2657,10 +2741,8 @@ void CMboxProtocol::FetchItems(const ulvector& nums, bool uids, EFetchItems item
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
-		return;
-	if (!GetCurrentMbox())
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn())
 		return;
 
 	// Fetch bits
@@ -2674,10 +2756,8 @@ void CMboxProtocol::ReadHeaders(const ulvector& nums, bool uids, const cdstring&
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
-		return;
-	if (!GetCurrentMbox())
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn())
 		return;
 
 	// Read it
@@ -2690,11 +2770,12 @@ void CMboxProtocol::ReadHeader(CMbox* mbox, CMessage* msg)
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
 		return;
-	if (GetCurrentMbox() != mbox)
-		return;
+
+	// Make it current (causes an update)
+	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Read it
 	mClient->_ReadHeader(msg);
@@ -2707,11 +2788,12 @@ void CMboxProtocol::ReadAttachment(CMbox* mbox, unsigned long msg_num, CAttachme
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
 		return;
-	if (GetCurrentMbox() != mbox)
-		return;
+
+	// Make it current (causes an update)
+	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Read it
 	mClient->_ReadAttachment(msg_num, attach, aStream, peek, count, start);
@@ -2724,11 +2806,12 @@ void CMboxProtocol::CopyAttachment(CMbox* mbox, unsigned long msg_num, CAttachme
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
 		return;
-	if (GetCurrentMbox() != mbox)
-		return;
+
+	// Make it current (causes an update)
+	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Copy it
 	mClient->_CopyAttachment(msg_num, attach, &aStream, peek, count, start);
@@ -2770,11 +2853,12 @@ void CMboxProtocol::SetFlagMessage(CMbox* mbox, const ulvector& nums, bool uids,
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
 		return;
-	if (GetCurrentMbox() != mbox)
-		return;
+
+	// Make it current (causes an update)
+	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Change flags
 	mClient->_SetFlag(nums, uids, flags, set, use_saved);
@@ -2787,11 +2871,12 @@ void CMboxProtocol::CopyMessage(CMbox* mbox_from, const ulvector& nums, bool uid
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox_from))
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox_from))
 		return;
-	if (GetCurrentMbox() != mbox_from)
-		return;
+
+	// Make it current (causes an update)
+	//SetCurrentMbox(mbox_from, true, mbox_from->IsExamine());
 
 	// Destination must exist in disconnected mode
 	if (IsDisconnected())
@@ -2812,11 +2897,12 @@ void CMboxProtocol::CopyMessage(CMbox* mbox, unsigned long msg_num, bool uids, c
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox))
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox))
 		return;
-	if (GetCurrentMbox() != mbox)
-		return;
+
+	// Make it current (causes an update)
+	//SetCurrentMbox(mbox, true, mbox->IsExamine());
 
 	// Unmark it as deleted
 	mClient->_CopyMessage(msg_num, uids, &aStream, count, start);
@@ -2836,10 +2922,8 @@ void CMboxProtocol::MoveMessage(CMbox* mbox_from, const ulvector& nums, bool uid
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && !ReconnectDeadClone(mbox_from))
-		return;
-	if (GetCurrentMbox() != mbox_from)
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn() || (GetCurrentMbox() != mbox_from))
 		return;
 
 	// Destination must exist in disconnected mode
@@ -2997,10 +3081,8 @@ void CMboxProtocol::ExpungeMessage(const ulvector& nums, bool uids, bool use_sav
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
-		return;
-	if (!GetCurrentMbox())
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn())
 		return;
 
 	// Send EXPUNGE message to server
@@ -3039,10 +3121,8 @@ void CMboxProtocol::Sort(ESortMessageBy sortby, EShowMessageBy show_by, const CS
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
-		return;
-	if (!GetCurrentMbox())
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn())
 		return;
 
 	// Send command to server
@@ -3061,10 +3141,8 @@ void CMboxProtocol::Thread(EThreadMessageBy threadby, const CSearchItem* search,
 	// Must block
 	cdmutex::lock_cdmutex _lock(_mutex);
 
-	// Reconnect dead per-mailbox connection
-	if (!IsLoggedOn() && (!mCurrent_mbox || !ReconnectDeadClone(mCurrent_mbox)))
-		return;
-	if (!GetCurrentMbox())
+	// Verify its still active because mutex wait could have resulted in closure
+	if (!IsLoggedOn())
 		return;
 
 	// Send command to server

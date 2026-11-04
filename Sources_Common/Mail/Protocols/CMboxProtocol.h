@@ -78,7 +78,8 @@ public:
 		eACLDisabled			= 1L << 20,
 		eHasQuota				= 1L << 21,
 		eQuotaDisabled			= 1L << 22,
-		eHasDisconnected		= 1L << 23
+		eHasDisconnected		= 1L << 23,
+		eNeedsReconnect			= 1L << 24
 	};
 
 	// Items that can be used in an IMAP FETCH
@@ -234,6 +235,8 @@ public:
 		{ return (mCloneOwner != nil); }
 			const CMboxProtocol* GetCloneOwner() const
 		{ return mCloneOwner; }
+			bool	NeedsReconnect() const					// Waiting to reconnect after losing the connection
+		{ return mFlags.IsSet(eNeedsReconnect); }
 
 			bool UsingACLs() const							// Indicates that client can use ACLs
 		{ return GetHasACL() && !GetACLDisabled(); }
@@ -247,10 +250,12 @@ public:
 	virtual void	Close();							// Close connection to protocol server
 	virtual void	Logon();							// Logon to protocol server
 	virtual void	Logoff();							// Logoff from protocol server
+	virtual void	Forceon();							// Forced reconnect
 	virtual void	Forceoff();							// Forced close
+	virtual	void	SpendTime(bool force_tickle);		// Called during idle
 
 			void	RecoverClone();							// Recover a cloned connection
-			bool	ReconnectDeadClone(CMbox* mbox);		// Reconnect dead per-mailbox connection
+			void	AwaitReconnect();						// Wait to reconnect after losing the connection
 			void	BatchStatusCheck();						// Batch STATUS via LIST-STATUS (RFC 5819)
 
 	// O F F L I N E
@@ -334,8 +339,12 @@ protected:
 	CMboxClient*		mClient;							// The client
 	CQuotaRootList		mRoots;								// List of quota roots known about on this server
 	uint64_t			mAppendLimit;						// Global APPENDLIMIT (UINT64_MAX = unknown)
+	time_t				mReconnectTime;						// Last reconnect attempt
 	
 	CMailRecord*		mRecorder;							// Recorder for mail ops
+
+			void	RetryReconnect();						// Try to reconnect a lost connection
+			void	CancelReconnect();						// Stop waiting to reconnect
 
 			void	FindAllSubsMbox(CMboxList* mboxes);		// Find subscribed mboxes
 			void	FindAllMbox(CMboxList* mboxes);			// Find all mboxes for specific hierarchy

@@ -52,10 +52,7 @@ public:
 		eIsOffline				= 1L << 3,
 		eCanDisconnect			= 1L << 4,
 		eForceDisconnect		= 1L << 5,
-		eDisconnected			= 1L << 6,
-
-		// Reconnection state
-		eNeedsReconnect			= 1L << 7
+		eDisconnected			= 1L << 6
 	};
 
 	// State
@@ -129,8 +126,6 @@ public:
 	virtual bool	IsConnectionAlive() const;
 	virtual bool	IsLoggedOff() const
 		{ return mMPState == eINETLoggedOff; }
-	virtual bool	IsCloned() const
-		{ return false; }
 
 	virtual bool	IsSecure() const;
 
@@ -148,12 +143,6 @@ public:
 		{ mFlags.Set(eNoRecovery, no_recovery); }
 	virtual bool	GetNoRecovery() const
 		{ return mFlags.IsSet(eNoRecovery); }
-
-	virtual void	SetNeedsReconnect(bool needs)
-		{ mFlags.Set(eNeedsReconnect, needs);
-		  if (needs) mReconnectTime = ::time(NULL); }
-	virtual bool	NeedsReconnect() const
-		{ return mFlags.IsSet(eNeedsReconnect); }
 
 	static cdstring GetCachedPswd(const cdstring& uid);
 	static void SetCachedPswd(const cdstring& uid, const cdstring& pswd);
@@ -237,7 +226,6 @@ protected:
 	cdstring			mAccountUniqueness;				// Account uniqueness
 	cdstring			mAuthenticatorUniqueness;		// Current authenticator uniqueness
 	EINETState			mMPState;						// Current state of protocol
-	time_t				mReconnectTime;					// Last reconnect attempt (throttle)
 	cdstring			mDescriptor;					// Protocol description
 	cdstring			mType;							// Type of server as string
 	CINETClient*		mClient;						// The client
@@ -249,6 +237,8 @@ protected:
 
 	// Offline bits
 	cdstring			mOfflineCWD;						// Directory for offline
+
+			bool	TryIdleLock();						// Lock for idle time work if no command in progress
 };
 
 // Stack based class to do nested protocol logins/logouts

@@ -26,7 +26,6 @@
 #include "CLocalCommon.h"
 #include "CMailAccount.h"
 #include "CMailControl.h"
-#include "CMboxProtocol.h"
 #include "CMulberryApp.h"
 #include "CPasswordManager.h"
 #include "CPreferences.h"
@@ -47,7 +46,6 @@ cdstrmap CINETProtocol::sUserPswdCache;					// Cache of user id & password
 CINETProtocol::CINETProtocol(CINETAccount* account)
 {
 	mMPState = eINETNotOpen;
-	mReconnectTime = 0;
 	mClient = NULL;
 
 	// Init instance variables
@@ -68,7 +66,6 @@ CINETProtocol::CINETProtocol(const CINETProtocol& copy)
 	mAccountUniqueness = copy.mAccountUniqueness;
 	mAuthenticatorUniqueness = copy.mAuthenticatorUniqueness;
 	mMPState = eINETNotOpen;
-	mReconnectTime = 0;
 	SetErrorProcess(false);
 	SetNoErrorAlert(false);
 	SetNoRecovery(false);
@@ -468,7 +465,6 @@ void CINETProtocol::Logon()
 
 		mMPState = eINETLoggedOn;
 		SetErrorProcess(false);
-		SetNeedsReconnect(false);
 
 		// Broadcast change in state
 		Broadcast_Message(eBroadcast_Logon, this);
@@ -537,7 +533,6 @@ void CINETProtocol::Forceon()
 
 	mMPState = eINETLoggedOn;
 	SetErrorProcess(false);
-	SetNeedsReconnect(false);
 
 } // CINETProtocol::Forceoff
 
@@ -597,41 +592,11 @@ void CINETProtocol::SetCachedPswd(const cdstring& uid, const cdstring& pswd)
 // Called during idle
 void CINETProtocol::SpendTime(bool force_tickle)
 {
-	// Reconnection retry for dead clone connections
-	if (NeedsReconnect() && !IsErrorProcess())
-	{
-		unsigned long interval = CPreferences::sPrefs ? CPreferences::sPrefs->mConnectRetryTimeout.GetValue() : 15;
-		if (::difftime(::time(NULL), mReconnectTime) >= interval)
-		{
-			if (_mutex.try_lock())
-			{
-				try
-				{
-					CMailControl::MboxServerReconnect(static_cast<CMboxProtocol*>(this));
-					SetNeedsReconnect(false);
-					_mutex.release();
-				}
-				catch (...)
-				{
-					CLOG_LOGCATCH(...);
-					mReconnectTime = ::time(NULL);
-					SetErrorProcess(false);
-					_mutex.release();
-				}
-			}
-		}
-		return;
-	}
-
-	// Only do if logged on and no error and will not block.
-	// Check is_locked() first — the mutex is recursive, so try_lock()
-	// would succeed even when a command is in progress on the same
-	// thread (re-entrant event processing during I/O).  Tickling a
-	// connection with a command on the wire corrupts the protocol.
+	// Only do if logged on and no error and will not block
 	if (IsLoggedOn() && !IsErrorProcess())
 	{
 		// Must try block
-		if (!_mutex.is_locked() && _mutex.try_lock())
+		if (TryIdleLock())
 		{
 
 			try
@@ -655,6 +620,16 @@ void CINETProtocol::SpendTime(bool force_tickle)
 	ConnectionIdle();
 
 } // CINETProtocol::SpendTime
+
+// Lock for idle time work if no command is in progress
+bool CINETProtocol::TryIdleLock()
+{
+	// Check is_locked() first — the mutex is recursive, so try_lock()
+	// would succeed even when a command is in progress on the same
+	// thread (re-entrant event processing during I/O).  Tickling a
+	// connection with a command on the wire corrupts the protocol.
+	return !_mutex.is_locked() && _mutex.try_lock();
+}
 
 #pragma mark ____________________________Offline
 
@@ -1047,24 +1022,17 @@ void CINETProtocol::EndConnection(CINETProtocol* proto, bool close_it)
 			// Otherwise mark it as free in the cache
 			else
 			{
-				// Discard connection if it is no longer healthy
-				if (!(*iter).mConnection->IsConnectionAlive())
-				{
-					CloseConnection((*iter).mConnection);
-					mCachedConnections.erase(iter);
-				}
-				else
-				{
-					// Now mark it as being free
-					(*iter).mInUse = false;
-					(*iter).mFreeTime = ::time(NULL);
+				// Should check whether its free from errors here
+				
+				// Now mark it as being free
+				(*iter).mInUse = false;
+				(*iter).mFreeTime = ::time(NULL);
 
-					// Turn off standard error reporting for connection
-					// as any failures at this point should be silent
-					(*iter).mConnection->SetErrorProcess(false);
-					(*iter).mConnection->SetNoErrorAlert(true);
-					(*iter).mConnection->SetNoRecovery(true);
-				}
+				// Turn off standard error reporting for connection
+				// as any failures at this point should be silent
+				(*iter).mConnection->SetErrorProcess(false);
+				(*iter).mConnection->SetNoErrorAlert(true);
+				(*iter).mConnection->SetNoRecovery(true);
 			}
 			found = true;
 			break;

@@ -1384,31 +1384,22 @@ void CINETClient::_Tickle(bool force_tickle)
 	if (!mStream)
 		return;
 
-	// Intervals
-	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 25 * 60;
-	unsigned long tickleIntervalExpireTimeout = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleIntervalExpireTimeout.GetValue() : 5 * 60;
-
-	// Current time plus timeout
-	time_t curr_time = ::time(NULL);
-	double timeout = ::difftime(curr_time, mStream->GetTimer());
-
 	// Tickle timeout too large check
-	if (timeout > tickleInterval + tickleIntervalExpireTimeout)
+	if (_TickleExpired())
 	{
 		// Write to log file
 		mLog.LogEntry("Tickle Abort due to excess idle time");
 
 		// Force abort and reconnect
-		Abort();
-
-		// Prevent changing status which is already set
-		StINETClientSilent silent(this);
-
-		// Just do NOOP to trigger abort and recovery
-		INETStartSend(NULL, NULL, NULL);
-		INETSendString(cNOOP);
-		INETFinishSend();
+		_TickleAbort();
 	}
+
+	// Intervals
+	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 25 * 60;
+
+	// Current time plus timeout
+	time_t curr_time = ::time(NULL);
+	double timeout = ::difftime(curr_time, mStream->GetTimer());
 
 	// Timeout check
 	if (force_tickle || (timeout > tickleInterval))
@@ -1425,6 +1416,34 @@ void CINETClient::_Tickle(bool force_tickle)
 		INETFinishSend();
 	}
 
+}
+
+// Connection idle for longer than any tickle allows (e.g. after sleep)
+bool CINETClient::_TickleExpired() const
+{
+	// Intervals
+	unsigned long tickleInterval = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleInterval.GetValue() : 25 * 60;
+	unsigned long tickleIntervalExpireTimeout = CPreferences::sPrefs ? CPreferences::sPrefs->mTickleIntervalExpireTimeout.GetValue() : 5 * 60;
+
+	// Current time plus timeout
+	double timeout = ::difftime(::time(NULL), mStream->GetTimer());
+
+	return timeout > tickleInterval + tickleIntervalExpireTimeout;
+}
+
+// Force abort and recovery of a connection that is no longer usable
+void CINETClient::_TickleAbort()
+{
+	// Force abort and reconnect
+	Abort();
+
+	// Prevent changing status which is already set
+	StINETClientSilent silent(this);
+
+	// Just do NOOP to trigger abort and recovery
+	INETStartSend(NULL, NULL, NULL);
+	INETSendString(cNOOP);
+	INETFinishSend();
 }
 
 // Process greeting response
@@ -2091,9 +2110,11 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 
 	bool recovered = false;
 	bool failed_recovery = false;
+	bool connection_lost = false;
 
 	// Check for network or general exception
 	CNetworkException* nex = dynamic_cast<CNetworkException*>(&ex);
+	//CGeneralException* gex = dynamic_cast<CGeneralException*>(&ex);
 
 	// iostream failure from dead socket is effectively a network error
 	CTCPException synth_ex(CTCPException::err_TCPAbort);
@@ -2103,39 +2124,49 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 	// Handle network exception
 	if (nex)
 	{
-		// When NoRecovery is set, the caller (e.g. RecoverClone) manages
-		// recovery.  Kill the dead connection but do NOT cascade into
-		// INETRecoverDisconnect which would synchronously force-off the
-		// main protocol and close all mailboxes out from under us.
-		if (mOwner && mOwner->GetNoRecovery())
-		{
-			if (mStream && (mStream->TCPGetState() >= CTCPSocket::TCPConnected))
-				mStream->TCPAbort();
-			if (mOwner)
-				mOwner->SetErrorProcess(false);
-			return;
-		}
-
 		try
 		{
 			// See if recovery is possible before presenting an alert to the user
 			INETTryRecoverError(*nex, err_id, nobad_id);
-
+			
 			recovered = true;
+		}
+		catch(CINETException&)
+		{
+			CLOG_LOGCATCH(CINETException&);
+
+			// Server refused the recovery (e.g. logon rejected)
+
+			// use this to force the recover disconnect
+			failed_recovery = true;
 		}
 		catch(...)
 		{
 			CLOG_LOGCATCH(...);
 
 			// Catch any recovery error
-
+			
 			// use this to force the recover disconnect
 			failed_recovery = true;
+
+			// Connection could not be re-established yet
+			connection_lost = INETIsConnectionLost(*nex);
 		}
 	}
 
+	// Connection lost to the network - owner may wait to reconnect rather than disconnect
+	if (connection_lost && INETRecoverWait())
+	{
+		// Kill the connection if one present
+		if (mStream && (mStream->TCPGetState() >= CTCPSocket::TCPConnected))
+			mStream->TCPAbort();
+
+		// Flag exception as disconnected
+		nex->setdisconnect();
+	}
+
 	// Handle general/unknown exception or failed recovery
-	if (!recovered)
+	else if (!recovered)
 	{
 		// Recovery is not possible, so...
 
@@ -2153,31 +2184,17 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 		// Force servers to closed state
 		if (failed_recovery || !mOwner || mOwner->IsOpen() || mOwner->IsLoggedOn())
 		{
-			if (mOwner && mOwner->IsCloned())
-			{
-				// Clone: mark for automatic reconnection instead of
-				// forcing off the main protocol (which closes all folders)
-				mOwner->SetState(CINETProtocol::eINETLoggedOff);
-				mOwner->SetNeedsReconnect(true);
-			}
-			else
-			{
-				// Force disconnect cleanup
-				if (mOwner)
-					mOwner->SetState(CINETProtocol::eINETNotOpen);
-				INETRecoverDisconnect();
+			// Force disconnect cleanup
+			if (mOwner)
+				mOwner->SetState(CINETProtocol::eINETNotOpen);
+			INETRecoverDisconnect();
 
-				// Flag exception as disconnected
-				if (nex)
-					nex->setdisconnect();
-			}
+			// Flag exception as diconnected
+			if (nex)
+				nex->setdisconnect();
 		}
 	}
 	
-	// Clear error processing state so tickles and recovery can resume
-	if (mOwner)
-		mOwner->SetErrorProcess(false);
-
 	// Mark as handled
 	if (nex)
 		nex->sethandled();
@@ -2441,6 +2458,27 @@ void CINETClient::INETRecoverReconnect()
 // Force disconnect
 void CINETClient::INETRecoverDisconnect()
 {
+}
+
+// Wait to reconnect - returns false if owner does not wait
+bool CINETClient::INETRecoverWait()
+{
+	return false;
+}
+
+// Is this an error that recovery would try to reconnect from
+bool CINETClient::INETIsConnectionLost(CNetworkException& ex) const
+{
+	switch(ex.error())
+	{
+	case CINETException::err_NoResponse:
+	case CINETException::err_BadResponse:
+	case CINETException::err_BadParse:
+	case CTCPException::err_TCPFailed:
+		return false;
+	default:
+		return true;
+	}
 }
 
 // Get error context string

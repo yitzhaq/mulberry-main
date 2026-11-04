@@ -954,11 +954,6 @@ void CMbox::Recover()
 
 			try
 			{
-				// Ensure the clone knows which mailbox to re-SELECT —
-				// mCurrent_mbox may have been cleared during disconnect
-				if (!mOpenInfo->mMsgMailer->GetCurrentMbox())
-					mOpenInfo->mMsgMailer->mCurrent_mbox = this;
-
 				// Re-SELECT the mailbox
 				mOpenInfo->mMsgMailer->RecoverClone();
 				selectDone = true;
@@ -1053,11 +1048,7 @@ void CMbox::Recover()
 
 			// Re-open the mailbox fully
 			if (!selectDone && mOpenInfo && mOpenInfo->mMsgMailer)
-			{
-				if (!mOpenInfo->mMsgMailer->GetCurrentMbox())
-					mOpenInfo->mMsgMailer->mCurrent_mbox = this;
 				mOpenInfo->mMsgMailer->RecoverClone();
-			}
 
 			// RecoverClone or its error handling may have freed mOpenInfo
 			if (!mOpenInfo)

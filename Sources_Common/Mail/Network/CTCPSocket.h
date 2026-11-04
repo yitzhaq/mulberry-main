@@ -121,7 +121,6 @@ public:
 	virtual void TimerReset() { mLastClock = ::time(NULL); }		// Reset timer
 	virtual time_t GetTimer() const { return mLastClock; }		// Get timer
 	virtual bool HasPendingData() const;							// Check for data without blocking
-	virtual bool WaitForData(unsigned long timeout_secs);			// Wait for data with timeout
 
 	virtual void SetAbort()
 		{ mAbort = true; }

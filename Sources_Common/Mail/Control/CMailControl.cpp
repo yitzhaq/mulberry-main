@@ -117,36 +117,12 @@ void CMailControl::MboxServerReconnect(CMboxProtocol* server)
 
 	if (server->IsCloned())
 	{
-		CMbox* recoverMbox = server->GetCurrentMbox();
-
-		// mCurrent_mbox may have been cleared during the disconnect.
-		// Find the owning mailbox by matching the clone pointer.
-		if (!recoverMbox && server->GetCloneOwner())
+		// Must have existing mailbox
+		if (server->GetCurrentMbox())
 		{
-			CMboxProtocol* owner = const_cast<CMboxProtocol*>(server->GetCloneOwner());
-			if (owner->GetINBOX() && owner->GetINBOX()->GetMsgProtocol() == server)
-				recoverMbox = owner->GetINBOX();
-
-			if (!recoverMbox)
-			{
-				CHierarchies& hiers = owner->GetHierarchies();
-				for(CHierarchies::iterator hi = hiers.begin(); !recoverMbox && hi != hiers.end(); hi++)
-				{
-					for(CMboxList::iterator mi = (*hi)->begin(); mi != (*hi)->end(); mi++)
-					{
-						CMbox* mbox = static_cast<CMbox*>(*mi);
-						if (mbox->IsOpen() && mbox->GetMsgProtocol() == server)
-						{
-							recoverMbox = mbox;
-							break;
-						}
-					}
-				}
-			}
+			// Get mailbox to recover its state
+			server->GetCurrentMbox()->Recover();
 		}
-
-		if (recoverMbox)
-			recoverMbox->Recover();
 		else
 		{
 			CLOG_LOGTHROW(CGeneralException, -1);
@@ -158,21 +134,31 @@ void CMailControl::MboxServerReconnect(CMboxProtocol* server)
 // Forced disconnection of server
 void CMailControl::MboxServerDisconnect(CMboxProtocol* server)
 {
-	// When a clone disconnects, mark it for automatic reconnection
-	// rather than forcing off the main protocol (which would close
-	// ALL open folders)
-	if (server->IsCloned())
-	{
-		server->SetNeedsReconnect(true);
-		return;
-	}
+	// Must get state of server here as it will be deleted by the end
+	bool cloned = server->IsCloned();
 
 	// Clean up UI items
-	CleanUpServerDisconnect(server, false);
+	bool closed = CleanUpServerDisconnect(server, false);
 
-	// Now clear out server
-	CServerForceoffTask* task = new CServerForceoffTask(server);
-	task->Go();
+	// Now clear out server (if not clone or clone not closed)
+	// Clones will get deleted by mailbox window close.
+	if (!cloned || !closed)
+	{
+		CServerForceoffTask* task = new CServerForceoffTask(server);
+		task->Go();
+	}
+}
+
+// Connection lost to the network - keep windows open and wait to reconnect
+bool CMailControl::MboxServerWait(CMboxProtocol* server)
+{
+	// Nothing to recover for a cached connection without a mailbox
+	if (server->IsCloned() && !server->GetCurrentMbox())
+		return false;
+
+	// Retry from idle time until the network returns
+	server->AwaitReconnect();
+	return true;
 }
 
 // Clean up after forced disconnection of protocol
