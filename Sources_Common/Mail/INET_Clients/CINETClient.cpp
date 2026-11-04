@@ -1715,23 +1715,6 @@ void CINETClient::INETProcess()
 		// Now get a line of text
 		char* txt = INETGetLine();
 
-		// WORKAROUND: COMPRESS inflate occasionally produces a single
-		// stray byte before '*' or '+' in responses, or duplicates
-		// the first byte (e.g. '**'). Root cause under investigation.
-		// Strip the byte to prevent protocol desync.
-		if (mStream && mStream->IsCompressOn() && txt[0] && txt[1])
-		{
-			bool stray = false;
-			if (txt[0] != '*' && txt[0] != '+' &&
-				(txt[1] == '*' || txt[1] == '+'))
-				stray = true;
-			if ((txt[0] == '*' && txt[1] == '*') ||
-				(txt[0] == '+' && txt[1] == '+'))
-				stray = true;
-			if (stray)
-				::memmove(txt, txt + 1, ::strlen(txt));
-		}
-
 		// Write to log file
 		if (mAllowLog)
 			mLog.AddEntry(txt);
