@@ -87,6 +87,7 @@ public:
 	static unsigned long CountConnected();
 	static bool CheckConnectionState();
 	static bool CheckConnections(bool check_only);
+	static bool CanConnect(const cdstring& remote_name, tcp_port remote_port);
 	static bool GetInterfaceIPs(CTCPAddrList& addrs, bool include_localhost = true);
 
 	static void SetTimeouts(unsigned long connectRetryTimeout, unsigned long connectRetryMaxCount)

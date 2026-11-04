@@ -252,6 +252,7 @@ public:
 	virtual void	Close();								// Release TCP
 	virtual void	Abort();								// Program initiated abort
 	virtual void	Forceoff();								// Forced close
+			void	GetServerAddress(cdstring& name, tcp_port& port);	// Server and port to connect to
 
 protected:
 	virtual void	LookupServer();							// Lookup server on net

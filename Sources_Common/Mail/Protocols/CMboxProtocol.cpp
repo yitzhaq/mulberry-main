@@ -32,6 +32,7 @@
 #include "CLocalCommon.h"
 #include "CMailAccount.h"
 #include "CMailAccountManager.h"
+#include "CMailCheckThread.h"
 #include "CMailControl.h"
 #include "CMailRecord.h"
 #include "CMboxRef.h"
@@ -63,8 +64,6 @@
 // C L A S S __ C M B O X P R O T O C O L
 // __________________________________________________________________________________________________
 
-time_t CMboxProtocol::sReconnectAttempt = 0;
-
 // Default constructor
 CMboxProtocol::CMboxProtocol(CMailAccount* account)
 	: CINETProtocol(account)
@@ -77,6 +76,7 @@ CMboxProtocol::CMboxProtocol(CMailAccount* account)
 	mAppendLimit = UINT64_MAX;
 	mReconnectTime = 0;
 	mReconnectDelay = 0;
+	mReconnectCheck = eReconnectUnchecked;
 
 	// Do the rest
 	mHierarchies.push_back(new CMboxList(this));								// Always have subscribed list
@@ -108,6 +108,7 @@ CMboxProtocol::CMboxProtocol(const CMboxProtocol& copy, bool force_local, bool f
 	mAppendLimit = copy.mAppendLimit;
 	mReconnectTime = 0;
 	mReconnectDelay = 0;
+	mReconnectCheck = eReconnectUnchecked;
 
 	mRecorder = NULL; 				// Only original proto uses this - clones do not
 
@@ -797,21 +798,38 @@ void CMboxProtocol::Forceoff()
 // Called during idle
 void CMboxProtocol::SpendTime(bool force_tickle)
 {
-	// Retry a lost connection when due - an account's own connection before its mailboxes
-	if (NeedsReconnect() && IsLoggedOff() && !IsErrorProcess() &&
-		!(IsCloned() && GetCloneOwner()->NeedsReconnect()))
+	if (NeedsReconnect())
 	{
-		// No point without a network - try again as soon as one appears
-		if (!CTCPSocket::HasInet())
-		{
-			mReconnectTime = 0;
-			mReconnectDelay = 0;
-		}
+		// Waking from sleep - retry straight away
+		if (force_tickle)
+			ReconnectSoon();
 
-		// Never start two attempts in a row
-		else if ((force_tickle || (::difftime(::time(NULL), mReconnectTime) >= mReconnectDelay)) &&
-				 (::time(NULL) != sReconnectAttempt))
+		switch(mReconnectCheck)
+		{
+		// Server answered the mail check thread - reconnect now
+		case eReconnectAnswered:
 			RetryReconnect();
+			break;
+
+		// Server did not answer - keep waiting, a little longer each time
+		case eReconnectNoAnswer:
+			mReconnectCheck = eReconnectUnchecked;
+			LengthenReconnectDelay();
+			break;
+
+		default:
+			// No point without a network - try again as soon as one appears
+			if (!CTCPSocket::HasInet())
+			{
+				mReconnectTime = 0;
+				mReconnectDelay = 0;
+			}
+
+			// Have the mail check thread see whether the server answers, so a dead server never blocks here
+			else if (ReconnectDue())
+				CMailCheckThread::DoCheck();
+			break;
+		}
 	}
 
 	// Do inherited
@@ -830,10 +848,32 @@ void CMboxProtocol::AwaitReconnect()
 	SetErrorProcess(false);
 	mFlags.Set(eNeedsReconnect, true);
 	mReconnectTime = ::time(NULL);
+	mReconnectCheck = eReconnectUnchecked;
 
 	// Stay in list of periodic items so that SpendTime retries
 	CMailControl::RegisterPeriodic(this, true);
 	CMailControl::ShowIdleStatus();
+}
+
+// Lost connection due a check of its server - an account's own connection before its mailboxes
+bool CMboxProtocol::ReconnectDue() const
+{
+	return NeedsReconnect() && IsLoggedOff() && !IsErrorProcess() &&
+			!(IsCloned() && GetCloneOwner()->NeedsReconnect()) &&
+			(mReconnectCheck == eReconnectUnchecked) &&
+			(::difftime(::time(NULL), mReconnectTime) >= mReconnectDelay);
+}
+
+// Server and port to connect to
+void CMboxProtocol::GetServerAddress(cdstring& name, tcp_port& port) const
+{
+	mClient->GetServerAddress(name, port);
+}
+
+// Mail check thread has seen whether the server answers
+void CMboxProtocol::ReconnectChecked(bool answered)
+{
+	mReconnectCheck = answered ? eReconnectAnswered : eReconnectNoAnswer;
 }
 
 // Try to reconnect a lost connection
@@ -844,6 +884,7 @@ void CMboxProtocol::RetryReconnect()
 		return;
 
 	mReconnectTime = ::time(NULL);
+	mReconnectCheck = eReconnectUnchecked;
 
 	try
 	{
@@ -851,7 +892,6 @@ void CMboxProtocol::RetryReconnect()
 		CMailControl::MboxServerReconnect(this);
 
 		_mutex.release();
-		sReconnectAttempt = ::time(NULL);
 	}
 
 	// Server refused the reconnect which has already been reported
@@ -860,7 +900,6 @@ void CMboxProtocol::RetryReconnect()
 		CLOG_LOGCATCH(CINETException&);
 
 		_mutex.release();
-		sReconnectAttempt = ::time(NULL);
 
 		// Give up with a clean disconnect
 		CMailControl::MboxServerDisconnect(this);
@@ -872,14 +911,20 @@ void CMboxProtocol::RetryReconnect()
 		CLOG_LOGCATCH(...);
 
 		_mutex.release();
-		sReconnectAttempt = ::time(NULL);
 
 		// Keep waiting, a little longer each time
-		long delay_first = CPreferences::sPrefs ? CPreferences::sPrefs->mReconnectDelay.GetValue() : 15;
-		long delay_max = CPreferences::sPrefs ? CPreferences::sPrefs->mReconnectDelayMax.GetValue() : 5 * 60;
-		mReconnectDelay = mReconnectDelay ? std::min<time_t>(2 * mReconnectDelay, delay_max) : delay_first;
+		LengthenReconnectDelay();
 		AwaitReconnect();
 	}
+}
+
+// Wait a little longer after each failed reconnect
+void CMboxProtocol::LengthenReconnectDelay()
+{
+	long delay_first = CPreferences::sPrefs ? CPreferences::sPrefs->mReconnectDelay.GetValue() : 15;
+	long delay_max = CPreferences::sPrefs ? CPreferences::sPrefs->mReconnectDelayMax.GetValue() : 5 * 60;
+	mReconnectDelay = mReconnectDelay ? std::min<time_t>(2 * mReconnectDelay, delay_max) : delay_first;
+	mReconnectTime = ::time(NULL);
 }
 
 // Retry a lost connection at the next opportunity

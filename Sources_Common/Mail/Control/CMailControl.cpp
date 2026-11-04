@@ -62,6 +62,7 @@
 #endif
 #include "CStatusWindow.h"
 #include "CTaskClasses.h"
+#include "CTCPSocket.h"
 #include "CXStringResources.h"
 
 #if __dest_os == __mac_os || __dest_os == __mac_os_x
@@ -877,6 +878,43 @@ void CMailControl::ReconnectSoon()
 		if (proto)
 			proto->ReconnectSoon();
 	}
+}
+
+// Called from the mail check thread so that a dead server never blocks the main thread
+void CMailControl::CheckReconnect()
+{
+	// No point without a network
+	if (!CTCPSocket::HasInet())
+		return;
+
+	// Find one lost connection that is due - it cannot be deleted while still in the list
+	CMboxProtocol* proto = NULL;
+	cdstring server;
+	tcp_port port = 0;
+	{
+		cdmutex::lock_cdmutex _lock(sPeriodicsMutex);
+		for(CINETProtocolList::iterator iter = sPeriodics.begin(); iter != sPeriodics.end(); iter++)
+		{
+			CMboxProtocol* candidate = dynamic_cast<CMboxProtocol*>(*iter);
+			if (candidate && candidate->ReconnectDue())
+			{
+				proto = candidate;
+				proto->GetServerAddress(server, port);
+				break;
+			}
+		}
+	}
+	if (!proto)
+		return;
+
+	// Connect without holding any lock
+	bool answered = CTCPSocket::CanConnect(server, port);
+
+	// Tell it the result if it is still waiting
+	cdmutex::lock_cdmutex _lock(sPeriodicsMutex);
+	CINETProtocolList::iterator found = std::find(sPeriodics.begin(), sPeriodics.end(), proto);
+	if ((found != sPeriodics.end()) && proto->NeedsReconnect())
+		proto->ReconnectChecked(answered);
 }
 
 void CMailControl::RegisterPeriodic(CINETProtocol* periodic, bool add)

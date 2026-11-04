@@ -888,6 +888,9 @@ bool CMailAccountManager::DoMailCheck(bool allow_alert, bool automatic)
 		Pause(true);
 		mHaltCheck = false;
 
+		// Lost connections only reconnect once their server answers
+		CMailControl::CheckReconnect();
+
 		// Do loop in case alert dialog takes a while
 		bool silent = false;
 

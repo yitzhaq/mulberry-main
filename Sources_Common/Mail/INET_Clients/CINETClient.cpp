@@ -597,6 +597,13 @@ void CINETClient::Forceoff()
 {
 }
 
+// Server and port to connect to
+void CINETClient::GetServerAddress(cdstring& name, tcp_port& port)
+{
+	name = mOwner ? GetAccount()->GetServerIP() : mServerAddr;
+	port = GetDefaultPort();
+}
+
 // Lookup IMAP server
 void CINETClient::LookupServer()
 {

@@ -147,6 +147,7 @@ public:
 	static void			RegisterPeriodic(CINETProtocol* periodic, bool add);
 	static void			ShowIdleStatus();				// Resting status - idle or accounts not connected
 	static void			ReconnectSoon();				// Retry lost connections at the next opportunity
+	static void			CheckReconnect();				// See whether the server of a lost connection answers
 
 	// Async alert processing
 	static	void		PushAlert(cdstring& txt)

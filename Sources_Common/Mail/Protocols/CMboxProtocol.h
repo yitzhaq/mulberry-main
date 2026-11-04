@@ -22,6 +22,7 @@
 
 #include "CINETProtocol.h"
 
+#include "CIMAPCommon.h"
 #include "CIMAPUrl.h"
 #include "CMailAccount.h"
 #include "CMboxFwd.h"
@@ -37,6 +38,7 @@
 #include "cdstring.h"
 #include "templs.h"
 
+#include <atomic>
 #include <time.h>
 
 // Consts
@@ -257,6 +259,9 @@ public:
 			void	RecoverClone();							// Recover a cloned connection
 			void	AwaitReconnect();						// Wait to reconnect after losing the connection
 			void	ReconnectSoon();						// Retry a lost connection at the next opportunity
+			bool	ReconnectDue() const;					// Lost connection due a check of its server
+			void	GetServerAddress(cdstring& name, tcp_port& port) const;	// Server and port to connect to
+			void	ReconnectChecked(bool answered);		// Mail check thread has seen whether the server answers
 			void	BatchStatusCheck();						// Batch STATUS via LIST-STATUS (RFC 5819)
 
 	// O F F L I N E
@@ -332,6 +337,14 @@ public:
 								bool dummy_files = false);	// Atomic message replacement (RFC 8508)
 
 protected:
+	// Whether a lost connection's server answered the mail check thread
+	enum EReconnectCheck
+	{
+		eReconnectUnchecked = 0,
+		eReconnectAnswered,
+		eReconnectNoAnswer
+	};
+
 	CMbox*				mINBOX;								// INBOX
 	CHierarchies		mHierarchies;						// List of lists (first is subscribed)
 	CMboxList			mSingletons;						// List of mailboxes that don't belong in a heirarchy and will delete on close
@@ -342,11 +355,12 @@ protected:
 	uint64_t			mAppendLimit;						// Global APPENDLIMIT (UINT64_MAX = unknown)
 	time_t				mReconnectTime;						// Last reconnect attempt
 	time_t				mReconnectDelay;					// Delay before next reconnect attempt
-	static time_t		sReconnectAttempt;					// Time any reconnect attempt last finished
+	std::atomic<int>	mReconnectCheck;					// Whether the server answered the mail check thread
 	
 	CMailRecord*		mRecorder;							// Recorder for mail ops
 
 			void	RetryReconnect();						// Try to reconnect a lost connection
+			void	LengthenReconnectDelay();				// Wait a little longer after each failed reconnect
 			void	CancelReconnect();						// Stop waiting to reconnect
 
 			void	FindAllSubsMbox(CMboxList* mboxes);		// Find subscribed mboxes

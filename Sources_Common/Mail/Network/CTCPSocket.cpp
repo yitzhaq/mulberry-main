@@ -238,6 +238,25 @@ bool CTCPSocket::HasInet()
 #endif
 }
 
+// Check whether a server accepts a connection, without using it
+bool CTCPSocket::CanConnect(const cdstring& remote_name, tcp_port remote_port)
+{
+	CTCPSocket probe;
+	try
+	{
+		probe.TCPOpen();
+		probe.TCPSpecifyRemoteName(remote_name, remote_port, false);
+		probe.TCPStartConnection();
+		probe.TCPCloseConnection();
+		return true;
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+		return false;
+	}
+}
+
 bool CTCPSocket::WillDial()
 {
 #if defined(_mac_winsock)
