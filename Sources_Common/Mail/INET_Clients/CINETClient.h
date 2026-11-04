@@ -275,8 +275,6 @@ protected:
 public:
 	virtual void	Logoff();									// Logoff from server
 
-	bool	IsConnectionAlive() const
-		{ return mStream && mStream->TCPGetState() >= CTCPSocket::TCPConnected; }
 	virtual const cdstring& GetGreeting()
 		{ return mGreeting; }
 

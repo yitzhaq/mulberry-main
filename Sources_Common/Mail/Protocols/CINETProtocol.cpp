@@ -147,11 +147,6 @@ void CINETProtocol::DirtyAccount()
 	// Must override in derived classes
 }
 
-bool CINETProtocol::IsConnectionAlive() const
-{
-	return IsLoggedOn() && mClient && mClient->IsConnectionAlive();
-}
-
 bool CINETProtocol::IsSecure() const
 {
 	// Check for TLS
@@ -952,19 +947,9 @@ CINETProtocol* CINETProtocol::NewConnection()
 	CINETProtocol* proto = NULL;
 	for(CConnections::iterator iter = mCachedConnections.begin(); iter != mCachedConnections.end(); iter++)
 	{
-		// Look for one not being used and still alive
-		if (!(*iter).mInUse)
+		// Look for one not being used and free from errors - others are closed out at idle time
+		if (!(*iter).mInUse && (*iter).mConnection->IsLoggedOn())
 		{
-			if (!(*iter).mConnection->IsConnectionAlive())
-			{
-				(*iter).mConnection->Forceoff();
-				delete (*iter).mConnection;
-				iter = mCachedConnections.erase(iter);
-				if (iter == mCachedConnections.end())
-					break;
-				continue;
-			}
-
 			// Now mark it as being used prior to returning it
 			proto = (*iter).mConnection;
 			(*iter).mInUse = true;
@@ -1060,6 +1045,21 @@ void CINETProtocol::ConnectionIdle()
 	cdmutex::lock_cdmutex _lock(_cache_mutex);
 	
 	// 1. check ones in an error state
+	for(CConnections::iterator iter = mCachedConnections.begin(); iter != mCachedConnections.end(); )
+	{
+		// Close out free ones no longer logged on
+		if (!(*iter).mInUse && !(*iter).mConnection->IsLoggedOn())
+		{
+			// Close it out
+			CloseConnection((*iter).mConnection);
+			
+			// Delete the record
+			iter = mCachedConnections.erase(iter);
+			continue;
+		}
+		
+		iter++;
+	}
 
 	// 2. look for ones that are not in use and have expired
 	unsigned long free_count = 0;
