@@ -1441,6 +1441,15 @@ bool CINETClient::_TickleExpired() const
 // Force abort and recovery of a connection that is no longer usable
 void CINETClient::_TickleAbort()
 {
+	// Owner may wait to reconnect in the background rather than reconnect here
+	if (INETRecoverWait())
+	{
+		// Kill the connection if one present
+		if (mStream && (mStream->TCPGetState() >= CTCPSocket::TCPConnected))
+			mStream->TCPAbort();
+		return;
+	}
+
 	// Force abort and reconnect
 	Abort();
 
