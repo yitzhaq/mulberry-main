@@ -373,6 +373,15 @@ void CTLSSocket::TCPReceiveData(char* buf, long* len)
 		CTCPSocket::TCPReceiveData(buf, len);
 }
 
+// Check for data without blocking, including data already decrypted by TLS
+bool CTLSSocket::HasPendingData() const
+{
+	if (mTLSOn && m_tls && (::SSL_pending(m_tls) > 0))
+		return true;
+
+	return CTCPSocket::HasPendingData();
+}
+
 // Send data
 void CTLSSocket::TCPSendData(char* buf, long len)
 {

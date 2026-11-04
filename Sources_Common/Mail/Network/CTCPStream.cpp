@@ -481,7 +481,7 @@ bool CTCPStreamBuf::HasPendingData() const
 			return true;
 	}
 
-	return CTCPSocket::HasPendingData();
+	return CTLSSocket::HasPendingData();
 }
 
 // Request for input

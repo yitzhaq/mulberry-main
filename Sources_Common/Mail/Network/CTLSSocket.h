@@ -65,6 +65,7 @@ public:
 
 	// Receiving data
 	virtual void TCPReceiveData(char* buf, long* len);			// Receive some data
+	virtual bool HasPendingData() const;							// Check for data without blocking
 
 	// Sending data
 	virtual void TCPSendData(char* buf, long len);				// Send data
