@@ -7,8 +7,9 @@ mulberry (4.2.0a1) unstable; urgency=medium
     rewrite BIO CRLF filter, add version guards for all three generations
   * C++17 / GCC 13+: remove register keyword, auto_ptr, throw() specs,
     fix narrowing conversions, reserved identifiers
-  * Fix connection drop leaving application permanently unusable;
-    recover dead per-mailbox connections on demand
+  * Laptop-friendly connection handling: folders stay open while the
+    network or server is away and reconnect once the server answers;
+    fix lost connections leaving folders unusable or the application stuck
   * Fix UTF-16 BOM handling causing mojibake on Outlook/iOS messages
   * Fix format=flowed delsp buffer boundary bug, add delsp=yes generation
   * Fix bare CR rendering as spurious blank lines (RFC 5322 s4)
@@ -50,9 +51,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
     refcount protection for CMbox operations across all platforms
   * Comprehensive concurrency audit: 21 CMbox crash sites guarded,
     Recover() message notification, TLS teardown race fix, sPeriodics
-    data race fix, 5 additional protocol reconnect guards
-  * Fix background mailbox tabs closing instead of reconnecting after
-    idle timeout
+    data race fix
   * RFC modernization: Implicit TLS defaults (8314), port 587 (6409),
     IMAP MOVE (6851), ESEARCH (4731), SASL-IR (4959), ENABLE (5161),
     CHILDREN (3348), QUOTA update (9208), $Forwarded keyword (9051),
@@ -112,6 +111,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Updated to Standards-Version 4.7.0.0 (from 3.8.3)
   * Migrated to debhelper compatibility level 13 (from 7)
   * Rewrote debian/rules using modern dh sequencer
+  * Build in parallel, including the bundled JX toolkit and ACE library
   * Build with full hardening flags (bindnow, PIE, RELRO,
     stack protector, FORTIFY_SOURCE, format security)
   * Added debian/copyright in DEP-5 machine-readable format

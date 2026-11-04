@@ -178,9 +178,10 @@ X11 bitmap fonts).
   UNCHANGEDSINCE STORE modifier for conditional flag updates.
   CLOSED response code for mailbox switching under QRESYNC.
   MODSEQ and HIGHESTMODSEQ persisted in offline cache (format
-  version 0x0C). Turns multi-second reconnection resyncs into
-  sub-second operations on servers that support it (Dovecot 1.2+,
-  Cyrus 2.4+, Exchange 2013+).
+  version 0x0C). On reconnection, a mailbox whose cached messages
+  all have known UIDs resynchronises in one round trip, sub-second
+  on servers that support QRESYNC (e.g. Dovecot, Cyrus IMAP,
+  Stalwart); otherwise its message list is reloaded.
 - IMAP COMPRESS=DEFLATE (RFC 4978). Reduces IMAP bandwidth by
   60-75% using zlib compression. Activated automatically after
   login when the server supports it. Includes decompression bomb
@@ -589,21 +590,23 @@ X11 bitmap fonts).
   from account domains). Addresses the organizer spoofing prevention
   that the original developer marked as IMPORTANT in four separate
   iTIP receive methods.
-- Automatic recovery of dead per-mailbox IMAP connections. When a
-  clone connection dies (server restart, network interruption, WiFi
-  loss), Mulberry now detects the dead connection and transparently
-  reconnects — re-authenticating, re-SELECTing the mailbox, and
-  reloading messages. Previously, dead clones either looped silently
-  or blocked indefinitely, requiring the user to close and reopen
-  the folder. Detection combines three mechanisms: dead-socket
-  checks in the IDLE tickle path, TCP keepalive probes at the kernel
-  level (~120s detection on Linux), and a 5-second timeout on IDLE
-  DONE response. Stale connections in the connection cache pool are
-  also detected and discarded. TCP keepalive parameters are
-  configurable via preferences (`TCP Keepalive Enabled`, `Idle`,
-  `Interval`, `Count`); platform-specific tuning on Linux
-  (TCP_KEEPIDLE/INTVL/CNT) and macOS (TCP_KEEPALIVE); Windows uses
-  OS default pending Winsock 2 upgrade.
+- Laptop-friendly connection handling. When the network or server
+  goes away (WiFi loss, sleep, server restart), open folders and
+  tabs stay open with their cached messages, and the status line
+  shows which accounts are not connected. Mulberry checks in the
+  background whether the server answers again, then reconnects and
+  resynchronises each open mailbox; an unreachable server no longer
+  blocks the window with wait dialogs. Retries start immediately and
+  back off to every five minutes, pause while no network is up, and
+  can be forced with Check Email. An account waiting to reconnect
+  can be logged out. Dead connections are detected by the idle
+  tickle, TCP keepalive probes (~120s on Linux) and a matching limit
+  on unacknowledged data (TCP_USER_TIMEOUT). Configurable via
+  preferences (`TCP Keepalive Enabled`, `Idle`, `Interval`, `Count`,
+  `Reconnect Delay`, `Reconnect Delay Max`, `IDLE Retry Delay`);
+  keepalive tuning on Linux (TCP_KEEPIDLE/INTVL/CNT) and macOS
+  (TCP_KEEPALIVE); Windows uses the OS default pending a Winsock 2
+  upgrade.
 - Visual Studio 2019 build support (Win32, untested).
   Contributed by Quanah Gibson-Mount.
 - IMAP UTF-8 support (RFC 9755, obsoletes RFC 6855). Negotiates
@@ -690,12 +693,13 @@ X11 bitmap fonts).
   one. Root cause: the MDI socket name was derived from a legacy
   `"cyrusoft-mulberry"` signature, while the running instance registered
   under `"Mulberry"` — the two never matched.
-- Fix IMAP connection recovery after server restart or network
-  interruption. Dead connections left open folders in a non-functional
-  zombie state with no way to recover. Root cause: iostream exceptions
-  not recognized as network errors, bypassing all recovery. Also
-  fixed dead connections returned from the connection pool and an
-  O(N²) loop during mailbox recovery.
+- Fix lost connections leaving folders unusable or Mulberry stuck.
+  A dropped connection could leave open folders non-functional with
+  no way to recover, close background tabs on return from idle, or,
+  after a failed reconnect, block all further communication with the
+  server. Root causes included iostream exceptions not recognized as
+  network errors, dead connections reused from the connection pool,
+  and an error flag that was never cleared.
 - Fix O(N²) performance during bulk FETCH on large mailboxes.
   GetNumberUnseen() called CountFlags() which scanned the entire
   message list on every flag change, and MessageChanged() queued
@@ -704,11 +708,6 @@ X11 bitmap fonts).
   instead of seconds. Fixed by using the maintained unseen counter
   directly and suppressing per-message UI notifications during
   bulk fetch operations.
-- Fix background mailbox tabs closing instead of reconnecting.
-  When switching back to a mailbox tab after idle time, the IMAP
-  connection may have died (server timeout). Previously, the tab
-  assumed the connection was alive, hit the dead connection, and
-  closed the folder. Now verifies and re-opens if needed.
 - Fix ACE_Thread_ID::operator== returning inverted result on Linux
   (macOS and Windows unaffected — they use native thread ID types).
   pthread_equal() returns non-zero for equal threads, but the
@@ -726,20 +725,12 @@ X11 bitmap fonts).
   clone. Also fixed: Recover() deleting messages without notifying
   open windows (dangling CMessage pointers), sPeriodics vector
   data race, TCPSelectYield/TLSReceiveData yield guards,
-  TCPSendData arithmetic bug, and 5 additional protocol reconnect
-  guards.
+  and a TCPSendData arithmetic bug.
 - Fix TLS teardown crash during search. SSL_connect/SSL_read/
   SSL_write loops yield to process UI events; if the connection
   is torn down by another thread during the yield, the SSL
   object becomes NULL. Guard all three TLS operations against
   connection teardown during yield.
-- Fix connection drop rendering Mulberry permanently unusable.
-  Two fixes: clear the error recovery flag after failed reconnection
-  (previously stuck permanently, blocking all server communication),
-  and recover dead per-mailbox connections on demand (previously,
-  open folders became silently non-functional after a transient
-  network interruption). Both bugs have existed for the entire life
-  of the open-source release.
 - Fix crash when cancelling timezone "Other..." dialog on Linux.
   The CTimezonePopup::mOldValue member was uninitialized, causing
   the popup to use a garbage index value on cancel. Also fix
