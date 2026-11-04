@@ -666,23 +666,6 @@ void CMboxProtocol::Logon()
 	// Do inherited
 	CINETProtocol::Logon();
 
-	// Enable compression before any bulk data transfer (RFC 4978)
-	mClient->_Compress();
-
-	// Send RFC 2971 ID command (IMAP only, for bug reports and statistics)
-	mClient->_SendID();
-
-	// Send RFC 5161 ENABLE command (IMAP only)
-	mClient->_Enable();
-
-	// Send RFC 5255 LANGUAGE and COMPARATOR commands (IMAP only)
-	mClient->_Language();
-	mClient->_Comparator();
-
-	// Send RFC 5465 NOTIFY command (main connection only)
-	if (!IsCloned())
-		mClient->_Notify();
-
 	// Do not reset current mbox for clone
 	if (!IsCloned())
 		mCurrent_mbox = NULL;
@@ -753,21 +736,6 @@ void CMboxProtocol::Logoff()
 	}
 
 } // CMboxProtocol::Logoff
-
-// Forced reconnect — re-negotiate session state lost with the old connection
-void CMboxProtocol::Forceon()
-{
-	CINETProtocol::Forceon();
-
-	mClient->_Compress();
-	mClient->_SendID();
-	mClient->_Enable();
-	mClient->_Language();
-	mClient->_Comparator();
-
-	if (!IsCloned())
-		mClient->_Notify();
-}
 
 // Forced off server
 void CMboxProtocol::Forceoff()

@@ -190,6 +190,7 @@ protected:
 	costream*			mRcvOStream;					// Stream to copy data
 	bool				mSilentCommand;					// Do not display status
 	bool				mSilentError;					// Do not explicitly handle error
+	bool				mAuthenticated;					// Session has been authenticated
 	bool				mAllowLog;						// Allow logging
 	CLog				mLog;							// Logging control
 	CLog::ELogType		mLogType;						// Type of log
@@ -295,6 +296,7 @@ protected:
 	virtual void	_NoCapability() {}						// Handle failed capability response
 			bool	_TryParseResponseCapability(const cdstring& text);	// Parse [CAPABILITY ...] from response code
 	virtual void	_Authenticate();						// Authenticate with server
+	virtual void	_PostAuthenticate() {}					// Set up session after authentication
 
 	virtual void	_PreProcess() {}						// About to start processing input
 	virtual void	_PostProcess() {}						// Finished processing input

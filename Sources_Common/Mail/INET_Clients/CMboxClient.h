@@ -94,12 +94,6 @@ public:
 	virtual void	_SubscribeMbox(CMbox* mbox) = 0;		// Do subscribe mbox
 	virtual void	_UnsubscribeMbox(CMbox* mbox) = 0;		// Do unsubscribe mbox
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names) = 0;	// Get namespace
-	virtual void	_SendID() {}					// Send RFC 2971 ID command (IMAP-specific, default no-op)
-	virtual void	_Enable() {}					// Send RFC 5161 ENABLE command (IMAP-specific, default no-op)
-	virtual void	_Compress() {}					// Send RFC 4978 COMPRESS command (IMAP-specific, default no-op)
-	virtual void	_Language() {}					// Send RFC 5255 LANGUAGE command (IMAP-specific, default no-op)
-	virtual void	_Comparator() {}				// Send RFC 5255 COMPARATOR command (IMAP-specific, default no-op)
-	virtual void	_Notify() {}					// Send RFC 5465 NOTIFY command (IMAP-specific, default no-op)
 	virtual void	_GenUrlAuth(const cdstrvect& /*rump_urls*/,
 								const cdstring& /*mechanism*/,
 								cdstrvect* /*results*/) {}

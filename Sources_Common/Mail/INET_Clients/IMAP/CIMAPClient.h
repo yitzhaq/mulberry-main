@@ -173,6 +173,7 @@ protected:
 	// P R O T O C O L
 	virtual void	_InitCapability();					// Initialise capability flags to empty set
 	virtual void	_ProcessCapability();				// Handle capability response
+	virtual void	_PostAuthenticate();				// Set up session extensions after authentication
 	virtual void	_NoCapability();					// Handle failed capability response
 			void	SetRev2FoldedInCapabilities();		// Set folded-in capability flags for rev2
 
@@ -220,8 +221,8 @@ protected:
 	virtual void	_SubscribeMbox(CMbox* mbox);		// Do subscribe mbox
 	virtual void	_UnsubscribeMbox(CMbox* mbox);		// Do unsubscribe mbox
 	virtual void	_Namespace(CMboxProtocol::SNamespace* names);	// Get namespace
-	virtual void	_SendID();					// Send RFC 2971 ID command
-	virtual void	_Enable();					// Send RFC 5161 ENABLE command
+			void	_SendID();					// Send RFC 2971 ID command
+			void	_Enable();					// Send RFC 5161 ENABLE command
 			void	_Compress();				// Send RFC 4978 COMPRESS command
 			void	_Language();				// Send RFC 5255 LANGUAGE command
 			void	_Comparator();				// Send RFC 5255 COMPARATOR command

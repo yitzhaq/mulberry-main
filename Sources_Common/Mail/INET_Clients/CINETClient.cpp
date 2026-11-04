@@ -264,6 +264,7 @@ void CINETClient::InitINETClient()
 	mTagCount = 0;
 	mUseTag = true;
 	mDoesTaggedResponses = false;
+	mAuthenticated = false;
 
 	mRcvStream = NULL;
 	mRcvOStream = NULL;
@@ -688,6 +689,9 @@ void CINETClient::Logon()
 		// Force tag to zero
 		mTagCount = 0;
 
+		// New session is not authenticated
+		mAuthenticated = false;
+
 		// Init TCP
 		mStream->TCPOpen();
 
@@ -774,6 +778,7 @@ void CINETClient::Logon()
 			auth_done = DoAuthentication();
 		else
 			auth_done = true;
+		mAuthenticated = auth_done;
 
 		// Refresh capabilities after authentication (RFC 9051 §6.2.2/§6.2.3).
 		// Post-login capabilities differ from pre-login and may include
@@ -784,6 +789,10 @@ void CINETClient::Logon()
 			if (!_TryParseResponseCapability(mLastResponse.tag_msg))
 				_Capability();
 		}
+
+		// Set up session extensions
+		if (auth_done)
+			_PostAuthenticate();
 	}
 	catch(unsigned long /*num*/)
 	{
@@ -1748,8 +1757,7 @@ void CINETClient::INETProcess()
 
 	// Look for special unsolicited responses
 	// RFC 9051 §11.3: ignore ALERT before TLS or authentication
-	bool confidential = (mStream && mStream->TLSIsTLSOn()) ||
-						(mOwner && mOwner->IsLoggedOn());
+	bool confidential = (mStream && mStream->TLSIsTLSOn()) || mAuthenticated;
 	while(mLastResponse.CheckUntagged(cALERT))
 	{
 		const cdstring alert = mLastResponse.PopUntagged(cALERT);
@@ -2065,8 +2073,7 @@ void CINETClient::INETHandleError(std::exception& ex, const char* err_id, const 
 	// Always make sure outstanding alerts are processed before attempting any reconnects etc
 	// RFC 9051 §11.3: ignore ALERT before TLS or authentication
 	{
-		bool confidential = (mStream && mStream->TLSIsTLSOn()) ||
-							(mOwner && mOwner->IsLoggedOn());
+		bool confidential = (mStream && mStream->TLSIsTLSOn()) || mAuthenticated;
 		while(mLastResponse.CheckUntagged(cALERT))
 		{
 			const cdstring alert = mLastResponse.PopUntagged(cALERT);

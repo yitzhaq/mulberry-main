@@ -271,6 +271,7 @@ void CIMAPClient::_InitCapability()
 	mSearchSaved = false;
 	mSortDollarBroken = false;
 	mSavedSearchResults.clear();
+	mContextTag.clear();
 	mMultiAppending = false;
 	mMultiAppendCount = 0;
 	mMultiAppendUIDs.clear();
@@ -1268,6 +1269,27 @@ void CIMAPClient::_Namespace(CMboxProtocol::SNamespace* names)
 	}
 }
 
+// Set up session extensions after authentication
+void CIMAPClient::_PostAuthenticate()
+{
+	// Enable compression before any bulk data transfer (RFC 4978)
+	_Compress();
+
+	// Send RFC 2971 ID command (IMAP only, for bug reports and statistics)
+	_SendID();
+
+	// Send RFC 5161 ENABLE command (IMAP only)
+	_Enable();
+
+	// Send RFC 5255 LANGUAGE and COMPARATOR commands (IMAP only)
+	_Language();
+	_Comparator();
+
+	// Send RFC 5465 NOTIFY command (main connection only)
+	if (!GetMboxOwner()->IsCloned())
+		_Notify();
+}
+
 // Send RFC 2971 ID command to exchange client/server identification
 void CIMAPClient::_SendID()
 {
@@ -1293,16 +1315,24 @@ void CIMAPClient::_SendID()
 		id_params += " \"vendor\" \"Cyrus Daboo\")";
 
 		// Issue ID command (response is optional, we don't parse it)
-		INETStartSend("Status::IMAP::SendingID", "Error::IMAP::OSErrID", "Error::IMAP::NoBadID");
-		INETSendString(cIMAP_ID);
-		INETSendString(cSpace);
-		INETSendString(id_params);
-		INETFinishSend();
+		INETStartSend("Status::IMAP::SendingID", "Error::IMAP::OSErrID", "Error::IMAP::NoBadID", cdstring::null_str, false);
+		INETSendString(cIMAP_ID, eQueueNoFlags, false);
+		INETSendString(cSpace, eQueueNoFlags, false);
+		INETSendString(id_params, eQueueNoFlags, false);
+		INETFinishSend(false);
 	}
-	catch(...)
+	catch(CINETException& ex)
 	{
-		CLOG_LOGCATCH(...);
-		// Don't rethrow - ID failure is non-fatal, just log it
+		CLOG_LOGCATCH(CINETException&);
+
+		// Optional extension - a NO or BAD response is not a failure
+		if ((ex.error() != CINETException::err_NoResponse) &&
+			(ex.error() != CINETException::err_BadResponse))
+		{
+			// Throw up
+			CLOG_LOGRETHROW;
+			throw;
+		}
 	}
 }
 
@@ -1314,15 +1344,24 @@ void CIMAPClient::_Compress()
 
 	try
 	{
-		INETStartSend("Status::IMAP::Compressing", "Error::IMAP::OSErrCompress", "Error::IMAP::NoBadCompress");
-		INETSendString(cCOMPRESS);
-		INETFinishSend();
+		INETStartSend("Status::IMAP::Compressing", "Error::IMAP::OSErrCompress", "Error::IMAP::NoBadCompress", cdstring::null_str, false);
+		INETSendString(cCOMPRESS, eQueueNoFlags, false);
+		INETFinishSend(false);
 
 		mStream->CompressStart();
 	}
-	catch(...)
+	catch(CINETException& ex)
 	{
-		CLOG_LOGCATCH(...);
+		CLOG_LOGCATCH(CINETException&);
+
+		// Optional extension - a NO or BAD response is not a failure
+		if ((ex.error() != CINETException::err_NoResponse) &&
+			(ex.error() != CINETException::err_BadResponse))
+		{
+			// Throw up
+			CLOG_LOGRETHROW;
+			throw;
+		}
 	}
 }
 
@@ -1443,11 +1482,11 @@ void CIMAPClient::_Enable()
 
 	try
 	{
-		INETStartSend("Status::IMAP::Enabling", "Error::IMAP::OSErrEnable", "Error::IMAP::NoBadEnable", cdstring::null_str);
-		INETSendString(cENABLE);
-		INETSendString(cSpace);
-		INETSendString(enable_args);
-		INETFinishSend();
+		INETStartSend("Status::IMAP::Enabling", "Error::IMAP::OSErrEnable", "Error::IMAP::NoBadEnable", cdstring::null_str, false);
+		INETSendString(cENABLE, eQueueNoFlags, false);
+		INETSendString(cSpace, eQueueNoFlags, false);
+		INETSendString(enable_args, eQueueNoFlags, false);
+		INETFinishSend(false);
 
 		// RFC 9755 §7: UTF8=ONLY servers reject commands without prior ENABLE
 		if (mHasUTF8Only && !mUTF8Accepted)
@@ -1456,9 +1495,18 @@ void CIMAPClient::_Enable()
 			throw CINETException(CINETException::err_BadResponse);
 		}
 	}
-	catch(...)
+	catch(CINETException& ex)
 	{
-		CLOG_LOGCATCH(...);
+		CLOG_LOGCATCH(CINETException&);
+
+		// Optional extension - a NO or BAD response is not a failure
+		if ((ex.error() != CINETException::err_NoResponse) &&
+			(ex.error() != CINETException::err_BadResponse))
+		{
+			// Throw up
+			CLOG_LOGRETHROW;
+			throw;
+		}
 	}
 }
 
@@ -1472,13 +1520,22 @@ void CIMAPClient::_Language()
 
 	try
 	{
-		INETStartSend("Status::IMAP::Language", "Error::IMAP::OSErrLanguage", "Error::IMAP::NoBadLanguage");
-		INETSendString(cLANGUAGE);
-		INETFinishSend();
+		INETStartSend("Status::IMAP::Language", "Error::IMAP::OSErrLanguage", "Error::IMAP::NoBadLanguage", cdstring::null_str, false);
+		INETSendString(cLANGUAGE, eQueueNoFlags, false);
+		INETFinishSend(false);
 	}
-	catch(...)
+	catch(CINETException& ex)
 	{
-		CLOG_LOGCATCH(...);
+		CLOG_LOGCATCH(CINETException&);
+
+		// Optional extension - a NO or BAD response is not a failure
+		if ((ex.error() != CINETException::err_NoResponse) &&
+			(ex.error() != CINETException::err_BadResponse))
+		{
+			// Throw up
+			CLOG_LOGRETHROW;
+			throw;
+		}
 	}
 }
 
@@ -1490,13 +1547,22 @@ void CIMAPClient::_Comparator()
 
 	try
 	{
-		INETStartSend("Status::IMAP::Comparator", "Error::IMAP::OSErrComparator", "Error::IMAP::NoBadComparator");
-		INETSendString(cCOMPARATOR);
-		INETFinishSend();
+		INETStartSend("Status::IMAP::Comparator", "Error::IMAP::OSErrComparator", "Error::IMAP::NoBadComparator", cdstring::null_str, false);
+		INETSendString(cCOMPARATOR, eQueueNoFlags, false);
+		INETFinishSend(false);
 	}
-	catch(...)
+	catch(CINETException& ex)
 	{
-		CLOG_LOGCATCH(...);
+		CLOG_LOGCATCH(CINETException&);
+
+		// Optional extension - a NO or BAD response is not a failure
+		if ((ex.error() != CINETException::err_NoResponse) &&
+			(ex.error() != CINETException::err_BadResponse))
+		{
+			// Throw up
+			CLOG_LOGRETHROW;
+			throw;
+		}
 	}
 }
 
@@ -1507,19 +1573,28 @@ void CIMAPClient::_Notify()
 
 	try
 	{
-		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck");
-		INETSendString(cNOTIFY);
+		INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", cdstring::null_str, false);
+		INETSendString(cNOTIFY, eQueueNoFlags, false);
 		INETSendString(" SET"
 			" (selected-delayed (MessageNew MessageExpunge FlagChange))"
 			" (subscribed (MessageNew MessageExpunge FlagChange))"
-			" (personal (MailboxName SubscriptionChange))");
-		INETFinishSend();
+			" (personal (MailboxName SubscriptionChange))", eQueueNoFlags, false);
+		INETFinishSend(false);
 
 		mNotifyActive = true;
 	}
 	catch(CINETException& ex)
 	{
 		CLOG_LOGCATCH(CINETException&);
+
+		// Only a NO or BAD response leaves the session usable
+		if ((ex.error() != CINETException::err_NoResponse) &&
+			(ex.error() != CINETException::err_BadResponse))
+		{
+			mNotifyActive = false;
+			CLOG_LOGRETHROW;
+			throw;
+		}
 
 		if (ex.error() != CINETException::err_NoResponse)
 		{
@@ -1588,24 +1663,28 @@ void CIMAPClient::_Notify()
 
 		try
 		{
-			INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck");
-			INETSendString(cNOTIFY);
-			INETSendString(" SET");
-			INETSendString(retry);
-			INETFinishSend();
+			INETStartSend("Status::IMAP::Checking", "Error::IMAP::OSErrCheck", "Error::IMAP::NoBadCheck", cdstring::null_str, false);
+			INETSendString(cNOTIFY, eQueueNoFlags, false);
+			INETSendString(" SET", eQueueNoFlags, false);
+			INETSendString(retry, eQueueNoFlags, false);
+			INETFinishSend(false);
 
 			mNotifyActive = true;
 		}
-		catch(...)
+		catch(CINETException& retry_ex)
 		{
-			CLOG_LOGCATCH(...);
+			CLOG_LOGCATCH(CINETException&);
+
 			mNotifyActive = false;
+
+			// Only a NO or BAD response leaves the session usable
+			if ((retry_ex.error() != CINETException::err_NoResponse) &&
+				(retry_ex.error() != CINETException::err_BadResponse))
+			{
+				CLOG_LOGRETHROW;
+				throw;
+			}
 		}
-	}
-	catch(...)
-	{
-		CLOG_LOGCATCH(...);
-		mNotifyActive = false;
 	}
 }
 
@@ -4386,7 +4465,7 @@ void CIMAPClient::IMAPParseResponse(char** txt, CINETClientResponse* response)
 {
 	// RFC 9051 §11.3: before authentication, only CAPABILITY and status
 	// responses are meaningful — those are handled by the base class
-	if (mOwner && !mOwner->IsLoggedOn())
+	if (!mAuthenticated)
 		return;
 
 	// Found a mailbox - do this here to improve performance
