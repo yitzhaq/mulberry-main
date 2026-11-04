@@ -815,6 +815,8 @@ X11 bitmap fonts).
   attributes to be consumed as part of the value.
 - Fix use-after-free in JX string insert and replace operations
   when the source data pointed into the string being modified.
+- Fix a memory leak on every regular expression match in JX, used
+  by font lists, file name filters and text search.
 - Fix missing comma concatenating adjacent string literals in match
   descriptors, memory leaks on realloc failure, and uninitialized
   variables in HTTP content handling and window setup.
