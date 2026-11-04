@@ -144,7 +144,7 @@ CTCPSocket::CTCPSocket()
 	mLocalPort = 0;
 	::memset((char *) &mRemote, 0, sizeof(mRemote));
 
-	mSocket = 0;
+	mSocket = INVALID_SOCKET;
 
 	mTCPState = TCPNotOpen;
 	mCancel = false;
@@ -181,7 +181,7 @@ CTCPSocket::CTCPSocket(const CTCPSocket& copy)
 	mRemoteName = copy.mRemoteName;
 	mRemoteCName = copy.mRemoteCName;
 
-	mSocket = 0;
+	mSocket = INVALID_SOCKET;
 
 	mTCPState = TCPNotOpen;
 	mCancel = false;
@@ -565,7 +565,7 @@ void CTCPSocket::TCPClose()
 
 bool CTCPSocket::HasPendingData() const
 {
-	if (mSocket < 0)
+	if (mSocket == INVALID_SOCKET)
 		return false;
 
 	fd_set fds;
@@ -981,6 +981,12 @@ void CTCPSocket::TCPCreateSocket()
 				::setsockopt(mSocket, IPPROTO_TCP, TCP_KEEPINTVL, &keepintvl, sizeof(keepintvl));
 				int keepcnt = sKeepaliveCount;
 				::setsockopt(mSocket, IPPROTO_TCP, TCP_KEEPCNT, &keepcnt, sizeof(keepcnt));
+
+				// Keepalive probes stop while sent data is unacknowledged, so bound that by the same time
+#ifdef TCP_USER_TIMEOUT
+				unsigned int user_timeout = (sKeepaliveIdle + sKeepaliveInterval * sKeepaliveCount) * 1000;
+				::setsockopt(mSocket, IPPROTO_TCP, TCP_USER_TIMEOUT, &user_timeout, sizeof(user_timeout));
+#endif
 #elif __dest_os == __mac_os_x
 				int keepalive = sKeepaliveIdle;
 				::setsockopt(mSocket, IPPROTO_TCP, TCP_KEEPALIVE, &keepalive, sizeof(keepalive));
