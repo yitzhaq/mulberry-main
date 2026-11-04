@@ -112,6 +112,7 @@ fi
 
 # Replace timezone files
 echo "Installing new timezone files..."
+mkdir -p "$OUTPUT_DIR"
 rm -rf "$OUTPUT_DIR"/*
 cp -r "$TEMP_OUTPUT"/* "$OUTPUT_DIR"/
 
