@@ -1710,27 +1710,41 @@ void CINETClient::INETProcess()
 	_PreProcess();
 
 	// Wait for tag to arrive
-	do
+	try
 	{
-		// Now get a line of text
-		char* txt = INETGetLine();
-
-		// Write to log file
-		if (mAllowLog)
-			mLog.AddEntry(txt);
-
-		// Parse received string and act on it
-		INETParseResponse(&txt, &mLastResponse);
-
-		// Clean up any long lines
-		if (mLongLine)
+		do
 		{
-			delete[] mLongLine;
-			mLongLine = NULL;
-		}
+			// Now get a line of text
+			char* txt = INETGetLine();
 
-	// Tag or continuation must end loop
-	} while (!TAG_TEST(mLastResponse.code) && !PLUS_TEST(mLastResponse.code));
+			// Write to log file
+			if (mAllowLog)
+				mLog.AddEntry(txt);
+
+			// Parse received string and act on it
+			INETParseResponse(&txt, &mLastResponse);
+
+			// Clean up any long lines
+			if (mLongLine)
+			{
+				delete[] mLongLine;
+				mLongLine = NULL;
+			}
+
+		// Tag or continuation must end loop
+		} while (!TAG_TEST(mLastResponse.code) && !PLUS_TEST(mLastResponse.code));
+	}
+	catch (...)
+	{
+		CLOG_LOGCATCH(...);
+
+		// Response only partly read so connection is out of step with the server - force it closed
+		if (mStream && (mStream->TCPGetState() >= CTCPSocket::TCPConnected))
+			mStream->TCPAbort();
+
+		CLOG_LOGRETHROW;
+		throw;
+	}
 
 	// Look for special unsolicited responses
 	// RFC 9051 §11.3: ignore ALERT before TLS or authentication
@@ -2012,25 +2026,6 @@ void CINETClient::INETParseResponse(char** txt, CINETClientResponse* response)
 	// Look for continuation response
 	else if (::stradvtokcmp(txt,cPLUS)==0)
 		response->code = cPlusLabel;
-
-	// Stale tagged response from a previous command whose INETProcess
-	// was interrupted by an exception before consuming the tagged OK.
-	// Discard and let the do-while loop continue waiting for our tag.
-	else if (mUseTag && **txt == cTAG_CHAR)
-	{
-		const char* p = *txt + 1;
-		while (*p >= '0' && *p <= '9')
-			p++;
-		if (p > *txt + 1 && *p == ' ')
-		{
-			mLog.LogEntry("Discarding stale tagged response from previous command");
-		}
-		else
-		{
-			CLOG_LOGTHROW(CINETException, CINETException::err_BadParse);
-			throw CINETException(CINETException::err_BadParse);
-		}
-	}
 
 	// Anything else is an error
 	else
