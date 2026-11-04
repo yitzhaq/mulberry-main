@@ -115,6 +115,9 @@ public:
 	CPreferenceValueMap<long>					mTCPKeepaliveIdle;					// Seconds before first keepalive probe
 	CPreferenceValueMap<long>					mTCPKeepaliveInterval;				// Seconds between keepalive probes
 	CPreferenceValueMap<long>					mTCPKeepaliveCount;					// Failed probes before declaring dead
+	CPreferenceValueMap<long>					mReconnectDelay;					// First wait before retrying a lost connection
+	CPreferenceValueMap<long>					mReconnectDelayMax;					// Longest wait between reconnect attempts
+	CPreferenceValueMap<long>					mIdleRetryDelay;					// Wait before retrying a failed IDLE
 	CPreferenceValueMap<bool>					mAuthResultsEnabled;				// Enable Authentication-Results processing
 	CPreferenceValueMap<cdstrvect>				mAuthResultsTrustedServers;			// Trusted authserv-id list (empty = auto-match)
 

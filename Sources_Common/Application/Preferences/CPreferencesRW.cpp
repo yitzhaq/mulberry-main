@@ -121,6 +121,9 @@ void CPreferences::WriteToMap(COptionsMap* theMap, bool dirty_only,
 		WRITETOMAP(mTCPKeepaliveIdle, cTCPKeepaliveIdleKey)							// v4_2a1
 		WRITETOMAP(mTCPKeepaliveInterval, cTCPKeepaliveIntervalKey)					// v4_2a1
 		WRITETOMAP(mTCPKeepaliveCount, cTCPKeepaliveCountKey)						// v4_2a1
+		WRITETOMAP(mReconnectDelay, cReconnectDelayKey)								// v4_2a1
+		WRITETOMAP(mReconnectDelayMax, cReconnectDelayMaxKey)						// v4_2a1
+		WRITETOMAP(mIdleRetryDelay, cIdleRetryDelayKey)								// v4_2a1
 		WRITETOMAP(mAuthResultsEnabled, cAuthResultsEnabledKey)						// v4_2a1
 		WRITETOMAP(mAuthResultsTrustedServers, cAuthResultsTrustedServersKey)		// v4_2a1
 	}
@@ -742,6 +745,9 @@ bool CPreferences::ReadFromMap(COptionsMap* theMap,
 		READFROMMAP(mTCPKeepaliveIdle, cTCPKeepaliveIdleKey)
 		READFROMMAP(mTCPKeepaliveInterval, cTCPKeepaliveIntervalKey)
 		READFROMMAP(mTCPKeepaliveCount, cTCPKeepaliveCountKey)
+		READFROMMAP(mReconnectDelay, cReconnectDelayKey)
+		READFROMMAP(mReconnectDelayMax, cReconnectDelayMaxKey)
+		READFROMMAP(mIdleRetryDelay, cIdleRetryDelayKey)
 		READFROMMAP(mAuthResultsEnabled, cAuthResultsEnabledKey)
 		READFROMMAP(mAuthResultsTrustedServers, cAuthResultsTrustedServersKey)
 	}

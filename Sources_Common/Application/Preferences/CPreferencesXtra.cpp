@@ -186,6 +186,9 @@ void CPreferences::InitNetworkControlPrefs()
 	mTCPKeepaliveIdle.mValue = 60;					// 60 secs before first probe
 	mTCPKeepaliveInterval.mValue = 15;				// 15 secs between probes
 	mTCPKeepaliveCount.mValue = 4;					// 4 failed probes before dead
+	mReconnectDelay.mValue = 15;					// 15 secs, doubling after each failure
+	mReconnectDelayMax.mValue = 5 * 60;				// 5 minutes
+	mIdleRetryDelay.mValue = 30;					// 30 secs
 	mAuthResultsEnabled.mValue = true;				// Process Authentication-Results by default
 	// mAuthResultsTrustedServers defaults to empty → auto-match from account domains
 }

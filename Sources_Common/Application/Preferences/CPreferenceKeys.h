@@ -141,6 +141,9 @@ extern const char* cPrefsSection;
 		extern const char* cTCPKeepaliveIdleKey;					// New as of v4_2a1
 		extern const char* cTCPKeepaliveIntervalKey;				// New as of v4_2a1
 		extern const char* cTCPKeepaliveCountKey;					// New as of v4_2a1
+		extern const char* cReconnectDelayKey;						// New as of v4_2a1
+		extern const char* cReconnectDelayMaxKey;					// New as of v4_2a1
+		extern const char* cIdleRetryDelayKey;						// New as of v4_2a1
 		extern const char* cAuthResultsEnabledKey;					// New as of v4_2a1
 		extern const char* cAuthResultsTrustedServersKey;			// New as of v4_2a1
 

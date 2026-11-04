@@ -4338,14 +4338,14 @@ void CIMAPClient::_Tickle(bool force_tickle)
 bool CIMAPClient::ShouldStartIdle()
 {
 	// Delay before retrying IDLE after a failure
-	const time_t cIdleRetryDelay = 30;
+	unsigned long idleRetryDelay = CPreferences::sPrefs ? CPreferences::sPrefs->mIdleRetryDelay.GetValue() : 30;
 
 	return mHasIdle &&
 		mIdleState == eIdleOff &&
 		mStream != NULL &&
 		(GetCurrentMbox() != NULL || mNotifyActive) &&
 		mVersion >= eIMAP4rev1 &&
-		(mIdleStartTime == 0 || ::difftime(::time(NULL), mIdleStartTime) >= cIdleRetryDelay);
+		(mIdleStartTime == 0 || ::difftime(::time(NULL), mIdleStartTime) >= idleRetryDelay);
 }
 
 bool CIMAPClient::ShouldReIdle() const
