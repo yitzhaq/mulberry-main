@@ -141,6 +141,24 @@ jobs:
         print(f'Filtered: {len(db)} -> {len(filtered)} entries (removed {len(db)-len(filtered)} third-party entries)')
         "
 
+    # The action's own LLVM installer still uses apt-key, which Ubuntu 26.04
+    # no longer ships, so install the newest apt.llvm.org snapshot here.
+    - name: Install LLVM
+      run: |
+        CODENAME=$(lsb_release -cs)
+        curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key \
+          | sudo tee /usr/share/keyrings/llvm-snapshot.asc > /dev/null
+        echo "deb [signed-by=/usr/share/keyrings/llvm-snapshot.asc] https://apt.llvm.org/$CODENAME/ llvm-toolchain-$CODENAME main" \
+          | sudo tee /etc/apt/sources.list.d/llvm.list
+        sudo apt-get update
+        LLVM_VER=$(apt-cache search --full 'clang-[[:digit:]]*$' | grep '^Package: clang' \
+          | cut -d ' ' -f 2 | sort -V | tail -n 1 | sed 's/clang-//')
+        sudo apt-get install -y --no-install-recommends clang-$LLVM_VER clang-tidy-$LLVM_VER
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$LLVM_VER 10000
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-$LLVM_VER 10000
+        clang --version
+        clang-tidy --version
+
     - name: Run CodeChecker analysis
       uses: whisperity/codechecker-analysis-action@v1
       id: codechecker
@@ -148,7 +166,7 @@ jobs:
         config: ${{ github.workspace }}/.codechecker/config.json
         logfile: ${{ github.workspace }}/compile_commands.json
         ctu: true
-        llvm-version: latest
+        llvm-version: ignore
         ignore-analyze-crashes: true
 
     - name: Convert results to SARIF
@@ -251,7 +269,7 @@ jobs:
       if: steps.check-creds.outputs.skip != 'true'
       run: |
         wget -q -O - https://files.pvs-studio.com/etc/pubkey.txt \
-          | sudo apt-key add -
+          | sudo tee /etc/apt/trusted.gpg.d/viva64.asc > /dev/null
         sudo wget -O /etc/apt/sources.list.d/viva64.list \
           https://files.pvs-studio.com/etc/viva64.list
         sudo apt-get update
