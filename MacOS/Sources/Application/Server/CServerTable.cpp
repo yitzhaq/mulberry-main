@@ -393,7 +393,7 @@ void CServerTable::FindCommandStatus(
 
 				outEnabled = true;
 				outUsesMark = true;
-				outMark = (proto && proto->IsLoggedOn()) ? (UInt16)checkMark : (UInt16)noMark;
+				outMark = (proto && proto->IsLogonIntended()) ? (UInt16)checkMark : (UInt16)noMark;
 				::GetIndString(outName, STRx_Standards, !outMark ? str_Logon : str_Logoff);
 			}
 			else
@@ -407,7 +407,7 @@ void CServerTable::FindCommandStatus(
 		{
 			outEnabled = true;
 			outUsesMark = true;
-			outMark = (GetSingleServer() && GetSingleServer()->IsLoggedOn()) ? (UInt16)checkMark : (UInt16)noMark;
+			outMark = (GetSingleServer() && GetSingleServer()->IsLogonIntended()) ? (UInt16)checkMark : (UInt16)noMark;
 			::GetIndString(outName, STRx_Standards, !outMark ? str_Logon : str_Logoff);
 		}
 		break;

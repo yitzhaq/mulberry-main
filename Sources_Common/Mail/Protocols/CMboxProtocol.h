@@ -239,6 +239,8 @@ public:
 		{ return mCloneOwner; }
 			bool	NeedsReconnect() const					// Waiting to reconnect after losing the connection
 		{ return mFlags.IsSet(eNeedsReconnect); }
+			bool	IsLogonIntended() const					// Logged on or waiting to reconnect
+		{ return IsLoggedOn() || NeedsReconnect(); }
 
 			bool UsingACLs() const							// Indicates that client can use ACLs
 		{ return GetHasACL() && !GetACLDisabled(); }

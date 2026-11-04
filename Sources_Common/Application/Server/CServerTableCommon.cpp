@@ -462,7 +462,7 @@ void CServerTable::GetLogonState(bool& enabled, bool& pushed)
 			}
 
 			enabled = true;
-			pushed = proto && proto->IsLoggedOn();
+			pushed = proto && proto->IsLogonIntended();
 		}
 		else
 		{
@@ -473,7 +473,7 @@ void CServerTable::GetLogonState(bool& enabled, bool& pushed)
 	else
 	{
 		enabled = true;
-		pushed = GetSingleServer() && GetSingleServer()->IsLoggedOn();
+		pushed = GetSingleServer() && GetSingleServer()->IsLogonIntended();
 	}
 }
 
@@ -487,8 +487,8 @@ bool CServerTable::LogonServer(void)
 // Logon to the server
 void CServerTable::LogonAction(CMboxProtocol* proto)
 {
-	// Only do if not already logged on
-	if (proto->IsLoggedOn())
+	// Only do if not already logged on or waiting to reconnect
+	if (proto->IsLogonIntended())
 		return;
 
 	try
@@ -527,7 +527,7 @@ void CServerTable::LogoffAction(CMboxProtocol* proto)
 	bool ok_logout = true;
 
 	// Only do if not already logged off
-	if (!proto->IsLoggedOn())
+	if (!proto->IsLogonIntended())
 		return;
 
 	try
