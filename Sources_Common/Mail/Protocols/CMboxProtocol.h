@@ -22,7 +22,6 @@
 
 #include "CINETProtocol.h"
 
-#include "CIMAPCommon.h"
 #include "CIMAPUrl.h"
 #include "CMailAccount.h"
 #include "CMboxFwd.h"
@@ -32,6 +31,7 @@
 #include "CMessageListFwd.h"
 #include "CQuotas.h"
 #include "CStreamTypeFwd.h"
+#include "CTCPSocket.h"
 
 #include "SBitFlags.h"
 
