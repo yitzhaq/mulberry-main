@@ -710,6 +710,7 @@ public:
 
 protected:
 	virtual CMessage* CreateMessage();							// Create message suitable for this mailbox
+			void	DiscardMessages();							// Drop all cached messages before reloading them
 };
 
 #endif

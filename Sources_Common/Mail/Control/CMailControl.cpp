@@ -108,8 +108,9 @@ void CMailControl::MboxServerReconnect(CMboxProtocol* server)
 	// Force logon to server
 	server->Forceon();
 
-	// Clean up UI items
-	CleanUpServerDisconnect(server, true);
+	// Clean up UI items - a clone's mailbox does this itself if it has to reload its messages
+	if (!server->IsCloned())
+		CleanUpServerDisconnect(server, true);
 
 	// Recover policy:
 	// Uncloned -> do nothing: each mbox has its own (still open) connection
@@ -313,42 +314,6 @@ void CMailControl::CleanUpMboxClose(CMbox* mbox)
 				CCloseMailboxViewTask* task =  new CCloseMailboxViewTask(*riter, mbox, true);
 				task->Go();
 			}
-		}
-	}
-}
-
-// Clear message references before Recover() deletes messages.
-// Unlike CleanUpMboxClose, this does NOT close mailbox views.
-void CMailControl::CleanUpMboxRecover(CMbox* mbox)
-{
-	// Notify letter windows to drop message references
-	{
-		cdmutexprotect<CLetterWindow::CLetterWindowList>::lock _lock(CLetterWindow::sLetterWindows);
-		for(CLetterWindow::CLetterWindowList::iterator iter = CLetterWindow::sLetterWindows->begin(); iter != CLetterWindow::sLetterWindows->end(); iter++)
-			(*iter)->MailboxState(mbox);
-	}
-
-	// Clear message from all message windows referencing this mailbox
-	{
-		cdmutexprotect<CMessageWindow::CMessageWindowList>::lock _lock(CMessageWindow::sMsgWindows);
-		for(CMessageWindow::CMessageWindowList::reverse_iterator riter = CMessageWindow::sMsgWindows->rbegin();
-				riter != CMessageWindow::sMsgWindows->rend(); riter++)
-		{
-			CMessage* aMsg = (*riter)->GetMessage();
-			if (aMsg && (aMsg->GetMbox() == mbox))
-				(*riter)->ClearMessage();
-		}
-	}
-
-	// Clear message from all message views referencing this mailbox
-	{
-		cdmutexprotect<CMessageView::CMessageViewList>::lock _lock(CMessageView::sMsgViews);
-		for(CMessageView::CMessageViewList::reverse_iterator riter = CMessageView::sMsgViews->rbegin();
-				riter != CMessageView::sMsgViews->rend(); riter++)
-		{
-			CMessage* aMsg = (*riter)->GetMessage();
-			if (aMsg && (aMsg->GetMbox() == mbox))
-				(*riter)->ClearMessage();
 		}
 	}
 }
