@@ -102,7 +102,7 @@ mulberry (4.2.0a1) unstable; urgency=medium
   * Default recurrence frequency changed from Yearly to Daily
   * Removed bundled OpenSSL 0.9.8m (22MB)
   * Removed bundled PCRE 4.5 and GNU regex from JX, use system libs.
-    JX's regex backend selector (regex.h) now includes system pcre.h
+    JX's regex backend selector (regex.h) now includes system pcre2.h
     directly, disabling the POSIX fallback path which relied on Henry
     Spencer's GNU extensions no longer provided by modern glibc
   * Removed obsolete lround() polyfill

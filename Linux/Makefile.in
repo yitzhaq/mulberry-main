@@ -938,7 +938,7 @@ JXLINK = $(JX_LDFLAGS) \
 	$(J_X11_LIBS) @LDAPLIB@ @SSLLIB@ \
 	$(LINK_STATIC) $(STL_LIB) $(LINK_DYNAMIC)
 
-LDFLAGS =  $(JXLINK) @LDFLAGS@ @LIBXML2_LIBS@ -lsodium -lunistring -lpcre -lpthread -ldl
+LDFLAGS =  $(JXLINK) @LDFLAGS@ @LIBXML2_LIBS@ -lsodium -lunistring -lpcre2-8 -lpthread -ldl
 #
 # Automatic stuff, should not be changed:
 #

@@ -11,7 +11,3 @@ mulberry source: source-contains-prebuilt-ms-help-file [Win32/Installer/Mulberry
 
 # Ancient libtool in JX/misc/gd — upstream, not our code
 mulberry source: ancient-libtool [Libraries/JX/misc/gd/config/ltmain.sh]
-
-# JX configure artifacts in submodule (cleaned during build but present in source)
-mulberry source: configure-generated-file-in-source [Libraries/JX/misc/pcre/config.log]
-mulberry source: configure-generated-file-in-source [Libraries/JX/misc/pcre/config.status]

@@ -1,2 +1,0 @@
-# JX toolkit statically links PCRE — cannot be separated without rewriting JX
-mulberry: embedded-library pcre3 [usr/bin/mulberry]
