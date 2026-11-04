@@ -60,6 +60,7 @@
 #ifdef __use_speech
 #include "CSpeechSynthesis.h"
 #endif
+#include "CStatusWindow.h"
 #include "CTaskClasses.h"
 #include "CXStringResources.h"
 
@@ -72,6 +73,7 @@
 #endif
 
 #include <algorithm>
+#include <stdio.h>
 
 #pragma mark Globals
 
@@ -832,6 +834,38 @@ void CMailControl::SpendTime(bool force_tickle, bool do_checks)
 			CLOG_LOGCATCH(...);
 		}
 	}
+}
+
+// Show the resting status - idle unless connections are waiting to reconnect
+void CMailControl::ShowIdleStatus()
+{
+	// Accounts with a connection waiting to reconnect
+	cdstrvect accounts;
+	{
+		cdmutex::lock_cdmutex _lock(sPeriodicsMutex);
+		for(CINETProtocolList::const_iterator iter = sPeriodics.begin(); iter != sPeriodics.end(); iter++)
+		{
+			const CMboxProtocol* proto = dynamic_cast<const CMboxProtocol*>(*iter);
+			if (proto && proto->NeedsReconnect() && proto->IsLoggedOff() &&
+				(std::find(accounts.begin(), accounts.end(), proto->GetAccountName()) == accounts.end()))
+				accounts.push_back(proto->GetAccountName());
+		}
+	}
+
+	if (accounts.empty())
+		CStatusWindow::SetIMAPStatus("Status::IDLE");
+	else if (accounts.size() == 1)
+	{
+		cdstring txt;
+		txt.reserve(256);
+		::snprintf(txt.c_str_mod(), 256, rsrc::GetString("Status::INET::NotConnectedAccount"), accounts.front().c_str());
+
+		// Change status using task in case of call from worker thread
+		CIMAPStatusTask* task = new CIMAPStatusTask(txt);
+		task->Go();
+	}
+	else
+		CStatusWindow::SetIMAPStatus1("Status::INET::NotConnectedAccounts", accounts.size());
 }
 
 void CMailControl::ReconnectSoon()

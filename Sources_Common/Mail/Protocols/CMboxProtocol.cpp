@@ -762,6 +762,7 @@ void CMboxProtocol::Forceon()
 
 	// Connection is back
 	mFlags.Set(eNeedsReconnect, false);
+	CMailControl::ShowIdleStatus();
 }
 
 // Forced off server
@@ -832,6 +833,7 @@ void CMboxProtocol::AwaitReconnect()
 
 	// Stay in list of periodic items so that SpendTime retries
 	CMailControl::RegisterPeriodic(this, true);
+	CMailControl::ShowIdleStatus();
 }
 
 // Try to reconnect a lost connection
@@ -892,6 +894,7 @@ void CMboxProtocol::CancelReconnect()
 {
 	mFlags.Set(eNeedsReconnect, false);
 	CMailControl::RegisterPeriodic(this, false);
+	CMailControl::ShowIdleStatus();
 }
 
 // Recover clone state

@@ -4225,13 +4225,13 @@ void CMbox::CopyMessage(const ulvector& nums, bool uids, CMbox* mbox_to, ulmap& 
 
 			// Clean up after failed cross-server copy
 			lock_status.AllowChange();
-			CStatusWindow::SetIMAPStatus("Status::IDLE");
+			CMailControl::ShowIdleStatus();
 
 			CLOG_LOGRETHROW;
 			throw;
 		}
 		lock_status.AllowChange();
-		CStatusWindow::SetIMAPStatus("Status::IDLE");
+		CMailControl::ShowIdleStatus();
 	}
 
 	// Force fast check on copied to mailbox to ensure its display is up to date

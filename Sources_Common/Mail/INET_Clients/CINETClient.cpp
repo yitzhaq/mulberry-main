@@ -1640,7 +1640,7 @@ void CINETClient::INETStopAction()
 	if (!mSilentCommand && (mStatusID != NULL))
 	{
 		// Set status
-		CStatusWindow::SetIMAPStatus("Status::IDLE");
+		CMailControl::ShowIdleStatus();
 
 		// Stop busy cursor
 #if __dest_os == __mac_os || __dest_os == __mac_os_x

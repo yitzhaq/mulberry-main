@@ -18,6 +18,8 @@
 	<string id="Status::SMTP::Closing">Closing SMTP connection...</string>
 
 	<string id="Status::INET::NotConnected">Not connected</string>
+	<string id="Status::INET::NotConnectedAccount">Not connected: %s</string>
+	<string id="Status::INET::NotConnectedAccounts">Not connected: %ld accounts</string>
 	<string id="Status::INET::Failed">Failed to startup</string>
 	<string id="Status::INET::Connecting">Connecting... press esc to cancel</string>
 	<string id="Status::INET::LoggingOn">Logging in... press esc to cancel</string>

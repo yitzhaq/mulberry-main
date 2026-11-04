@@ -673,7 +673,7 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 #endif
 
 		// Set status
-		SetStatus("Status::IDLE");
+		CMailControl::ShowIdleStatus();
 
 #ifdef __winsock
 		// Stop blocking hook
@@ -719,7 +719,7 @@ void CLDAPClient::Lookup(const cdstring& item, CAdbkAddress::EAddressMatch match
 #endif
 
 		// Set status
-		SetStatus("Status::IDLE");
+		CMailControl::ShowIdleStatus();
 
 #ifdef __winsock
 		// Stop blocking hook
