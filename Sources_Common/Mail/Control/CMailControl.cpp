@@ -834,6 +834,17 @@ void CMailControl::SpendTime(bool force_tickle, bool do_checks)
 	}
 }
 
+void CMailControl::ReconnectSoon()
+{
+	cdmutex::lock_cdmutex _lock(sPeriodicsMutex);
+	for(CINETProtocolList::iterator iter = sPeriodics.begin(); iter != sPeriodics.end(); iter++)
+	{
+		CMboxProtocol* proto = dynamic_cast<CMboxProtocol*>(*iter);
+		if (proto)
+			proto->ReconnectSoon();
+	}
+}
+
 void CMailControl::RegisterPeriodic(CINETProtocol* periodic, bool add)
 {
 	cdmutex::lock_cdmutex _lock(sPeriodicsMutex);

@@ -256,6 +256,7 @@ public:
 
 			void	RecoverClone();							// Recover a cloned connection
 			void	AwaitReconnect();						// Wait to reconnect after losing the connection
+			void	ReconnectSoon();						// Retry a lost connection at the next opportunity
 			void	BatchStatusCheck();						// Batch STATUS via LIST-STATUS (RFC 5819)
 
 	// O F F L I N E
@@ -340,6 +341,8 @@ protected:
 	CQuotaRootList		mRoots;								// List of quota roots known about on this server
 	uint64_t			mAppendLimit;						// Global APPENDLIMIT (UINT64_MAX = unknown)
 	time_t				mReconnectTime;						// Last reconnect attempt
+	time_t				mReconnectDelay;					// Delay before next reconnect attempt
+	static time_t		sReconnectAttempt;					// Time any reconnect attempt last finished
 	
 	CMailRecord*		mRecorder;							// Recorder for mail ops
 

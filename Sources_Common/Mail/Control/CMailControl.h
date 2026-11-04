@@ -145,6 +145,7 @@ public:
 	// Periodics
 	static void			SpendTime(bool force_tickle, bool do_checks);
 	static void			RegisterPeriodic(CINETProtocol* periodic, bool add);
+	static void			ReconnectSoon();				// Retry lost connections at the next opportunity
 
 	// Async alert processing
 	static	void		PushAlert(cdstring& txt)

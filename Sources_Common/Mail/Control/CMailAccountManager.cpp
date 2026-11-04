@@ -869,6 +869,9 @@ void CMailAccountManager::ForceMailCheck()
 		(*iter).SetCheckPending(true);
 		(*iter).SetLastCheck(last_check);
 	}
+
+	// Lost connections are retried too
+	CMailControl::ReconnectSoon();
 	
 	// Now do thread resume
 	CMailCheckThread::DoCheck();
