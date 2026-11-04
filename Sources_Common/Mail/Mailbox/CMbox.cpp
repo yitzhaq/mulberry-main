@@ -1116,12 +1116,8 @@ void CMbox::Close(bool grab_proto, bool no_check, bool force, bool allow_punt, C
 	if (!IsOpen())
 		return;
 
-	// Must not close if not safe to do so unless being forced
-	if (!force && GetMsgProtocol()->_get_mutex().is_locked())
-		return;
-
 	// Only close if open in a single thread
-	if (mOpenInfo->mRefCount && !force)
+	if (mOpenInfo->mRefCount)
 	{
 		// Decrease ref count
 		mOpenInfo->mRefCount--;
@@ -1132,6 +1128,10 @@ void CMbox::Close(bool grab_proto, bool no_check, bool force, bool allow_punt, C
 
 		return;
 	}
+
+	// Must not close if not safe to do so unless being forced
+	if (!force && GetMsgProtocol()->_get_mutex().is_locked())
+		return;
 
 	// Close it on server if already opened
 	try

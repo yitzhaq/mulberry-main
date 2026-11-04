@@ -772,20 +772,20 @@ void CMboxProtocol::Forceon()
 // Forced off server
 void CMboxProtocol::Forceoff()
 {
-	// Do inherited (but not CleanConnections yet — need to close mailboxes first)
+	// Do inherited
 	CINETProtocol::Forceoff();
 
-	// Close all mailboxes — force close since connection is dead
+	// Close all mailboxes
 	if (!IsCloned())
 	{
 		if (mINBOX)
-			mINBOX->CloseSilent(true);
+			mINBOX->CloseSilent();
 		for(CHierarchies::iterator iter = mHierarchies.begin(); iter != mHierarchies.end(); iter++)
-			(*iter)->CloseAll(true);
-		mSingletons.CloseAll(true);
+			(*iter)->CloseAll();
+		mSingletons.CloseAll();
 	}
 
-	// Now clean cached connections after mailboxes released them
+	// Mailboxes closed above hand their connections back to the cache, so clean it again
 	CleanConnections();
 
 	mCurrent_mbox = NULL;
